@@ -1,5 +1,7 @@
 # 开发环境配置
 spring:
+  thymeleaf:
+    cache: false
   datasource:
     dynamic:
       primary: master #设置默认的数据源或者数据源组,默认值即为master
@@ -51,11 +53,3 @@ mybatis-plus:
     db-config:
       logic-delete-value: 0
       logic-not-delete-value: 1
-
-jwt:
-  secretKey: 78944878877848fg)
-  accessTokenExpireTime: PT2H
-  refreshTokenExpireTime: PT8H
-  refreshTokenExpireAppTime: P30D
-  issuer: aitangbao.com.cn
-

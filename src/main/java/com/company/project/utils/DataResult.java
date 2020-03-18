@@ -82,6 +82,15 @@ public class DataResult <T>{
     public static <T>DataResult success(T data){
         return new <T>DataResult(data);
     }
+
+    /**
+     * 操作失败 data 不为null
+     * @throws
+     */
+    public static <T>DataResult fail(String msg){
+        return new <T>DataResult(BaseResponseCode.OPERATION_ERRO.getCode(),msg);
+    }
+
     /**
      * 自定义 返回操作 data 可控
      * @throws

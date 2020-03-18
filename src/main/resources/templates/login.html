@@ -1,91 +1,104 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>后台管理系统</title>
-    <link rel="stylesheet" href="/layui/css/layui.css">
+    <title>后台管理-登陆</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>body{background-image:url("/images/bg.jpg");height:100%;width:100%}#container{height:100%;width:100%}input:-webkit-autofill{-webkit-box-shadow:inset 0 0 0 1000px#fff;background-color:transparent}.admin-login-background{width:300px;height:300px;position:absolute;left:50%;top:40%;margin-left:-150px;margin-top:-100px}.admin-header{text-align:center;margin-bottom:20px;color:#ffffff;font-weight:bold;font-size:40px}.admin-input{border-top-style:none;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;height:50px;width:300px;padding-bottom:0px}.admin-input::-webkit-input-placeholder{color:#a78369}.layui-icon-username{color:#a78369!important}.layui-icon-username:hover{color:#9dadce!important}.layui-icon-password{color:#a78369!important}.layui-icon-password:hover{color:#9dadce!important}.admin-input-username{border-top-style:solid;border-radius:10px 10px 0 0}.admin-input-verify{border-radius:0 0 10px 10px}.admin-button{margin-top:20px;font-weight:bold;font-size:18px;width:300px;height:50px;border-radius:5px;background-color:#a78369;border:1px solid#d8b29f}.admin-icon{margin-left:260px;margin-top:10px;font-size:30px}i{position:absolute}.admin-captcha{position:absolute;margin-left:205px;margin-top:-40px}</style>
 </head>
-<style>
-
-    .layui-input{
-        width: 300px ;
-    }
-    .carousel {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 90;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-
-    .login {
-        height: 190px;
-        width: 340px;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 4px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin: -150px 0 0 -150px;
-        z-index: 99;
-    }
-    a{
-        width:300px;
-    }
-</style>
-
 <body>
-
-    <div class="layui-carousel carousel"  lay-filter="carousel" id="carousel">
-        <div carousel-item="">
-            <div><img src="/images/background2.png"></div>
-
+<div id="container">
+    <div></div>
+    <div class="admin-login-background">
+        <div class="admin-header">
+            <span>后台管理系统</span>
         </div>
-
-    <div class="layui-container login">
-        <form id="loginForm" action="/user/login" class="layui-form" method="post" layui-form-pane>
-            <input name="type"  type="hidden" value="1">
-            <input type="text" name="username" lay-verify="required" placeholder="请输入账号" autocomplete="off"   class="layui-input">
-            <br>
-            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-            <br>
-            <a class="layui-btn  layui-btn-normal "  lay-filter="submit" lay-submit="" id="submit">登陆</a>
+        <form class="layui-form" action="">
+            <div>
+                <i class="layui-icon layui-icon-username admin-icon"></i>
+                <input type="text" name="username" placeholder="请输入用户名" autocomplete="off"
+                       class="layui-input admin-input admin-input-username" value="admin">
+            </div>
+            <div>
+                <i class="layui-icon layui-icon-password admin-icon"></i>
+                <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
+                       class="layui-input admin-input" value="123456">
+            </div>
+            <div>
+                <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off"
+                       class="layui-input admin-input admin-input-verify">
+                <img class="admin-captcha" width="90" height="30" src="/sys/getVerify">
+            </div>
+            <button class="layui-btn admin-button" lay-submit="" lay-filter="login">登 陆</button>
         </form>
     </div>
-    </div>
-    <script src="/layui/layui.all.js"></script>
-    <script src="/js/core.util.js"></script>
-    <script>
-        var layer = layui.layer;
-        var $ = jQuery = layui.jquery;
-        var form = layui.form;
-        var carousel = layui.carousel
-        $(function () {
-        form.on('submit(submit)',function (data) {
-            CoreUtil.sendAjax("/sys/user/login",JSON.stringify(data.field),function (res) {
-                CoreUtil.setData("access_token",res.data.accessToken);
-                CoreUtil.setData("refresh_token",res.data.refreshToken);
-                window.location.href="/index/home";
+</div>
+<script src="/layui/layui.js"></script>
 
-        });
-            return false;
-         });
-            //改变下时间间隔、动画类型、高度
-            carousel.render({
-                elem: '#carousel'
-                ,interval: 2000
-                ,anim: 'fade'
-                , full: true        //全屏
-                ,width: '100%'
-                ,arrow: 'none'
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery;
+
+
+        // 进行登录操作
+        form.on('submit(login)', function (data) {
+            data = data.field;
+            if (data.captcha == '') {
+                layer.msg('请输入验证码');
+                return false;
+            }
+            if (data.username == '') {
+                layer.msg('用户名不能为空');
+                return false;
+            }
+            if (data.password == '') {
+                layer.msg('密码不能为空');
+                return false;
+            }
+
+            $.post('/sys/checkVerify?imageCode=' + data.captcha, {}, function (res) {
+                if (res.code != 0) {
+                    layer.msg(res.msg)
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/sys/user/login',
+                        dataType: "JSON",
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layui.data('LocalData', {
+                                    key: "access_token",
+                                    value: res.data.accessToken
+                                })
+                                layer.msg('登录成功', {time: 1000}, function () {
+                                    window.location = '/index/home';
+                                });
+                            } else {
+                                layer.msg(res.msg)
+                            }
+                        }
+                    })
+                }
             })
-        })
-    </script>
 
+
+            return false;
+        });
+    });
+</script>
 </body>
 </html>
-

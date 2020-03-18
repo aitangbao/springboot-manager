@@ -157,7 +157,7 @@ public class HttpSessionService {
     /**
      * 使用户的token失效
      */
-    public void abortUserByUserId(Integer userId) {
+    public void abortUserByUserName(String userId) {
         redisDB.delKeys(USER_TOKEN_PREFIX+"*#" + userId);
     }
 

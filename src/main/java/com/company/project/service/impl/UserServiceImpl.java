@@ -22,6 +22,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -44,6 +45,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     private SysDeptMapper sysDeptMapper;
     @Autowired
     private HttpSessionService httpSessionService;
+
+    @Value("${redis.allowMultipleLogin}")
+    private Boolean allowMultipleLogin;
 
     @Override
     public String register(RegisterReqVO vo) {
@@ -76,14 +80,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
         LoginRespVO respVO = new LoginRespVO();
         BeanUtils.copyProperties(sysUser, respVO);
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put(Constant.JWT_PERMISSIONS_KEY, getPermissionsByUserId(sysUser.getId()));
-//        claims.put(Constant.JWT_ROLES_KEY, getRolesByUserId(sysUser.getId()));
-//        claims.put(Constant.JWT_USER_NAME, sysUser.getUsername());
-//        String access_token = JwtTokenUtil.getAccessToken(sysUser.getId(), claims);
-//        String refresh_token = JwtTokenUtil.getRefreshToken(sysUser.getId(), claims);
-//        respVO.setAccessToken(access_token);
-//        respVO.setRefreshToken(refresh_token);
+
+        //是否删除之前token， 此处控制是否支持多登陆端；
+        // true:允许多处登陆; false:只能单处登陆，顶掉之前登陆
+        if (!allowMultipleLogin) {
+            httpSessionService.abortUserByUserName(sysUser.getUsername());
+        }
 
         String token = httpSessionService.createTokenAndUser(sysUser, getRolesByUserId(sysUser.getId()), getPermissionsByUserId(sysUser.getId()));
         respVO.setAccessToken(token);
