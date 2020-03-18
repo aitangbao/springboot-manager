@@ -64,10 +64,8 @@
 </div>
 <div id="deptTree" style="display: none"></div>
 <script type="text/html" id="toolbar">
-        <div class="layui-btn-group">
-                <button  shiro:hasPermission="sys:dept:add" type="button" class="layui-btn" lay-event="addDept">
-                    <i class="layui-icon">&#xe608;</i> 添加
-                </button>
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="addDept"  shiro:hasPermission="sys:dept:add">添加</button>
         </div>
 
 </script>

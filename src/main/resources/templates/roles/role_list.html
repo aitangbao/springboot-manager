@@ -81,10 +81,8 @@
 </div>
 </body>
 <script type="text/html" id="toolbar">
-    <div class="layui-btn-group">
-        <button type="button" class="layui-btn" lay-event="addNewRole" shiro:hasPermission="sys:role:add">
-            <i class="layui-icon">&#xe608;</i> 新增角色
-        </button>
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addNewRole"  shiro:hasPermission="sys:role:add">添加</button>
     </div>
 </script>
 <script type="text/html" id="tool">

@@ -85,10 +85,8 @@
 </div>
 <div id="menuTree" style="display: none"></div>
 <script type="text/html" id="toolbar">
-    <div class="layui-btn-group">
-        <button type="button" class="layui-btn" lay-event="addMenu" shiro:hasPermission="sys:permission:add">
-            <i class="layui-icon">&#xe608;</i> 添加
-        </button>
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addMenu"  shiro:hasPermission="sys:permission:add">添加</button>
     </div>
 </script>
 <script type="text/html" id="tool">
@@ -138,8 +136,8 @@
                 cols: [
                     [
                         {type: 'numbers'},
-                        {field: 'name', title: '菜单名称'},
-                        {field: 'url', title: 'url'},
+                        {field: 'name',width:150, title: '菜单名称'},
+                        {field: 'url',width:150, title: 'url'},
                         {field: 'method', title: '请求方式'},
                         {
                             field: 'type', title: '类型', templet: function(item){

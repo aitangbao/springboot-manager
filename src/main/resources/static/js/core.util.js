@@ -28,8 +28,9 @@ var CoreUtil = (function () {
                 top.layer.close(roleSaveLoading);
                 if (typeof ft == "function") {
                     if(res.code==401001){ //凭证过期重新登录
-                        layer.msg("凭证过期请重新登录")
-                        top.window.location.href="/index/login"
+                        layer.msg("凭证过期请重新登录", {time:2000}, function () {
+                            top.window.location.href="/index/login"
+                        })
                     }else if(res.code==401002){  //根据后端提示刷新token
                         /*记录要重复刷新的参数*/
                         var reUrl=url;
@@ -47,8 +48,9 @@ var CoreUtil = (function () {
                                 /*刷新成功后继续重复请求*/
                                 CoreUtil.sendAjax(reUrl,reParams,reFt,reMethod,reHeaders,reNoAuthorityFt,reContentType,reAsync);
                             }else {
-                                layer.msg("凭证过期请重新登录");
-                                top.window.location.href="/index/login"
+                                layer.msg("凭证过期请重新登录", {time:2000}, function () {
+                                    top.window.location.href="/index/login"
+                                })
                             }
                         },"GET",true)
                     }else if(res.code==0) {
