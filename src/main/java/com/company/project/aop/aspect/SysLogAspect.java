@@ -110,7 +110,6 @@ public class SysLogAspect {
         sysLog.setUsername(username);
         sysLog.setUserId(userId);
         sysLog.setTime((int) time);
-        sysLog.setId(UUID.randomUUID().toString());
         sysLog.setCreateTime(new Date());
         log.info(sysLog.toString());
         sysLogMapper.insert(sysLog);

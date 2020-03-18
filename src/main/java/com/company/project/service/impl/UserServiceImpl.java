@@ -52,7 +52,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         sysUser.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);
-        sysUser.setId(UUID.randomUUID().toString());
         sysUser.setCreateTime(new Date());
         int i = sysUserMapper.insert(sysUser);
         if (i != 1) {
@@ -164,7 +163,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         sysUser.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);
-        sysUser.setId(UUID.randomUUID().toString());
         sysUser.setCreateTime(new Date());
         int i = sysUserMapper.insert(sysUser);
         if (i != 1) {

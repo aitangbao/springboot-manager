@@ -1,4 +1,4 @@
-package com.xh.lesson;
+package com.company.project;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

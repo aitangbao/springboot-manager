@@ -48,7 +48,6 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
         List<SysUserRole> list=new ArrayList<>();
         for (String roleId:vo.getRoleIds()){
             SysUserRole sysUserRole=new SysUserRole();
-            sysUserRole.setId(UUID.randomUUID().toString());
             sysUserRole.setCreateTime(createTime);
             sysUserRole.setUserId(vo.getUserId());
             sysUserRole.setRoleId(roleId);

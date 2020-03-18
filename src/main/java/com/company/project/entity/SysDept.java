@@ -1,6 +1,8 @@
 package com.company.project.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
@@ -9,6 +11,7 @@ import java.util.Date;
 
 @Data
 public class SysDept implements Serializable {
+    @TableId(type = IdType.UUID)
     private String id;
 
     private String deptNo;

@@ -136,6 +136,13 @@
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+        <!--代码生成器依赖-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.30</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>

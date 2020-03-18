@@ -44,7 +44,6 @@ public class RoleServiceImpl implements RoleService {
 
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(vo, sysRole);
-        sysRole.setId(UUID.randomUUID().toString());
         sysRole.setCreateTime(new Date());
         int count = sysRoleMapper.insert(sysRole);
         if (count != 1) {

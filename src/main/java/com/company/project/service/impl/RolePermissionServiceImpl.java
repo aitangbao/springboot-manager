@@ -43,7 +43,6 @@ public class RolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapp
         List<SysRolePermission> list=new ArrayList<>();
         for (String permissionId:vo.getPermissionIds()){
             SysRolePermission sysRolePermission=new SysRolePermission();
-            sysRolePermission.setId(UUID.randomUUID().toString());
             sysRolePermission.setCreateTime(createTime);
             sysRolePermission.setPermissionId(permissionId);
             sysRolePermission.setRoleId(vo.getRoleId());

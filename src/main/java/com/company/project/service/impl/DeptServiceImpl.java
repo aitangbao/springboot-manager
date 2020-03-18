@@ -58,7 +58,6 @@ public class DeptServiceImpl implements DeptService {
         SysDept sysDept = new SysDept();
         BeanUtils.copyProperties(vo, sysDept);
         sysDept.setCreateTime(new Date());
-        sysDept.setId(UUID.randomUUID().toString());
         sysDept.setDeptNo(deptCode);
         sysDept.setRelationCode(relationCode);
         int count = sysDeptMapper.insert(sysDept);

@@ -62,7 +62,6 @@ public class PermissionServiceImpl implements PermissionService {
         SysPermission sysPermission=new SysPermission();
         BeanUtils.copyProperties(vo,sysPermission);
         verifyForm(sysPermission);
-        sysPermission.setId(UUID.randomUUID().toString());
         sysPermission.setCreateTime(new Date());
         int count=sysPermissionMapper.insert(sysPermission);
         if (count!=1){
