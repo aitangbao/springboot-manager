@@ -34,7 +34,9 @@ public class CustomAccessControlFilter extends AccessControlFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         try {
             Subject subject = getSubject(servletRequest, servletResponse);
-            System.out.println(subject.isAuthenticated() + "");
+            if (!subject.isAuthenticated()) {
+                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+            }
 
             System.out.println(HttpContextUtils.isAjaxRequest(request));
             log.info(request.getMethod());
