@@ -1,0 +1,4 @@
+# 生产环境配置
+
+knife4j:
+  production: true #生成环境禁用查看文档

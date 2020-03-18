@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.entity.SysUser">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="create_where" jdbcType="TINYINT" property="createWhere" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, salt, `password`, phone, dept_id, real_name, nick_name, email, `status`, 
+    sex, deleted, create_id, update_id, create_where, create_time, update_time
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.company.project.vo.req.UserPageReqVO">
+    select <include refid="Base_Column_List"></include>
+    from sys_user
+    <where>
+      deleted=1
+      <if test="vo.username!=null and vo.username!=''">
+        AND username LIKE concat('%',#{vo.username},'%')
+      </if>
+      <if test="vo.nickName!=null and vo.nickName!=''">
+        AND nick_name LIKE concat('%',#{vo.nickName},'%')
+      </if>
+      <if test="vo.startTime!=null and vo.startTime!=''">
+        AND create_time &gt;= #{vo.startTime}
+      </if>
+      <if test="vo.endTime!=null and vo.endTime!=''">
+        AND create_time &lt;= #{vo.endTime}
+      </if>
+      <if test="vo.userId!=null and vo.userId!='' ">
+        AND id=#{vo.userId}
+      </if>
+      <if test="vo.status!=null and vo.status!='' or vo.status==0 ">
+        AND `status`=#{vo.status}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectUserInfoByDeptIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from sys_user
+    where dept_id in
+    <foreach collection="list" open="(" close=")" separator="," item="item">
+      #{item}
+    </foreach>
+    and deleted=1
+  </select>
+
+
+  <update id="deletedUsers" parameterType="com.company.project.entity.SysUser">
+    update sys_user
+    <set>
+        deleted = 0,
+      <if test="sysUser.updateId != null">
+        update_id = #{sysUser.updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUser.updateTime != null">
+        update_time = #{sysUser.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id in
+    <foreach collection="list" open="(" close=")" separator="," item="item">
+    #{item}
+  </foreach>
+  </update>
+</mapper>

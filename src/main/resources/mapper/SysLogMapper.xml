@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.mapper.SysLogMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.entity.SysLog">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="time" jdbcType="INTEGER" property="time" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="params" jdbcType="VARCHAR" property="params" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, username, `operation`, `time`, `method`, params, ip, create_time
+  </sql>
+
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from sys_log
+    <where>
+      <if test="vo.username!=null and vo.username!=''">
+        AND username LIKE concat('%',#{vo.username},'%')
+      </if>
+      <if test="vo.operation!=null and vo.operation!=''">
+        AND operation LIKE concat('%',#{vo.operation},'%')
+      </if>
+      <if test="vo.startTime!=null and vo.startTime!=''">
+        AND create_time &gt;= #{vo.startTime}
+      </if>
+      <if test="vo.endTime!=null and vo.endTime!=''">
+        AND create_time &lt;= #{vo.endTime}
+      </if>
+      <if test="vo.userId!=null and vo.userId!='' ">
+        AND user_id=#{vo.userId}
+      </if>
+    </where>
+  </select>
+</mapper>

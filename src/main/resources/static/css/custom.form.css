@@ -1,0 +1,38 @@
+.panel-heading{
+    padding:10px 10px;
+    border-bottom:1px solid transparent;
+    border-radius:2px 2px 0 0;
+    font-size:14px;
+    background: #eeeeee
+}
+.panel{
+    margin-bottom:20px;
+    background-color:#fff;
+    border:1px solid transparent;
+    border-radius:4px;
+    -webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);
+    box-shadow:0 1px 1px rgba(0,0,0,.05)
+}
+.panel-default{
+    border-color:#ddd;
+}
+
+.layui-input, .layui-textarea {
+    display: block;
+    width: 96%;
+    padding-left: 10px;
+}
+
+.layui-form-pane .layui-form-label {
+    width: 130px;
+    padding: 8px 15px;
+    height: 38px;
+    line-height: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px 0 0 2px;
+    text-align: center;
+    background-color: #FBFBFB;
+    overflow: hidden;
+    box-sizing: border-box;
+}

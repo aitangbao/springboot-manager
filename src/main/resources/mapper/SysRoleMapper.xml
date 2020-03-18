@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.mapper.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.entity.SysRole">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, description, `status`, create_time, update_time, deleted
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.company.project.vo.req.RolePageReqVO">
+    select <include refid="Base_Column_List"></include>
+    from sys_role
+    <where>
+      deleted=1
+      <if test="vo.roleName!=null and vo.roleName!=''">
+        AND name LIKE concat('%',#{vo.roleName},'%')
+      </if>
+      <if test="vo.startTime!=null and vo.startTime!=''">
+        AND create_time &gt;= #{vo.startTime}
+      </if>
+      <if test="vo.endTime!=null and vo.endTime!=''">
+        AND create_time &lt;= #{vo.endTime}
+      </if>
+      <if test="vo.roleId!=null and vo.roleId!='' ">
+        AND id=#{roleId}
+      </if>
+      <if test="vo.status!=null and vo.status!='' or vo.status==0 ">
+        AND `status`=#{vo.status}
+      </if>
+    </where>
+  </select>
+
+</mapper>

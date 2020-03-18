@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.mapper.SysDeptMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.entity.SysDept">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="dept_no" jdbcType="VARCHAR" property="deptNo" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="relation_code" jdbcType="VARCHAR" property="relationCode" />
+    <result column="dept_manager_id" jdbcType="VARCHAR" property="deptManagerId" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dept_no, `name`, pid, `status`, relation_code, dept_manager_id, manager_name, 
+    phone, create_time, update_time, deleted
+  </sql>
+
+  <!-- @Description:     维护Relation_code 的层级关系-->
+  <update id="updateRelationCode">
+    UPDATE sys_dept
+    set relation_code=replace(relation_code,#{oldStr},#{newStr})
+    where relation_code LIKE CONCAT(#{relationCode},'%')
+  </update>
+
+
+  <select id="selectChildIds" resultType="java.lang.String">
+    select id
+    from sys_dept
+    where relation_code LIKE CONCAT(#{relationCode},'%') and deleted=1
+  </select>
+
+
+  <select id="selectAllByNotContainChild" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from sys_dept
+    <where>
+      deleted=1
+      and id not in
+      <foreach collection="list" open="(" close=")" separator="," item="item">
+      #{item}
+    </foreach>
+    </where>
+  </select>
+</mapper>

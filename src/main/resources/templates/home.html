@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .layui-tab-title .layui-this { background-color:#009688; color: #eee;}
+        .first-tab i.layui-tab-close{
+            display:none!important;
+        }
+    </style>
+</head>
+<!--参考 layui 后台布局-->
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">后台管理系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item"><a id="deptName" href="javascript:;"></a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" style="margin-right: 15px">
+                        <i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF;"></i>
+                        <span id="nickName" ></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info" class="menuNvaBar">基本资料</a></dd>
+                        <dd><a href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password" class="menuNvaBar">更换密码</a></dd>
+                        <dd><a href="javascript:;" data-id="userSafe" data-title="关于" data-url="/index/about" class="menuNvaBar">关于</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;" id="logout">退出</a></li>
+            </ul>
+        </div>
+        <!-- 左侧菜单-->
+        <div id="mainmenu" class="layui-side layui-bg-black" >
+            <div class="layui-side-scroll">
+                <div class="navBar layui-side-scroll" id="navBarId"></div>
+            </div>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="layui-tab" lay-filter="tab" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="first-tab layui-this">主页</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show"  >
+                        <iframe th:src="@{/index/main}" frameborder="0" name="content" width="100%" id="home"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+<script>
+    var layer = layui.layer;
+    var $ = jQuery = layui.jquery;
+    var form = layui.form;
+    var element = layui.element;
+    $(function () {
+        FrameWH();
+        //递归获取导航栏无线层级
+        var getChild=function (item,ulHtml) {
+            ulHtml += '<dl class="layui-nav-child">';
+            $.each(item,function (index,child) {
+                if(child.children !=null&& child.children.length>0){
+                    ulHtml +='<a>'+child.title+'</a>';
+                    ulHtml +=getChild(child.children,"");
+                }else {
+                    ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                    ulHtml += '<cite>'+child.title+'</cite></a></dd>';
+                }
+
+            });
+            ulHtml += "</dl>"
+            return ulHtml;
+        };
+        CoreUtil.sendAjax("/sys/home/",null,function (res) {
+            $("#deptName").html("所属机构:"+res.data.userInfo.deptName);
+            $("#nickName").html(res.data.userInfo.username);
+            var data=res.data.menus;
+            if(data!= "" && data.length>0){
+                var ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav">';
+                if(data!= null&&data.length > 0){
+
+                $.each(data,function(index,item){
+                    if(index == 0){
+                        ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
+                    }else{
+                        ulHtml += '<li class="layui-nav-item">';
+                    }
+                    ulHtml += '<a href="javascript:;">';
+                    ulHtml += '<cite>'+item.title+'</cite>';
+                    ulHtml += '</a>'
+                    if(item.children != null && item.children.length > 0){
+                        ulHtml += '<dl class="layui-nav-child">';
+                        $.each(item.children,function(index,child){
+                            if(child.children !=null&& child.children.length>0){
+                                ulHtml +='<a>'+child.title+'</a>';
+                                ulHtml +=getChild(child.children,"");
+                            }else {
+                                ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                                ulHtml += '<cite>'+child.title+'</cite></a></dd>';
+                            }
+
+                        });
+                        ulHtml += "</dl>"
+                    }
+                    ulHtml += '</li>'
+                });
+                }
+                ulHtml += '</ul>';
+                $(".navBar").html(ulHtml);
+                element.init();  //初始化页面元素
+
+            }else{
+                $("#navBarId").empty();
+            }
+
+            top.layer.closeAll();
+        },"GET",false);
+        $(document).on('click','.menuNvaBar',function () {
+            var dataid = $(this);
+            if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+            } else {
+                var isData = false;
+                $.each($(".layui-tab-title li[lay-id]"), function () {
+                    if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                        isData = true;
+                    }
+                })
+                if (isData == false) {
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                }
+            }
+            active.tabChange(dataid.attr("data-id"));
+        });
+
+        //推出登录
+        $("#logout").click(function () {
+            logoutDialog();
+        });
+
+    });
+    //删除前确认对话框
+    var logoutDialog=function () {
+        layer.open({
+            content: '确定要退出登录么？',
+            yes: function(index, layero){
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                CoreUtil.sendAjax("/sys/user/logout",null,function (res) {
+                    top.window.location.href="/index/login";
+                },"GET",true);
+            }
+        });
+    }
+    //触发事件
+    var active={
+        tabAdd : function (url,id,title) {
+            if(url!=""&&url!=null&&url!=undefined){
+            element.tabAdd('tab',{
+                title: title
+                , content: '<iframe data-frameid="' + id + '" frameborder="0" name="content" width="100%" src="' + url + '"></iframe>'
+                , id: id
+            })
+            }
+            FrameWH();//计算框架高度
+        },
+        tabChange: function (id) {
+            //切换到指定Tab项
+            element.tabChange('tab', id); //切换到：用户管理
+            $("iframe[data-frameid='" + id + "']").attr("src", $("iframe[data-frameid='" + id + "']").attr("src"))//切换后刷新框架
+        },
+        tabDelete: function (id) {
+            element.tabDelete("tab", id);//删除
+        }
+    };
+    function FrameWH() {
+        var h = $(window).height() - 41 - 10 - 35 - 10 - 44 - 10;
+        $("iframe").css("height", h + "px");
+    };
+
+</script>
+
+</html>

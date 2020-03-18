@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  application:
+    name: Springboot-Aitangbao
+server:
+  port: 8080
