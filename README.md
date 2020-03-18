@@ -1,7 +1,7 @@
-# aitangbao
+# springboot-manager
 
 #### 介绍
-基于spring boot 2.1.6、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统， 后台接口RESTful 风格，支持前后端分离，app公用一套接口。 
+基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统， 后台接口RESTful 风格，支持前后端分离，app公用一套接口。 
 
 #### 软件架构
 软件架构说明
