@@ -24,6 +24,51 @@
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
 <title>后台管理系统 介绍</title></head>
 <body>
+<h1>springboot-manager</h1>
+
+<h2>介绍</h2>
+
+<p>基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统</p>
+
+<h2>特征&amp;提供</h2>
+
+<ul>
+    <li>后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。</li>
+    <li>统一响应结果封装及生成工具</li>
+    <li>统一异常处理</li>
+    <li>采用RBAC的权限控制</li>
+    <li>采用shiro redis token 角色权限管理认证</li>
+    <li>使用Druid Spring Boot Starter 集成Druid数据库连接池与监控</li>
+    <li>集成MyBatis-Plus，实现单表业务零SQL</li>
+    <li>支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源</li>
+    <li>集成国人风格的knife4j，自动生成接口文档</li>
+    <li>提供代码生成器，生成controller,service,serviceImpl,dao,mapper.xml（待完善）</li>
+</ul>
+
+<h2>技术</h2>
+
+<ul>
+    <li>核心框架：spring boot 2.1.6</li>
+    <li>持久层框架：mybatis plus</li>
+    <li>数据库连接池：alibaba druid</li>
+    <li>安全框架：apache shiro</li>
+    <li>缓存框架：redis</li>
+    <li>日志框架：logback</li>
+    <li>接口文档：Knife4j</li>
+    <li>前端模板：thymeleaf+layui2x</li>
+</ul>
+
+<h2><strong>部署</strong></h2>
+
+<ul>
+    <li>下载redis 启动redis</li>
+    <li>创建company_project数据库</li>
+    <li>导入company_project.sql</li>
+    <li>启动项目</li>
+    <li>接口文档访问 http://localhost:8080/doc.html</li>
+    <li>登录地址 http://localhost:8080/index/login</li>
+    <li>登录密码 admin/123456</li>
+</ul>
 </body>
 <script src="/layui/layui.all.js"></script>
 </html>

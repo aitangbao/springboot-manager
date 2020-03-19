@@ -2,52 +2,74 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <style>
-    .layui-btn-normal{
-        background-color:#1E9FFF
+    .layui-btn-normal {
+        background-color: #1E9FFF
     }
-    .layui-btn{
-        display:inline-block;
-        height:38px;
-        line-height:38px;
-        padding:0 18px;
-        background-color:#009688;
-        color:#fff;
-        white-space:nowrap;
-        text-align:center;
-        font-size:14px;
-        border:none;
-        border-radius:2px;
-        cursor:pointer
+
+    .layui-btn {
+        display: inline-block;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 18px;
+        background-color: #009688;
+        color: #fff;
+        white-space: nowrap;
+        text-align: center;
+        font-size: 14px;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer
     }
 </style>
 <head>
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>后台管理系统 介绍</title></head>
-<body><h2><a name="%E8%BF%8E%E5%AD%A6%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F" class="md-header-anchor"></a><span>后台管理系统</span></h2>
-<h3><a name="1.-%E7%AE%80%E4%BB%8B" class="md-header-anchor"></a><span>1. 简介</span></h3>
-<p><span>这是一套基于spring boot 2.16、shiro、jwt、redis、swagger2、mybatis 、thymeleaf、layui 后台管理系统， 权限控制的方式为 RBAC。代码通熟易懂 、JWT（无状态token）过期自动刷新，数据全程 ajax 获取，封装 ajax 工具类、菜单无线层级展示，解决 layui.tree 树形组件，回显问题。</span></p>
-<h3><a name="2.-%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD" class="md-header-anchor"></a><span>2. 系统功能</span></h3>
-<ol>
-<li><span>用户管理：用户是系统操作者，该功能主要完成系统用户配置。</span></li>
-<li><span>部门管理：配置系统组织机构（公司、部门、小组），树结构展现。</span></li>
-<li><span>菜单管理：配置系统菜单，操作权限，按钮权限标识等。</span></li>
-<li><span>角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。</span></li>
-<li><span>接口管理：根据业务代码自动生成相关的 api 接口文档。</span></li>
-<li><span>SQL 监控：对系统使用的 sql 进行监控，可快速查询运行效率。</span></li>
-<li><span>日志管理：对用户的操作进行记录。</span></li>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <title>后台管理系统 介绍</title></head>
+<body>
+<h1>springboot-manager</h1>
 
-</ol>
-<h3><a name="3.-%E5%85%B7%E6%9C%89%E5%A6%82%E4%B8%8B%E7%89%B9%E7%82%B9" class="md-header-anchor"></a><span>3. 具有如下特点</span></h3>
+<h2>介绍</h2>
+
+<p>基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统</p>
+
+<h2>特征&amp;提供</h2>
+
 <ul>
-<li><span>灵活的权限控制，可控制到页面或按钮，满足绝大部分的权限需求</span></li>
-<li><span>当角色或者菜单权限发生变化的时候能够自动刷新用户权限无需退出登录</span></li>
-<li><span>完善的企业、部门、小组管理。</span></li>
-<li><span>支持分布式部署，jwt 无状态身份认证。</span></li>
-<li><span>友好的代码结构及注释，便于阅读及二次开发</span></li>
-<li><span>页面交互使用thymeleaf+layui ，极大的提高了开发效率。</span></li>
-<li><span>菜单支持无线层级展示、解决 layui.tree 树形组件数据回显错乱。</span></li>
-<li><span>引入swagger文档支持，方便编写API接口文档。</span></li>
+    <li>后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。</li>
+    <li>统一响应结果封装及生成工具</li>
+    <li>统一异常处理</li>
+    <li>采用RBAC的权限控制</li>
+    <li>采用shiro redis token 角色权限管理认证</li>
+    <li>使用Druid Spring Boot Starter 集成Druid数据库连接池与监控</li>
+    <li>集成MyBatis-Plus，实现单表业务零SQL</li>
+    <li>支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源</li>
+    <li>集成国人风格的knife4j，自动生成接口文档</li>
+    <li>提供代码生成器，生成controller,service,serviceImpl,dao,mapper.xml（待完善）</li>
+</ul>
 
+<h2>技术</h2>
+
+<ul>
+    <li>核心框架：spring boot 2.1.6</li>
+    <li>持久层框架：mybatis plus</li>
+    <li>数据库连接池：alibaba druid</li>
+    <li>安全框架：apache shiro</li>
+    <li>缓存框架：redis</li>
+    <li>日志框架：logback</li>
+    <li>接口文档：Knife4j</li>
+    <li>前端模板：thymeleaf+layui2x</li>
+</ul>
+
+<h2><strong>部署</strong></h2>
+
+<ul>
+    <li>下载redis 启动redis</li>
+    <li>创建company_project数据库</li>
+    <li>导入company_project.sql</li>
+    <li>启动项目</li>
+    <li>接口文档访问 http://localhost:8080/doc.html</li>
+    <li>登录地址 http://localhost:8080/index/login</li>
+    <li>登录密码 admin/123456</li>
 </ul>
 </body>
 <script src="/layui/layui.all.js"></script>

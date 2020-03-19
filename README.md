@@ -1,6 +1,6 @@
 # springboot-manager
 
-#### 介绍
+## 介绍
 基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统
 
 
@@ -16,7 +16,7 @@
 - 集成国人风格的knife4j，自动生成接口文档
 - 提供代码生成器，生成controller,service,serviceImpl,dao,mapper.xml（待完善）
 
-#### 技术
+## 技术
 * 核心框架：spring boot 2.1.6
 * 持久层框架：mybatis plus
 * 数据库连接池：alibaba druid
@@ -26,7 +26,10 @@
 * 接口文档：Knife4j
 * 前端模板：thymeleaf+layui2x
 
-#### **部署**
+## 系统功能
+
+
+## **部署**
 
 - 下载redis 启动redis
 - 创建company_project数据库
@@ -37,7 +40,7 @@
 - 登录密码 admin/123456
 
 
-#### **效果图**
+## **效果图**
 
 ![image-20200319081918950](http://tuchuang.aitangbao.com.cn/image-20200319081918950.png)
 
