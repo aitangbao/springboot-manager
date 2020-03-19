@@ -1,6 +1,8 @@
 package com.company.project.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.company.project.exception.BusinessException;
+import com.company.project.exception.code.BaseResponseCode;
 import com.company.project.utils.Constant;
 import com.company.project.entity.SysUser;
 import com.company.project.service.*;
@@ -33,7 +35,9 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        if (httpSessionService.getCurrentSession() == null) return authorizationInfo;
+        if (httpSessionService.getCurrentSession() == null) {
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+        }
         if (httpSessionService.getCurrentSession().get(Constant.ROLES_KEY) != null) {
             authorizationInfo.addRoles((Collection<String>) httpSessionService.getCurrentSession().get(Constant.ROLES_KEY));
         }
