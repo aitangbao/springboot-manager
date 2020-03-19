@@ -5,10 +5,11 @@
 
 
 ## 特征&提供
+- 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。
 - 统一响应结果封装及生成工具
 - 统一异常处理
 - 采用RBAC的权限控制
-- 采用shiro redis token认证，支持单登陆端/多登陆端登陆
+- 采用shiro redis token 角色权限管理认证
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
@@ -43,3 +44,4 @@
 ![image-20200318173023759](http://tuchuang.aitangbao.com.cn/image-20200318173023759.png)
 
 ![image-20200318173110441](http://tuchuang.aitangbao.com.cn/image-20200318173110441.png)
+
