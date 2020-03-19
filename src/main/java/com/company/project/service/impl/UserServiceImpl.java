@@ -83,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
         //是否删除之前token， 此处控制是否支持多登陆端；
         // true:允许多处登陆; false:只能单处登陆，顶掉之前登陆
-        if (allowMultipleLogin) {
+        if (!allowMultipleLogin) {
             httpSessionService.abortUserByUserName(sysUser.getUsername());
         }
 
