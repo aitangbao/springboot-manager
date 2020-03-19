@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -65,6 +66,7 @@ public class CodeGenerator {
         // 如果模板引擎是 velocity
         // String templatePath = "/templates/mapper.xml.vm";
 
+
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
@@ -77,6 +79,20 @@ public class CodeGenerator {
         });
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
+
+        // 自定义配置会被优先输出
+        focList.add(new FileOutConfig("templates/html/list.html.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                System.out.println(JSONObject.toJSONString(tableInfo));
+                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                return projectPath + "/src/main/resources/templates/"+tableInfo.getEntityName()+"/list.html";
+            }
+        });
+        cfg.setFileOutConfigList(focList);
+        mpg.setCfg(cfg);
+
+
 
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
