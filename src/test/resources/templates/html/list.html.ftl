@@ -7,31 +7,23 @@
     <link rel="stylesheet" href="/css/custom.form.css">
 </head>
 <body>
-
-
 <div class="panel panel-default operation" hidden>
     <div class="panel-heading title"></div>
     <div class="layui-card-body">
         <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
-
-
             <#list table.fields as field>
                 <#if field.keyFlag><#--生成主键排在第一位-->
-                    <input name="${field.propertyName}" hidden/>
+                 <input name="${field.propertyName}" hidden/>
                 </#if>
                 <#if !field.keyFlag><#--生成主键排在第一位-->
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">${field.comment}</label>
-                        <div class="layui-input-block">
-                            <input type="${field.propertyName}" name="${field.propertyName}" placeholder="请输入${field.comment}" autocomplete="off" class="layui-input">
-                        </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">${field.comment}</label>
+                    <div class="layui-input-block">
+                        <input type="${field.propertyName}" name="${field.propertyName}" placeholder="请输入${field.comment}" autocomplete="off" class="layui-input">
                     </div>
+                </div>
                 </#if>
-
-
-
             </#list>
-
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
