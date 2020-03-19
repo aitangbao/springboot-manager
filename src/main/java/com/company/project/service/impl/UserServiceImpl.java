@@ -109,11 +109,19 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Override
     public void updateUserInfo(UserUpdateReqVO vo, String operationId) {
 
+
         SysUser sysUser = sysUserMapper.selectById(vo.getId());
         if (null == sysUser) {
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
+        //如果用户名、密码、状态 变更，删除redis中用户绑定的角色跟权限
+        if (!sysUser.getUsername().equals(vo.getUsername())
+                || !sysUser.getUsername().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt()))
+                || !sysUser.getStatus().equals(vo.getStatus())){
+            httpSessionService.abortUserByUserName(vo.getUsername());
+        }
+
         BeanUtils.copyProperties(vo, sysUser);
         sysUser.setUpdateTime(new Date());
         if (!StringUtils.isEmpty(vo.getPassword())) {
@@ -123,10 +131,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             sysUser.setPassword(null);
         }
         sysUser.setUpdateId(operationId);
-        int count = sysUserMapper.updateById(sysUser);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysUserMapper.updateById(sysUser);
 
     }
 
@@ -220,14 +225,18 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deletedUsers(List<String> userIds, String operationId) {
+
+        //删除用户， 删除redis的绑定的角色跟权限
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.select("username").in("id", userIds);
+        List<String> usernames = sysUserMapper.selectObjs(queryWrapper);
+        httpSessionService.abortUserByUserNames(usernames);
+
         SysUser sysUser = new SysUser();
         sysUser.setUpdateId(operationId);
         sysUser.setUpdateTime(new Date());
         sysUser.setDeleted(0);
-        int i = sysUserMapper.deletedUsers(sysUser, userIds);
-        if (i == 0) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysUserMapper.deletedUsers(sysUser, userIds);
 
     }
 

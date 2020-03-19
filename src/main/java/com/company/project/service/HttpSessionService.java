@@ -2,6 +2,7 @@ package com.company.project.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.company.project.utils.Constant;
 import com.company.project.entity.SysUser;
@@ -32,7 +33,7 @@ public class HttpSessionService {
     private String USER_TOKEN_PREFIX;
 
     @Value("${redis.key.expire.userToken}")
-    private int EXPIRE ;
+    private int EXPIRE;
 
     public String createTokenAndUser(SysUser user, List<String> roles, Set<String> permissions) {
         //方便根据id找到redis的key， 修改密码/退出登陆 方便使用
@@ -151,14 +152,26 @@ public class HttpSessionService {
     public void abortAllUserByToken() {
         String token = getTokenFromHeader();
         String userId = getUserIdByToken(token);
-        redisDB.delKeys(USER_TOKEN_PREFIX+"*#" + userId);
+        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + userId);
     }
 
     /**
      * 使用户的token失效
      */
-    public void abortUserByUserName(String userId) {
-        redisDB.delKeys(USER_TOKEN_PREFIX+"*#" + userId);
+    public void abortUserByUserName(String username) {
+        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + username);
+    }
+
+    /**
+     * 使多个用户的token失效
+     */
+    public void abortUserByUserNames(List<String> usernames) {
+        if (CollectionUtils.isNotEmpty(usernames)) {
+            for (String username : usernames) {
+                redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + username);
+            }
+
+        }
     }
 
 
