@@ -6,6 +6,6 @@ spring:
   resources:
     add-mappings: false
   application:
-    name: Springboot-Aitangbao
+    name: springboot-manager
 server:
   port: 8080
