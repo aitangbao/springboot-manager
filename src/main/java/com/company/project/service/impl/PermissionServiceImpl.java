@@ -201,9 +201,7 @@ public class PermissionServiceImpl implements PermissionService {
         if(!childs.isEmpty()){
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
-        sysPermission.setDeleted(0);
-        sysPermission.setUpdateTime(new Date());
-        int count=sysPermissionMapper.updateById(sysPermission);
+        int count=sysPermissionMapper.deleteById(permissionId);
         if(count!=1){
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
@@ -211,18 +209,6 @@ public class PermissionServiceImpl implements PermissionService {
          * 删除和角色关联
          */
         rolePermissionService.removeByPermissionId(permissionId);
-        List<String> roleIds = rolePermissionService.getRoleIds(permissionId);
-        if(!roleIds.isEmpty()){
-            List<String> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
-//            if(!userIds.isEmpty()){
-//                for (String userId:userIds){
-//                    redisService.set(Constant.JWT_REFRESH_KEY +userId,userId,tokenSettings.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-//                    //清空权鉴缓存
-//                    redisService.del(Constant.IDENTIFY_CACHE_KEY+userId);
-//                }
-//
-//            }
-        }
     }
     /**
      * 分页获取所有菜单权限
