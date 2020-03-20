@@ -76,7 +76,6 @@
         , parseData: function (res) { //res 即为原始返回的数据
             //select
             addOption();
-            layer.msg("列表只展示未生成过代码的")
             return {
                 "code": res.code, //解析接口状态
                 "msg": res.msg, //解析提示文本
@@ -86,7 +85,17 @@
         }
         , cols: [
             [ //表头
-                {field: 'tableName', title: '表名', width: 300, sort: true},
+                {field: 'tableName', title: '表名', width: 200, sort: true},
+                {field: '', title: '是否已生成', width: 150, sort: true
+                    ,templet: function (d) {
+                        if (!CoreUtil.isEmpty(d.id)) {
+                            return '是'
+                        } else {
+                            return '否'
+                        }
+                    }},
+                {field: 'menuName', title: '菜单名称', width: 200, sort: true},
+                {field: 'genTime', title: '生成时间', width: 200, sort: true},
                 {width: 100, toolbar: "#tool", title: '操作'}
             ]
         ]
@@ -132,6 +141,10 @@
         var data = obj.data;
         switch (obj.event) {
             case 'add':
+                if (!CoreUtil.isEmpty(data.id)) {
+                    layer.msg("请勿重复生成")
+                    break;
+                }
                 $(".table_div").hide();
                 $(".operation").show();
                 $(".title").html("代码生成");
