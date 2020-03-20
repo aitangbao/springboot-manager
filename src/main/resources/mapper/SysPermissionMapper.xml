@@ -20,5 +20,13 @@
     id, code, `name`, perms, url, `method`, pid, order_num, `type`, `status`, create_time, 
     update_time, deleted
   </sql>
-
+  <select id="selectInfoByIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from  sys_permission
+    where id in
+    <foreach item="item" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    order by order_num
+  </select>
 </mapper>

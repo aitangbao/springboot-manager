@@ -52,7 +52,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (permissionIds.isEmpty()){
             return null;
         }
-        List<SysPermission> result=sysPermissionMapper.selectBatchIds(permissionIds);
+        List<SysPermission> result=sysPermissionMapper.selectInfoByIds(permissionIds);
         return result;
     }
     /**
