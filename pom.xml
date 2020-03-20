@@ -107,13 +107,6 @@
         </dependency>
 
 
-        <!--Ctrl+F10 手动刷新-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope><!--runtime 依赖在运行和测试系统的时候需要-->
-        </dependency>
-
 
         <!--数据库持久化 及 插件依赖-->
         <dependency>

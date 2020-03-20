@@ -35,8 +35,18 @@
 </div>
 
 <div class="table_div">
+    <div id="searchParam"  shiro:hasPermission="${entity?uncap_first}:list">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
+            </div>
+            <div class="layui-input-inline ">
+                <button class="layui-btn"   id="search">查询</button>
+            </div>
+        </div>
+
+    </div>
     <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
-    <div id="laypage" class=" $(".layui-laypage-btn").click();"></div>
 
 </div>
 <script type="text/html" id="toolbar">
@@ -57,72 +67,54 @@
 <script>
     var layer = layui.layer;
     var table = layui.table;
-    var laypage = layui.laypage;
-    var $ = jQuery = layui.jquery;
     var form = layui.form;
+    var $ = layui.$;
 
-    var searchParam= {
-        pageNum:1,
-        pageSize:10
-    }
-    CoreUtil.sendAjax("/${entity?uncap_first}/listByPage",JSON.stringify(searchParam),function (res) {
-        laypageTable(res.data.total,searchParam.pageNum);
-        if(res.data.records !=null){
-            loadTable(res.data.records);
-        }
-    },"POST",false,function (res) {
-        layer.msg("抱歉！您暂无获取用户列表的权限");
-        var noAuthorityData=[];
-        loadTable(noAuthorityData);
-    });
-    var laypageTable = function(count,currentPage) {
-        laypage.render({
-            elem: 'laypage'
-            , count: count
-            ,limit:searchParam.pageSize
-            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-            ,curr: location.hash.replace('#!currentPage=', '') //获取起始页
-            ,hash: 'currentPage' //自定义hash值
-            , jump: function (obj,first) {
-                if (!first){
-                    searchParam.pageNum=obj.curr;
-                    searchParam.pageSize=obj.limit;
-                    CoreUtil.sendAjax("/${entity?uncap_first}/listByPage",JSON.stringify(searchParam),function (res) {
-                        if(res.data.records !=null){
-                            loadTable(res.data.records);
-                            laypageTable(res.data.total,searchParam.pageNum);
-                        }
-
-                    },"POST",false,function (res) {
-                        layer.alert("抱歉！您暂无获取用户列表的权限");
-                        var noAuthorityData=[];
-                        loadTable(noAuthorityData);
-                    });
-                }
-            }
-        });
-    };
     //渲染table
-    var loadTable=function (data) {
-        table.render({
-            elem: '#showTable'
-            ,cols: [
-                [
-                    {type: 'checkbox', fixed: 'left'},
-                    <#list table.fields as field>
-                    {field: '${field.propertyName}', title: '${field.comment}', width: 300, sort: true},
-                    </#list>
-                    {width:300,toolbar:"#tool",title:'操作'}
-                ]
+    table.render({
+        elem: '#showTable'
+        , height: 'full-20'
+        , page: true //开启分页
+        , url: '/${entity?uncap_first}/listByPage' //数据接口
+        , method: "POST"
+        , contentType: 'application/json;charset=utf8'
+        , headers: {'authorization': CoreUtil.getData("access_token")}
+        , parseData: function (res) { //res 即为原始返回的数据
+            console.log(JSON.stringify(res))
+            return {
+                "code": res.code, //解析接口状态
+                "msg": res.msg, //解析提示文本
+                "count": res.data.total, //解析数据长度
+                "data": res.data.records //解析数据列表
+            };
+        }
+        , cols: [
+            [ //表头
+                {type: 'checkbox', fixed: 'left'},
+                <#list table.fields as field>
+                {field: '${field.propertyName}', title: '${field.comment}', width: 300, sort: true},
+                </#list>
+                {width: 300, toolbar: "#tool", title: '操作'}
             ]
-            ,data: data
-            ,even: true
-            ,limit: data.length
-            ,limits: [10, 20, 30, 40, 50]
-            ,toolbar:'#toolbar'
+        ]
+        , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+        , id: 'tableId' //reload用
+    });
 
-        });
-    };
+    //刷新table
+    var reloadTable = function () {
+        var key = $('#key').val();
+        //执行重载
+        table.reload('tableId', {
+            where: {
+                "key": key
+            }
+        }, 'data');
+    }
+    //搜索
+    $('#search').click(function () {
+        reloadTable();
+    })
 
     //表头工具
     table.on('toolbar(showTable)', function(obj){
@@ -142,15 +134,12 @@
                 }
                 break;
             case 'add':
-
-                selectNode=null;
                 $(".table_div").hide();
                 $(".operation").show();
                 $(".title").html("新增");
                 <#list table.fields as field>
                     $(".operation input[name=${field.propertyName}]").val("");
                 </#list>
-                form.render(); //更新全部
                 break;
         };
     });
@@ -170,7 +159,6 @@
                 <#list table.fields as field>
                     $(".operation input[name=${field.propertyName}]").val(data.${field.propertyName});
                 </#list>
-                form.render(); //更新全部
                 break;
         }
     });
@@ -183,7 +171,7 @@
                 layer.close(index); //如果设定了yes回调，需进行手工关闭
                 CoreUtil.sendAjax("/${entity?uncap_first}/delete",JSON.stringify(ids),function (res) {
                     layer.msg(res.msg, {time:1000},function () {
-                        $(".layui-laypage-btn").click();
+                       reloadTable();
                     });
                 },"DELETE",false,function (res) {
                     layer.msg("抱歉！您暂无删除用户的权限");
@@ -205,7 +193,7 @@
             CoreUtil.sendAjax("/${entity?uncap_first}/add",JSON.stringify(data.field),function (res) {
                 $(".table_div").show();
                 $(".operation").hide();
-                $(".layui-laypage-btn").click();
+               reloadTable();
 
             },"POST",false,function (res) {
                 layer.msg("抱歉！您暂无权限");
@@ -214,7 +202,7 @@
             CoreUtil.sendAjax("/${entity?uncap_first}/update",JSON.stringify(data.field),function (res) {
                 $(".table_div").show();
                 $(".operation").hide();
-                $(".layui-laypage-btn").click();
+               reloadTable();
 
             },"PUT",false,function (res) {
                 layer.msg("抱歉！您暂无权限");

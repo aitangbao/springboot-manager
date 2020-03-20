@@ -1,6 +1,7 @@
 package com.company.project.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysPermission;
 import com.company.project.vo.req.PermissionAddReqVO;
 import com.company.project.vo.req.PermissionPageReqVO;
@@ -10,7 +11,7 @@ import com.company.project.vo.resp.PermissionRespNode;
 import java.util.List;
 import java.util.Set;
 
-public interface PermissionService {
+public interface PermissionService extends IService<SysPermission> {
 
     List<SysPermission> getPermission(String userId);
 
