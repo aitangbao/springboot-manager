@@ -125,5 +125,14 @@ var CoreUtil = (function () {
         var time=year+'-'+month+'-'+day+' '+hh+':'+mm+':'+ss;
         return time;
     };
+
+    //判断字符是否为空的方法
+    coreUtil.isEmpty = function(obj){
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return true;
+        }else{
+            return false;
+        }
+    }
     return coreUtil;
 })(CoreUtil, window);
