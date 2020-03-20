@@ -52,7 +52,7 @@ public class SysGeneratorController {
     @PostMapping("sysGenerator/add")
     @RequiresPermissions("sysGenerator:add")
     @ResponseBody
-    public DataResult add(@RequestBody SysGenerator sysGenerator) throws Exception{
+    public DataResult add(@RequestBody SysGenerator sysGenerator){
         sysGeneratorService.gen(sysGenerator);
         return DataResult.success();
     }

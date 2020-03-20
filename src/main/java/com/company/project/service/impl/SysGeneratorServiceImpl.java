@@ -20,6 +20,7 @@ import com.company.project.service.ISysGeneratorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.service.PermissionService;
 import com.company.project.service.RolePermissionService;
+import com.company.project.utils.CodeUtil;
 import com.company.project.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,16 +64,11 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
     }
 
     @Override
-    public void gen(SysGenerator sysGenerator) throws InterruptedException {
+    public void gen(SysGenerator sysGenerator) {
 
         String tableName = sysGenerator.getTableName();
         String pid = sysGenerator.getPid();
         String menuName = sysGenerator.getMenuName();
-
-        if (!this.validateTableNameExist(tableName)) {
-            log.info("表不存在， 生成失败");
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO.getCode(), "表不存在， 生成失败");
-        }
 
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
@@ -86,7 +82,7 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
         gc.setBaseColumnList(true);
         gc.setBaseResultMap(true);
         gc.setDateType(DateType.ONLY_DATE);
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
+        //gc.setSwagger2(true); //实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
 
@@ -177,17 +173,22 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
         //获取实体类名
-        Thread.sleep(2000);
-        String entityName = entityPath[0];
-        //生成菜单，绑定admin权限
-        genMenuAndBindPermission(pid, menuName, entityName);
+        try {
+            Thread.sleep(2000);
+            String entityName = entityPath[0];
+            //生成菜单，绑定admin权限
+            genMenuAndBindPermission(pid, menuName, entityName);
 
-        sysGeneratorMapper.insert(sysGenerator);
+            sysGeneratorMapper.insert(sysGenerator);
+        } catch (Exception e) {
+            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
+        }
+
     }
 
 
     //生成菜单，绑定权限
-    private void genMenuAndBindPermission(String pid, String menuName, String entityName) throws InterruptedException {
+    private void genMenuAndBindPermission(String pid, String menuName, String entityName) {
         //菜单插入
         SysPermission sysPermission = new SysPermission();
         String menuId = UUID.randomUUID().toString();
@@ -253,13 +254,4 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
         log.info("生成成功， 请重启项目，登陆admin查看");
     }
 
-    //校验table是否存在
-    public boolean validateTableNameExist(String tableName) {
-        try {
-            jdbcTemplate.queryForObject("select count(*) from " + tableName, Integer.class);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

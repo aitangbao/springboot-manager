@@ -18,5 +18,5 @@ public interface ISysGeneratorService extends IService<SysGenerator> {
 
     IPage<SysGenerator> selectAllTables(Page page);
 
-    void gen(SysGenerator sysGenerator) throws InterruptedException;
+    void gen(SysGenerator sysGenerator);
 }
