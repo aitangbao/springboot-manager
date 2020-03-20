@@ -105,7 +105,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
 
-
     @Override
     public void updateUserInfo(UserUpdateReqVO vo, String operationId) {
 
@@ -118,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         //如果用户名、密码、状态 变更，删除redis中用户绑定的角色跟权限
         if (!sysUser.getUsername().equals(vo.getUsername())
                 || !sysUser.getUsername().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt()))
-                || !sysUser.getStatus().equals(vo.getStatus())){
+                || !sysUser.getStatus().equals(vo.getStatus())) {
             httpSessionService.abortUserByUserName(vo.getUsername());
         }
 

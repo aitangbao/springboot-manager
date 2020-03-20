@@ -28,13 +28,13 @@ public class HomeServiceImpl implements HomeService {
     public HomeRespVO getHomeInfo(String userId) {
 
 
-        SysUser sysUser=userService.detailInfo(userId);
-        UserInfoRespVO vo=new UserInfoRespVO();
+        SysUser sysUser = userService.detailInfo(userId);
+        UserInfoRespVO vo = new UserInfoRespVO();
 
-        if(sysUser!=null){
+        if (sysUser != null) {
             BeanUtils.copyProperties(sysUser, vo);
             SysDept sysDept = deptService.detailInfo(sysUser.getDeptId());
-            if(sysDept!=null){
+            if (sysDept != null) {
                 vo.setDeptId(sysDept.getId());
                 vo.setDeptName(sysDept.getName());
             }
@@ -43,7 +43,7 @@ public class HomeServiceImpl implements HomeService {
 
         List<PermissionRespNode> menus = permissionService.permissionTreeList(userId);
 
-        HomeRespVO respVO=new HomeRespVO();
+        HomeRespVO respVO = new HomeRespVO();
         respVO.setMenus(menus);
         respVO.setUserInfo(vo);
 

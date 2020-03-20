@@ -17,11 +17,11 @@ import javax.validation.Valid;
 public class UserRoleController {
     @Autowired
     private UserRoleService userRoleService;
-    
+
     @PostMapping("/user/role")
     @ApiOperation(value = "修改或者新增用户角色接口")
-    @LogAnnotation(title = "用户和角色关联接口",action = "修改或者新增用户角色")
-    public DataResult operationUserRole(@RequestBody @Valid UserRoleOperationReqVO vo){
+    @LogAnnotation(title = "用户和角色关联接口", action = "修改或者新增用户角色")
+    public DataResult operationUserRole(@RequestBody @Valid UserRoleOperationReqVO vo) {
         userRoleService.addUserRoleInfo(vo);
         return DataResult.success();
     }

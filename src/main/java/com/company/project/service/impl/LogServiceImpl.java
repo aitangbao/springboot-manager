@@ -19,7 +19,7 @@ public class LogServiceImpl implements LogService {
     @Override
     public IPage<SysLog> pageInfo(SysLogPageReqVO vo) {
 
-        Page page = new Page(vo.getPageNum(),vo.getPageSize());
+        Page page = new Page(vo.getPageNum(), vo.getPageSize());
         return sysLogMapper.selectAll(page, vo);
     }
 

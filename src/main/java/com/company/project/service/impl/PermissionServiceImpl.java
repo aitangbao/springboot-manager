@@ -178,13 +178,6 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             List<String> roleIds = rolePermissionService.getRoleIds(vo.getId());
             if (!roleIds.isEmpty()) {
                 List<String> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
-//                if(!userIds.isEmpty()){
-//                    for (String userId:userIds){
-//                        redisService.set(Constant.JWT_REFRESH_KEY +userId,userId,tokenSettings.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-//                        //清空权鉴缓存
-//                        redisService.del(Constant.IDENTIFY_CACHE_KEY+userId);
-//                    }
-//                }
             }
         }
 

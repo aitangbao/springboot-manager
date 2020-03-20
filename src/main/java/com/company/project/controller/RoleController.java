@@ -28,39 +28,43 @@ public class RoleController {
 
     @PostMapping("/role")
     @ApiOperation(value = "新增角色接口")
-    @LogAnnotation(title = "角色管理",action = "新增角色")
+    @LogAnnotation(title = "角色管理", action = "新增角色")
     @RequiresPermissions("sys:role:add")
-    public DataResult<SysRole> addRole(@RequestBody @Valid RoleAddReqVO vo){
+    public DataResult<SysRole> addRole(@RequestBody @Valid RoleAddReqVO vo) {
         return DataResult.success(roleService.addRole(vo));
     }
+
     @DeleteMapping("/role/{id}")
     @ApiOperation(value = "删除角色接口")
-    @LogAnnotation(title = "角色管理",action = "删除角色")
+    @LogAnnotation(title = "角色管理", action = "删除角色")
     @RequiresPermissions("sys:role:deleted")
-    public DataResult deleted(@PathVariable("id") String id){
+    public DataResult deleted(@PathVariable("id") String id) {
         roleService.deletedRole(id);
         return DataResult.success();
     }
+
     @PutMapping("/role")
     @ApiOperation(value = "更新角色信息接口")
-    @LogAnnotation(title = "角色管理",action = "更新角色信息")
+    @LogAnnotation(title = "角色管理", action = "更新角色信息")
     @RequiresPermissions("sys:role:update")
-    public DataResult updateDept(@RequestBody @Valid RoleUpdateReqVO vo, HttpServletRequest request){
-        roleService.updateRole(vo,request.getHeader(Constant.ACCESS_TOKEN));
+    public DataResult updateDept(@RequestBody @Valid RoleUpdateReqVO vo, HttpServletRequest request) {
+        roleService.updateRole(vo, request.getHeader(Constant.ACCESS_TOKEN));
         return DataResult.success();
     }
+
     @GetMapping("/role/{id}")
     @ApiOperation(value = "查询角色详情接口")
-    @LogAnnotation(title = "角色管理",action = "查询角色详情")
+    @LogAnnotation(title = "角色管理", action = "查询角色详情")
     @RequiresPermissions("sys:role:detail")
-    public DataResult<SysRole> detailInfo(@PathVariable("id") String id){
+    public DataResult<SysRole> detailInfo(@PathVariable("id") String id) {
         return DataResult.success(roleService.detailInfo(id));
     }
+
     @PostMapping("/roles")
     @ApiOperation(value = "分页获取角色信息接口")
-    @LogAnnotation(title = "角色管理",action = "分页获取角色信息")
+    @LogAnnotation(title = "角色管理", action = "分页获取角色信息")
     @RequiresPermissions("sys:role:list")
-    public DataResult<IPage<SysRole>> pageInfo(@RequestBody RolePageReqVO vo){
+    public DataResult<IPage<SysRole>> pageInfo(@RequestBody RolePageReqVO vo) {
         return DataResult.success(roleService.pageInfo(vo));
     }
 

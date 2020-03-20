@@ -80,7 +80,7 @@
             return ulHtml;
         };
         CoreUtil.sendAjax("/sys/home/",null,function (res) {
-            $("#deptName").html("所属机构:"+res.data.userInfo.deptName);
+            $("#deptName").html("所属部门: "+res.data.userInfo.deptName);
             $("#nickName").html(res.data.userInfo.username);
             var data=res.data.menus;
             if(data!= "" && data.length>0){

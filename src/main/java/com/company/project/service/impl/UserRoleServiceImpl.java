@@ -37,17 +37,16 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     }
 
 
-
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addUserRoleInfo(UserRoleOperationReqVO vo) {
-        if(vo.getRoleIds()==null||vo.getRoleIds().isEmpty()){
+        if (vo.getRoleIds() == null || vo.getRoleIds().isEmpty()) {
             return;
         }
-        Date createTime=new Date();
-        List<SysUserRole> list=new ArrayList<>();
-        for (String roleId:vo.getRoleIds()){
-            SysUserRole sysUserRole=new SysUserRole();
+        Date createTime = new Date();
+        List<SysUserRole> list = new ArrayList<>();
+        for (String roleId : vo.getRoleIds()) {
+            SysUserRole sysUserRole = new SysUserRole();
             sysUserRole.setCreateTime(createTime);
             sysUserRole.setUserId(vo.getUserId());
             sysUserRole.setRoleId(roleId);

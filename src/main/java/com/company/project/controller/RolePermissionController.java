@@ -25,9 +25,9 @@ public class RolePermissionController {
 
     @PostMapping("/role/permission")
     @ApiOperation(value = "修改或者新增角色菜单权限接口")
-    @LogAnnotation(title = "角色和菜单关联接口",action = "修改或者新增角色菜单权限")
-    @RequiresPermissions(value = {"sys:role:update","sys:role:add"},logical = Logical.OR)
-    public DataResult operationRolePermission(@RequestBody @Valid RolePermissionOperationReqVO vo){
+    @LogAnnotation(title = "角色和菜单关联接口", action = "修改或者新增角色菜单权限")
+    @RequiresPermissions(value = {"sys:role:update", "sys:role:add"}, logical = Logical.OR)
+    public DataResult operationRolePermission(@RequestBody @Valid RolePermissionOperationReqVO vo) {
         rolePermissionService.addRolePermission(vo);
         return DataResult.success();
     }
