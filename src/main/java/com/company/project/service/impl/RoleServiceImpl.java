@@ -143,18 +143,8 @@ public class RoleServiceImpl implements RoleService {
 
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.select("user_id").eq("role_id", id);
-        List<String> userIds = sysUserRoleMapper.selectObjs(queryWrapper);
         rolePermissionService.removeByRoleId(id);
         userRoleService.removeByRoleId(id);
-
-//        if(!userIds.isEmpty()){
-//            for (String userId:userIds){
-//                redisService.set(Constant.JWT_REFRESH_KEY +userId,userId,tokenSettings.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-//                //清空权鉴缓存
-//                redisService.del(Constant.IDENTIFY_CACHE_KEY+userId);
-//            }
-//
-//        }
     }
 
     @Override

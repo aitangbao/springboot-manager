@@ -25,7 +25,6 @@ public class HomeController {
     @GetMapping("/home")
     @ApiOperation(value = "获取首页数据接口")
     public DataResult<HomeRespVO> getHomeInfo(HttpServletRequest request) {
-        String accessToken = request.getHeader("authorization");
         /**
          * 通过access_token拿userId
          */

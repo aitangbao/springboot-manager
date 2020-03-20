@@ -104,7 +104,6 @@ public class SysLogAspect {
         sysLog.setIp(IPUtils.getIpAddr(request));
         log.info("Ip{}，接口地址{}，请求方式{}，入参：{}",sysLog.getIp(),request.getRequestURL(),request.getMethod(),sysLog.getParams());
         //用户名
-        String  token = request.getHeader(Constant.ACCESS_TOKEN);
         String userId= httpSessionService.getCurrentUserId();
         String username=httpSessionService.getCurrentUsername();
         sysLog.setUsername(username);
