@@ -35,7 +35,7 @@
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login
 - 登录密码 admin/123456
-代码生成使用：test包下的CodeGenerator.java，配置完表名， 直接run！！！ 无需繁琐操作
+- 代码生成使用：test包下的CodeGenerator.java，配置完表名， 直接run！！！ 无需繁琐操作
 
 ## **效果图**
 
