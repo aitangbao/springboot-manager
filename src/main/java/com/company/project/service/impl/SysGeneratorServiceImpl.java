@@ -155,7 +155,7 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
 //        templateConfig.setServiceImpl("templates/serviceImpl.java");
 //        templateConfig.setServiceImpl("templates/serviceImpl.java");
 //
-//        templateConfig.setXml(null);
+        templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
         // 策略配置
