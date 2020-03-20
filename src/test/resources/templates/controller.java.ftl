@@ -90,7 +90,7 @@ class ${table.controllerName}<#if superControllerClass??>:${superControllerClass
     @RequiresPermissions("${entity?uncap_first}:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody PageReqVO vo){
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
+        Page page = new Page(vo.getPage(), vo.getLimit());
         IPage<${entity}> iPage = ${(table.serviceName?substring(1))?uncap_first}.page(page);
         return DataResult.success(iPage);
     }
