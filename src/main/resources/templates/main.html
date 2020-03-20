@@ -30,7 +30,7 @@
 
 <h2>介绍</h2>
 
-<p>基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统</p>
+<p>基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统<br/>提供了代码生成器，基本增删改查无需编写，可快速完成开发任务</p>
 
 <h2>特征&amp;提供</h2>
 
@@ -44,7 +44,7 @@
     <li>集成MyBatis-Plus，实现单表业务零SQL</li>
     <li>支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源</li>
     <li>集成国人风格的knife4j，自动生成接口文档</li>
-    <li>提供代码生成器，生成controller,service,serviceImpl,dao,mapper.xml（待完善）</li>
+    <li>提供代码生成器，生成从html到mapper，自动赋给admin超级权限，爽歪歪</li>
 </ul>
 
 <h2>技术</h2>
@@ -60,7 +60,7 @@
     <li>前端模板：thymeleaf+layui2x</li>
 </ul>
 
-<h2><strong>部署</strong></h2>
+<h2><strong>部署及代码生成使用</strong></h2>
 
 <ul>
     <li>下载redis 启动redis</li>
@@ -70,6 +70,7 @@
     <li>接口文档访问 http://localhost:8080/doc.html</li>
     <li>登录地址 http://localhost:8080/index/login</li>
     <li>登录密码 admin/123456</li>
+    <li>代码生成使用：test包下的CodeGenerator.java，配置完表名， 直接run！！！ 无需繁琐操作</li>
 </ul>
 </body>
 <script src="/layui/layui.all.js"></script>
