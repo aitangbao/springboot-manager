@@ -176,7 +176,8 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
-        //实体类名
+        //获取实体类名
+        Thread.sleep(2000);
         String entityName = entityPath[0];
         //生成菜单，绑定admin权限
         genMenuAndBindPermission(pid, menuName, entityName);
