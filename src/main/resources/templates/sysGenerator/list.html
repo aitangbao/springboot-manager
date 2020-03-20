@@ -76,6 +76,7 @@
         , parseData: function (res) { //res 即为原始返回的数据
             //select
             addOption();
+            $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，请重启应用")
             return {
                 "code": res.code, //解析接口状态
                 "msg": res.msg, //解析提示文本
@@ -171,7 +172,7 @@
             $(".table_div").show();
             $(".operation").hide();
             reloadTable();
-
+            layer.msg("代码生成成功，请重启应用查看")
         }, "POST", false, function (res) {
             layer.msg("抱歉！您暂无权限");
         });
