@@ -218,8 +218,9 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     public IPage<SysPermission> pageInfo(PermissionPageReqVO vo) {
 
         Page page = new Page(vo.getPageNum(),vo.getPageSize());
-
-        IPage<SysPermission> result =sysPermissionMapper.selectPage(page, null);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.orderByAsc("order_num");
+        IPage<SysPermission> result =sysPermissionMapper.selectPage(page, queryWrapper);
         if(!result.getRecords().isEmpty()){
             for (SysPermission sysPermission:result.getRecords()){
                 SysPermission parent=sysPermissionMapper.selectById(sysPermission.getPid());
@@ -235,7 +236,9 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      */
     @Override
     public List<SysPermission> selectAll() {
-        List<SysPermission> result =sysPermissionMapper.selectList(new QueryWrapper<>());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.orderByAsc("order_num");
+        List<SysPermission> result =sysPermissionMapper.selectList(queryWrapper);
         if(!result.isEmpty()){
             for (SysPermission sysPermission:result){
                 SysPermission parent=sysPermissionMapper.selectById(sysPermission.getPid());

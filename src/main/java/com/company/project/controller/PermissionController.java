@@ -76,7 +76,6 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理",action = "获取所有菜单权限")
     @RequiresPermissions("sys:permission:list")
     public DataResult<List<SysPermission>> getAllMenusPermission(){
-        System.out.println("fsfs89896666666");
         DataResult<List<SysPermission>> result=DataResult.success();
         result.setData(permissionService.selectAll());
         return result;
