@@ -62,7 +62,7 @@ public class SysGeneratorController {
     @RequiresPermissions("sysGenerator:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody PageReqVO vo){
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
+        Page page = new Page(vo.getPage(), vo.getLimit());
         IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(page);
         return DataResult.success(iPage);
     }

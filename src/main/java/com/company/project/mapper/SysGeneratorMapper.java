@@ -29,5 +29,5 @@ public interface SysGeneratorMapper extends BaseMapper<SysGenerator> {
             "\t) AS t1\n" +
             "\tLEFT JOIN sys_generator t2 ON t1.tableName = t2.table_name\n" +
             "\tORDER BY gen_time")
-    IPage<SysGenerator> selectAllTables(Page page);
+    IPage<SysGenerator> selectAllTables(Page<SysGenerator> page);
 }
