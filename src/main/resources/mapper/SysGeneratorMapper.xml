@@ -15,5 +15,26 @@
     <sql id="Base_Column_List">
         id, table_name, menu_name, pid, gen_time
     </sql>
+    <!-- 获取列表 -->
+    <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
+        SELECT
+            t1.tableName,
+            t2.menu_name,
+            t2.gen_time,
+            t2.id
+        FROM
+            (
+            SELECT
+                TABLE_NAME AS tableName
+            FROM
+                information_schema.TABLES
+            WHERE
+                TABLE_SCHEMA = ( SELECT DATABASE ( ) )
+            ) AS t1
+            LEFT JOIN sys_generator t2 ON t1.tableName = t2.table_name
+        ORDER BY
+            gen_time
+
+    </select>
 
 </mapper>

@@ -16,18 +16,5 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface SysGeneratorMapper extends BaseMapper<SysGenerator> {
 
-    @Select(value = "SELECT\n" +
-            "t1.tableName,t2.menu_name, t2.gen_time, t2.id\n" +
-            "FROM\n" +
-            "\t(\n" +
-            "\tSELECT\n" +
-            "\t\tTABLE_NAME AS tableName \n" +
-            "\tFROM\n" +
-            "\t\tinformation_schema.TABLES \n" +
-            "\tWHERE\n" +
-            "\t\tTABLE_SCHEMA = ( SELECT DATABASE ( ) ) \n" +
-            "\t) AS t1\n" +
-            "\tLEFT JOIN sys_generator t2 ON t1.tableName = t2.table_name\n" +
-            "\tORDER BY gen_time")
     IPage<SysGenerator> selectAllTables(Page<SysGenerator> page);
 }
