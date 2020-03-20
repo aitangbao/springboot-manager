@@ -13,6 +13,7 @@ import com.company.project.entity.SysPermission;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.service.PermissionService;
 import com.company.project.service.RolePermissionService;
+import com.company.project.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,8 +41,6 @@ public class CodeGenerator {
     static String parentMenuName = "其他";
     //逻辑删除字段名, 假如表没有逻辑删除字段，请忽视
     static String logicDeleteFieldName = "deleted";
-    //该角色拥有所有权限-不能删除
-    static String superRoleId = "11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9";
 
 
     @Autowired
@@ -205,7 +204,7 @@ public class CodeGenerator {
         permissionService.save(sysPermission);
         SysRolePermission sysRolePermission = new SysRolePermission();
         sysRolePermission.setPermissionId(menuId);
-        sysRolePermission.setRoleId(superRoleId);
+        sysRolePermission.setRoleId(Constant.SUPER_ROLE_ID);
         rolePermissionService.save(sysRolePermission);
 
         sysPermission.setId(UUID.randomUUID().toString());
@@ -218,7 +217,7 @@ public class CodeGenerator {
         permissionService.save(sysPermission);
         sysRolePermission = new SysRolePermission();
         sysRolePermission.setPermissionId(sysPermission.getId());
-        sysRolePermission.setRoleId(superRoleId);
+        sysRolePermission.setRoleId(Constant.SUPER_ROLE_ID);
         rolePermissionService.save(sysRolePermission);
 
         sysPermission.setId(UUID.randomUUID().toString());
@@ -229,7 +228,7 @@ public class CodeGenerator {
         permissionService.save(sysPermission);
         sysRolePermission = new SysRolePermission();
         sysRolePermission.setPermissionId(sysPermission.getId());
-        sysRolePermission.setRoleId(superRoleId);
+        sysRolePermission.setRoleId(Constant.SUPER_ROLE_ID);
         rolePermissionService.save(sysRolePermission);
 
         sysPermission.setId(UUID.randomUUID().toString());
@@ -240,7 +239,7 @@ public class CodeGenerator {
         permissionService.save(sysPermission);
         sysRolePermission = new SysRolePermission();
         sysRolePermission.setPermissionId(sysPermission.getId());
-        sysRolePermission.setRoleId(superRoleId);
+        sysRolePermission.setRoleId(Constant.SUPER_ROLE_ID);
         rolePermissionService.save(sysRolePermission);
 
         sysPermission.setId(UUID.randomUUID().toString());
@@ -251,7 +250,7 @@ public class CodeGenerator {
         permissionService.save(sysPermission);
         sysRolePermission = new SysRolePermission();
         sysRolePermission.setPermissionId(sysPermission.getId());
-        sysRolePermission.setRoleId(superRoleId);
+        sysRolePermission.setRoleId(Constant.SUPER_ROLE_ID);
         rolePermissionService.save(sysRolePermission);
 
         log.info("生成成功， 请重启项目，登陆admin查看");

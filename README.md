@@ -26,16 +26,11 @@
 * 接口文档：Knife4j
 * 前端模板：thymeleaf+layui2x
 
-
-## **部署及代码生成使用**
-- 下载redis 启动redis
-- 创建company_project数据库
-- 导入company_project.sql
-- 启动项目
-- 接口文档访问 http://localhost:8080/doc.html
-- 登录地址 http://localhost:8080/index/login
-- 登录密码 admin/123456
+## 开发
 - 代码生成使用：test包下的CodeGenerator.java，配置完表名， 直接run！！！ 无需繁琐操作
+- Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
+- 如果表有是否删除字段，需要在Model注解@TableLogic 默认1未删 0删除， 或@TableLogic(value="逻辑未删除值",delval="逻辑删除值")
+- 登录密码 admin/123456
 
 ## **效果图**
 
