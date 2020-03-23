@@ -1,14 +1,14 @@
 # springboot-manager
 
 ## 介绍
-基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统  
-提供了代码生成器，基本增删改查无需编写，可快速完成开发任务
+基于SpringBoot 、Apache Shiro、Redis、Mybatis Plus 、Thymeleaf、Layui 后台管理系统  
+提供代码生成器，基本增删改查无需编写，可快速完成开发任务。开发最精简，可当脚手架，适合你来diy
 
 ## 特征&提供
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。
+- 采用RBAC的权限控制
 - 统一响应结果封装及生成工具
 - 统一异常处理
-- 采用RBAC的权限控制
 - 采用shiro redis token 角色权限管理认证
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 集成MyBatis-Plus，实现单表业务零SQL

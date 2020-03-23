@@ -1,44 +1,23 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<style>
-    .layui-btn-normal {
-        background-color: #1E9FFF
-    }
-
-    .layui-btn {
-        display: inline-block;
-        height: 38px;
-        line-height: 38px;
-        padding: 0 18px;
-        background-color: #009688;
-        color: #fff;
-        white-space: nowrap;
-        text-align: center;
-        font-size: 14px;
-        border: none;
-        border-radius: 2px;
-        cursor: pointer
-    }
-</style>
+<html lang="en">
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width initial-scale=1'>
     <title>后台管理系统 介绍</title></head>
-<body>
-<h1>springboot-manager</h1>
+<body><h1>springboot-manager</h1>
 
 <h2>介绍</h2>
 
-<p>基于spring boot 、shiro、redis、Knife4j、mybatis plus 、thymeleaf、layui 后台管理系统<br/>提供了代码生成器，基本增删改查无需编写，可快速完成开发任务</p>
+<p>基于SpringBoot 、Apache Shiro、Redis、Mybatis Plus 、Thymeleaf、Layui 后台管理系统<br/>提供代码生成器，基本增删改查无需编写，可快速完成开发任务。开发最精简，可当脚手架，适合你来diy
+</p>
 
 <h2>特征&amp;提供</h2>
 
 <ul>
     <li>后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。</li>
+    <li>采用RBAC的权限控制</li>
     <li>统一响应结果封装及生成工具</li>
     <li>统一异常处理</li>
-    <li>采用RBAC的权限控制</li>
     <li>采用shiro redis token 角色权限管理认证</li>
     <li>使用Druid Spring Boot Starter 集成Druid数据库连接池与监控</li>
     <li>集成MyBatis-Plus，实现单表业务零SQL</li>
@@ -68,5 +47,4 @@
     <li>登录密码 admin/123456</li>
 </ul>
 </body>
-<script src="/layui/layui.all.js"></script>
 </html>
