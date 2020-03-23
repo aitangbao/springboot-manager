@@ -48,6 +48,17 @@
 </div>
 
 <div class="table_div">
+    <div id="searchParam"  shiro:hasPermission="${entity?uncap_first}:list">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="tableName" class="layui-input"  autocomplete="off" placeholder="请输入表名">
+            </div>
+            <div class="layui-input-inline ">
+                <button class="layui-btn"   id="search">查询</button>
+            </div>
+        </div>
+
+    </div>
     <table class="layui-table" id="showTable" lay-filter="showTable"></table>
 
 </div>
@@ -67,7 +78,6 @@
     //渲染table
     table.render({
         elem: '#showTable'
-        , height: 'full-20'
         , page: true //开启分页
         , url: '/sysGenerator/listByPage' //数据接口
         , method: "POST"
@@ -76,7 +86,7 @@
         , parseData: function (res) { //res 即为原始返回的数据
             //select
             addOption();
-            $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，请重启应用")
+            $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，重启应用即可；")
             return {
                 "code": res.code, //解析接口状态
                 "msg": res.msg, //解析提示文本
@@ -87,6 +97,8 @@
         , cols: [
             [ //表头
                 {field: 'tableName', title: '表名', width: 200, sort: true},
+                {field: 'tableComment', title: '表备注', width: 100, sort: true},
+                {field: 'createTime', title: '表创建时间', width: 200, sort: true},
                 {field: '', title: '是否已生成', width: 150, sort: true
                     ,templet: function (d) {
                         if (!CoreUtil.isEmpty(d.id)) {
@@ -106,11 +118,11 @@
 
     //刷新table
     var reloadTable = function () {
-        var key = $('#key').val();
+        var tableName = $('#tableName').val();
         //执行重载
         table.reload('tableId', {
             where: {
-                "key": key
+                "tableName": tableName
             }
         }, 'data');
     }

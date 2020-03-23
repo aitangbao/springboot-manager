@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.entity.SysGenerator;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -16,5 +17,5 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface SysGeneratorMapper extends BaseMapper<SysGenerator> {
 
-    IPage<SysGenerator> selectAllTables(Page<SysGenerator> page);
+    IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, @Param(value = "vo") SysGenerator vo);
 }

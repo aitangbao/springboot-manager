@@ -6,6 +6,7 @@ import com.company.project.service.PermissionService;
 import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.PageReqVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.company.project.service.ISysGeneratorService;
 import com.company.project.entity.SysGenerator;
@@ -63,9 +64,9 @@ public class SysGeneratorController {
     @PostMapping("sysGenerator/listByPage")
     @RequiresPermissions("sysGenerator:list")
     @ResponseBody
-    public DataResult findListByPage(@RequestBody PageReqVO vo) {
+    public DataResult findListByPage(@RequestBody SysGenerator vo) {
         Page page = new Page(vo.getPage(), vo.getLimit());
-        IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(page);
+        IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(page, vo);
         return DataResult.success(iPage);
     }
 

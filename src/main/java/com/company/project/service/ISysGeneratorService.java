@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ISysGeneratorService extends IService<SysGenerator> {
 
 
-    IPage<SysGenerator> selectAllTables(Page page);
+    IPage<SysGenerator> selectAllTables(Page page, SysGenerator vo);
 
     void gen(SysGenerator sysGenerator);
 }

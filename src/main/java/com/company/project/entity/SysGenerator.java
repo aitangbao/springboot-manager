@@ -4,6 +4,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.company.project.vo.req.PageReqVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SysGenerator implements Serializable {
+public class SysGenerator extends PageReqVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,9 +34,6 @@ public class SysGenerator implements Serializable {
      * 表名
      */
     private String tableName;
-
-    @TableField(exist = false)
-    private Boolean alreadyGen;
 
     /**
      * 菜单名称
@@ -50,5 +48,11 @@ public class SysGenerator implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date genTime;
 
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
+    @TableField(exist = false)
+    private String tableComment;
 
 }

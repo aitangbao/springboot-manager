@@ -73,7 +73,6 @@
     //渲染table
     table.render({
         elem: '#showTable'
-        , height: 'full-20'
         , page: true //开启分页
         , url: '/${entity?uncap_first}/listByPage' //数据接口
         , method: "POST"

@@ -89,9 +89,12 @@ class ${table.controllerName}<#if superControllerClass??>:${superControllerClass
     @PostMapping("${entity?uncap_first}/listByPage")
     @RequiresPermissions("${entity?uncap_first}:list")
     @ResponseBody
-    public DataResult findListByPage(@RequestBody PageReqVO vo){
-        Page page = new Page(vo.getPage(), vo.getLimit());
-        IPage<${entity}> iPage = ${(table.serviceName?substring(1))?uncap_first}.page(page);
+    public DataResult findListByPage(@RequestBody ${entity} ${entity?uncap_first}){
+        Page page = new Page(${entity?uncap_first}.getPage(), ${entity?uncap_first}.getLimit());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        //查询条件示例
+        //queryWrapper.eq("id", ${entity?uncap_first}.getId());
+        IPage<${entity}> iPage = ${(table.serviceName?substring(1))?uncap_first}.page(page, queryWrapper);
         return DataResult.success(iPage);
     }
 
