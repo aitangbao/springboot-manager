@@ -9,12 +9,12 @@
 - 采用RBAC的权限控制
 - 统一响应结果封装及生成工具
 - 统一异常处理
-- 采用shiro redis token 角色权限管理认证
+- Shiro + Redis 实现 Token 角色权限认证
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
 - 集成国人风格的knife4j，自动生成接口文档
-- 提供代码生成器，生成从html到mapper，自动赋给admin超级权限，爽歪歪
+- 提供代码生成器，生成从Html到Mapper，自动赋给admin超级权限，爽歪歪
 
 ## 技术
 * 核心框架：spring boot 2.1.6
