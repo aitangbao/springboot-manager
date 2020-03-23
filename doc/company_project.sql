@@ -35,7 +35,7 @@ CREATE TABLE `sys_dept` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -110,7 +110,7 @@ CREATE TABLE `sys_permission` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统权限';
 
 -- ----------------------------
 -- Records of sys_permission
@@ -170,7 +170,7 @@ CREATE TABLE `sys_role` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色';
 
 -- ----------------------------
 -- Records of sys_role
@@ -193,7 +193,7 @@ CREATE TABLE `sys_role_permission` (
   `permission_id` varchar(64) DEFAULT NULL COMMENT '菜单权限id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色权限';
 
 -- ----------------------------
 -- Records of sys_role_permission
@@ -302,7 +302,7 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sys_user
@@ -325,7 +325,7 @@ CREATE TABLE `sys_user_role` (
   `role_id` varchar(64) DEFAULT NULL COMMENT '角色id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户角色';
 
 -- ----------------------------
 -- Records of sys_user_role
