@@ -1,9 +1,6 @@
-package com.company.project.utils;
+package com.company.project.common.utils;
 
 import java.security.MessageDigest;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 /**
 * @ClassName:       PasswordEncoder

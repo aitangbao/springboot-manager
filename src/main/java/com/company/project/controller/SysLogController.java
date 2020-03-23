@@ -2,10 +2,10 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.vo.req.SysLogPageReqVO;
-import com.company.project.aop.annotation.LogAnnotation;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysLog;
 import com.company.project.service.LogService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

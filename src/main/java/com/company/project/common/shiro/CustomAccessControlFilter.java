@@ -1,11 +1,11 @@
-package com.company.project.shiro;
+package com.company.project.common.shiro;
 
 import com.alibaba.fastjson.JSON;
-import com.company.project.utils.Constant;
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
-import com.company.project.utils.DataResult;
-import com.company.project.utils.HttpContextUtils;
+import com.company.project.common.utils.Constant;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.DataResult;
+import com.company.project.common.utils.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;

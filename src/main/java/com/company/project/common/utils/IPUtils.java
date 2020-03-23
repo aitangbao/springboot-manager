@@ -1,4 +1,4 @@
-package com.company.project.utils;
+package com.company.project.common.utils;
 
 import com.alibaba.druid.util.StringUtils;
 import org.slf4j.Logger;

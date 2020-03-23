@@ -1,14 +1,14 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.aop.annotation.LogAnnotation;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.vo.req.PermissionAddReqVO;
 import com.company.project.vo.req.PermissionPageReqVO;
 import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import com.company.project.entity.SysPermission;
 import com.company.project.service.PermissionService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;

@@ -2,7 +2,7 @@ package com.company.project.controller;
 
 import com.company.project.service.HomeService;
 import com.company.project.service.HttpSessionService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import com.company.project.vo.resp.HomeRespVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

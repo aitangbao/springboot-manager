@@ -1,6 +1,6 @@
-package com.company.project.exception;
+package com.company.project.common.exception;
 
-import com.company.project.exception.code.ResponseCodeInterface;
+import com.company.project.common.exception.code.ResponseCodeInterface;
 
 public class BusinessException extends RuntimeException{
     /**

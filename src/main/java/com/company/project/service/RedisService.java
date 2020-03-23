@@ -1,8 +1,8 @@
 package com.company.project.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;

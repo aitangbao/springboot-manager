@@ -1,9 +1,9 @@
 package com.company.project.controller;
 
 import com.company.project.vo.req.UserRoleOperationReqVO;
-import com.company.project.aop.annotation.LogAnnotation;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.service.UserRoleService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

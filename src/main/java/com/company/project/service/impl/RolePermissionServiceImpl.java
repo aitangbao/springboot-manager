@@ -3,8 +3,6 @@ package com.company.project.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysRolePermission;
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysRolePermissionMapper;
 import com.company.project.service.RolePermissionService;
 import com.company.project.vo.req.RolePermissionOperationReqVO;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements RolePermissionService {

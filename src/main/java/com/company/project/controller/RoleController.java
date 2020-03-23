@@ -1,14 +1,14 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.aop.annotation.LogAnnotation;
-import com.company.project.utils.Constant;
+import com.company.project.common.aop.annotation.LogAnnotation;
+import com.company.project.common.utils.Constant;
 import com.company.project.vo.req.RoleAddReqVO;
 import com.company.project.vo.req.RolePageReqVO;
 import com.company.project.vo.req.RoleUpdateReqVO;
 import com.company.project.entity.SysRole;
 import com.company.project.service.RoleService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

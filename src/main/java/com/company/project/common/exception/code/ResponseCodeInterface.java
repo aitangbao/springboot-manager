@@ -1,4 +1,4 @@
-package com.company.project.exception.code;
+package com.company.project.common.exception.code;
 
 public interface ResponseCodeInterface {
     int getCode();

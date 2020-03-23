@@ -1,11 +1,11 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.aop.annotation.LogAnnotation;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
 import com.company.project.service.DeptService;
-import com.company.project.utils.DataResult;
+import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.DeptAddReqVO;
 import com.company.project.vo.req.DeptPageReqVO;
 import com.company.project.vo.req.DeptUpdateReqVO;

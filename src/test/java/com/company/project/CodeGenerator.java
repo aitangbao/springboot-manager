@@ -13,7 +13,7 @@ import com.company.project.entity.SysPermission;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.service.PermissionService;
 import com.company.project.service.RolePermissionService;
-import com.company.project.utils.Constant;
+import com.company.project.common.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

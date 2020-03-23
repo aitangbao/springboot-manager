@@ -1,8 +1,8 @@
-package com.company.project.exception.handler;
+package com.company.project.common.exception.handler;
 
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
-import com.company.project.utils.DataResult;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.DataResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.validation.ObjectError;

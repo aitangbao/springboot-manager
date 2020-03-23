@@ -1,7 +1,7 @@
-package com.company.project.utils;
+package com.company.project.common.utils;
 
-import com.company.project.exception.code.BaseResponseCode;
-import com.company.project.exception.code.ResponseCodeInterface;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.exception.code.ResponseCodeInterface;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

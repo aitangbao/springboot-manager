@@ -3,16 +3,16 @@ package com.company.project.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.company.project.utils.Constant;
+import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.service.DeptService;
 import com.company.project.service.RedisService;
 import com.company.project.service.UserService;
-import com.company.project.utils.CodeUtil;
+import com.company.project.common.utils.CodeUtil;
 import com.company.project.vo.req.DeptAddReqVO;
 import com.company.project.vo.req.DeptPageReqVO;
 import com.company.project.vo.req.DeptUpdateReqVO;
@@ -28,7 +28,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j

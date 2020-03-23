@@ -1,13 +1,12 @@
-package com.company.project.aop.aspect;
+package com.company.project.common.aop.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.company.project.utils.Constant;
-import com.company.project.aop.annotation.LogAnnotation;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysLog;
 import com.company.project.mapper.SysLogMapper;
 import com.company.project.service.HttpSessionService;
-import com.company.project.utils.HttpContextUtils;
-import com.company.project.utils.IPUtils;
+import com.company.project.common.utils.HttpContextUtils;
+import com.company.project.common.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by huoth on 2018/5/3.
@@ -39,7 +37,7 @@ public class SysLogAspect {
      * 此处的切点是注解的方式
      * 只要出现 @LogAnnotation注解都会进入
      */
-    @Pointcut("@annotation(com.company.project.aop.annotation.LogAnnotation)")
+    @Pointcut("@annotation(com.company.project.common.aop.annotation.LogAnnotation)")
     public void logPointCut(){
 
     }

@@ -1,4 +1,4 @@
-package com.company.project.shiro;
+package com.company.project.common.shiro;
 
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

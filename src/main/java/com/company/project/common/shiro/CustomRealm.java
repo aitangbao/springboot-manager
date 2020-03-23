@@ -1,9 +1,9 @@
-package com.company.project.shiro;
+package com.company.project.common.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.company.project.exception.BusinessException;
-import com.company.project.exception.code.BaseResponseCode;
-import com.company.project.utils.Constant;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysUser;
 import com.company.project.service.*;
 import lombok.extern.slf4j.Slf4j;
