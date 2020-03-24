@@ -1,6 +1,8 @@
 1. 下载redis 启动redis
 2. 创建company_project数据库
 3. 导入company_project.sql
-4. 启动项目
+4. 运行项目
+   1、直接运行CompanyProjectApplication.java
+   2、项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
 5. 接口文档访问 http://localhost:8080/doc.html
-6. 登录地址 http://localhost:8080/index/login
+6. 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456

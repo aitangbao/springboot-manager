@@ -123,6 +123,7 @@
     </dependencies>
 
     <build>
+        <finalName>manager</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
