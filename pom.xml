@@ -34,17 +34,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--数据库驱动-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.47</version>
-        </dependency>
+
         <!--数据源-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -60,17 +50,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-        <!--swagger2 依赖-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
+
         <!--shiro 依赖-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -88,12 +68,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.49</version>
         </dependency>
-        <!--JWT-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
 
         <!--thymeleaf默认使用html5规则标签必须闭合等 使用次此包正常解析-->
         <dependency>
@@ -105,7 +79,6 @@
             <artifactId>thymeleaf-extras-shiro</artifactId>
             <version>2.0.0</version>
         </dependency>
-
 
 
         <!--数据库持久化 及 插件依赖-->
@@ -135,10 +108,7 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.30</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
