@@ -49,7 +49,7 @@ public class SysGeneratorController {
      */
     @GetMapping("/index/sysGenerator")
     public String sysGenerator() {
-        return "/sysGenerator/list";
+        return "generator/list";
     }
 
     @ApiOperation(value = "生成")

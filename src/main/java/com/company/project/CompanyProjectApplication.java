@@ -21,10 +21,11 @@ public class CompanyProjectApplication {
         Environment env = application.getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
-                        "Login: \thttp://localhost:{}/login\n\t" +
+                        "Login: \thttp://{}:{}/login\n\t" +
                         "Doc: \thttp://{}:{}/doc.html\n" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
+                InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 这里面定义了 CONSOLE_LOG_PATTERN, FILE_LOG_PATTERN 等日志格式, 还定义了一些日志级别 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="LOG_LEVEL" value="INFO"/>
+    <property name="LOG_PATH" value="log"/>
+    <property name="LOG_FILE" value="project_manager.log"/>
+    <property name="LOG_HISTORY" value="project_manager.%d{yyyy-MM-dd}.log"/>
+
+    <!--日志输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--日志输出到文件-->
+    <springProfile name="!dev">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}/${LOG_FILE}</file>  <!-- 可自己定义 -->
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern> <!-- 输出格式也可自己定义 -->
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/${LOG_HISTORY}</fileNamePattern>
+                <maxHistory>30</maxHistory>
+            </rollingPolicy>
+        </appender>
+    </springProfile>
+
+    <!--异步到文件-->
+    <springProfile name="!dev">
+        <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+            <discardingThreshold>0</discardingThreshold>
+            <queueSize>500</queueSize>
+            <appender-ref ref="FILE"/>
+        </appender>
+    </springProfile>
+
+
+    <!--开发环境:打印控制台-->
+    <springProfile name="dev">
+        <!-- 打印sql -->
+        <logger name="com.company.project" level="DEBUG"/>
+        <root level="${LOG_LEVEL}">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- 输出格式 appender -->
+    <springProfile name="!dev">
+        <root level="${LOG_LEVEL}">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="asyncFileAppender"/>
+        </root>
+    </springProfile>
+
+
+</configuration>

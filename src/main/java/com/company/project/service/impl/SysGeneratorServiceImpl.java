@@ -129,7 +129,7 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
         // 自定义配置会被优先输出
-        focList.add(new FileOutConfig("templates/sysGenerator/gen/html/list.html.ftl") {
+        focList.add(new FileOutConfig("templates/generator/gen/html/list.html.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
@@ -145,7 +145,7 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
 
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        templateConfig.setController("templates/sysGenerator/gen/controller.java");
+        templateConfig.setController("templates/generator/gen/controller.java");
 //        templateConfig.setService("templates/service.java");
 //        templateConfig.setServiceImpl("templates/serviceImpl.java");
 //        templateConfig.setServiceImpl("templates/serviceImpl.java");

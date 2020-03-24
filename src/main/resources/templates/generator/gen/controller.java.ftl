@@ -55,7 +55,7 @@ class ${table.controllerName}<#if superControllerClass??>:${superControllerClass
     */
     @GetMapping("/index/${entity?uncap_first}")
     public String ${entity?uncap_first}() {
-    return "/${entity?uncap_first}/list";
+    return "${entity?uncap_first}/list";
     }
 
     @ApiOperation(value = "新增${table.comment!}")
