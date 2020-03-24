@@ -2,6 +2,7 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.service.PermissionService;
 import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.PageReqVO;
@@ -54,6 +55,7 @@ public class SysGeneratorController {
     @ApiOperation(value = "生成")
     @PostMapping("sysGenerator/add")
     @RequiresPermissions("sysGenerator:add")
+    @LogAnnotation(title = "代码生成", action = "代码生成")
     @ResponseBody
     public DataResult add(@RequestBody SysGenerator sysGenerator) {
         sysGeneratorService.gen(sysGenerator);
