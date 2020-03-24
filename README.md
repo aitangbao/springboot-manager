@@ -17,7 +17,7 @@
 - 提供代码生成器，生成从Html到Mapper，自动赋给admin超级权限，爽歪歪
 
 ## 项目演示
-- 演示地址：[http://manager.aitangbao.com.cn](http://manager.aitangbao.com.cn:8080/login)
+- 演示地址：[http://manager.aitangbao.com.cn/login](http://manager.aitangbao.com.cn/login)
 - 账号密码：admin/123456
 
 ## 技术
