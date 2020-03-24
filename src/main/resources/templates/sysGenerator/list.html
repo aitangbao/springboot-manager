@@ -96,10 +96,10 @@
         }
         , cols: [
             [ //表头
-                {field: 'tableName', title: '表名', width: 200, sort: true},
-                {field: 'tableComment', title: '表备注', width: 100, sort: true},
-                {field: 'createTime', title: '表创建时间', width: 200, sort: true},
-                {field: '', title: '是否已生成', width: 150, sort: true
+                {field: 'tableName', title: '表名', width: 180, sort: true},
+                {field: 'tableComment', title: '表备注', width: 150, sort: true},
+                {field: 'createTime', title: '表创建时间', width: 180, sort: true},
+                {field: '', title: '是否已生成', width: 120, sort: true
                     ,templet: function (d) {
                         if (!CoreUtil.isEmpty(d.id)) {
                             return '是'
@@ -107,8 +107,8 @@
                             return '否'
                         }
                     }},
-                {field: 'menuName', title: '菜单名称', width: 200, sort: true},
-                {field: 'genTime', title: '生成时间', width: 200, sort: true},
+                {field: 'menuName', title: '菜单名称', width: 150, sort: true},
+                {field: 'genTime', title: '生成时间', width: 180, sort: true},
                 {width: 100, toolbar: "#tool", title: '操作'}
             ]
         ]
