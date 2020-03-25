@@ -1,5 +1,6 @@
 package com.company.project.common.shiro;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
@@ -13,9 +14,14 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class CustomRealm extends AuthorizingRealm {
@@ -31,19 +37,50 @@ public class CustomRealm extends AuthorizingRealm {
     @Autowired
     @Lazy
     private HttpSessionService httpSessionService;
+    @Autowired
+    private RedisService redisService;
+    @Value("${redis.key.prefix.permissionRefresh}")
+    private String redisPermissionRefreshKey;
+    @Value("${redis.key.prefix.userToken}")
+    private String USER_TOKEN_PREFIX;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        if (httpSessionService.getCurrentSession() == null) {
+
+        JSONObject redisSession = httpSessionService.getCurrentSession();
+        if (redisSession == null) {
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
-        if (httpSessionService.getCurrentSession().get(Constant.ROLES_KEY) != null) {
-            authorizationInfo.addRoles((Collection<String>) httpSessionService.getCurrentSession().get(Constant.ROLES_KEY));
+
+        String userId = httpSessionService.getCurrentUserId();
+        //如果修改了角色/权限， 那么刷新权限
+        if (redisService.exists(redisPermissionRefreshKey + userId)) {
+
+            List<String> roleNames = getRolesByUserId(userId);
+            if (roleNames != null && !roleNames.isEmpty()) {
+                redisSession.put(Constant.ROLES_KEY, roleNames);
+                authorizationInfo.addRoles(roleNames);
+            }
+            Set<String> permissions = getPermissionsByUserId(userId);
+            authorizationInfo.setStringPermissions(permissions);
+            redisSession.put(Constant.PERMISSIONS_KEY, permissions);
+
+            String redisTokenKey = USER_TOKEN_PREFIX + httpSessionService.getTokenFromHeader();
+            Long redisTokenKeyExpire = redisService.getExpire(redisTokenKey);
+            //刷新token绑定的角色权限
+            redisService.setAndExpire(redisTokenKey, redisSession.toJSONString(), redisTokenKeyExpire);
+            //刷新后删除权限刷新标志
+            redisService.del(redisPermissionRefreshKey + userId);
+        } else {
+            if (httpSessionService.getCurrentSession().get(Constant.ROLES_KEY) != null) {
+                authorizationInfo.addRoles((Collection<String>) httpSessionService.getCurrentSession().get(Constant.ROLES_KEY));
+            }
+            if (httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY) != null) {
+                authorizationInfo.addStringPermissions((Collection<String>) httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY));
+            }
         }
-        if (httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY) != null) {
-            authorizationInfo.addStringPermissions((Collection<String>) httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY));
-        }
+
 
         return authorizationInfo;
     }
@@ -70,5 +107,13 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo info =
                 new SimpleAuthenticationInfo(token.getPrincipal(), password, getName());
         return info;
+    }
+
+    private List<String> getRolesByUserId(String userId) {
+        return roleService.getRoleNames(userId);
+    }
+
+    private Set<String> getPermissionsByUserId(String userId) {
+        return permissionService.getPermissionsByUserId(userId);
     }
 }

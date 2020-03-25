@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysUser;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * session管理器
@@ -25,7 +27,10 @@ public class HttpSessionService {
 
     @Autowired
     private RedisService redisDB;
-
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private RolePermissionService rolePermissionService;
     @Autowired
     private HttpServletRequest request;
 
@@ -34,6 +39,11 @@ public class HttpSessionService {
 
     @Value("${redis.key.expire.userToken}")
     private int EXPIRE;
+
+    @Value("${redis.key.prefix.permissionRefresh}")
+    private String redisPermissionRefreshKey;
+    @Value("${redis.key.expire.permissionRefresh}")
+    private Long redisPermissionRefreshExpire;
 
     public String createTokenAndUser(SysUser user, List<String> roles, Set<String> permissions) {
         //方便根据id找到redis的key， 修改密码/退出登陆 方便使用
@@ -46,6 +56,9 @@ public class HttpSessionService {
         String key = USER_TOKEN_PREFIX + token;
         //设置该用户已登录的token
         redisDB.setAndExpire(key, sessionInfo.toJSONString(), EXPIRE);
+
+        //登陆后删除权限刷新标志
+        redisDB.del(redisPermissionRefreshKey + user.getId());
         return token;
     }
 
@@ -174,6 +187,40 @@ public class HttpSessionService {
         }
     }
 
+    /**
+     * 根据角色id， 刷新redis用户权限
+     *
+     * @param roleId
+     */
+    public void refreshRolePermission(String roleId) {
+        List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
+        if (!userIds.isEmpty()) {
+            for (String userId : userIds) {
+                redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
+            }
+
+        }
+    }
+
+    /**
+     * 根据权限id， 刷新redis用户权限
+     *
+     * @param permissionId
+     */
+    public void refreshPermission(String permissionId) {
+        //根据权限id，更新redis权限
+        List<String> roleIds = rolePermissionService.getRoleIds(permissionId);
+        if (!roleIds.isEmpty()) {
+            List<String> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
+            if (!userIds.isEmpty()) {
+                for (String userId : userIds) {
+                    redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
+                }
+
+            }
+        }
+    }
+
 
     /**
      * 生成随机的token
@@ -201,6 +248,5 @@ public class HttpSessionService {
 
         return randomStr.toString();
     }
-
 
 }

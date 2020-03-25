@@ -8,10 +8,7 @@ import com.company.project.entity.SysPermission;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysPermissionMapper;
-import com.company.project.service.PermissionService;
-import com.company.project.service.RedisService;
-import com.company.project.service.RolePermissionService;
-import com.company.project.service.UserRoleService;
+import com.company.project.service.*;
 import com.company.project.vo.req.PermissionAddReqVO;
 import com.company.project.vo.req.PermissionPageReqVO;
 import com.company.project.vo.req.PermissionUpdateReqVO;
@@ -19,23 +16,26 @@ import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements PermissionService {
-    @Autowired
-    private RedisService redisService;
     @Autowired
     private UserRoleService userRoleService;
     @Autowired
     private RolePermissionService rolePermissionService;
     @Autowired
     private SysPermissionMapper sysPermissionMapper;
+    @Autowired
+    private HttpSessionService httpSessionService;
+
 
     /**
      * 根据用户查询拥有的权限
@@ -171,14 +171,11 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
         /**
-         * 说明这个菜单权限 权鉴标识发生变化
          * 所有管理这个菜单权限用户将重新刷新token
          */
         if (StringUtils.isEmpty(vo.getPerms()) && !sysPermission.getPerms().equals(vo.getPerms())) {
-            List<String> roleIds = rolePermissionService.getRoleIds(vo.getId());
-            if (!roleIds.isEmpty()) {
-                List<String> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
-            }
+            //刷新权限
+            httpSessionService.refreshPermission(vo.getId());
         }
 
     }
@@ -206,10 +203,10 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (count != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
-        /**
-         * 删除和角色关联
-         */
+        //删除和角色关联
         rolePermissionService.removeByPermissionId(permissionId);
+        //刷新权限
+        httpSessionService.refreshPermission(permissionId);
     }
 
     /**

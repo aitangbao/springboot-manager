@@ -70,4 +70,11 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
         queryWrapper.select("user_id").in("role_id", roleIds);
         return sysUserRoleMapper.selectObjs(queryWrapper);
     }
+
+    @Override
+    public List<String> getUserIdsByRoleId(String roleId) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.select("user_id").eq("role_id", roleId);
+        return sysUserRoleMapper.selectObjs(queryWrapper);
+    }
 }

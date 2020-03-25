@@ -29,10 +29,12 @@ redis:
     prefix:
       userToken: "user:token:"
       passwordError: "user:password:error:"
+      permissionRefresh: "user:token:permissionRefresh:"
     expire:
       userToken: 604800 # 7天 7*24*3600
       passwordError: 3600 # 一个小时
-  allowMultipleLogin: false # 允许多处登陆
+      permissionRefresh: 604800 # 7天 7*24*3600
+  allowMultipleLogin: true # 允许多处登陆
   host: localhost # Redis服务器地址
   database: 0 # Redis数据库索引（默认为0）
   port: 6379 # Redis服务器连接端口

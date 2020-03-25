@@ -32,11 +32,9 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RolePermissionService rolePermissionService;
     @Autowired
-    private RedisService redisService;
-    @Autowired
-    private SysUserRoleMapper sysUserRoleMapper;
-    @Autowired
     private PermissionService permissionService;
+    @Autowired
+    private HttpSessionService httpSessionService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -81,22 +79,8 @@ public class RoleServiceImpl implements RoleService {
             reqVO.setRoleId(sysRole.getId());
             reqVO.setPermissionIds(vo.getPermissions());
             rolePermissionService.addRolePermission(reqVO);
-
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.select("user_id").eq("role_id", vo.getId());
-
-            List<String> userIds = sysUserRoleMapper.selectObjs(queryWrapper);
-            ;
-
-//            if(!userIds.isEmpty()){
-//                for (String userId:userIds){
-//                    redisService.set(Constant.JWT_REFRESH_KEY +userId,userId,tokenSettings.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-//                    //清空权鉴缓存
-//                    redisService.del(Constant.IDENTIFY_CACHE_KEY+userId);
-//                }
-//
-//            }
-
+            //刷新权限
+            httpSessionService.refreshRolePermission(sysRole.getId());
         }
 
     }
@@ -145,6 +129,8 @@ public class RoleServiceImpl implements RoleService {
         queryWrapper.select("user_id").eq("role_id", id);
         rolePermissionService.removeByRoleId(id);
         userRoleService.removeByRoleId(id);
+        //刷新权限
+        httpSessionService.refreshRolePermission(id);
     }
 
     @Override

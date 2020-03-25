@@ -18,4 +18,5 @@ public interface UserRoleService {
 
     List<String> getUserIdsByRoleIds(List<String> roleIds);
 
+    List<String> getUserIdsByRoleId(String roleId);
 }
