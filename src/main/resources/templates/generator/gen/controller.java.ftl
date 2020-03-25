@@ -1,5 +1,6 @@
 package ${package.Controller};
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.PageReqVO;
