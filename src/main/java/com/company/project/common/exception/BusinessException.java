@@ -18,6 +18,12 @@ public class BusinessException extends RuntimeException{
         this.messageCode = messageCode;
         this.detailMessage = message;
     }
+
+    public BusinessException(String message) {
+        super(message);
+        this.messageCode = 500;
+        this.detailMessage = message;
+    }
     /**
      * 构造函数
      * @param code 异常码

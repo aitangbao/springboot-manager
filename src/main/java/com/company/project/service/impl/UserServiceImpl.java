@@ -84,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         //是否删除之前token， 此处控制是否支持多登陆端；
         // true:允许多处登陆; false:只能单处登陆，顶掉之前登陆
         if (!allowMultipleLogin) {
-            httpSessionService.abortUserByUserName(sysUser.getUsername());
+            httpSessionService.abortUserById(sysUser.getId());
         }
 
         String token = httpSessionService.createTokenAndUser(sysUser, getRolesByUserId(sysUser.getId()), getPermissionsByUserId(sysUser.getId()));
@@ -118,7 +118,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!sysUser.getUsername().equals(vo.getUsername())
                 || !sysUser.getUsername().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt()))
                 || !sysUser.getStatus().equals(vo.getStatus())) {
-            httpSessionService.abortUserByUserName(vo.getUsername());
+            httpSessionService.abortUserById(vo.getId());
         }
 
         BeanUtils.copyProperties(vo, sysUser);
@@ -164,6 +164,14 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     public void addUser(UserAddReqVO vo) {
+
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username", vo.getUsername());
+        SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+        if (sysUserOne != null) {
+            throw new BusinessException("用户已存在，请勿重复添加！");
+        }
+
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(vo, sysUser);
         sysUser.setSalt(PasswordUtils.getSalt());
@@ -226,10 +234,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     public void deletedUsers(List<String> userIds, String operationId) {
 
         //删除用户， 删除redis的绑定的角色跟权限
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("username").in("id", userIds);
-        List<String> usernames = sysUserMapper.selectObjs(queryWrapper);
-        httpSessionService.abortUserByUserNames(usernames);
+        httpSessionService.abortUserByUserIds(userIds);
 
         SysUser sysUser = new SysUser();
         sysUser.setUpdateId(operationId);

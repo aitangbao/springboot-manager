@@ -37,7 +37,7 @@ public class HttpSessionService {
 
     public String createTokenAndUser(SysUser user, List<String> roles, Set<String> permissions) {
         //方便根据id找到redis的key， 修改密码/退出登陆 方便使用
-        String token = getRandomToken(32) + "#" + user.getUsername();
+        String token = getRandomToken(32) + "#" + user.getId();
         JSONObject sessionInfo = new JSONObject();
         sessionInfo.put(Constant.USERID_KEY, user.getId());
         sessionInfo.put(Constant.USERNAME_KEY, user.getUsername());
@@ -158,17 +158,17 @@ public class HttpSessionService {
     /**
      * 使用户的token失效
      */
-    public void abortUserByUserName(String username) {
-        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + username);
+    public void abortUserById(String userId) {
+        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + userId);
     }
 
     /**
      * 使多个用户的token失效
      */
-    public void abortUserByUserNames(List<String> usernames) {
-        if (CollectionUtils.isNotEmpty(usernames)) {
-            for (String username : usernames) {
-                redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + username);
+    public void abortUserByUserIds(List<String> userIds) {
+        if (CollectionUtils.isNotEmpty(userIds)) {
+            for (String id : userIds) {
+                redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + id);
             }
 
         }
