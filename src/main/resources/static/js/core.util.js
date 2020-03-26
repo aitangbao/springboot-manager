@@ -4,7 +4,7 @@ var CoreUtil = (function () {
     var coreUtil = {};
     /*ajax请求*/
     coreUtil.sendAjax = function (url, params, ft, method, headers,noAuthorityFt,contentType, async) {
-        var roleSaveLoading = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+        var loadIndex = top.layer.load(0, {shade: false});
         $.ajax({
             url: url,
             cache: false,
@@ -25,7 +25,7 @@ var CoreUtil = (function () {
 
             },
             success: function (res) {
-                top.layer.close(roleSaveLoading);
+                top.layer.close(loadIndex);
                 if (typeof ft == "function") {
                     if(res.code==401001){ //凭证过期重新登录
                         layer.msg("凭证过期请重新登录", {time:2000}, function () {
@@ -70,7 +70,7 @@ var CoreUtil = (function () {
                 }
             },
             error:function (XMLHttpRequest, textStatus, errorThrown) {
-                top.layer.close(roleSaveLoading);
+                top.layer.close(loadIndex);
                if(XMLHttpRequest.status==404){
                     top.window.location.href="/index/404";
                 }else{
