@@ -9,6 +9,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <script src="/js/jquery.js"></script>
+    <script>
+        var localData = JSON.parse(localStorage.getItem('LocalData'));
+        if (localData != null && localData.access_token != null) {
+            $.ajax({
+                url: "/sys/validToken",
+                type: "POST",
+                beforeSend: function (request) {
+                    request.setRequestHeader("authorization", localData.access_token);
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        window.location.href = "/index/home"
+                    }
+                }
+            });
+        }
+    </script>
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>

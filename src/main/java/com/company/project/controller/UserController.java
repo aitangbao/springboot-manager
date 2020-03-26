@@ -1,6 +1,7 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.company.project.common.exception.BusinessException;
 import com.company.project.service.HttpSessionService;
 import com.company.project.common.utils.ImageCodeUtil;
 import com.company.project.vo.req.*;
@@ -15,7 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -188,5 +191,17 @@ public class UserController {
             return DataResult.success();
         }
         return DataResult.fail("验证码输入有误");
+    }
+
+
+    @ApiOperation(value = "校验验证码")
+    @PostMapping(value = "/validToken")
+    public DataResult validToken() {
+        Subject subject = SecurityUtils.getSubject();
+        if (null != httpSessionService.getCurrentSession() && subject.isAuthenticated()) {
+            return DataResult.success();
+        }
+        //从session中获取随机数
+        return DataResult.fail("失效");
     }
 }

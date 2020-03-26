@@ -1,7 +1,10 @@
 package com.company.project.common.shiro;
 
+import com.company.project.common.utils.DataResult;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +48,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/user/token", "anon");
         filterChainDefinitionMap.put("/sys/getVerify", "anon");
         filterChainDefinitionMap.put("/sys/checkVerify", "anon");
+        filterChainDefinitionMap.put("/sys/validToken", "anon");
         filterChainDefinitionMap.put("/index/**", "anon");
         filterChainDefinitionMap.put("*.html", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
@@ -57,7 +61,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/captcha.jpg", "anon");
 
-        filterChainDefinitionMap.put("/", "user");
         filterChainDefinitionMap.put("/csrf", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
