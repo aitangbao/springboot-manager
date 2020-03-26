@@ -9,24 +9,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <script src="/js/jquery.js"></script>
-    <script>
-        var localData = JSON.parse(localStorage.getItem('LocalData'));
-        if (localData != null && localData.access_token != null) {
-            $.ajax({
-                url: "/sys/validToken",
-                type: "POST",
-                beforeSend: function (request) {
-                    request.setRequestHeader("authorization", localData.access_token);
-                },
-                success: function (res) {
-                    if (res.code == 0) {
-                        window.location.href = "/index/home"
-                    }
-                }
-            });
-        }
-    </script>
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -55,6 +37,7 @@
             <div>
                 <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off"
                        class="layui-input admin-input admin-input-verify">
+                <img class="admin-captcha" width="90" height="30" src="/sys/getVerify">
                 <img  onClick="this.src=this.src+'?'+Math.random();" class="admin-captcha" width="90" height="30" src="/sys/getVerify">
             </div>
             <button class="layui-btn admin-button" lay-submit="" lay-filter="login">登 陆</button>

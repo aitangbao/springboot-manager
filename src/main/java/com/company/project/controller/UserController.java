@@ -193,15 +193,4 @@ public class UserController {
         return DataResult.fail("验证码输入有误");
     }
 
-
-    @ApiOperation(value = "校验验证码")
-    @PostMapping(value = "/validToken")
-    public DataResult validToken() {
-        Subject subject = SecurityUtils.getSubject();
-        if (null != httpSessionService.getCurrentSession() && subject.isAuthenticated()) {
-            return DataResult.success();
-        }
-        //从session中获取随机数
-        return DataResult.fail("失效");
-    }
 }
