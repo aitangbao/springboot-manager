@@ -59,6 +59,7 @@ var CoreUtil = (function () {
                         }
 
                     }else if(res.code==401008){//无权限响应
+                        layer.msg(res.msg)
                         if(ft!=null&&ft!=undefined){
                             noAuthorityFt(res);
                         }

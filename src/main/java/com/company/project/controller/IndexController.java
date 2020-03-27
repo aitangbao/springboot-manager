@@ -21,7 +21,7 @@ public class IndexController {
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
-            return "home";
+            return "redirect:/index/home";
         }
         return "login";
     }
