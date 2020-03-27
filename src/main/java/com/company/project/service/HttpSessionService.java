@@ -108,10 +108,10 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo;
             } else {
-                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+                return null;
             }
         } else {
-            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+            return null;
         }
     }
 
@@ -128,10 +128,10 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERNAME_KEY);
             } else {
-                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+                return null;
             }
         } else {
-            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+            return null;
         }
     }
 
@@ -148,10 +148,10 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERID_KEY);
             } else {
-                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+                return null;
             }
         } else {
-            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+            return null;
         }
     }
 
