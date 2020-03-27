@@ -50,7 +50,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         WebMvcConfigurer.super.addCorsMappings(registry);
         registry.addMapping("/**")
                 .allowedHeaders("*")
-                .allowedMethods("POST", "GET")
+                .allowedMethods("POST", "GET", "PUT", "DELETE")
                 .allowedOrigins("*");
     }
 

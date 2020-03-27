@@ -193,6 +193,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Override
     public void logout() {
         httpSessionService.abortUserByToken();
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
     }
 
     @Override
