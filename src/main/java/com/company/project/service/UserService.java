@@ -42,4 +42,6 @@ public interface UserService extends IService<SysUser> {
     UserOwnRoleRespVO getUserOwnRole(String userId);
 
     void setUserOwnRole(String userId,List<String> roleIds);
+
+    void updateUserInfoMy(UserUpdateReqVO vo, String userId);
 }

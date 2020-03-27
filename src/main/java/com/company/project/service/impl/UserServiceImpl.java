@@ -132,6 +132,29 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
+    public void updateUserInfoMy(UserUpdateReqVO vo, String operationId) {
+
+
+        SysUser sysUser = sysUserMapper.selectById(vo.getId());
+        if (null == sysUser) {
+            log.error("传入 的 id:{}不合法", vo.getId());
+            throw new BusinessException(BaseResponseCode.DATA_ERROR);
+        }
+
+        BeanUtils.copyProperties(vo, sysUser);
+        sysUser.setUpdateTime(new Date());
+        if (!StringUtils.isEmpty(vo.getPassword())) {
+            String newPassword = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
+            sysUser.setPassword(newPassword);
+        } else {
+            sysUser.setPassword(null);
+        }
+        sysUser.setUpdateId(operationId);
+        sysUserMapper.updateById(sysUser);
+
+    }
+
+    @Override
     public IPage<SysUser> pageInfo(UserPageReqVO vo) {
         Page page = new Page(vo.getPageNum(), vo.getPageSize());
         IPage<SysUser> iPage = sysUserMapper.selectAll(page, vo);

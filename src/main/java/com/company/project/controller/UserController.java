@@ -79,7 +79,7 @@ public class UserController {
     public DataResult updateUserInfoById(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
         String userId = httpSessionService.getCurrentUserId();
         vo.setId(userId);
-        userService.updateUserInfo(vo, userId);
+        userService.updateUserInfoMy(vo, userId);
         return DataResult.success();
     }
 
