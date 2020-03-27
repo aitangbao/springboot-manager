@@ -19,9 +19,7 @@ public class CustomHashedCredentialsMatcher extends SimpleCredentialsMatcher {
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-        if (httpSessionService.getCurrentSession() ==null ){
-            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
-        }
+        httpSessionService.getCurrentSession();
         return true;
     }
 }
