@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
- * @ClassName: CustomHashedCredentialsMatcher
+ * 认证
  */
 public class CustomHashedCredentialsMatcher extends SimpleCredentialsMatcher {
 

@@ -41,6 +41,11 @@ public class CustomRealm extends AuthorizingRealm {
     @Value("${redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
 
+    /**
+     * 执行授权逻辑
+     * @param principalCollection
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -82,6 +87,13 @@ public class CustomRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
+
+    /**
+     * 执行认证逻辑
+     * @param authenticationToken
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getPrincipal(), getName());

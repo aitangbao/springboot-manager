@@ -19,6 +19,10 @@ public class ShiroConfig {
         return new CustomHashedCredentialsMatcher();
     }
 
+    /**
+     * 创建realm
+     * @return
+     */
     @Bean
     public CustomRealm customRealm() {
         CustomRealm customRealm = new CustomRealm();
@@ -30,6 +34,7 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //关联realm
         securityManager.setRealm(customRealm());
         return securityManager;
     }
@@ -39,8 +44,8 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //自定义拦截器限制并发人数,参考博客：
         LinkedHashMap<String, Filter> filtersMap = new LinkedHashMap<>();
         //用来校验token
         filtersMap.put("token", new CustomAccessControlFilter());
