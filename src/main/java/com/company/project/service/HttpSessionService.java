@@ -108,11 +108,9 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo;
             } else {
-                SecurityUtils.getSubject().logout();
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
         } else {
-            SecurityUtils.getSubject().logout();
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
     }
@@ -130,11 +128,9 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERNAME_KEY);
             } else {
-                SecurityUtils.getSubject().logout();
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
         } else {
-            SecurityUtils.getSubject().logout();
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
     }
@@ -152,11 +148,9 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERID_KEY);
             } else {
-                SecurityUtils.getSubject().logout();
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
         } else {
-            SecurityUtils.getSubject().logout();
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
     }

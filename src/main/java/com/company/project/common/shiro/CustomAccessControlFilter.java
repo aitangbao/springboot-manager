@@ -34,10 +34,7 @@ public class CustomAccessControlFilter extends AccessControlFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         try {
             Subject subject = getSubject(servletRequest, servletResponse);
-            if (!subject.isAuthenticated()) {
-                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
-            }
-
+            System.out.println(subject.isAuthenticated()+"");
             System.out.println(HttpContextUtils.isAjaxRequest(request));
             log.info(request.getMethod());
             log.info(request.getRequestURL().toString());
@@ -51,6 +48,8 @@ public class CustomAccessControlFilter extends AccessControlFilter {
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
 
+            CustomPasswordToken customPasswordToken=new CustomPasswordToken(token);
+            getSubject(servletRequest, servletResponse).login(customPasswordToken);
         } catch (BusinessException exception) {
             if (HttpContextUtils.isAjaxRequest(request)) {
                 customRsponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);

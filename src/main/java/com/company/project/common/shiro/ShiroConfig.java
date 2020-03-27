@@ -1,10 +1,7 @@
 package com.company.project.common.shiro;
 
-import com.company.project.common.utils.DataResult;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +14,15 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Bean
+    public CustomHashedCredentialsMatcher customHashedCredentialsMatcher(){
+        return new CustomHashedCredentialsMatcher();
+    }
 
     @Bean
     public CustomRealm customRealm() {
         CustomRealm customRealm = new CustomRealm();
+        customRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
         return customRealm;
     }
 
@@ -31,6 +33,7 @@ public class ShiroConfig {
         securityManager.setRealm(customRealm());
         return securityManager;
     }
+
 
 
     @Bean

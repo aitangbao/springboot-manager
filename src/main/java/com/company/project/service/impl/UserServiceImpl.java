@@ -90,9 +90,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         String token = httpSessionService.createTokenAndUser(sysUser, getRolesByUserId(sysUser.getId()), getPermissionsByUserId(sysUser.getId()));
         respVO.setAccessToken(token);
 
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(vo.getUsername(), sysUser.getPassword());
-        subject.login(usernamePasswordToken);
         return respVO;
     }
 
