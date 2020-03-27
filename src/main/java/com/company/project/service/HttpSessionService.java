@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysUser;
 import io.swagger.models.auth.In;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -103,11 +106,12 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo;
             } else {
-                return null;
+                SecurityUtils.getSubject().logout();
+                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
         } else {
-            return null;
-        }
+            SecurityUtils.getSubject().logout();
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);        }
     }
 
     /**
@@ -123,10 +127,11 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERNAME_KEY);
             } else {
-                return null;
-            }
+                SecurityUtils.getSubject().logout();
+                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);            }
         } else {
-            return null;
+            SecurityUtils.getSubject().logout();
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
     }
 
@@ -143,10 +148,12 @@ public class HttpSessionService {
                 JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
                 return sessionInfo.getString(Constant.USERID_KEY);
             } else {
-                return null;
+                SecurityUtils.getSubject().logout();
+                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
         } else {
-            return null;
+            SecurityUtils.getSubject().logout();
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
     }
 
