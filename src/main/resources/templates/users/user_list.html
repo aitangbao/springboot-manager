@@ -182,16 +182,8 @@
                                 }
                             }
                         },
-                        {
-                            field: 'createTime', title: '创建时间', minWidth: 120 , templet: function (item) {
-                                return CoreUtil.formattime(item.createTime);
-                            }
-                        },
-                        {
-                            field: 'updateTime', title: '更新时间', minWidth: 120,templet: function (item) {
-                                return CoreUtil.formattime(item.updateTime);
-                            }
-                        },
+                        {field: 'createTime', title: '创建时间', minWidth: 120},
+                        {field: 'updateTime', title: '更新时间', minWidth: 120},
                         {
                             field: 'status', title: '状态', width: 100,templet: function (item) {
                                 if(item.status === 1){
