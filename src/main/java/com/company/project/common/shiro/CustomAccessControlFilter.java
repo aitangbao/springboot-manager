@@ -8,6 +8,7 @@ import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.util.StringUtils;
@@ -34,7 +35,7 @@ public class CustomAccessControlFilter extends AccessControlFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         try {
             Subject subject = getSubject(servletRequest, servletResponse);
-            System.out.println(subject.isAuthenticated()+"");
+            System.out.println(subject.isAuthenticated() + "");
             System.out.println(HttpContextUtils.isAjaxRequest(request));
             log.info(request.getMethod());
             log.info(request.getRequestURL().toString());
@@ -47,9 +48,8 @@ public class CustomAccessControlFilter extends AccessControlFilter {
             if (StringUtils.isEmpty(token)) {
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
-
-            CustomPasswordToken customPasswordToken=new CustomPasswordToken(token);
-            getSubject(servletRequest, servletResponse).login(customPasswordToken);
+            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(token, token);
+            getSubject(servletRequest, servletResponse).login(usernamePasswordToken);
         } catch (BusinessException exception) {
             if (HttpContextUtils.isAjaxRequest(request)) {
                 customRsponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
