@@ -8,7 +8,6 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysUser;
-import io.swagger.models.auth.In;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * session管理器
@@ -36,6 +34,10 @@ public class HttpSessionService {
     private RolePermissionService rolePermissionService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private RoleService roleService;
 
     @Value("${redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
@@ -111,7 +113,8 @@ public class HttpSessionService {
             }
         } else {
             SecurityUtils.getSubject().logout();
-            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);        }
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+        }
     }
 
     /**
@@ -128,7 +131,8 @@ public class HttpSessionService {
                 return sessionInfo.getString(Constant.USERNAME_KEY);
             } else {
                 SecurityUtils.getSubject().logout();
-                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);            }
+                throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+            }
         } else {
             SecurityUtils.getSubject().logout();
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
@@ -195,6 +199,33 @@ public class HttpSessionService {
     }
 
     /**
+     * 根据用户id， 刷新redis用户权限
+     *
+     * @param userId
+     */
+    public void refreshUerId(String userId) {
+        Set<String> keys = redisDB.keys("#" + userId);
+        //如果修改了角色/权限， 那么刷新权限
+        for (String key : keys) {
+            JSONObject redisSession = JSON.parseObject(redisDB.get(key));
+
+            List<String> roleNames = getRolesByUserId(userId);
+            if (roleNames != null && !roleNames.isEmpty()) {
+                redisSession.put(Constant.ROLES_KEY, roleNames);
+            }
+            Set<String> permissions = getPermissionsByUserId(userId);
+            redisSession.put(Constant.PERMISSIONS_KEY, permissions);
+
+            Long redisTokenKeyExpire = redisDB.getExpire(key);
+            //刷新token绑定的角色权限
+            redisDB.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
+
+        }
+
+
+    }
+
+    /**
      * 根据角色id， 刷新redis用户权限
      *
      * @param roleId
@@ -254,6 +285,15 @@ public class HttpSessionService {
         }
 
         return randomStr.toString();
+    }
+
+
+    private List<String> getRolesByUserId(String userId) {
+        return roleService.getRoleNames(userId);
+    }
+
+    private Set<String> getPermissionsByUserId(String userId) {
+        return permissionService.getPermissionsByUserId(userId);
     }
 
 }

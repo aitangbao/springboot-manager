@@ -260,12 +260,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     public void setUserOwnRole(String userId, List<String> roleIds) {
         userRoleService.removeByUserId(userId);
         if (null != roleIds && !roleIds.isEmpty()) {
-
             UserRoleOperationReqVO reqVO = new UserRoleOperationReqVO();
             reqVO.setUserId(userId);
             reqVO.setRoleIds(roleIds);
             userRoleService.addUserRoleInfo(reqVO);
         }
 
+        httpSessionService.refreshUerId(userId);
     }
 }
