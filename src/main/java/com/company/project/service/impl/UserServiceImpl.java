@@ -51,6 +51,14 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     public String register(RegisterReqVO vo) {
+
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username", vo.getUsername());
+        SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+        if (sysUserOne != null) {
+            throw new BusinessException("用户名已存在！");
+        }
+
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(vo, sysUser);
         sysUser.setSalt(PasswordUtils.getSalt());
@@ -111,9 +119,21 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
+
+        //如果用户名变更
+        if (!sysUser.getUsername().equals(vo.getUsername())) {
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("username", vo.getUsername());
+            SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+            if (sysUserOne != null) {
+                throw new BusinessException("用户名已存在！");
+            }
+        }
+
         //如果用户名、密码、状态 变更，删除redis中用户绑定的角色跟权限
         if (!sysUser.getUsername().equals(vo.getUsername())
-                || !sysUser.getUsername().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt()))
+                || (!StringUtils.isEmpty(vo.getPassword())
+                    && !sysUser.getPassword().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt())))
                 || !sysUser.getStatus().equals(vo.getStatus())) {
             httpSessionService.abortUserById(vo.getId());
         }
