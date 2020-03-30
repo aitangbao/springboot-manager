@@ -15,7 +15,7 @@
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
 - 集成国人风格的knife4j，自动生成接口文档
-- 提供代码生成器，生成从Html到Mapper，自动赋给admin超级权限，爽歪歪
+- 提供代码生成器，生成从Html到Mapper，爽歪歪
 
 ## 项目演示
 - 演示地址：[http://manager.aitangbao.com.cn](http://manager.aitangbao.com.cn/login) 
