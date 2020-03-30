@@ -1,0 +1,16 @@
+-- 菜单SQL
+set @parentId = "65bdb02f47b94e71c2a2b9e459bde909"; -- 上级目录菜单id
+set @name = "${comments}"; -- 此目录名称，可修改
+set @identity = replace(uuid(),"-","");-- 此目录id
+INSERT INTO `sys_permission` (`id`, `name`, `pid`, `url`, `method`, `type`, `order_num`)
+    VALUES (@identity, @name ,@parentId, '/index/${classname}', "GET", '2', '10');
+
+-- 菜单对应按钮SQL
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`, `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '列表' , '${classname}/listByPage','${classname}:list', "GET", '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '新增' , '${classname}/add','${classname}:add', "POST", '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '修改' , '${classname}/update','${classname}:update', "PUT", '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '删除' , '${classname}/delete','${classname}:delete', "DELETE", '3');

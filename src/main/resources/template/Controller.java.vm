@@ -1,0 +1,86 @@
+package ${package}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import java.util.List;
+import com.company.project.common.utils.DataResult;
+
+import ${package}.entity.${className}Entity;
+import ${package}.service.${className}Service;
+
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Controller
+@RequestMapping("/")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+
+    /**
+    * 跳转到页面
+    */
+    @GetMapping("/index/${classname}")
+    public String ${classname}() {
+        return "${classname}/list";
+        }
+
+    @ApiOperation(value = "新增")
+    @PostMapping("${classname}/add")
+    @RequiresPermissions("${classname}:add")
+    @ResponseBody
+    public DataResult add(@RequestBody ${className}Entity ${classname}){
+        ${classname}Service.save(${classname});
+        return DataResult.success();
+    }
+
+    @ApiOperation(value = "删除")
+    @DeleteMapping("${classname}/delete")
+    @RequiresPermissions("${classname}:delete")
+    @ResponseBody
+    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
+            ${classname}Service.removeByIds(ids);
+            return DataResult.success();
+            }
+
+    @ApiOperation(value = "更新")
+    @PutMapping("${classname}/update")
+    @RequiresPermissions("${classname}:update")
+    @ResponseBody
+    public DataResult update(@RequestBody ${className}Entity ${classname}){
+            ${classname}Service.updateById(${classname});
+            return DataResult.success();
+            }
+
+    @ApiOperation(value = "查询分页数据")
+    @PostMapping("${classname}/listByPage")
+    @RequiresPermissions("${classname}:list")
+    @ResponseBody
+    public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
+            Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
+            QueryWrapper queryWrapper = new QueryWrapper();
+            //查询条件示例
+            //queryWrapper.eq("id", ${classname}.getId());
+            IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
+            return DataResult.success(iPage);
+            }
+
+}

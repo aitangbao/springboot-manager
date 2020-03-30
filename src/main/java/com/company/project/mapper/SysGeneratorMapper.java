@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  *  Mapper 接口
@@ -18,4 +21,8 @@ import org.apache.ibatis.annotations.Select;
 public interface SysGeneratorMapper extends BaseMapper<SysGenerator> {
 
     IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, @Param(value = "vo") SysGenerator vo);
+
+    Map<String, String> queryTable(String tableName);
+
+    List<Map<String, String>> queryColumns(String tableName);
 }

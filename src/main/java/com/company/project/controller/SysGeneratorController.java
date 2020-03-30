@@ -16,11 +16,14 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 
@@ -52,14 +55,22 @@ public class SysGeneratorController {
         return "generator/list";
     }
 
+    /**
+     * 生成代码
+     */
     @ApiOperation(value = "生成")
-    @PostMapping("sysGenerator/add")
+    @GetMapping("sysGenerator/add")
     @RequiresPermissions("sysGenerator:add")
     @LogAnnotation(title = "代码生成", action = "代码生成")
-    @ResponseBody
-    public DataResult add(@RequestBody SysGenerator sysGenerator) {
-        sysGeneratorService.gen(sysGenerator);
-        return DataResult.success();
+    public void code(String tables, HttpServletResponse response) throws IOException {
+        byte[] data = sysGeneratorService.generatorCode(tables.split(","));
+
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=\"manager.zip\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
+
+        IOUtils.write(data, response.getOutputStream());
     }
 
     @ApiOperation(value = "查询分页数据")
@@ -72,16 +83,5 @@ public class SysGeneratorController {
         return DataResult.success(iPage);
     }
 
-
-    //获取一级菜单list
-    @GetMapping("/sysGenerator/getOneMenuList")
-    @RequiresPermissions("sysGenerator:list")
-    @ResponseBody
-    public DataResult getOneMenuList() {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("id", "name").eq("type", 1);
-        List<Map<String, String>> map = permissionService.list(queryWrapper);
-        return DataResult.success(map);
-    }
 
 }

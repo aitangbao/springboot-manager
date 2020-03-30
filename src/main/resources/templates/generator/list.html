@@ -7,46 +7,6 @@
     <link rel="stylesheet" href="/css/custom.form.css">
 </head>
 <body>
-<div class="panel panel-default operation" hidden>
-    <div class="panel-heading title"></div>
-    <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
-            <div class="layui-form-item">
-                <label class="layui-form-label">表名</label>
-                <div class="layui-input-block">
-                    <input readonly type="tableName" name="tableName"  class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">菜单名称</label>
-                <div class="layui-input-block">
-                    <input type="menuName" name="menuName" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">上级菜单</label>
-                <div class="layui-input-block">
-                    <select id="pid" name="pid">
-                        <option value="">请选择内容</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-block">
-                    <input value="超级管理员" readonly  class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
-                    <button class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <div class="table_div">
     <div id="searchParam"  shiro:hasPermission="${entity?uncap_first}:list">
         <div class="layui-form-item">
@@ -154,16 +114,9 @@
         var data = obj.data;
         switch (obj.event) {
             case 'add':
-                if (!CoreUtil.isEmpty(data.id)) {
-                    layer.msg("请勿重复生成")
-                    break;
-                }
-                $(".table_div").hide();
-                $(".operation").show();
-                $(".title").html("代码生成");
-                $(".operation input[name=tableName]").val(data.tableName);
-                $(".operation input[name=menuName]").val("");
-                $(".operation input[name=pid]").val("");
+                var token = layui.data('LocalData').access_token;
+                token = token.replace("#","%23");//转义tokne中的#号
+                window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+data.tableName;
                 break;
         }
     });
@@ -175,20 +128,4 @@
         return false;
     });
 
-    //监听保存
-    form.on('submit(submit)', function (data) {
-        console.log(JSON.stringify(data.field))
-        if (CoreUtil.isEmpty(data.field.tableName)){layer.msg("菜单名称不能为空");}
-        if (CoreUtil.isEmpty(data.field.pid)){layer.msg("请选择上级目录");}
-        CoreUtil.sendAjax("/sysGenerator/add", JSON.stringify(data.field), function (res) {
-            $(".table_div").show();
-            $(".operation").hide();
-            reloadTable();
-            layer.msg("代码生成成功，请重启应用查看")
-        }, "POST", false, function (res) {
-            layer.msg("抱歉！您暂无权限");
-        });
-
-        return false;
-    });
 </script>

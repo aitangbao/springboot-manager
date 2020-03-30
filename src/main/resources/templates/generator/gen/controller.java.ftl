@@ -2,6 +2,7 @@ package ${package.Controller};
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.PageReqVO;
 import io.swagger.annotations.*;
@@ -11,7 +12,6 @@ import ${package.Entity}.${entity};
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import java.util.List;
 

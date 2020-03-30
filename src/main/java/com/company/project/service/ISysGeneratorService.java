@@ -18,5 +18,5 @@ public interface ISysGeneratorService extends IService<SysGenerator> {
 
     IPage<SysGenerator> selectAllTables(Page page, SysGenerator vo);
 
-    void gen(SysGenerator sysGenerator);
+    byte[] generatorCode(String[] split);
 }
