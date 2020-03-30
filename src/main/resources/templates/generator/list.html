@@ -25,6 +25,11 @@
 <script type="text/html" id="tool">
     <a class="layui-btn layui-btn-xs" lay-event="add" shiro:hasPermission="sysGenerator:add">生成</a>
 </script>
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="batchAdd" shiro:hasPermission="sysGenerator:add">批量生成</button>
+    </div>
+</script>
 </body>
 </html>
 <script src="/layui/layui.all.js"></script>
@@ -34,6 +39,8 @@
     var table = layui.table;
     var form = layui.form;
     var $ = layui.$;
+    var token = CoreUtil.getData("access_token");
+
 
     //渲染table
     table.render({
@@ -42,11 +49,9 @@
         , url: '/sysGenerator/listByPage' //数据接口
         , method: "POST"
         , contentType: 'application/json;charset=utf8'
-        , headers: {'authorization': CoreUtil.getData("access_token")}
+        , headers: {'authorization': token}
         , parseData: function (res) { //res 即为原始返回的数据
-            //select
-            addOption();
-            $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，重启应用即可；")
+            // $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，重启应用即可；")
             return {
                 "code": res.code, //解析接口状态
                 "msg": res.msg, //解析提示文本
@@ -56,19 +61,11 @@
         }
         , cols: [
             [ //表头
+                {type: 'checkbox', fixed: 'left'},
                 {field: 'tableName', title: '表名', width: 180, sort: true},
                 {field: 'tableComment', title: '表备注', width: 150, sort: true},
                 {field: 'createTime', title: '表创建时间', width: 180, sort: true},
-                {field: '', title: '是否已生成', width: 120, sort: true
-                    ,templet: function (d) {
-                        if (!CoreUtil.isEmpty(d.id)) {
-                            return '是'
-                        } else {
-                            return '否'
-                        }
-                    }},
-                {field: 'menuName', title: '菜单名称', width: 150, sort: true},
-                {field: 'genTime', title: '生成时间', width: 180, sort: true},
+                {field: 'genTime', title: '上次生成时间', width: 180, sort: true},
                 {width: 100, toolbar: "#tool", title: '操作'}
             ]
         ]
@@ -91,34 +88,37 @@
         reloadTable();
     })
 
-    //获取以及目录
-    var addOption = function () {
-        CoreUtil.sendAjax("/sysGenerator/getOneMenuList", null, function (res) {
-            var data = res.data;
-            if (data != "" && data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#pid").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
-                }
-                form.render();
-            }
-
-        }, "GET", false, function (res) {
-            layer.msg("抱歉！您暂无权限");
-        });
-    }
-
-
 
     //列操作
     table.on('tool(showTable)', function (obj) {
         var data = obj.data;
         switch (obj.event) {
             case 'add':
-                var token = layui.data('LocalData').access_token;
-                token = token.replace("#","%23");//转义tokne中的#号
+                token = token.replace("#","%23");//转义token中的#号
                 window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+data.tableName;
+                setTimeout(reloadTable, 1000)
                 break;
         }
+    });
+
+    table.on('toolbar(showTable)', function(obj){
+        switch(obj.event){
+            case 'batchAdd':
+                var checkStatus = table.checkStatus(obj.config.id);
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg("请选择要批量生成的表");
+                }else {
+                    var tables = [];
+                    $(data).each(function (index,item) {
+                        tables.push(item.tableName);
+                    });
+                    token = token.replace("#","%23");//转义token中的#号
+                    window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+tables.toString();
+                    setTimeout(reloadTable, 1000)
+                }
+                break;
+        };
     });
 
     //返回

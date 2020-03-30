@@ -1,13 +1,10 @@
 package com.company.project.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.service.PermissionService;
 import com.company.project.common.utils.DataResult;
-import com.company.project.vo.req.PageReqVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.company.project.service.ISysGeneratorService;
 import com.company.project.entity.SysGenerator;
@@ -19,8 +16,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;

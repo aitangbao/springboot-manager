@@ -19,29 +19,36 @@
     <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
 
 
-		SELECT
-			t1.tableComment,
-            t1.tableName,
-			t1.createTime,
-            t2.menu_name,
-            t2.gen_time,
-            t2.id
+        SELECT
+        t1.tableComment,
+        t1.tableName,
+        t1.createTime,
+        t2.gen_time
         FROM
-            (
-            SELECT
-                TABLE_NAME AS tableName, TABLE_COMMENT as tableComment, CREATE_TIME as createTime
-
-            FROM
-                information_schema.TABLES
-            WHERE
-                TABLE_SCHEMA = ( SELECT DATABASE ( ) )
-                <if test="vo.tableName != null and vo.tableName != ''">
-                    and TABLE_NAME LIKE concat('%',#{vo.tableName},'%')
-                </if>
-            ) AS t1
-            LEFT JOIN sys_generator t2 ON t1.tableName = t2.table_name
+        (
+        SELECT
+        TABLE_NAME AS tableName,
+        TABLE_COMMENT AS tableComment,
+        CREATE_TIME AS createTime
+        FROM
+        information_schema.TABLES
+        WHERE
+        TABLE_SCHEMA = ( SELECT DATABASE ( ) )
+        <if test="vo.tableName != null and vo.tableName != ''">
+            and TABLE_NAME LIKE concat('%',#{vo.tableName},'%')
+        </if>
+        ) AS t1
+        LEFT JOIN (
+        SELECT
+        table_name,
+        max( gen_time )  as gen_time
+        FROM
+        sys_generator
+        GROUP BY
+        table_name
+        ) t2 ON t1.tableName = t2.table_name
         ORDER BY
-            createTime desc
+        createTime DESC
 
     </select>
 

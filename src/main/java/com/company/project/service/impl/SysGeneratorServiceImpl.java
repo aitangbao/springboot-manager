@@ -1,39 +1,19 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DateType;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.company.project.common.utils.GenUtils;
 import com.company.project.entity.SysGenerator;
-import com.company.project.entity.SysPermission;
-import com.company.project.entity.SysRolePermission;
-import com.company.project.common.exception.BusinessException;
-import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysGeneratorMapper;
 import com.company.project.service.ISysGeneratorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.company.project.service.PermissionService;
-import com.company.project.service.RolePermissionService;
-import com.company.project.common.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -68,6 +48,10 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
             List<Map<String, String>> columns = queryColumns(tableName);
             //生成代码
             GenUtils.generatorCode(table, columns, zip);
+            SysGenerator sysGenerator = new SysGenerator();
+            sysGenerator.setGenTime(new Date());
+            sysGenerator.setTableName(tableName);
+            sysGeneratorMapper.insert(sysGenerator);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
