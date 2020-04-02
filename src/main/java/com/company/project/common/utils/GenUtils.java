@@ -140,10 +140,25 @@ public class GenUtils {
 
 
     /**
-     * 列名转换成Java属性名
+     *
+     * @Title: changeToJavaFiled
+     * @Description: TODO(将数据库中带下划线的字段转换为Java常用的驼峰字段)
+     * @param @param field
+     * @param @return    设定文件
+     * @return String    返回类型
+     * @author ll-t150
+     * @date 2017年11月17日 下午12:11:59
+     * @throws
      */
-    public static String columnToJava(String columnName) {
-        return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
+    public static String columnToJava(String field){
+        String[] fields = field.split("_");
+        StringBuilder sbuilder = new StringBuilder(fields[0]);
+        for (int i = 1; i < fields.length; i++) {
+            char[] cs=fields[i].toCharArray();
+            cs[0]-=32;
+            sbuilder.append(String.valueOf(cs));
+        }
+        return sbuilder.toString();
     }
 
     /**
