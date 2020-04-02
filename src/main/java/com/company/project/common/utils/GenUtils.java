@@ -139,16 +139,9 @@ public class GenUtils {
     }
 
 
+
     /**
-     *
-     * @Title: changeToJavaFiled
-     * @Description: TODO(将数据库中带下划线的字段转换为Java常用的驼峰字段)
-     * @param @param field
-     * @param @return    设定文件
-     * @return String    返回类型
-     * @author ll-t150
-     * @date 2017年11月17日 下午12:11:59
-     * @throws
+     * 列名转换成Java属性名
      */
     public static String columnToJava(String field){
         String[] fields = field.split("_");
@@ -160,6 +153,7 @@ public class GenUtils {
         }
         return sbuilder.toString();
     }
+
 
     /**
      * 表名转换成Java类名
