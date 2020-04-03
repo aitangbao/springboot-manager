@@ -39,8 +39,12 @@
       <div class="layui-input-inline">
         <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
       </div>
+
       <div class="layui-input-inline ">
         <button class="layui-btn"   id="search">查询</button>
+      </div>
+      <div class="layui-input-inline ">
+        <button class="layui-btn"   id="export">导出全部</button>
       </div>
     </div>
 
@@ -65,6 +69,7 @@
 <script src="/js/core.util.js"></script>
 <script>
   var layer = layui.layer;
+  var laydate = layui.laydate;
   var table = layui.table;
   var form = layui.form;
   var $ = layui.$;
@@ -159,6 +164,26 @@
         #end
         break;
     }
+  });
+
+  //导出
+  $('#export').on('click', function () {
+    var key = $('#key').val();
+    $.ajax({
+      type:'POST',
+      url:'/${classname}/listByPage',
+      headers: {
+        'authorization': CoreUtil.getData("access_token")
+      },
+      data: {
+        page:1,
+        limit:1000000000000,
+        key: key
+      },
+      success:function (res) {
+        table.exportFile("", res.data, 'xls');
+      }
+    });
   });
 
   //删除
