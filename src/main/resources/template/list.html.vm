@@ -42,8 +42,6 @@
 
       <div class="layui-input-inline ">
         <button class="layui-btn"   id="search">查询</button>
-      </div>
-      <div class="layui-input-inline ">
         <button class="layui-btn"   id="export">导出全部</button>
       </div>
     </div>
@@ -75,7 +73,7 @@
   var $ = layui.$;
 
   //渲染table
-  table.render({
+  var ins1 = table.render({
     elem: '#showTable'
     , page: true //开启分页
     , url: '/${classname}/listByPage' //数据接口
@@ -83,7 +81,6 @@
     , contentType: 'application/json;charset=utf8'
     , headers: {'authorization': CoreUtil.getData("access_token")}
     , parseData: function (res) { //res 即为原始返回的数据
-      console.log(JSON.stringify(res))
       return {
         "code": res.code, //解析接口状态
         "msg": res.msg, //解析提示文本
@@ -94,14 +91,14 @@
     , cols: [
               [ //表头
                 {type: 'checkbox', fixed: 'left'},
-    #foreach($column in $columns)
-      {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
-    #end
-  {width: 300, toolbar: "#tool", title: '操作'}
-  ]
-  ]
-  , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-          , id: 'tableId' //reload用
+      #foreach($column in $columns)
+        {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
+      #end
+        {width: 300, toolbar: "#tool", title: '操作'}
+              ]
+            ]
+    , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+    , id: 'tableId' //reload用
   });
 
   //刷新table
@@ -110,7 +107,7 @@
     //执行重载
     table.reload('tableId', {
       where: {
-        "key": key
+        //"key": key
       }
     }, 'data');
   }
@@ -141,8 +138,9 @@
         $(".operation").show();
         $(".title").html("新增");
         #foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val("");
+        $(".operation input[name=${column.attrname}]").val("");
         #end
+
         break;
     };
   });
@@ -168,20 +166,20 @@
 
   //导出
   $('#export').on('click', function () {
-    var key = $('#key').val();
     $.ajax({
       type:'POST',
       url:'/${classname}/listByPage',
+      dateType: "json",
+      contentType: 'application/json;charset=utf8',
       headers: {
         'authorization': CoreUtil.getData("access_token")
       },
-      data: {
+      data: JSON.stringify({
         page:1,
-        limit:1000000000000,
-        key: key
-      },
+        limit:10000000
+      }),
       success:function (res) {
-        table.exportFile("", res.data, 'xls');
+        table.exportFile(ins1.config.id, res.data, 'xls');
       }
     });
   });
