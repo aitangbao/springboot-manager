@@ -1,5 +1,6 @@
 package com.company.project.common.shiro;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -13,6 +14,11 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+    @Bean(name = "shiroDialect")
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
+    }
 
     @Bean
     public CustomHashedCredentialsMatcher customHashedCredentialsMatcher(){

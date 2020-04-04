@@ -1,5 +1,6 @@
 package com.company.project.common.shiro;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
@@ -14,6 +15,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,14 +34,14 @@ public class CustomRealm extends AuthorizingRealm {
     @Lazy
     private RoleService roleService;
     @Autowired
-    @Lazy
-    private HttpSessionService httpSessionService;
-    @Autowired
     private RedisService redisService;
     @Value("${redis.key.prefix.permissionRefresh}")
     private String redisPermissionRefreshKey;
     @Value("${redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
+    @Lazy
+    @Autowired
+    private RedisService redisDB;
 
     /**
      * 执行授权逻辑
@@ -50,12 +52,16 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        JSONObject redisSession = httpSessionService.getCurrentSession();
+        String sessionInfoStr = redisDB.get(USER_TOKEN_PREFIX + principalCollection.getPrimaryPrincipal());
+        if (StringUtils.isEmpty(sessionInfoStr)) {
+            throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
+        }
+        JSONObject redisSession = JSON.parseObject(sessionInfoStr);
         if (redisSession == null) {
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
 
-        String userId = httpSessionService.getCurrentUserId();
+        String userId = redisSession.getString(Constant.USERID_KEY);
         //如果修改了角色/权限， 那么刷新权限
         if (redisService.exists(redisPermissionRefreshKey + userId)) {
 
@@ -68,18 +74,18 @@ public class CustomRealm extends AuthorizingRealm {
             authorizationInfo.setStringPermissions(permissions);
             redisSession.put(Constant.PERMISSIONS_KEY, permissions);
 
-            String redisTokenKey = USER_TOKEN_PREFIX + httpSessionService.getTokenFromHeader();
+            String redisTokenKey = USER_TOKEN_PREFIX + principalCollection.getPrimaryPrincipal();
             Long redisTokenKeyExpire = redisService.getExpire(redisTokenKey);
             //刷新token绑定的角色权限
             redisService.setAndExpire(redisTokenKey, redisSession.toJSONString(), redisTokenKeyExpire);
             //刷新后删除权限刷新标志
             redisService.del(redisPermissionRefreshKey + userId);
         } else {
-            if (httpSessionService.getCurrentSession().get(Constant.ROLES_KEY) != null) {
-                authorizationInfo.addRoles((Collection<String>) httpSessionService.getCurrentSession().get(Constant.ROLES_KEY));
+            if (redisSession.get(Constant.ROLES_KEY) != null) {
+                authorizationInfo.addRoles((Collection<String>) redisSession.get(Constant.ROLES_KEY));
             }
-            if (httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY) != null) {
-                authorizationInfo.addStringPermissions((Collection<String>) httpSessionService.getCurrentSession().get(Constant.PERMISSIONS_KEY));
+            if (redisSession.get(Constant.PERMISSIONS_KEY) != null) {
+                authorizationInfo.addStringPermissions((Collection<String>) redisSession.get(Constant.PERMISSIONS_KEY));
             }
         }
 
