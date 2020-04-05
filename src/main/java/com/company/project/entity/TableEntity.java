@@ -23,6 +23,8 @@ public class TableEntity {
 	private String className;
 	//类名(第一个字母小写)，如：sys_user => sysUser
 	private String classname;
+	//类名(都小写)，如：sys_user => sysuser
+	private String classNameLower;
 	
 	public String getTableName() {
 		return tableName;
@@ -59,5 +61,13 @@ public class TableEntity {
 	}
 	public void setClassname(String classname) {
 		this.classname = classname;
+	}
+
+	public String getClassNameLower() {
+		return classNameLower;
+	}
+
+	public void setClassNameLower(String classNameLower) {
+		this.classNameLower = classNameLower;
 	}
 }

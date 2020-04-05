@@ -60,6 +60,7 @@ public class GenUtils {
         String className = tableToJava(tableEntity.getTableName(), config.getStringArray("tablePrefix"));
         tableEntity.setClassName(className);
         tableEntity.setClassname(StringUtils.uncapitalize(className));
+        tableEntity.setClassNameLower(className.toLowerCase());
 
         //列信息
         List<ColumnEntity> columsList = new ArrayList<>();
@@ -110,6 +111,7 @@ public class GenUtils {
         map.put("classname", tableEntity.getClassname());
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
+        map.put("classNameLower", tableEntity.getClassNameLower());
         map.put("hasBigDecimal", hasBigDecimal);
         map.put("mainPath", mainPath);
         map.put("package", config.getString("package"));

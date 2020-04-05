@@ -40,7 +40,7 @@ public class ${className}Controller {
     */
     @GetMapping("/index/${classname}")
     public String ${classname}() {
-        return "${classname}/list";
+        return "${classNameLower}/list";
         }
 
     @ApiOperation(value = "新增")

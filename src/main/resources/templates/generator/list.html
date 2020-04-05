@@ -20,7 +20,7 @@
 
     </div>
     <table class="layui-table" id="showTable" lay-filter="showTable"></table>
-
+    <div id="laypage" class="layui-laypage-btn"></div>
 </div>
 <script type="text/html" id="tool">
     <a class="layui-btn layui-btn-xs" lay-event="add" shiro:hasPermission="sysGenerator:add">生成</a>
@@ -35,97 +35,120 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js?v=1111"></script>
 <script>
-    var layer = layui.layer;
     var table = layui.table;
+    var laypage = layui.laypage
     var form = layui.form;
-    var $ = layui.$;
+    var layer = layui.layer;
+    var $ = jQuery = layui.jquery;
+    var laydate = layui.laydate;
+    var flag;
     var token = CoreUtil.getData("access_token");
 
-
-    //渲染table
-    table.render({
-        elem: '#showTable'
-        , page: true //开启分页
-        , url: '/sysGenerator/listByPage' //数据接口
-        , method: "POST"
-        , contentType: 'application/json;charset=utf8'
-        , headers: {'authorization': token}
-        , parseData: function (res) { //res 即为原始返回的数据
-            // $(".layui-table-tool-temp").html("生成之前，请确保要生成的表已设置主键列为id；生成完成后，重启应用即可；")
-            return {
-                "code": res.code, //解析接口状态
-                "msg": res.msg, //解析提示文本
-                "count": res.data.total, //解析数据长度
-                "data": res.data.records //解析数据列表
-            };
-        }
-        , cols: [
-            [ //表头
-                {type: 'checkbox', fixed: 'left'},
-                {field: 'tableName', title: '表名', width: 180, sort: true},
-                {field: 'tableComment', title: '表备注', width: 150, sort: true},
-                {field: 'createTime', title: '表创建时间', width: 180, sort: true},
-                {field: 'genTime', title: '上次生成时间', width: 180, sort: true},
-                {width: 100, toolbar: "#tool", title: '操作'}
-            ]
-        ]
-        , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-        , id: 'tableId' //reload用
-    });
-
-    //刷新table
-    var reloadTable = function () {
-        var tableName = $('#tableName').val();
-        //执行重载
-        table.reload('tableId', {
-            where: {
-                "tableName": tableName
-            }
-        }, 'data');
-    }
-    //搜索
-    $('#search').click(function () {
-        reloadTable();
-    })
-
-
-    //列操作
-    table.on('tool(showTable)', function (obj) {
-        var data = obj.data;
-        switch (obj.event) {
-            case 'add':
-                token = token.replace("#","%23");//转义token中的#号
-                window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+data.tableName;
-                setTimeout(reloadTable, 1000)
-                break;
-        }
-    });
-
-    table.on('toolbar(showTable)', function(obj){
-        switch(obj.event){
-            case 'batchAdd':
-                var checkStatus = table.checkStatus(obj.config.id);
-                var data = checkStatus.data;
-                if(data.length==0){
-                    layer.msg("请选择要批量生成的表");
-                }else {
-                    var tables = [];
-                    $(data).each(function (index,item) {
-                        tables.push(item.tableName);
-                    });
-                    token = token.replace("#","%23");//转义token中的#号
-                    window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+tables.toString();
-                    setTimeout(reloadTable, 1000)
-                }
-                break;
+    layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
+        var searchParam = {
+            pageNum: 1,
+            pageSize: 10
         };
+        CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
+            //初始化分页器
+            laypageTable(res.data.total, searchParam.pageNum);
+            //初始化渲染数据
+            if (res.data.records != null) {
+                loadTable(res.data.records);
+            }
+        }, "POST", false, function (res) {
+            layer.msg("抱歉！您暂无获取列表的权限");
+            var noAuthorityData = [];
+            loadTable(noAuthorityData);
+        });
+        //渲染分页插件
+        var laypageTable = function (count, currentPage) {
+            laypage.render({
+                elem: 'laypage'
+                , count: count
+                , limit: searchParam.pageSize
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , curr: location.hash.replace('#!currentPage=', '') //获取起始页
+                , hash: 'currentPage' //自定义hash值
+                , jump: function (obj, first) {
+                    if (!first) {
+                        flag = true;
+                        searchParam.pageNum = obj.curr;
+                        searchParam.pageSize = obj.limit;
+                        CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
+                            if (res.data.records != null) {
+                                loadTable(res.data.records);
+
+                                laypageTable(res.data.total, searchParam.pageNum);
+                            }
+
+                        }, "POST", false, function (res) {
+                            layer.msg("抱歉！您暂无获取列表的权限");
+                            var noAuthorityData = [];
+                            loadTable(noAuthorityData);
+                        });
+                    }
+                }
+            });
+        };
+
+        //渲染table
+        var loadTable = function (data) {
+            //展示已知数据
+            table.render({
+                elem: '#showTable'
+                , cols: [
+                    [
+                        {type: 'checkbox', fixed: 'left'},
+                        {field: 'tableName', title: '表名', width: 180, sort: true},
+                        {field: 'tableComment', title: '表备注', width: 150, sort: true},
+                        {field: 'createTime', title: '表创建时间', width: 180, sort: true},
+                        {field: 'genTime', title: '上次生成时间', width: 180, sort: true},
+                        {width: 100, toolbar: "#tool", title: '操作'}
+                    ]
+                ]
+                , data: data
+                , even: true
+                , limit: data.length
+                , limits: [10, 20, 30, 40, 50]
+                , toolbar: '#toolbar'
+
+
+            });
+        };
+
+        //表头工具栏事件
+        table.on('toolbar(showTable)', function (obj) {
+            switch(obj.event){
+                case 'batchAdd':
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg("请选择要批量生成的表");
+                    }else {
+                        var tables = [];
+                        $(data).each(function (index,item) {
+                            tables.push(item.tableName);
+                        });
+                        token = token.replace("#","%23");//转义token中的#号
+                        window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+tables.toString();
+                        setTimeout(reloadTable, 1000)
+                    }
+                    break;
+            };
+        });
+        //操作工具栏事件
+        table.on('tool(showTable)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'add':
+                    token = token.replace("#","%23");//转义token中的#号
+                    window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+data.tableName;
+                    setTimeout(reloadTable, 1000)
+                    break;
+            }
+        });
     });
 
-    //返回
-    $("#btn_cancel").click(function () {
-        $(".table_div").show();
-        $(".operation").hide();
-        return false;
-    });
 
 </script>

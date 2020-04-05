@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
-      xmlns:shiro="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -49,17 +49,17 @@
 
   </div>
   <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
-
+  <div id="laypage" class="layui-laypage-btn"></div>
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
     <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="${classname}:add">添加</button>
-    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="${classname}:deleted">删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="${classname}:delete">删除</button>
   </div>
 </script>
 <script type="text/html" id="tool">
   <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="${classname}:update">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="${classname}:deleted">删除</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="${classname}:delete">删除</a>
 </script>
 
 </body>
@@ -67,123 +67,176 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
-  var layer = layui.layer;
-  var laydate = layui.laydate;
+
   var table = layui.table;
+  var laypage = layui.laypage
   var form = layui.form;
-  var $ = layui.$;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+  var flag;
 
-  //渲染table
-  var ins1 = table.render({
-    elem: '#showTable'
-    , page: true //开启分页
-    , url: '/${classname}/listByPage' //数据接口
-    , method: "POST"
-    , contentType: 'application/json;charset=utf8'
-    , headers: {'authorization': CoreUtil.getData("access_token")}
-    , parseData: function (res) { //res 即为原始返回的数据
-      return {
-        "code": res.code, //解析接口状态
-        "msg": res.msg, //解析提示文本
-        "count": res.data.total, //解析数据长度
-        "data": res.data.records //解析数据列表
-      };
-    }
-    , cols: [
-              [ //表头
-                {type: 'checkbox', fixed: 'left'},
-      #foreach($column in $columns)
-        {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
-      #end
-        {width: 300, toolbar: "#tool", title: '操作'}
-              ]
-            ]
-    , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-    , id: 'tableId' //reload用
-  });
-
-  //刷新table
-  var reloadTable = function () {
-    var key = $('#key').val();
-    //执行重载
-    table.reload('tableId', {
-      where: {
-        //"key": key
-      }
-    }, 'data');
-  }
-  //搜索
-  $('#search').click(function () {
-    reloadTable();
-  })
-
-  //表头工具
-  table.on('toolbar(showTable)', function(obj){
-    var checkStatus = table.checkStatus(obj.config.id);
-    switch(obj.event){
-      case 'batchDeleted':
-        var checkStatus = table.checkStatus(obj.config.id);
-        var data = checkStatus.data;
-        if(data.length==0){
-          layer.msg("请选择要批量删除的列");
-        }else {
-          var ids = [];
-          $(data).each(function (index,item) {
-            ids.push(item.id);
-          });
-          tipDialog(ids);
-        }
-        break;
-      case 'add':
-        $(".table_div").hide();
-        $(".operation").show();
-        $(".title").html("新增");
-        #foreach($column in $columns)
-        $(".operation input[name=${column.attrname}]").val("");
-        #end
-
-        break;
+  layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
+    var ins1;
+    var searchParam = {
+      key: null,
+      pageNum: 1,
+      pageSize: 10
     };
-  });
-  //列操作
-  table.on('tool(showTable)',function (obj) {
-    var data = obj.data;
-    switch (obj.event) {
-      case 'del':
-        var ids=[];
-        ids.push(data.id);
-        tipDialog(ids);
-        break;
-      case 'edit':
-        $(".table_div").hide();
-        $(".operation").show();
-        $(".title").html("编辑");
-        #foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
-        #end
-        break;
-    }
-  });
+    CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+      //初始化分页器
+      laypageTable(res.data.total, searchParam.pageNum);
+      //初始化渲染数据
+      if (res.data.records != null) {
+        loadTable(res.data.records);
+      }
+    }, "POST", false, function (res) {
+      layer.msg("抱歉！您暂无获取列表的权限");
+      var noAuthorityData = [];
+      loadTable(noAuthorityData);
+    });
+    //渲染分页插件
+    var laypageTable = function (count, currentPage) {
+      laypage.render({
+        elem: 'laypage'
+        , count: count
+        , limit: searchParam.pageSize
+        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+        , curr: location.hash.replace('#!currentPage=', '') //获取起始页
+        , hash: 'currentPage' //自定义hash值
+        , jump: function (obj, first) {
+          if (!first) {
+            flag = true;
+            searchParam.pageNum = obj.curr;
+            searchParam.pageSize = obj.limit;
+            CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+              if (res.data.records != null) {
+                loadTable(res.data.records);
 
-  //导出
-  $('#export').on('click', function () {
-    $.ajax({
-      type:'POST',
-      url:'/${classname}/listByPage',
-      dateType: "json",
-      contentType: 'application/json;charset=utf8',
-      headers: {
-        'authorization': CoreUtil.getData("access_token")
-      },
-      data: JSON.stringify({
-        page:1,
-        limit:10000000
-      }),
-      success:function (res) {
-        table.exportFile(ins1.config.id, res.data, 'xls');
+                laypageTable(res.data.total, searchParam.pageNum);
+              }
+
+            }, "POST", false, function (res) {
+              layer.msg("抱歉！您暂无获取列表的权限");
+              var noAuthorityData = [];
+              loadTable(noAuthorityData);
+            });
+          }
+        }
+      });
+    };
+
+    //渲染table
+    var loadTable = function (data) {
+      //展示已知数据
+      ins1 = table.render({
+        elem: '#showTable'
+        , cols: [
+          [
+            {type: 'checkbox', fixed: 'left'},
+            #foreach($column in $columns)
+              {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
+            #end
+            {width: 120, toolbar: "#tool", title: '操作'}
+          ]
+        ]
+        , data: data
+        , even: true
+        , limit: data.length
+        , limits: [10, 20, 30, 40, 50]
+        , toolbar: '#toolbar'
+      });
+    };
+
+    //表头工具
+    table.on('toolbar(showTable)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'batchDeleted':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量删除的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialog(ids);
+          }
+          break;
+        case 'add':
+          $(".table_div").hide();
+          $(".operation").show();
+          $(".title").html("新增");
+          #foreach($column in $columns)
+            $(".operation input[name=${column.attrname}]").val("");
+          #end
+
+          break;
+      };
+    });
+    //列操作
+    table.on('tool(showTable)',function (obj) {
+      var data = obj.data;
+      switch (obj.event) {
+        case 'del':
+          var ids=[];
+          ids.push(data.id);
+          tipDialog(ids);
+          break;
+        case 'edit':
+          $(".table_div").hide();
+          $(".operation").show();
+          $(".title").html("编辑");
+          #foreach($column in $columns)
+            $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
+          #end
+          break;
       }
     });
+
+
+    //执行查询
+    $("#search").click(function () {
+      searchParam.key = $("#key").val();
+      searchParam.pageNum = 1;
+      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+        //初始化分页器
+        laypageTable(res.data.total, searchParam.pageNum);
+        //初始化渲染数据
+        if (res.data.records != null) {
+          loadTable(res.data.records);
+        }
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+    });
+
+    //导出
+    $('#export').on('click', function () {
+      searchParam.key = $("#key").val();
+      searchParam.pageNum = 1;
+      searchParam.pageSize = 10000;
+      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+        //初始化分页器
+        laypageTable(res.data.total, searchParam.pageNum);
+        //初始化渲染数据
+        if (res.data.records != null) {
+          loadTable(res.data.records);
+          table.exportFile(ins1.config.id, res.data.records, 'xls');
+        }
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+    });
+
   });
+
 
   //删除
   var tipDialog=function (ids) {
@@ -193,7 +246,7 @@
         layer.close(index); //如果设定了yes回调，需进行手工关闭
         CoreUtil.sendAjax("/${classname}/delete",JSON.stringify(ids),function (res) {
           layer.msg(res.msg, {time:1000},function () {
-            reloadTable();
+            $(".layui-laypage-btn").click();
           });
         },"DELETE",false,function (res) {
           layer.msg("抱歉！您暂无删除用户的权限");
@@ -215,7 +268,7 @@
       CoreUtil.sendAjax("/${classname}/add",JSON.stringify(data.field),function (res) {
         $(".table_div").show();
         $(".operation").hide();
-        reloadTable();
+        $(".layui-laypage-btn").click();
 
       },"POST",false,function (res) {
         layer.msg("抱歉！您暂无权限");
@@ -224,7 +277,7 @@
       CoreUtil.sendAjax("/${classname}/update",JSON.stringify(data.field),function (res) {
         $(".table_div").show();
         $(".operation").hide();
-        reloadTable();
+        $(".layui-laypage-btn").click();
 
       },"PUT",false,function (res) {
         layer.msg("抱歉！您暂无权限");
@@ -233,4 +286,11 @@
 
     return false;
   });
+
+
+
+
+
+
+
 </script>
