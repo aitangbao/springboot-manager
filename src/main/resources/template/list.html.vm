@@ -201,7 +201,6 @@
       //原先分页limit
       var limitOrg = searchParam.limit;
       searchParam.key = $("#key").val();
-      searchParam.limit = 1000000;
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
@@ -213,6 +212,8 @@
         var noAuthorityData = [];
         loadTable(noAuthorityData);
       });
+      searchParam.limit = 1000000;
+
     });
 
     //删除
