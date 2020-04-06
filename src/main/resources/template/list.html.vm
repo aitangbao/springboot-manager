@@ -198,13 +198,15 @@
 
     //导出
     $('#export').on('click', function () {
+      //原先分页limit
+      var limitOrg = searchParam.limit;
       searchParam.key = $("#key").val();
       searchParam.limit = 1000000;
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
-          loadTable(res.data.records);
           table.exportFile(ins1.config.id, res.data.records, 'xls');
+          searchParam.limit = limitOrg;
         }
       }, "POST", false, function (res) {
         layer.msg("抱歉！您暂无获取列表的权限");
