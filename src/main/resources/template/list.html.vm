@@ -82,10 +82,11 @@
       page: 1,
       limit: 10
     };
+    //初始化 获取数据
     loadData();
 
     function loadData(page){
-      searchParam.page = CoreUtil.isEmpty(page)?searchParam.page:page;
+      searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
         searchParam.page = res.data.current;
         searchParam.limit = res.data.size;
@@ -127,9 +128,9 @@
         , cols: [
           [
             {type: 'checkbox', fixed: 'left'},
-            #foreach($column in $columns)
-              {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
-            #end
+#foreach($column in $columns)
+            {field: '${column.attrname}', title: '${column.comments}', width: 300, sort: true},
+#end
             {width: 120, toolbar: "#tool", title: '操作'}
           ]
         ]
@@ -162,10 +163,9 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("新增");
-          #foreach($column in $columns)
-            $(".operation input[name=${column.attrname}]").val("");
-          #end
-
+#foreach($column in $columns)
+          $(".operation input[name=${column.attrname}]").val("");
+#end
           break;
       };
     });
@@ -182,9 +182,9 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("编辑");
-          #foreach($column in $columns)
-            $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
-          #end
+#foreach($column in $columns)
+          $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
+#end
           break;
       }
     });
@@ -260,14 +260,4 @@
       return false;
     });
   });
-
-
-
-
-
-
-
-
-
-
 </script>
