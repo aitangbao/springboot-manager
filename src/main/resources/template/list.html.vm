@@ -74,53 +74,46 @@
   var layer = layui.layer;
   var $ = jQuery = layui.jquery;
   var laydate = layui.laydate;
-  var flag;
 
   layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
     var ins1;
     var searchParam = {
       key: null,
-      pageNum: 1,
-      pageSize: 10
+      page: 1,
+      limit: 10
     };
-    CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-      //初始化分页器
-      laypageTable(res.data.total, searchParam.pageNum);
-      //初始化渲染数据
-      if (res.data.records != null) {
-        loadTable(res.data.records);
-      }
-    }, "POST", false, function (res) {
-      layer.msg("抱歉！您暂无获取列表的权限");
-      var noAuthorityData = [];
-      loadTable(noAuthorityData);
-    });
+    loadData();
+
+    function loadData(page){
+      searchParam.page = CoreUtil.isEmpty(page)?searchParam.page:page;
+      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+        searchParam.page = res.data.current;
+        searchParam.limit = res.data.size;
+
+        //初始化渲染数据
+        if (res.data.records != null) {
+          loadTable(res.data.records);
+        }
+        laypageTable(res.data.total);
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+    }
+
     //渲染分页插件
-    var laypageTable = function (count, currentPage) {
+    function laypageTable(total) {
       laypage.render({
         elem: 'laypage'
-        , count: count
-        , limit: searchParam.pageSize
+        , count: total
+        , limit: searchParam.limit
         , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-        , curr: location.hash.replace('#!currentPage=', '') //获取起始页
-        , hash: 'currentPage' //自定义hash值
+        , curr: searchParam.page //获取起始页
         , jump: function (obj, first) {
-          if (!first) {
-            flag = true;
-            searchParam.pageNum = obj.curr;
-            searchParam.pageSize = obj.limit;
-            CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-              if (res.data.records != null) {
-                loadTable(res.data.records);
-
-                laypageTable(res.data.total, searchParam.pageNum);
-              }
-
-            }, "POST", false, function (res) {
-              layer.msg("抱歉！您暂无获取列表的权限");
-              var noAuthorityData = [];
-              loadTable(noAuthorityData);
-            });
+          if(!first){
+            searchParam.page = obj.curr;
+            loadData()
           }
         }
       });
@@ -200,29 +193,14 @@
     //执行查询
     $("#search").click(function () {
       searchParam.key = $("#key").val();
-      searchParam.pageNum = 1;
-      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-        //初始化分页器
-        laypageTable(res.data.total, searchParam.pageNum);
-        //初始化渲染数据
-        if (res.data.records != null) {
-          loadTable(res.data.records);
-        }
-      }, "POST", false, function (res) {
-        layer.msg("抱歉！您暂无获取列表的权限");
-        var noAuthorityData = [];
-        loadTable(noAuthorityData);
-      });
+      loadData(1);
     });
 
     //导出
     $('#export').on('click', function () {
       searchParam.key = $("#key").val();
-      searchParam.pageNum = 1;
-      searchParam.pageSize = 10000;
+      searchParam.limit = 1000000;
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-        //初始化分页器
-        laypageTable(res.data.total, searchParam.pageNum);
         //初始化渲染数据
         if (res.data.records != null) {
           loadTable(res.data.records);
@@ -235,57 +213,56 @@
       });
     });
 
-  });
-
-
-  //删除
-  var tipDialog=function (ids) {
-    layer.open({
-      content: "确定要删除么?",
-      yes: function(index, layero){
-        layer.close(index); //如果设定了yes回调，需进行手工关闭
-        CoreUtil.sendAjax("/${classname}/delete",JSON.stringify(ids),function (res) {
-          layer.msg(res.msg, {time:1000},function () {
-            $(".layui-laypage-btn").click();
+    //删除
+    var tipDialog=function (ids) {
+      layer.open({
+        content: "确定要删除么?",
+        yes: function(index, layero){
+          layer.close(index); //如果设定了yes回调，需进行手工关闭
+          CoreUtil.sendAjax("/${classname}/delete",JSON.stringify(ids),function (res) {
+            layer.msg(res.msg, {time:1000},function () {
+              loadData(1);
+            });
+          },"DELETE",false,function (res) {
+            layer.msg("抱歉！您暂无删除用户的权限");
           });
-        },"DELETE",false,function (res) {
-          layer.msg("抱歉！您暂无删除用户的权限");
+        }
+      });
+    };
+
+    //返回
+    $("#btn_cancel").click(function() {
+      $(".table_div").show();
+      $(".operation").hide();
+      return false;
+    });
+
+    //监听保存
+    form.on('submit(submit)', function(data){
+      if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+        CoreUtil.sendAjax("/${classname}/add",JSON.stringify(data.field),function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          loadData(1);
+        },"POST",false,function (res) {
+          layer.msg("抱歉！您暂无权限");
+        });
+      }else {
+        CoreUtil.sendAjax("/${classname}/update",JSON.stringify(data.field),function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          loadData(1);
+        },"PUT",false,function (res) {
+          layer.msg("抱歉！您暂无权限");
         });
       }
+
+      return false;
     });
-  };
-
-  //返回
-  $("#btn_cancel").click(function() {
-    $(".table_div").show();
-    $(".operation").hide();
-    return false;
   });
 
-  //监听保存
-  form.on('submit(submit)', function(data){
-    if(data.field.id===undefined || data.field.id===null || data.field.id===""){
-      CoreUtil.sendAjax("/${classname}/add",JSON.stringify(data.field),function (res) {
-        $(".table_div").show();
-        $(".operation").hide();
-        $(".layui-laypage-btn").click();
 
-      },"POST",false,function (res) {
-        layer.msg("抱歉！您暂无权限");
-      });
-    }else {
-      CoreUtil.sendAjax("/${classname}/update",JSON.stringify(data.field),function (res) {
-        $(".table_div").show();
-        $(".operation").hide();
-        $(".layui-laypage-btn").click();
 
-      },"PUT",false,function (res) {
-        layer.msg("抱歉！您暂无权限");
-      });
-    }
-
-    return false;
-  });
 
 
 
