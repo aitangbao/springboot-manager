@@ -3,6 +3,7 @@ package com.company.project.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.company.project.vo.req.PageReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class SysRole implements Serializable {
+public class SysRole extends PageReqVO implements Serializable {
     @TableId(type = IdType.UUID)
     private String id;
 
@@ -29,6 +30,12 @@ public class SysRole implements Serializable {
 
     @TableField(exist = false)
     private List<PermissionRespNode> permissionRespNodes;
+
+    @TableField(exist = false)
+    private String startTime;
+
+    @TableField(exist = false)
+    private String endTime;
 
 
 }

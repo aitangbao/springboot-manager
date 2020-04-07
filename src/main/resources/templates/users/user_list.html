@@ -65,7 +65,7 @@
             <input type="text" id="nickName" class="layui-input"  autocomplete="off" placeholder="请输用户昵称">
         </div>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="createTime" placeholder="创建时间">
+            <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
         </div>
         <div class="layui-input-inline layui-form">
             <select  id="status"  >
@@ -81,7 +81,7 @@
 
 </div>
 <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
-<div id="laypage" class=" $(".layui-laypage-btn").click();"></div>
+<div id="laypage"></div>
 </div>
 <div id="deptTree" style="display: none"></div>
 <div id="roles" class="demo-transfer" style="display: none"></div>
@@ -111,7 +111,6 @@
 
     layui.use(['table','laypage', 'layer','laydate','tree','transfer'], function(){
         var searchParam= {
-            userId:null,
             username:null,
             status:null,
             startTime:null,
@@ -231,7 +230,6 @@
             }
         });
         $("#search").click(function () {
-            searchParam.userId=$("#userId").val();
             searchParam.status=$("#status").val();
             searchParam.username=$("#username").val();
             searchParam.nickName=$("#nickName").val();

@@ -191,7 +191,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             queryWrapper.like("nick_name", vo.getNickName());
         }
         if (!StringUtils.isEmpty(vo.getStatus())) {
-            queryWrapper.like("status", vo.getStatus());
+            queryWrapper.eq("status", vo.getStatus());
         }
         queryWrapper.orderByDesc("create_time");
         IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);

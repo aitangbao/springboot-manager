@@ -10,7 +10,6 @@ import com.company.project.mapper.SysRoleMapper;
 import com.company.project.mapper.SysUserRoleMapper;
 import com.company.project.service.*;
 import com.company.project.vo.req.RoleAddReqVO;
-import com.company.project.vo.req.RolePageReqVO;
 import com.company.project.vo.req.RolePermissionOperationReqVO;
 import com.company.project.vo.req.RoleUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
@@ -19,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -134,9 +134,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public IPage<SysRole> pageInfo(RolePageReqVO vo) {
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
-        return sysRoleMapper.selectAll(page, vo);
+    public IPage<SysRole> pageInfo(SysRole vo) {
+        Page page = new Page(vo.getPage(), vo.getLimit());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (!StringUtils.isEmpty(vo.getName())) {
+            queryWrapper.like("name", vo.getName());
+        }
+        if (!StringUtils.isEmpty(vo.getStartTime()) ) {
+            queryWrapper.gt("create_time", vo.getStartTime());
+        }
+        if (!StringUtils.isEmpty(vo.getEndTime()) ) {
+            queryWrapper.lt("create_time", vo.getEndTime());
+        }
+        if (!StringUtils.isEmpty(vo.getStatus())) {
+            queryWrapper.eq("status", vo.getStatus());
+        }
+        queryWrapper.orderByDesc("create_time");
+        return sysRoleMapper.selectPage(page, queryWrapper);
     }
 
     @Override

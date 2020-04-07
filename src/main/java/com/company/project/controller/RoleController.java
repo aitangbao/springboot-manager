@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.Constant;
 import com.company.project.vo.req.RoleAddReqVO;
-import com.company.project.vo.req.RolePageReqVO;
 import com.company.project.vo.req.RoleUpdateReqVO;
 import com.company.project.entity.SysRole;
 import com.company.project.service.RoleService;
@@ -64,7 +63,7 @@ public class RoleController {
     @ApiOperation(value = "分页获取角色信息接口")
     @LogAnnotation(title = "角色管理", action = "分页获取角色信息")
     @RequiresPermissions("sys:role:list")
-    public DataResult<IPage<SysRole>> pageInfo(@RequestBody RolePageReqVO vo) {
+    public DataResult<IPage<SysRole>> pageInfo(@RequestBody SysRole vo) {
         return DataResult.success(roleService.pageInfo(vo));
     }
 

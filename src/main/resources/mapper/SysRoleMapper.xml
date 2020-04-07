@@ -14,27 +14,4 @@
     id, `name`, description, `status`, create_time, update_time, deleted
   </sql>
 
-  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.company.project.vo.req.RolePageReqVO">
-    select <include refid="Base_Column_List"></include>
-    from sys_role
-    <where>
-      deleted=1
-      <if test="vo.roleName!=null and vo.roleName!=''">
-        AND name LIKE concat('%',#{vo.roleName},'%')
-      </if>
-      <if test="vo.startTime!=null and vo.startTime!=''">
-        AND create_time &gt;= #{vo.startTime}
-      </if>
-      <if test="vo.endTime!=null and vo.endTime!=''">
-        AND create_time &lt;= #{vo.endTime}
-      </if>
-      <if test="vo.roleId!=null and vo.roleId!='' ">
-        AND id=#{roleId}
-      </if>
-      <if test="vo.status!=null and vo.status!='' or vo.status==0 ">
-        AND `status`=#{vo.status}
-      </if>
-    </where>
-  </select>
-
 </mapper>
