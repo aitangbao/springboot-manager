@@ -142,7 +142,6 @@
 
     //表头工具
     table.on('toolbar(showTable)', function(obj){
-      var checkStatus = table.checkStatus(obj.config.id);
       switch(obj.event){
         case 'batchDeleted':
           var checkStatus = table.checkStatus(obj.config.id);
