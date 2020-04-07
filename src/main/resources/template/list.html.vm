@@ -49,7 +49,7 @@
 
   </div>
   <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
-  <div id="laypage" class="layui-laypage-btn"></div>
+  <div id="laypage"></div>
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
