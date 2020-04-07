@@ -10,9 +10,6 @@
 <div id="searchParam">
     <div class="layui-form-item" shiro:hasPermission="sys:log:list">
         <div class="layui-input-inline">
-            <input type="text" id="userId" class="layui-input" autocomplete="off" placeholder="用户ID">
-        </div>
-        <div class="layui-input-inline">
             <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
         </div>
         <div class="layui-input-inline">
@@ -28,7 +25,7 @@
 
 </div>
 <table class="layui-hide" id="log_table" lay-filter="log_table"></table>
-<div id="laypage" class="layui-laypage-btn"></div>
+<div id="laypage"></div>
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-group">
@@ -57,47 +54,41 @@
             operation: null,
             userId: null,
             endTime: null,
-            pageNum: 1,
-            pageSize: 10
+            page: 1,
+            limit: 10
         };
-        CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
-            //初始化分页器
-            laypageTable(res.data.total, searchParam.pageNum);
-            //初始化渲染数据
-            if (res.data.records != null) {
-                loadTable(res.data.records);
-            }
-        }, "POST", false, function (res) {
-            layer.msg("抱歉！您暂无获取操作日志列表的权限");
-            var noAuthorityData = [];
-            loadTable(noAuthorityData);
-        });
+        //初始化 获取数据
+        loadData();
+
+        function loadData(page){
+            searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
+            CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
+                //初始化渲染数据
+                if (res.data.records != null) {
+                    loadTable(res.data.records);
+                }
+                laypageTable(res.data.total);
+            }, "POST", false, function (res) {
+                layer.msg("抱歉！您暂无获取列表的权限");
+                var noAuthorityData = [];
+                loadTable(noAuthorityData);
+            });
+        }
         //渲染分页插件
-        var laypageTable = function (count, currentPage) {
+        var laypageTable = function (total) {
             laypage.render({
                 elem: 'laypage'
-                , count: count
-                , limit: searchParam.pageSize
+                , count: total
+                , limit: searchParam.limit
                 , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: location.hash.replace('#!currentPage=', '') //获取起始页
+                , curr: searchParam.page
                 , hash: 'currentPage' //自定义hash值
                 , jump: function (obj, first) {
                     if (!first) {
                         flag = true;
-                        searchParam.pageNum = obj.curr;
-                        searchParam.pageSize = obj.limit;
-                        CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
-                            if (res.data.records != null) {
-                                loadTable(res.data.records);
-
-                                laypageTable(res.data.total, searchParam.pageNum);
-                            }
-
-                        }, "POST", false, function (res) {
-                            layer.msg("抱歉！您暂无获取操作日志列表的权限");
-                            var noAuthorityData = [];
-                            loadTable(noAuthorityData);
-                        });
+                        searchParam.page = obj.curr;
+                        searchParam.limit = obj.limit;
+                        loadData()
                     }
                 }
             });
@@ -150,19 +141,7 @@
             searchParam.userId = $("#userId").val();
             searchParam.operation = $("#operation").val();
             searchParam.username = $("#username").val();
-            searchParam.pageNum = 1;
-            CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
-                //初始化分页器
-                laypageTable(res.data.total, searchParam.pageNum);
-                //初始化渲染数据
-                if (res.data.records != null) {
-                    loadTable(res.data.records);
-                }
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取操作日志列表的权限");
-                var noAuthorityData = [];
-                loadTable(noAuthorityData);
-            });
+            loadData(1)
         });
 
 
@@ -205,7 +184,7 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendAjax("/sys/logs", JSON.stringify(logIds), function (res) {
                         layer.msg(res.msg);
-                        $(".layui-laypage-btn").click();
+                        loadData(1);
                     }, "DELETE", false, function (res) {
                         layer.msg("抱歉！您暂无删除操作日志的权限");
                     });

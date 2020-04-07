@@ -1,7 +1,6 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.vo.req.SysLogPageReqVO;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysLog;
 import com.company.project.service.LogService;
@@ -26,7 +25,7 @@ public class SysLogController {
     @ApiOperation(value = "分页查询系统操作日志接口")
     @LogAnnotation(title = "系统操作日志管理", action = "分页查询系统操作日志")
     @RequiresPermissions("sys:log:list")
-    public DataResult<IPage<SysLog>> pageInfo(@RequestBody SysLogPageReqVO vo) {
+    public DataResult<IPage<SysLog>> pageInfo(@RequestBody SysLog vo) {
         return DataResult.success(logService.pageInfo(vo));
     }
 
