@@ -4,6 +4,7 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.utils.DateUtils;
 import com.company.project.entity.ColumnEntity;
 import com.company.project.entity.TableEntity;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -141,19 +142,18 @@ public class GenUtils {
     }
 
 
-
     /**
      * 列名转换成Java属性名
      */
-    public static String columnToJava(String field){
+    public static String columnToJava(String field) {
         String[] fields = field.split("_");
         StringBuilder sbuilder = new StringBuilder(fields[0]);
         for (int i = 1; i < fields.length; i++) {
-            char[] cs=fields[i].toCharArray();
-            cs[0]-=32;
+            char[] cs = fields[i].toCharArray();
+            cs[0] -= 32;
             sbuilder.append(String.valueOf(cs));
         }
-        return sbuilder.toString();
+        return sbuilder.toString().substring(0, 1).toUpperCase() + sbuilder.toString().substring(1);
     }
 
 
@@ -212,7 +212,7 @@ public class GenUtils {
         }
 
         if (template.contains("Dao.xml.vm")) {
-            return "main" + File.separator + "resources" + File.separator + "mapper"  + File.separator + className + "Mapper.xml";
+            return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
         }
 
         if (template.contains("menu.sql.vm")) {

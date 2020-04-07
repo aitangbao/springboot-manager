@@ -88,9 +88,6 @@
     function loadData(page){
       searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-        searchParam.page = res.data.current;
-        searchParam.limit = res.data.size;
-
         //初始化渲染数据
         if (res.data.records != null) {
           loadTable(res.data.records);
@@ -114,6 +111,7 @@
         , jump: function (obj, first) {
           if(!first){
             searchParam.page = obj.curr;
+            searchParam.limit = obj.limit;
             loadData()
           }
         }
@@ -200,19 +198,19 @@
     $('#export').on('click', function () {
       //原先分页limit
       var limitOrg = searchParam.limit;
+      searchParam.limit = 1000000;
       searchParam.key = $("#key").val();
       CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
           table.exportFile(ins1.config.id, res.data.records, 'xls');
-          searchParam.limit = limitOrg;
         }
       }, "POST", false, function (res) {
         layer.msg("抱歉！您暂无获取列表的权限");
         var noAuthorityData = [];
         loadTable(noAuthorityData);
       });
-      searchParam.limit = 1000000;
+      searchParam.limit = limitOrg;
 
     });
 
