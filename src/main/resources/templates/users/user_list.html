@@ -365,7 +365,7 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendAjax("/sys/user",JSON.stringify(userIds),function (res) {
                         layer.msg(res.msg);
-                        $(".layui-laypage-btn").click();
+                        loadData(1);
                     },"DELETE",false,function (res) {
                         layer.msg("抱歉！您暂无删除用户的权限");
                     });
@@ -381,7 +381,7 @@
                 CoreUtil.sendAjax("/sys/user",JSON.stringify(data.field),function (res) {
                     $(".user_table_div").show();
                     $(".operation_user").hide();
-                    $(".layui-laypage-btn").click();
+                    loadData(1);
                 },"POST",false,function (res) {
                     layer.msg("抱歉！您暂无新增用户的权限");
                 });
@@ -389,7 +389,7 @@
                 CoreUtil.sendAjax("/sys/user",JSON.stringify(data.field),function (res) {
                     $(".user_table_div").show();
                     $(".operation_user").hide();
-                    $(".layui-laypage-btn").click();
+                    loadData(1);
                 },"PUT",false,function (res) {
                     layer.msg("抱歉！您暂无编辑用户的权限");
                 });
