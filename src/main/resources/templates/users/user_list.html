@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/custom.form.css">
 </head>
 <body>
@@ -24,19 +24,20 @@
             <div class="layui-form-item">
                 <div class="layui-form-label ">密码</div>
                 <div class="layui-input-block">
-                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" >
+                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-form-label ">手机号</div>
                 <div class="layui-input-block">
-                    <input type="phone" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input" >
+                    <input type="phone" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-form-label ">所属部门</div>
                 <div class="layui-input-block">
-                    <input type="deptName" name="deptName" placeholder="请选择所属部门" autocomplete="off" class="layui-input" readonly="readonly" style="background:#eeeeee!important">
+                    <input type="deptName" name="deptName" placeholder="请选择所属部门" autocomplete="off" class="layui-input"
+                           readonly="readonly" style="background:#eeeeee!important">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -49,47 +50,48 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
-                    <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
+                    <button class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 <div class="user_table_div">
-<div id="searchParam"  shiro:hasPermission="sys:user:list">
-    <div class="layui-form-item">
-        <div class="layui-input-inline">
-            <input type="text" id="username" class="layui-input"  autocomplete="off" placeholder="请输入账号">
+    <div id="searchParam" shiro:hasPermission="sys:user:list">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" id="nickName" class="layui-input" autocomplete="off" placeholder="请输用户昵称">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
+            </div>
+            <div class="layui-input-inline layui-form">
+                <select id="status">
+                    <option value="">请选择账号状态</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                </select>
+            </div>
+            <div class="layui-input-inline ">
+                <button class="layui-btn" id="search">查询</button>
+            </div>
         </div>
-        <div class="layui-input-inline">
-            <input type="text" id="nickName" class="layui-input"  autocomplete="off" placeholder="请输用户昵称">
-        </div>
-        <div class="layui-input-inline">
-            <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
-        </div>
-        <div class="layui-input-inline layui-form">
-            <select  id="status"  >
-                <option value="">请选择账号状态</option>
-                <option value="1">正常</option>
-                <option value="2">禁用</option>
-            </select>
-        </div>
-        <div class="layui-input-inline ">
-            <button class="layui-btn"   id="search">查询</button>
-        </div>
-    </div>
 
-</div>
-<table class="layui-hide" id="user_table" lay-filter="user_table"></table>
-<div id="laypage"></div>
+    </div>
+    <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
+    <div id="laypage"></div>
 </div>
 <div id="deptTree" style="display: none"></div>
 <div id="roles" class="demo-transfer" style="display: none"></div>
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="addNewUser"  shiro:hasPermission="sys:user:add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sys:user:deleted">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addNewUser" shiro:hasPermission="sys:user:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sys:user:deleted">删除
+        </button>
     </div>
 </script>
 <script type="text/html" id="tool">
@@ -106,24 +108,24 @@
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
-    var tree=layui.tree;
-    var transfer=layui.transfer;
+    var tree = layui.tree;
+    var transfer = layui.transfer;
 
-    layui.use(['table','laypage', 'layer','laydate','tree','transfer'], function(){
-        var searchParam= {
-            username:null,
-            status:null,
-            startTime:null,
-            endTime:null,
-            nickName:null,
-            page:1,
-            limit:10
+    layui.use(['table', 'laypage', 'layer', 'laydate', 'tree', 'transfer'], function () {
+        var searchParam = {
+            username: null,
+            status: null,
+            startTime: null,
+            endTime: null,
+            nickName: null,
+            page: 1,
+            limit: 10
         }
 
         //初始化 获取数据
         loadData();
 
-        function loadData(page){
+        function loadData(page) {
             searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
             CoreUtil.sendAjax("/sys/users", JSON.stringify(searchParam), function (res) {
                 //初始化渲染数据
@@ -138,28 +140,28 @@
             });
         }
 
-        var laypageTable = function(total) {
+        var laypageTable = function (total) {
             laypage.render({
                 elem: 'total'
-                ,count: total
-                ,limit:searchParam.limit
-                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                ,curr: searchParam.page
-                ,hash: 'currentPage' //自定义hash值
-                , jump: function (obj,first) {
-                    if (!first){
-                        searchParam.pageNum=obj.curr;
-                        searchParam.pageSize=obj.limit;
+                , count: total
+                , limit: searchParam.limit
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , curr: searchParam.page
+                , hash: 'currentPage' //自定义hash值
+                , jump: function (obj, first) {
+                    if (!first) {
+                        searchParam.pageNum = obj.curr;
+                        searchParam.pageSize = obj.limit;
                         loadData()
                     }
                 }
             });
         };
         //渲染table
-        var loadTable=function (data) {
+        var loadTable = function (data) {
             table.render({
                 elem: '#user_table'
-                ,cols: [
+                , cols: [
                     [
                         {type: 'checkbox', fixed: 'left'},
                         {field: 'username', title: '账号', width: 130},
@@ -169,88 +171,88 @@
                         {field: 'nickName', title: '昵称', width: 130},
                         {field: 'email', title: '邮箱', width: 150},
                         {
-                            field: 'sex', title: '性别', width: 100, templet:function (item) {
-                                if(item.sex === 1){
-                                    return"男";
+                            field: 'sex', title: '性别', width: 100, templet: function (item) {
+                                if (item.sex === 1) {
+                                    return "男";
                                 }
-                                if (item.sex === 2){
-                                    return"女";
+                                if (item.sex === 2) {
+                                    return "女";
                                 }
                             }
                         },
                         {field: 'createTime', title: '创建时间', minWidth: 120},
                         {field: 'updateTime', title: '更新时间', minWidth: 120},
                         {
-                            field: 'status', title: '状态', width: 100,templet: function (item) {
-                                if(item.status === 1){
-                                    return  '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" checked disabled>';
+                            field: 'status', title: '状态', width: 100, templet: function (item) {
+                                if (item.status === 1) {
+                                    return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" checked disabled>';
                                 }
-                                if(item.status === 2){
-                                    return  '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" disabled>';
+                                if (item.status === 2) {
+                                    return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" disabled>';
                                 }
                             }
                         },
                         {
-                            field: 'createWhere', title: '注册涞源', width: 100,templet:function (item) {
-                                if(item.createWhere === 1){
-                                    return"Web";
+                            field: 'createWhere', title: '注册涞源', width: 100, templet: function (item) {
+                                if (item.createWhere === 1) {
+                                    return "Web";
                                 }
-                                if(item.createWhere ===2){
-                                    return"Android";
+                                if (item.createWhere === 2) {
+                                    return "Android";
                                 }
-                                if(item.createWhere === 3){
-                                    return"Ios";
+                                if (item.createWhere === 3) {
+                                    return "Ios";
                                 }
                             }
                         },
-                        {width:300,toolbar:"#tool",title:'操作'}
+                        {width: 300, toolbar: "#tool", title: '操作'}
                     ]
                 ]
-                ,data: data
-                ,even: true
-                ,limit: data.length
-                ,limits: [10, 20, 30, 40, 50]
-                ,toolbar:'#toolbar'
+                , data: data
+                , even: true
+                , limit: data.length
+                , limits: [10, 20, 30, 40, 50]
+                , toolbar: '#toolbar'
 
             });
         };
         laydate.render({
             elem: '#createTime'
-            ,type: 'datetime'
-            ,range: '~'
-            ,done: function(value, date, endDate){
-                if(value !=null && value != undefined && value != ""){
-                    searchParam.startTime=value.split("~")[0];
-                    searchParam.endTime=value.split("~")[1];
-                }else {
-                    searchParam.startTime=null;
-                    searchParam.endTime=null;
+            , type: 'datetime'
+            , range: '~'
+            , done: function (value, date, endDate) {
+                if (value != null && value != undefined && value != "") {
+                    searchParam.startTime = value.split("~")[0];
+                    searchParam.endTime = value.split("~")[1];
+                } else {
+                    searchParam.startTime = null;
+                    searchParam.endTime = null;
                 }
 
             }
         });
         $("#search").click(function () {
-            searchParam.status=$("#status").val();
-            searchParam.username=$("#username").val();
-            searchParam.nickName=$("#nickName").val();
+            searchParam.status = $("#status").val();
+            searchParam.username = $("#username").val();
+            searchParam.nickName = $("#nickName").val();
             loadData(1)
         });
 
-        table.on('toolbar(user_table)', function(obj){
+        table.on('toolbar(user_table)', function (obj) {
 
             var checkStatus = table.checkStatus(obj.config.id);
-            switch(obj.event){
+            switch (obj.event) {
                 case 'batchDeleted':
                     var checkStatus = table.checkStatus(obj.config.id);
                     var data = checkStatus.data;
-                    if(data.length==0){
+                    if (data.length == 0) {
                         layer.msg("请选择要批量删除的用户");
-                    }else {
+                    } else {
                         var userIds = [];
-                        $(data).each(function (index,item) {
+                        $(data).each(function (index, item) {
                             userIds.push(item.id);
                         });
-                        tipDialog(userIds,"选中的");
+                        tipDialog(userIds, "选中的");
                     }
                     break;
                 case 'addNewUser':
@@ -272,15 +274,16 @@
                     form.render(); //更新全部
                     initTree("");
                     break;
-            };
+            }
+            ;
         });
-        table.on('tool(user_table)',function (obj) {
+        table.on('tool(user_table)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
                 case 'del':
-                    var userIds=[];
+                    var userIds = [];
                     userIds.push(data.id);
-                    tipDialog(userIds,data.username);
+                    tipDialog(userIds, data.username);
                     break;
                 case 'edit':
                     $(".user_table_div").hide();
@@ -292,14 +295,14 @@
                     $(".operation_user input[name=password]").val("");
                     $(".operation_user input[name=phone]").val(data.phone);
                     $(".operation_user input[name=deptName]").val(data.deptName);
-                    if(data.status ==1){
+                    if (data.status == 1) {
                         $(".operation_user input[name=status]").attr('checked', 'checked');
                         $(".operation_user input[name=status]").attr('type', 'hidden').val(1);
                         var x = document.getElementsByClassName("layui-unselect layui-form-switch");
                         x[0].setAttribute("class", "layui-unselect layui-form-switch layui-form-onswitch");
                         var d = document.getElementsByTagName('em')[0];
                         d.firstChild.nodeValue = '启用';
-                    }else {
+                    } else {
                         $(".operation_user input[name=status]").attr('type', 'hidden').removeAttr("checked").val(2);
                         var x = document.getElementsByClassName("layui-unselect layui-form-switch");
                         x[0].setAttribute("class", "layui-unselect layui-form-switch");
@@ -310,7 +313,7 @@
                     initTree("");
                     break;
                 case 'operationRole':
-                    CoreUtil.sendAjax("/sys/user/roles/"+data.id,null,function (res) {
+                    CoreUtil.sendAjax("/sys/user/roles/" + data.id, null, function (res) {
                         initTransfer(res.data);
                         layer.open({
                             type: 1,
@@ -326,81 +329,81 @@
                                 //获得右侧数据
                                 var roleIds = [];
                                 var getData = transfer.getData('ownData');
-                                if(getData.length==0){
+                                if (getData.length == 0) {
                                     layer.msg("请选择要赋予用户的角色");
-                                }else {
+                                } else {
 
-                                    $(getData).each(function (index,item) {
+                                    $(getData).each(function (index, item) {
                                         roleIds.push(item.value);
                                     });
                                 }
-                                    CoreUtil.sendAjax("/sys/user/roles/"+data.id,JSON.stringify(roleIds),function (res) {
-                                        layer.msg(res.msg);
-                                        $(".layui-laypage-btn").click();
-                                    },"PUT",false,function (res) {
-                                        layer.msg("抱歉！您暂无赋予用户角色的权限");
-                                    });
+                                CoreUtil.sendAjax("/sys/user/roles/" + data.id, JSON.stringify(roleIds), function (res) {
+                                    layer.msg(res.msg);
+                                    $(".layui-laypage-btn").click();
+                                }, "PUT", false, function (res) {
+                                    layer.msg("抱歉！您暂无赋予用户角色的权限");
+                                });
 
                                 layer.close(index);
                             }
                         });
-                    },"GET",false,function (res) {
+                    }, "GET", false, function (res) {
                         layer.msg("抱歉！您暂无查询用户所拥有角色列表的权限");
                     });
 
                     break;
             }
         });
-        $("#btn_cancel").click(function() {
+        $("#btn_cancel").click(function () {
             $(".user_table_div").show();
             $(".operation_user").hide();
             return false;
         });
-        var tipDialog=function (userIds,username) {
+        var tipDialog = function (userIds, username) {
             layer.open({
-                content: '确定要删除'+username+"用户么?",
-                yes: function(index, layero){
+                content: '确定要删除' + username + "用户么?",
+                yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sys/user",JSON.stringify(userIds),function (res) {
+                    CoreUtil.sendAjax("/sys/user", JSON.stringify(userIds), function (res) {
                         layer.msg(res.msg);
                         loadData(1);
-                    },"DELETE",false,function (res) {
+                    }, "DELETE", false, function (res) {
                         layer.msg("抱歉！您暂无删除用户的权限");
                     });
                 }
             });
         };
-        form.on('switch(switch)', function(){
+        form.on('switch(switch)', function () {
             $(".operation_user input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 2);
 
         });
-        form.on('submit(submit)', function(data){
-            if(data.field.id===undefined || data.field.id===null || data.field.id===""){
-                CoreUtil.sendAjax("/sys/user",JSON.stringify(data.field),function (res) {
+        form.on('submit(submit)', function (data) {
+            if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
+                CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
                     $(".user_table_div").show();
                     $(".operation_user").hide();
                     loadData(1);
-                },"POST",false,function (res) {
+                }, "POST", false, function (res) {
                     layer.msg("抱歉！您暂无新增用户的权限");
                 });
-            }else {
-                CoreUtil.sendAjax("/sys/user",JSON.stringify(data.field),function (res) {
+            } else {
+                CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
                     $(".user_table_div").show();
                     $(".operation_user").hide();
                     loadData(1);
-                },"PUT",false,function (res) {
+                }, "PUT", false, function (res) {
                     layer.msg("抱歉！您暂无编辑用户的权限");
                 });
             }
             return false;
         });
-        var loadDeptTree=function (data) {
+        var loadDeptTree = function (data) {
             tree.render({
                 elem: '#deptTree'
-                ,data: data
-                ,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
-                ,click: function(obj){
-                    selectNode=obj;
+                , data: data
+                , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                , click: function (obj) {
+                    selectNode = obj;
                     layer.msg(JSON.stringify(selectNode.data.title));
                 }
             });
@@ -416,7 +419,7 @@
                 content: jQuery("#deptTree"),
                 btn: ['确定', '取消'],
                 yes: function (index) {
-                    if(selectNode.data!=null){
+                    if (selectNode.data != null) {
                         //选中回显
                         $(".operation_user input[name=deptId]").val(selectNode.data.id);
                         $(".operation_user input[name=deptName]").val(selectNode.data.title);
@@ -426,28 +429,28 @@
                 }
             });
         });
-        var initTree=function (id) {
-            var param={deptId:id}
-            CoreUtil.sendAjax("/sys/dept/tree",param,function (res) {
+        var initTree = function (id) {
+            var param = {deptId: id}
+            CoreUtil.sendAjax("/sys/dept/tree", param, function (res) {
                 loadDeptTree(res.data);
-            },"GET",false,function (res) {
+            }, "GET", false, function (res) {
                 layer.msg("抱歉！您暂无获取部门树的权限");
-                var noAuthorityData=[];
+                var noAuthorityData = [];
                 loadDeptTree(noAuthorityData);
             });
         };
-        var initTransfer=function (data) {
+        var initTransfer = function (data) {
             transfer.render({
                 elem: '#roles'
-                ,data: data.allRole
-                ,title: ['赋予角色', '拥有角色']
-                ,showSearch: true
-                ,value:data.ownRoles
-                ,id: 'ownData'
-                ,parseData: function(res){
+                , data: data.allRole
+                , title: ['赋予角色', '拥有角色']
+                , showSearch: true
+                , value: data.ownRoles
+                , id: 'ownData'
+                , parseData: function (res) {
                     return {
                         "value": res.id //数据值
-                        ,"title": res.name //数据标题
+                        , "title": res.name //数据标题
                     }
                 }
             })

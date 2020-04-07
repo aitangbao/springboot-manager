@@ -8,13 +8,13 @@
 </head>
 <body>
 <div class="table_div">
-    <div id="searchParam"  shiro:hasPermission="${entity?uncap_first}:list">
+    <div id="searchParam" shiro:hasPermission="${entity?uncap_first}:list">
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <input type="text" id="tableName" class="layui-input"  autocomplete="off" placeholder="请输入表名">
+                <input type="text" id="tableName" class="layui-input" autocomplete="off" placeholder="请输入表名">
             </div>
             <div class="layui-input-inline ">
-                <button class="layui-btn"   id="search">查询</button>
+                <button class="layui-btn" id="search">查询</button>
             </div>
         </div>
 
@@ -119,31 +119,32 @@
 
         //表头工具栏事件
         table.on('toolbar(showTable)', function (obj) {
-            switch(obj.event){
+            switch (obj.event) {
                 case 'batchAdd':
                     var checkStatus = table.checkStatus(obj.config.id);
                     var data = checkStatus.data;
-                    if(data.length==0){
+                    if (data.length == 0) {
                         layer.msg("请选择要批量生成的表");
-                    }else {
+                    } else {
                         var tables = [];
-                        $(data).each(function (index,item) {
+                        $(data).each(function (index, item) {
                             tables.push(item.tableName);
                         });
-                        token = token.replace("#","%23");//转义token中的#号
-                        window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+tables.toString();
+                        token = token.replace("#", "%23");//转义token中的#号
+                        window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + tables.toString();
                         setTimeout(reloadTable, 1000)
                     }
                     break;
-            };
+            }
+            ;
         });
         //操作工具栏事件
         table.on('tool(showTable)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
                 case 'add':
-                    token = token.replace("#","%23");//转义token中的#号
-                    window.location.href = "/sysGenerator/add?authorization="+token+"&tables="+data.tableName;
+                    token = token.replace("#", "%23");//转义token中的#号
+                    window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + data.tableName;
                     setTimeout(reloadTable, 1000)
                     break;
             }

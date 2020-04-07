@@ -60,7 +60,7 @@
         //初始化 获取数据
         loadData();
 
-        function loadData(page){
+        function loadData(page) {
             searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
             CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
                 //初始化渲染数据
@@ -74,6 +74,7 @@
                 loadTable(noAuthorityData);
             });
         }
+
         //渲染分页插件
         var laypageTable = function (total) {
             laypage.render({
