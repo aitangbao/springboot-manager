@@ -4,13 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.company.project.vo.req.PageReqVO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class SysUser implements Serializable {
+public class SysUser extends PageReqVO implements Serializable {
     @TableId(type = IdType.UUID)
     private String id;
 
@@ -49,4 +51,10 @@ public class SysUser implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+
+    @TableField(exist = false)
+    private String startTime;
+
+    @TableField(exist = false)
+    private String endTime;
 }

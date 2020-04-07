@@ -25,32 +25,6 @@
     sex, deleted, create_id, update_id, create_where, create_time, update_time
   </sql>
 
-  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.company.project.vo.req.UserPageReqVO">
-    select <include refid="Base_Column_List"></include>
-    from sys_user
-    <where>
-      deleted=1
-      <if test="vo.username!=null and vo.username!=''">
-        AND username LIKE concat('%',#{vo.username},'%')
-      </if>
-      <if test="vo.nickName!=null and vo.nickName!=''">
-        AND nick_name LIKE concat('%',#{vo.nickName},'%')
-      </if>
-      <if test="vo.startTime!=null and vo.startTime!=''">
-        AND create_time &gt;= #{vo.startTime}
-      </if>
-      <if test="vo.endTime!=null and vo.endTime!=''">
-        AND create_time &lt;= #{vo.endTime}
-      </if>
-      <if test="vo.userId!=null and vo.userId!='' ">
-        AND id=#{vo.userId}
-      </if>
-      <if test="vo.status!=null and vo.status!='' or vo.status==0 ">
-        AND `status`=#{vo.status}
-      </if>
-    </where>
-  </select>
-
   <select id="selectUserInfoByDeptIds" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"></include>
     from sys_user

@@ -59,9 +59,6 @@
 <div id="searchParam"  shiro:hasPermission="sys:user:list">
     <div class="layui-form-item">
         <div class="layui-input-inline">
-            <input type="text" id="userId" class="layui-input"  autocomplete="off" placeholder="请输入用户ID">
-        </div>
-        <div class="layui-input-inline">
             <input type="text" id="username" class="layui-input"  autocomplete="off" placeholder="请输入账号">
         </div>
         <div class="layui-input-inline">
@@ -111,6 +108,7 @@
     var laydate = layui.laydate;
     var tree=layui.tree;
     var transfer=layui.transfer;
+
     layui.use(['table','laypage', 'layer','laydate','tree','transfer'], function(){
         var searchParam= {
             userId:null,
@@ -119,42 +117,41 @@
             startTime:null,
             endTime:null,
             nickName:null,
-            pageNum:1,
-            pageSize:10
+            page:1,
+            limit:10
         }
-        CoreUtil.sendAjax("/sys/users",JSON.stringify(searchParam),function (res) {
-            laypageTable(res.data.total,searchParam.pageNum);
-            if(res.data.records !=null){
-                loadTable(res.data.records);
-            }
-        },"POST",false,function (res) {
-            layer.msg("抱歉！您暂无获取用户列表的权限");
-            var noAuthorityData=[];
-            loadTable(noAuthorityData);
-        });
-        var laypageTable = function(count,currentPage) {
+
+        //初始化 获取数据
+        loadData();
+
+        function loadData(page){
+            searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
+            CoreUtil.sendAjax("/sys/users", JSON.stringify(searchParam), function (res) {
+                //初始化渲染数据
+                if (res.data.records != null) {
+                    loadTable(res.data.records);
+                }
+                laypageTable(res.data.total);
+            }, "POST", false, function (res) {
+                layer.msg("抱歉！您暂无获取列表的权限");
+                var noAuthorityData = [];
+                loadTable(noAuthorityData);
+            });
+        }
+
+        var laypageTable = function(total) {
             laypage.render({
-                elem: 'laypage'
-                , count: count
-                ,limit:searchParam.pageSize
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                ,curr: location.hash.replace('#!currentPage=', '') //获取起始页
+                elem: 'total'
+                ,count: total
+                ,limit:searchParam.limit
+                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                ,curr: searchParam.page
                 ,hash: 'currentPage' //自定义hash值
                 , jump: function (obj,first) {
                     if (!first){
                         searchParam.pageNum=obj.curr;
                         searchParam.pageSize=obj.limit;
-                        CoreUtil.sendAjax("/sys/users",JSON.stringify(searchParam),function (res) {
-                            if(res.data.records !=null){
-                                loadTable(res.data.records);
-                                laypageTable(res.data.total,searchParam.pageNum);
-                            }
-
-                        },"POST",false,function (res) {
-                            layer.msg("抱歉！您暂无获取用户列表的权限");
-                            var noAuthorityData=[];
-                            loadTable(noAuthorityData);
-                        });
+                        loadData()
                     }
                 }
             });
@@ -238,17 +235,7 @@
             searchParam.status=$("#status").val();
             searchParam.username=$("#username").val();
             searchParam.nickName=$("#nickName").val();
-            searchParam.pageNum=1;
-            CoreUtil.sendAjax("/sys/users",JSON.stringify(searchParam),function (res) {
-                laypageTable(res.data.total,searchParam.pageNum);
-                if(res.data.records !=null){
-                    loadTable(res.data.records);
-                }
-            },"POST",false,function (res) {
-                layer.msg("抱歉！您暂无获取用户列表的权限");
-                var noAuthorityData=[];
-                loadTable(noAuthorityData);
-            });
+            loadData(1)
         });
 
         table.on('toolbar(user_table)', function(obj){

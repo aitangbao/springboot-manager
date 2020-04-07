@@ -34,9 +34,6 @@ public class LogServiceImpl implements LogService {
         if (!StringUtils.isEmpty(vo.getEndTime()) ) {
             queryWrapper.lt("create_time", vo.getEndTime());
         }
-        if (!StringUtils.isEmpty(vo.getUserId()) ) {
-            queryWrapper.eq("user_id", vo.getUserId());
-        }
         queryWrapper.orderByDesc("create_time");
         return sysLogMapper.selectPage(page, queryWrapper);
     }

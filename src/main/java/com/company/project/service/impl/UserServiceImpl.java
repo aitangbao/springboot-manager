@@ -175,9 +175,26 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public IPage<SysUser> pageInfo(UserPageReqVO vo) {
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
-        IPage<SysUser> iPage = sysUserMapper.selectAll(page, vo);
+    public IPage<SysUser> pageInfo(SysUser vo) {
+        Page page = new Page(vo.getPage(), vo.getLimit());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (!StringUtils.isEmpty(vo.getUsername())) {
+            queryWrapper.like("username", vo.getUsername());
+        }
+        if (!StringUtils.isEmpty(vo.getStartTime()) ) {
+            queryWrapper.gt("create_time", vo.getStartTime());
+        }
+        if (!StringUtils.isEmpty(vo.getEndTime()) ) {
+            queryWrapper.lt("create_time", vo.getEndTime());
+        }
+        if (!StringUtils.isEmpty(vo.getNickName())) {
+            queryWrapper.like("nick_name", vo.getNickName());
+        }
+        if (!StringUtils.isEmpty(vo.getStatus())) {
+            queryWrapper.like("status", vo.getStatus());
+        }
+        queryWrapper.orderByDesc("create_time");
+        IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
         if (!iPage.getRecords().isEmpty()) {
             for (SysUser sysUser : iPage.getRecords()) {
                 SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());

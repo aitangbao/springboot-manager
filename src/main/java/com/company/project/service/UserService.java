@@ -15,13 +15,10 @@ public interface UserService extends IService<SysUser> {
 
     LoginRespVO login(LoginReqVO vo);
 
-
-//    String refreshToken(String refreshToken,String accessToken);
-
     void updateUserInfo(UserUpdateReqVO vo, String operationId);
 
 
-    IPage<SysUser> pageInfo(UserPageReqVO vo);
+    IPage<SysUser> pageInfo(SysUser vo);
 
     SysUser detailInfo(String userId);
 

@@ -1,7 +1,6 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.common.exception.BusinessException;
 import com.company.project.service.HttpSessionService;
 import com.company.project.common.utils.ImageCodeUtil;
 import com.company.project.vo.req.*;
@@ -16,9 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -107,7 +104,7 @@ public class UserController {
     @ApiOperation(value = "分页获取用户列表接口")
     @RequiresPermissions("sys:user:list")
     @LogAnnotation(title = "用户管理", action = "分页获取用户列表")
-    public DataResult<IPage<SysUser>> pageInfo(@RequestBody UserPageReqVO vo) {
+    public DataResult<IPage<SysUser>> pageInfo(@RequestBody SysUser vo) {
         return DataResult.success(userService.pageInfo(vo));
     }
 
