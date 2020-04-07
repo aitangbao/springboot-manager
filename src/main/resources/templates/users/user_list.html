@@ -142,12 +142,11 @@
 
         var laypageTable = function (total) {
             laypage.render({
-                elem: 'total'
+                elem: 'laypage'
                 , count: total
                 , limit: searchParam.limit
                 , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                 , curr: searchParam.page
-                , hash: 'currentPage' //自定义hash值
                 , jump: function (obj, first) {
                     if (!first) {
                         searchParam.pageNum = obj.curr;
@@ -339,7 +338,7 @@
                                 }
                                 CoreUtil.sendAjax("/sys/user/roles/" + data.id, JSON.stringify(roleIds), function (res) {
                                     layer.msg(res.msg);
-                                    $(".layui-laypage-btn").click();
+                                    loadData(1);
                                 }, "PUT", false, function (res) {
                                     layer.msg("抱歉！您暂无赋予用户角色的权限");
                                 });
