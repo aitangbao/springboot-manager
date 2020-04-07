@@ -56,7 +56,7 @@ CREATE TABLE `sys_generator` (
   `table_name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '表名',
   `menu_name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '菜单名称',
   `pid` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '上级菜单',
-  `gen_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `gen_time` datetime DEFAULT NULL  COMMENT '上次生成时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin  COMMENT='代码生成';
 
