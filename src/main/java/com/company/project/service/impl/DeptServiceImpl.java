@@ -2,7 +2,6 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
@@ -14,9 +13,7 @@ import com.company.project.service.RedisService;
 import com.company.project.service.UserService;
 import com.company.project.common.utils.CodeUtil;
 import com.company.project.vo.req.DeptAddReqVO;
-import com.company.project.vo.req.DeptPageReqVO;
 import com.company.project.vo.req.DeptUpdateReqVO;
-import com.company.project.vo.req.UserPageUserByDeptReqVO;
 import com.company.project.vo.resp.DeptRespNodeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -138,12 +135,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public IPage<SysDept> pageInfo(DeptPageReqVO vo) {
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
-        return sysDeptMapper.selectPage(page, null);
-    }
-
-    @Override
     public List<DeptRespNodeVO> deptTreeList(String deptId) {
         List<SysDept> list;
         if (StringUtils.isEmpty(deptId)) {
@@ -194,19 +185,6 @@ public class DeptServiceImpl implements DeptService {
             }
         }
         return list;
-    }
-
-    @Override
-    public IPage<SysUser> pageDeptUserInfo(UserPageUserByDeptReqVO vo) {
-
-        SysDept sysDept = sysDeptMapper.selectById(vo.getDeptId());
-        if (null == sysDept) {
-            log.error("传入 的 id:{}不合法", vo.getDeptId());
-            throw new BusinessException(BaseResponseCode.DATA_ERROR);
-        }
-        List<String> strings = sysDeptMapper.selectChildIds(sysDept.getRelationCode());
-
-        return userService.selectUserInfoByDeptIds(vo.getPageNum(), vo.getPageSize(), strings);
     }
 
     @Override

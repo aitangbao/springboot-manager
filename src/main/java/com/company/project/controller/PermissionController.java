@@ -1,9 +1,7 @@
 package com.company.project.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionPageReqVO;
 import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import com.company.project.entity.SysPermission;
@@ -64,15 +62,6 @@ public class PermissionController {
         DataResult<SysPermission> result = DataResult.success();
         result.setData(permissionService.detailInfo(id));
         return result;
-    }
-
-    @PostMapping("/permissions")
-    @ApiOperation(value = "分页查询菜单权限接口")
-    @LogAnnotation(title = "菜单权限管理", action = "分页查询菜单权限")
-    @RequiresPermissions("sys:permission:list")
-    public DataResult<IPage<SysPermission>> pageInfo(@RequestBody PermissionPageReqVO vo) {
-        return DataResult.success(permissionService.pageInfo(vo));
-
     }
 
     @GetMapping("/permissions")

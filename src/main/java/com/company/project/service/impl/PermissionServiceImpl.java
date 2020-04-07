@@ -10,7 +10,6 @@ import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysPermissionMapper;
 import com.company.project.service.*;
 import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionPageReqVO;
 import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
@@ -209,26 +208,6 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         httpSessionService.refreshPermission(permissionId);
     }
 
-    /**
-     * 分页获取所有菜单权限
-     */
-    @Override
-    public IPage<SysPermission> pageInfo(PermissionPageReqVO vo) {
-
-        Page page = new Page(vo.getPageNum(), vo.getPageSize());
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByAsc("order_num");
-        IPage<SysPermission> result = sysPermissionMapper.selectPage(page, queryWrapper);
-        if (!result.getRecords().isEmpty()) {
-            for (SysPermission sysPermission : result.getRecords()) {
-                SysPermission parent = sysPermissionMapper.selectById(sysPermission.getPid());
-                if (parent != null) {
-                    sysPermission.setPidName(parent.getName());
-                }
-            }
-        }
-        return result;
-    }
 
     /**
      * 获取所有菜单权限

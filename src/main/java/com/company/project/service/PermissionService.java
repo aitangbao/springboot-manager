@@ -1,10 +1,8 @@
 package com.company.project.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysPermission;
 import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionPageReqVO;
 import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 
@@ -22,8 +20,6 @@ public interface PermissionService extends IService<SysPermission> {
     void updatePermission(PermissionUpdateReqVO vo);
 
     void deleted(String permissionId);
-
-    IPage<SysPermission> pageInfo(PermissionPageReqVO vo);
 
     List<SysPermission> selectAll();
 

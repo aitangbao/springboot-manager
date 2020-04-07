@@ -1,15 +1,11 @@
 package com.company.project.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysDept;
-import com.company.project.entity.SysUser;
 import com.company.project.service.DeptService;
 import com.company.project.common.utils.DataResult;
 import com.company.project.vo.req.DeptAddReqVO;
-import com.company.project.vo.req.DeptPageReqVO;
 import com.company.project.vo.req.DeptUpdateReqVO;
-import com.company.project.vo.req.UserPageUserByDeptReqVO;
 import com.company.project.vo.resp.DeptRespNodeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,14 +63,6 @@ public class DeptController {
         return result;
     }
 
-    @PostMapping("/depts")
-    @ApiOperation(value = "分页获取组织信息接口")
-    @LogAnnotation(title = "机构管理", action = "分页获取组织信息")
-    @RequiresPermissions("sys:dept:list")
-    public DataResult<IPage<SysDept>> pageInfo(@RequestBody DeptPageReqVO vo) {
-        return DataResult.success(deptService.pageInfo(vo));
-    }
-
     @GetMapping("/dept/tree")
     @ApiOperation(value = "树型组织列表接口")
     @LogAnnotation(title = "机构管理", action = "树型组织列表")
@@ -83,14 +71,6 @@ public class DeptController {
         DataResult<List<DeptRespNodeVO>> result = DataResult.success();
         result.setData(deptService.deptTreeList(deptId));
         return result;
-    }
-
-    @PostMapping("/dept/users")
-    @ApiOperation(value = "分页获取组织下所有用户接口")
-    @LogAnnotation(title = "机构管理", action = "分页获取组织下所有用户")
-    @RequiresPermissions("sys:dept:user:list")
-    public DataResult<IPage<SysUser>> pageDeptUserInfos(@RequestBody @Valid UserPageUserByDeptReqVO vo) {
-        return DataResult.success(deptService.pageDeptUserInfo(vo));
     }
 
     @GetMapping("/depts")
