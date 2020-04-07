@@ -1,13 +1,10 @@
 package com.company.project.vo.req;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * @ClassName: DeptPageReqVO
- */
+
 @Data
 public class PageReqVO {
     @ApiModelProperty(value = "第几页")
