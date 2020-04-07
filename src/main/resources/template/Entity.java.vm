@@ -29,14 +29,14 @@ public class ${className}Entity extends PageReqVO implements Serializable {
 	/**
 	 * $column.comments
 	 */
-	#if($column.columnName == $pk.columnName)
-@TableId
+#if($column.columnName == $pk.columnName)
+	@TableId
 	private $column.attrType $column.attrname;
-	#end
-	#if($column.columnName != $pk.columnName)
-@TableField("$column.columnName")
+#end
+#if($column.columnName != $pk.columnName)
+	@TableField("$column.columnName")
 	private $column.attrType $column.attrname;
-	#end
+#end
 
 #end
 

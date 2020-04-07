@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.company.project</groupId>
-    <artifactId>aitangbao</artifactId>
+    <artifactId>springboot-manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>company-frame</name>
     <description>Demo project for Spring Boot</description>
