@@ -149,8 +149,8 @@
                 , curr: searchParam.page
                 , jump: function (obj, first) {
                     if (!first) {
-                        searchParam.pageNum = obj.curr;
-                        searchParam.pageSize = obj.limit;
+                        searchParam.page = obj.curr;
+                        searchParam.limit = obj.limit;
                         loadData()
                     }
                 }
