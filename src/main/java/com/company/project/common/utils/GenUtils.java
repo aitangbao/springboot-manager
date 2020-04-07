@@ -161,8 +161,10 @@ public class GenUtils {
      * 表名转换成Java类名
      */
     public static String tableToJava(String tableName, String[] tablePrefixArray) {
+        tableName = tableName.toLowerCase();
         if (null != tablePrefixArray && tablePrefixArray.length > 0) {
             for (String tablePrefix : tablePrefixArray) {
+                tablePrefix = tablePrefix.toLowerCase();
                 tableName = tableName.replace(tablePrefix, "");
             }
         }
