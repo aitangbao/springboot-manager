@@ -53,30 +53,30 @@ public class ${className}Controller {
     @RequiresPermissions("${classname}:delete")
     @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
-            ${classname}Service.removeByIds(ids);
-            return DataResult.success();
-            }
+        ${classname}Service.removeByIds(ids);
+        return DataResult.success();
+    }
 
     @ApiOperation(value = "更新")
     @PutMapping("${classname}/update")
     @RequiresPermissions("${classname}:update")
     @ResponseBody
     public DataResult update(@RequestBody ${className}Entity ${classname}){
-            ${classname}Service.updateById(${classname});
-            return DataResult.success();
-            }
+        ${classname}Service.updateById(${classname});
+        return DataResult.success();
+    }
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("${classname}/listByPage")
     @RequiresPermissions("${classname}:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
-            Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
-            QueryWrapper queryWrapper = new QueryWrapper();
-            //查询条件示例
-            //queryWrapper.eq("id", ${classname}.getId());
-            IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
-            return DataResult.success(iPage);
-            }
+        Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        //查询条件示例
+        //queryWrapper.eq("id", ${classname}.getId());
+        IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
+        return DataResult.success(iPage);
+    }
 
 }
