@@ -116,14 +116,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deletedRole(String id) {
-        SysRole sysRole = new SysRole();
-        sysRole.setId(id);
-        sysRole.setUpdateTime(new Date());
-        sysRole.setDeleted(0);
-        int count = sysRoleMapper.updateById(sysRole);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysRoleMapper.deleteById(id);
 
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.select("user_id").eq("role_id", id);

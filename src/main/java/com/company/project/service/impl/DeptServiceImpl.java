@@ -126,12 +126,7 @@ public class DeptServiceImpl implements DeptService {
         if (!list.isEmpty()) {
             throw new BusinessException(BaseResponseCode.NOT_PERMISSION_DELETED_DEPT);
         }
-        sysDept.setDeleted(0);
-        sysDept.setUpdateTime(new Date());
-        int count = sysDeptMapper.updateById(sysDept);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysDeptMapper.deleteById(id);
     }
 
     @Override
