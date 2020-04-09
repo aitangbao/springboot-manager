@@ -30,7 +30,7 @@ public class ${className}Entity extends PageReqVO implements Serializable {
 	 * $column.comments
 	 */
 #if($column.columnName == $pk.columnName)
-	@TableId
+	@TableId("$column.columnName")
 	private $column.attrType $column.attrname;
 #end
 #if($column.columnName != $pk.columnName)
