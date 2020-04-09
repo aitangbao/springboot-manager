@@ -7,7 +7,6 @@ import com.company.project.entity.SysRole;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysRoleMapper;
-import com.company.project.mapper.SysUserRoleMapper;
 import com.company.project.service.*;
 import com.company.project.vo.req.RoleAddReqVO;
 import com.company.project.vo.req.RolePermissionOperationReqVO;

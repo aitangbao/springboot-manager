@@ -1,8 +1,6 @@
 package com.company.project.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.entity.SysDept;
-import com.company.project.entity.SysUser;
 import com.company.project.vo.req.DeptAddReqVO;
 import com.company.project.vo.req.DeptUpdateReqVO;
 import com.company.project.vo.resp.DeptRespNodeVO;

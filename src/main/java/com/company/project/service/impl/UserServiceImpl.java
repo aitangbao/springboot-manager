@@ -18,7 +18,6 @@ import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,15 +212,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public IPage<SysUser> selectUserInfoByDeptIds(int pageNum, int pageSize, List<String> deptIds) {
-        Page page = new Page(pageNum, pageSize);
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.in("dept_id", deptIds);
-        IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
-        return iPage;
-    }
-
-    @Override
     public void addUser(UserAddReqVO vo) {
 
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -274,13 +264,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
         httpSessionService.abortAllUserByToken();
 
-    }
-
-    @Override
-    public List<SysUser> getUserListByDeptId(String deptId) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("dept_id", deptId);
-        return sysUserMapper.selectList(queryWrapper);
     }
 
     @Override

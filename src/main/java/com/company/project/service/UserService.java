@@ -22,15 +22,11 @@ public interface UserService extends IService<SysUser> {
 
     SysUser detailInfo(String userId);
 
-    IPage<SysUser> selectUserInfoByDeptIds(int pageNum, int pageSize, List<String> deptIds);
-
     void addUser(UserAddReqVO vo);
 
     void logout();
 
     void updatePwd(UpdatePasswordReqVO vo,String userId);
-
-    List<SysUser> getUserListByDeptId(String deptId);
 
     List<SysUser> getUserListByDeptIds(List<String> deptIds);
 
