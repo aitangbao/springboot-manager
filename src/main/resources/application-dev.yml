@@ -10,17 +10,17 @@ spring:
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/company_project?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+          url: jdbc:mysql://localhost:3306/company_project?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
         slave_1:
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://xx.xx.xx.xx:3307/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+          url: jdbc:mysql://xx.xx.xx.xx:3307/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
         slave_2:
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://xx.xx.xx.xx:3308/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+          url: jdbc:mysql://xx.xx.xx.xx:3308/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
         #......省略
         #以上会配置一个默认库master，一个组slave下有两个子库slave_1,slave_2
 
