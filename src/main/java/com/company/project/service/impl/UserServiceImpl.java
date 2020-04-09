@@ -256,6 +256,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!PasswordUtils.matches(sysUser.getSalt(), vo.getOldPwd(), sysUser.getPassword())) {
             throw new BusinessException(BaseResponseCode.OLD_PASSWORD_ERROR);
         }
+        if (sysUser.getPassword().equals(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()))) {
+            throw new BusinessException("新密码不能与旧密码相同");
+        }
         sysUser.setUpdateTime(new Date());
         sysUser.setPassword(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()));
         int i = sysUserMapper.updateById(sysUser);
