@@ -27,23 +27,4 @@
     where relation_code LIKE CONCAT(#{relationCode},'%')
   </update>
 
-
-  <select id="selectChildIds" resultType="java.lang.String">
-    select id
-    from sys_dept
-    where relation_code LIKE CONCAT(#{relationCode},'%') and deleted=1
-  </select>
-
-
-  <select id="selectAllByNotContainChild" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"></include>
-    from sys_dept
-    <where>
-      deleted=1
-      and id not in
-      <foreach collection="list" open="(" close=")" separator="," item="item">
-      #{item}
-    </foreach>
-    </where>
-  </select>
 </mapper>

@@ -215,7 +215,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Override
     public IPage<SysUser> selectUserInfoByDeptIds(int pageNum, int pageSize, List<String> deptIds) {
         Page page = new Page(pageNum, pageSize);
-        IPage<SysUser> iPage = sysUserMapper.selectUserInfoByDeptIds(page, deptIds);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("dept_id", deptIds);
+        IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
         return iPage;
     }
 
@@ -295,11 +297,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         //删除用户， 删除redis的绑定的角色跟权限
         httpSessionService.abortUserByUserIds(userIds);
 
-        SysUser sysUser = new SysUser();
-        sysUser.setUpdateId(operationId);
-        sysUser.setUpdateTime(new Date());
-        sysUser.setDeleted(0);
-        sysUserMapper.deletedUsers(sysUser, userIds);
+        QueryWrapper queryWrapper  = new QueryWrapper();
+        queryWrapper.in("id", userIds);
+        sysUserMapper.delete(queryWrapper);
 
     }
 

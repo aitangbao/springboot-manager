@@ -9,8 +9,4 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface SysUserMapper extends BaseMapper<SysUser> {
-
-    IPage<SysUser> selectUserInfoByDeptIds (Page page, List<String> deptIds);
-
-    int deletedUsers(@Param("sysUser") SysUser sysUser,@Param("list") List<String> list);
 }

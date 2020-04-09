@@ -24,32 +24,4 @@
     id, username, salt, `password`, phone, dept_id, real_name, nick_name, email, `status`, 
     sex, deleted, create_id, update_id, create_where, create_time, update_time
   </sql>
-
-  <select id="selectUserInfoByDeptIds" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"></include>
-    from sys_user
-    where dept_id in
-    <foreach collection="list" open="(" close=")" separator="," item="item">
-      #{item}
-    </foreach>
-    and deleted=1
-  </select>
-
-
-  <update id="deletedUsers" parameterType="com.company.project.entity.SysUser">
-    update sys_user
-    <set>
-        deleted = 0,
-      <if test="sysUser.updateId != null">
-        update_id = #{sysUser.updateId,jdbcType=VARCHAR},
-      </if>
-      <if test="sysUser.updateTime != null">
-        update_time = #{sysUser.updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id in
-    <foreach collection="list" open="(" close=")" separator="," item="item">
-    #{item}
-  </foreach>
-  </update>
 </mapper>

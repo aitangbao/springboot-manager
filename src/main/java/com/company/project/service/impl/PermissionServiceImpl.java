@@ -1,8 +1,6 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysPermission;
 import com.company.project.common.exception.BusinessException;
@@ -15,13 +13,11 @@ import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -52,7 +48,10 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (permissionIds.isEmpty()) {
             return null;
         }
-        List<SysPermission> result = sysPermissionMapper.selectInfoByIds(permissionIds);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("id", permissionIds);
+        queryWrapper.orderByAsc("order_num");
+        List<SysPermission> result = sysPermissionMapper.selectList(queryWrapper);
         return result;
     }
 

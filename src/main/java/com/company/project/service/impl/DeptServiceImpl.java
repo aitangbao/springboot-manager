@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
@@ -121,7 +120,9 @@ public class DeptServiceImpl implements DeptService {
             log.error("传入 的 id:{}不合法", id);
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        List<String> deptIds = sysDeptMapper.selectChildIds(sysDept.getRelationCode());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.likeRight("relation_code", sysDept.getRelationCode());
+        List<String> deptIds = sysDeptMapper.selectObjs(queryWrapper);
         List<SysUser> list = userService.getUserListByDeptIds(deptIds);
         if (!list.isEmpty()) {
             throw new BusinessException(BaseResponseCode.NOT_PERMISSION_DELETED_DEPT);
@@ -139,8 +140,13 @@ public class DeptServiceImpl implements DeptService {
             if (sysDept == null) {
                 throw new BusinessException(BaseResponseCode.DATA_ERROR);
             }
-            List<String> childIds = sysDeptMapper.selectChildIds(sysDept.getRelationCode());
-            list = sysDeptMapper.selectAllByNotContainChild(childIds);
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.likeRight("relation_code", sysDept.getRelationCode());
+            List<String> childIds = sysDeptMapper.selectObjs(queryWrapper);
+
+            queryWrapper = new QueryWrapper();
+            queryWrapper.notIn("id", childIds);
+            list = sysDeptMapper.selectList(queryWrapper);
         }
         //默认加一个顶级方便新增顶级部门
         DeptRespNodeVO respNodeVO = new DeptRespNodeVO();
