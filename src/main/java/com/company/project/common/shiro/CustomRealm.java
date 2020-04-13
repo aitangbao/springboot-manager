@@ -35,9 +35,9 @@ public class CustomRealm extends AuthorizingRealm {
     private RoleService roleService;
     @Autowired
     private RedisService redisService;
-    @Value("${redis.key.prefix.permissionRefresh}")
+    @Value("${spring.redis.key.prefix.permissionRefresh}")
     private String redisPermissionRefreshKey;
-    @Value("${redis.key.prefix.userToken}")
+    @Value("${spring.redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
     @Lazy
     @Autowired

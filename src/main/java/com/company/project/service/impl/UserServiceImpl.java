@@ -45,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Autowired
     private HttpSessionService httpSessionService;
 
-    @Value("${redis.allowMultipleLogin}")
+    @Value("${spring.redis.allowMultipleLogin}")
     private Boolean allowMultipleLogin;
 
     @Override

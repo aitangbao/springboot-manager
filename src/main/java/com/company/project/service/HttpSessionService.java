@@ -36,15 +36,15 @@ public class HttpSessionService {
     @Autowired
     private RoleService roleService;
 
-    @Value("${redis.key.prefix.userToken}")
+    @Value("${spring.redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
 
-    @Value("${redis.key.expire.userToken}")
+    @Value("${spring.redis.key.expire.userToken}")
     private int EXPIRE;
 
-    @Value("${redis.key.prefix.permissionRefresh}")
+    @Value("${spring.redis.key.prefix.permissionRefresh}")
     private String redisPermissionRefreshKey;
-    @Value("${redis.key.expire.permissionRefresh}")
+    @Value("${spring.redis.key.expire.permissionRefresh}")
     private Long redisPermissionRefreshExpire;
 
     public String createTokenAndUser(SysUser user, List<String> roles, Set<String> permissions) {

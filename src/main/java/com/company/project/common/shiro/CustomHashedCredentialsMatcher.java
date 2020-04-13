@@ -20,7 +20,7 @@ public class CustomHashedCredentialsMatcher extends SimpleCredentialsMatcher {
     @Lazy
     @Autowired
     private RedisService redisDB;
-    @Value("${redis.key.prefix.userToken}")
+    @Value("${spring.redis.key.prefix.userToken}")
     private String USER_TOKEN_PREFIX;
 
     @Override
