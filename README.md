@@ -4,7 +4,7 @@
 基于SpringBoot 、Apache Shiro、Redis、Mybatis Plus 、Thymeleaf、Layui 后台管理系统  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
-开发最精简，可当脚手架，适合你来diy
+开发最精简，可当脚手架，适合你来diy  
 
 ## 特征&提供
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
@@ -16,8 +16,12 @@
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
 - 集成国人风格的knife4j，自动生成接口文档
-- 提供代码生成器，生成从Html到Mapper，爽歪歪
+- 提供代码生成器，生成从Html到Mapper，爽歪歪  
 
+## 代码仓库
+Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
+GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager) 
+  
 ## 项目演示
 - 演示地址：[http://manager.aitangbao.com.cn](http://manager.aitangbao.com.cn/login) 
 - 账号密码：guest/123456
