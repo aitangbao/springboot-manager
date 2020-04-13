@@ -6,7 +6,7 @@
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
 开发最精简，可当脚手架，适合你来diy  
 
-## 特征&提供
+## 特征
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
 - 采用RBAC的权限控制
 - 统一响应结果封装及生成工具
@@ -66,6 +66,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ![image-20200318173110441](http://tuchuang.aitangbao.com.cn/image-20200318173110441.png)
 
 ### 交流群
-<img width="250px" height="300px" src="http://manager.aitangbao.com.cn/ai/images/weixin_share.jpg" alt="PHOTO_20200408_164753270" style="zoom:25%;" />
+<img width="250px" height="300px" src="http://www.aitangbao.com.cn/static/weixin_share.jpg" alt="" style="zoom:25%;" />
 
 
