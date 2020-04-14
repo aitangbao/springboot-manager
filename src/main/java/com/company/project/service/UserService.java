@@ -15,14 +15,14 @@ public interface UserService extends IService<SysUser> {
 
     LoginRespVO login(LoginReqVO vo);
 
-    void updateUserInfo(UserUpdateReqVO vo, String operationId);
+    void updateUserInfo(SysUser vo, String operationId);
 
 
     IPage<SysUser> pageInfo(SysUser vo);
 
     SysUser detailInfo(String userId);
 
-    void addUser(UserAddReqVO vo);
+    void addUser(SysUser vo);
 
     void logout();
 
@@ -36,5 +36,5 @@ public interface UserService extends IService<SysUser> {
 
     void setUserOwnRole(String userId,List<String> roleIds);
 
-    void updateUserInfoMy(UserUpdateReqVO vo, String userId);
+    void updateUserInfoMy(SysUser vo, String userId);
 }

@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,10 @@ public class UserController {
     @ApiOperation(value = "更新用户信息接口")
     @LogAnnotation(title = "用户管理", action = "更新用户信息")
     @RequiresPermissions("sys:user:update")
-    public DataResult updateUserInfo(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
+    public DataResult updateUserInfo(@RequestBody SysUser vo) {
+        if (StringUtils.isEmpty(vo.getId())) {
+            return DataResult.fail("id不能为空");
+        }
         String userId = httpSessionService.getCurrentUserId();
         userService.updateUserInfo(vo, userId);
         return DataResult.success();
@@ -73,7 +77,7 @@ public class UserController {
     @PutMapping("/user/info")
     @ApiOperation(value = "更新用户信息接口")
     @LogAnnotation(title = "用户管理", action = "更新用户信息")
-    public DataResult updateUserInfoById(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
+    public DataResult updateUserInfoById(@RequestBody SysUser vo, HttpServletRequest request) {
         String userId = httpSessionService.getCurrentUserId();
         vo.setId(userId);
         userService.updateUserInfoMy(vo, userId);
@@ -112,7 +116,7 @@ public class UserController {
     @ApiOperation(value = "新增用户接口")
     @RequiresPermissions("sys:user:add")
     @LogAnnotation(title = "用户管理", action = "新增用户")
-    public DataResult addUser(@RequestBody @Valid UserAddReqVO vo) {
+    public DataResult addUser(@RequestBody @Valid SysUser vo) {
         userService.addUser(vo);
         return DataResult.success();
     }

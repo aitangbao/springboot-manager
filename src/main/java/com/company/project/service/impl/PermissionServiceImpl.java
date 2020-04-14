@@ -162,7 +162,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         /**
          * 所有管理这个菜单权限用户将重新刷新token
          */
-        if (StringUtils.isEmpty(update.getPerms()) && !sysPermission.getPerms().equals(update.getPerms())) {
+        if (!sysPermission.getPerms().equals(update.getPerms())) {
             //刷新权限
             httpSessionService.refreshPermission(update.getId());
         }

@@ -8,15 +8,13 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysRoleMapper;
 import com.company.project.service.*;
-import com.company.project.vo.req.RoleAddReqVO;
 import com.company.project.vo.req.RolePermissionOperationReqVO;
-import com.company.project.vo.req.RoleUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -37,43 +35,38 @@ public class RoleServiceImpl implements RoleService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public SysRole addRole(RoleAddReqVO vo) {
+    public SysRole addRole(SysRole vo) {
 
-        SysRole sysRole = new SysRole();
-        BeanUtils.copyProperties(vo, sysRole);
-        sysRole.setCreateTime(new Date());
-        int count = sysRoleMapper.insert(sysRole);
+        vo.setCreateTime(new Date());
+        int count = sysRoleMapper.insert(vo);
         if (count != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
         if (null != vo.getPermissions() && !vo.getPermissions().isEmpty()) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
-            reqVO.setRoleId(sysRole.getId());
+            reqVO.setRoleId(vo.getId());
             reqVO.setPermissionIds(vo.getPermissions());
             rolePermissionService.addRolePermission(reqVO);
         }
 
-        return sysRole;
+        return vo;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateRole(RoleUpdateReqVO vo, String accessToken) {
+    public void updateRole(SysRole vo) {
         SysRole sysRole = sysRoleMapper.selectById(vo.getId());
         if (null == sysRole) {
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        SysRole update = new SysRole();
-        BeanUtils.copyProperties(vo, update);
-//        BeanUtils.copyProperties(vo,sysRole);
-        update.setUpdateTime(new Date());
-        int count = sysRoleMapper.updateById(update);
+        vo.setUpdateTime(new Date());
+        int count = sysRoleMapper.updateById(vo);
         if (count != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
         rolePermissionService.removeByRoleId(sysRole.getId());
-        if (null != vo.getPermissions() && !vo.getPermissions().isEmpty()) {
+        if (!CollectionUtils.isEmpty(vo.getPermissions())) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
             reqVO.setRoleId(sysRole.getId());
             reqVO.setPermissionIds(vo.getPermissions());

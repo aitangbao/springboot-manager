@@ -47,6 +47,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Value("${spring.redis.allowMultipleLogin}")
     private Boolean allowMultipleLogin;
+    @Value("${spring.profiles.active}")
+    private String env;//当前激活的配置文件
 
     @Override
     public String register(RegisterReqVO vo) {
@@ -110,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
 
     @Override
-    public void updateUserInfo(UserUpdateReqVO vo, String operationId) {
+    public void updateUserInfo(SysUser vo, String operationId) {
 
 
         SysUser sysUser = sysUserMapper.selectById(vo.getId());
@@ -132,7 +134,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         //如果用户名、密码、状态 变更，删除redis中用户绑定的角色跟权限
         if (!sysUser.getUsername().equals(vo.getUsername())
                 || (!StringUtils.isEmpty(vo.getPassword())
-                    && !sysUser.getPassword().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt())))
+                && !sysUser.getPassword().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt())))
                 || !sysUser.getStatus().equals(vo.getStatus())) {
             httpSessionService.abortUserById(vo.getId());
         }
@@ -151,7 +153,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public void updateUserInfoMy(UserUpdateReqVO vo, String operationId) {
+    public void updateUserInfoMy(SysUser vo, String operationId) {
 
 
         SysUser sysUser = sysUserMapper.selectById(vo.getId());
@@ -180,10 +182,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!StringUtils.isEmpty(vo.getUsername())) {
             queryWrapper.like("username", vo.getUsername());
         }
-        if (!StringUtils.isEmpty(vo.getStartTime()) ) {
+        if (!StringUtils.isEmpty(vo.getStartTime())) {
             queryWrapper.gt("create_time", vo.getStartTime());
         }
-        if (!StringUtils.isEmpty(vo.getEndTime()) ) {
+        if (!StringUtils.isEmpty(vo.getEndTime())) {
             queryWrapper.lt("create_time", vo.getEndTime());
         }
         if (!StringUtils.isEmpty(vo.getNickName())) {
@@ -212,7 +214,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public void addUser(UserAddReqVO vo) {
+    public void addUser(SysUser vo) {
 
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("username", vo.getUsername());
@@ -221,19 +223,17 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             throw new BusinessException("用户已存在，请勿重复添加！");
         }
 
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(vo, sysUser);
-        sysUser.setSalt(PasswordUtils.getSalt());
-        String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
-        sysUser.setPassword(encode);
-        sysUser.setCreateTime(new Date());
-        int i = sysUserMapper.insert(sysUser);
+        vo.setSalt(PasswordUtils.getSalt());
+        String encode = PasswordUtils.encode(vo.getPassword(), vo.getSalt());
+        vo.setPassword(encode);
+        vo.setCreateTime(new Date());
+        int i = sysUserMapper.insert(vo);
         if (i != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
         if (null != vo.getRoleIds() && !vo.getRoleIds().isEmpty()) {
             UserRoleOperationReqVO reqVO = new UserRoleOperationReqVO();
-            reqVO.setUserId(sysUser.getId());
+            reqVO.setUserId(vo.getId());
             reqVO.setRoleIds(vo.getRoleIds());
             userRoleService.addUserRoleInfo(reqVO);
         }
@@ -253,6 +253,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (sysUser == null) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
+        if ("test".equals(env) && "guest".equals(sysUser.getUsername())) {
+            throw new BusinessException("演示环境禁止修改演示账号密码");
+        }
+
         if (!PasswordUtils.matches(sysUser.getSalt(), vo.getOldPwd(), sysUser.getPassword())) {
             throw new BusinessException(BaseResponseCode.OLD_PASSWORD_ERROR);
         }
@@ -283,7 +287,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         //删除用户， 删除redis的绑定的角色跟权限
         httpSessionService.abortUserByUserIds(userIds);
 
-        QueryWrapper queryWrapper  = new QueryWrapper();
+        QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.in("id", userIds);
         sysUserMapper.delete(queryWrapper);
 

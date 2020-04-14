@@ -8,22 +8,27 @@ import com.company.project.vo.req.PageReqVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SysUser extends PageReqVO implements Serializable {
     @TableId(type = IdType.UUID)
     private String id;
 
+    @NotBlank(message = "账号不能为空")
     private String username;
 
     private String salt;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     private String phone;
 
+    @NotBlank(message = "所属机构不能为空")
     private String deptId;
 
     @TableField(exist = false)
@@ -57,4 +62,7 @@ public class SysUser extends PageReqVO implements Serializable {
 
     @TableField(exist = false)
     private String endTime;
+
+    @TableField(exist = false)
+    private List<String> roleIds;
 }

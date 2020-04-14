@@ -2,9 +2,6 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.common.utils.Constant;
-import com.company.project.vo.req.RoleAddReqVO;
-import com.company.project.vo.req.RoleUpdateReqVO;
 import com.company.project.entity.SysRole;
 import com.company.project.service.RoleService;
 import com.company.project.common.utils.DataResult;
@@ -12,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,7 @@ public class RoleController {
     @ApiOperation(value = "新增角色接口")
     @LogAnnotation(title = "角色管理", action = "新增角色")
     @RequiresPermissions("sys:role:add")
-    public DataResult<SysRole> addRole(@RequestBody @Valid RoleAddReqVO vo) {
+    public DataResult<SysRole> addRole(@RequestBody @Valid SysRole vo) {
         return DataResult.success(roleService.addRole(vo));
     }
 
@@ -46,8 +44,11 @@ public class RoleController {
     @ApiOperation(value = "更新角色信息接口")
     @LogAnnotation(title = "角色管理", action = "更新角色信息")
     @RequiresPermissions("sys:role:update")
-    public DataResult updateDept(@RequestBody @Valid RoleUpdateReqVO vo, HttpServletRequest request) {
-        roleService.updateRole(vo, request.getHeader(Constant.ACCESS_TOKEN));
+    public DataResult updateDept(@RequestBody SysRole vo, HttpServletRequest request) {
+        if (StringUtils.isEmpty(vo.getId())) {
+            return DataResult.fail("id不能为空");
+        }
+        roleService.updateRole(vo);
         return DataResult.success();
     }
 
