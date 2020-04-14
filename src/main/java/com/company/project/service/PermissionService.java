@@ -2,8 +2,6 @@ package com.company.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysPermission;
-import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 
 import java.util.List;
@@ -13,11 +11,11 @@ public interface PermissionService extends IService<SysPermission> {
 
     List<SysPermission> getPermission(String userId);
 
-    SysPermission addPermission(PermissionAddReqVO vo);
+    SysPermission addPermission(SysPermission vo);
 
     SysPermission detailInfo(String permissionId);
 
-    void updatePermission(PermissionUpdateReqVO vo);
+    void updatePermission(SysPermission vo);
 
     void deleted(String permissionId);
 

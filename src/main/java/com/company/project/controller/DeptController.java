@@ -4,14 +4,13 @@ import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysDept;
 import com.company.project.service.DeptService;
 import com.company.project.common.utils.DataResult;
-import com.company.project.vo.req.DeptAddReqVO;
-import com.company.project.vo.req.DeptUpdateReqVO;
 import com.company.project.vo.resp.DeptRespNodeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,10 +28,8 @@ public class DeptController {
     @ApiOperation(value = "新增组织接口")
     @LogAnnotation(title = "机构管理", action = "新增组织")
     @RequiresPermissions("sys:dept:add")
-    public DataResult<SysDept> addDept(@RequestBody @Valid DeptAddReqVO vo) {
-        DataResult<SysDept> result = DataResult.success();
-        result.setData(deptService.addDept(vo));
-        return result;
+    public DataResult<SysDept> addDept(@RequestBody @Valid SysDept vo) {
+        return DataResult.success(deptService.addDept(vo));
     }
 
     @DeleteMapping("/dept/{id}")
@@ -48,7 +45,10 @@ public class DeptController {
     @ApiOperation(value = "更新组织信息接口")
     @LogAnnotation(title = "机构管理", action = "更新组织信息")
     @RequiresPermissions("sys:dept:update")
-    public DataResult updateDept(@RequestBody @Valid DeptUpdateReqVO vo) {
+    public DataResult updateDept(@RequestBody SysDept vo) {
+        if (StringUtils.isEmpty(vo.getId())) {
+            return DataResult.fail("id不能为空");
+        }
         deptService.updateDept(vo);
         return DataResult.success();
     }
@@ -58,9 +58,7 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "查询组织详情")
     @RequiresPermissions("sys:dept:detail")
     public DataResult<SysDept> detailInfo(@PathVariable("id") String id) {
-        DataResult<SysDept> result = DataResult.success();
-        result.setData(deptService.detailInfo(id));
-        return result;
+        return DataResult.success(deptService.detailInfo(id));
     }
 
     @GetMapping("/dept/tree")
@@ -68,9 +66,7 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "树型组织列表")
     @RequiresPermissions(value = {"sys:user:update", "sys:user:add", "sys:dept:add", "sys:dept:update"}, logical = Logical.OR)
     public DataResult<List<DeptRespNodeVO>> getTree(@RequestParam(required = false) String deptId) {
-        DataResult<List<DeptRespNodeVO>> result = DataResult.success();
-        result.setData(deptService.deptTreeList(deptId));
-        return result;
+        return DataResult.success(deptService.deptTreeList(deptId));
     }
 
     @GetMapping("/depts")
@@ -78,8 +74,5 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "获取所有组织机构")
     @RequiresPermissions("sys:dept:list")
     public DataResult<List<SysDept>> getDeptAll() {
-        DataResult<List<SysDept>> result = DataResult.success();
-        result.setData(deptService.selectAll());
-        return result;
-    }
+        return DataResult.success(deptService.selectAll());    }
 }

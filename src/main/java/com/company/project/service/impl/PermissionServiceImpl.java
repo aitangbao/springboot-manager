@@ -7,8 +7,6 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysPermissionMapper;
 import com.company.project.service.*;
-import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -59,9 +57,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      * 新增菜单权限
      */
     @Override
-    public SysPermission addPermission(PermissionAddReqVO vo) {
-        SysPermission sysPermission = new SysPermission();
-        BeanUtils.copyProperties(vo, sysPermission);
+    public SysPermission addPermission(SysPermission sysPermission) {
         verifyForm(sysPermission);
         sysPermission.setCreateTime(new Date());
         int count = sysPermissionMapper.insert(sysPermission);
@@ -107,9 +103,6 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
                 if (StringUtils.isEmpty(sysPermission.getUrl())) {
                     throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_NOT_NULL);
                 }
-                if (StringUtils.isEmpty(sysPermission.getMethod())) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_METHOD_NULL);
-                }
                 break;
         }
     }
@@ -147,20 +140,18 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      * 更新菜单权限
      */
     @Override
-    public void updatePermission(PermissionUpdateReqVO vo) {
+    public void updatePermission(SysPermission update) {
 
-        SysPermission sysPermission = sysPermissionMapper.selectById(vo.getId());
+        SysPermission sysPermission = sysPermissionMapper.selectById(update.getId());
         if (null == sysPermission) {
-            log.error("传入 的 id:{}不合法", vo.getId());
+            log.error("传入 的 id:{}不合法", update.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        SysPermission update = new SysPermission();
-        BeanUtils.copyProperties(vo, update);
         /**
          * 只有类型变更
          * 或者所属菜单变更
          */
-        if (sysPermission.getType().equals(vo.getType()) || !sysPermission.getPid().equals(vo.getPid())) {
+        if (sysPermission.getType().equals(update.getType()) || !sysPermission.getPid().equals(update.getPid())) {
             verifyForm(update);
         }
         update.setUpdateTime(new Date());
@@ -171,9 +162,9 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         /**
          * 所有管理这个菜单权限用户将重新刷新token
          */
-        if (StringUtils.isEmpty(vo.getPerms()) && !sysPermission.getPerms().equals(vo.getPerms())) {
+        if (StringUtils.isEmpty(update.getPerms()) && !sysPermission.getPerms().equals(update.getPerms())) {
             //刷新权限
-            httpSessionService.refreshPermission(vo.getId());
+            httpSessionService.refreshPermission(update.getId());
         }
 
     }

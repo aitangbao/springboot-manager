@@ -21,9 +21,6 @@ public class PermissionRespNode {
     @ApiModelProperty(value = "接口地址")
     private String url;
 
-    @ApiModelProperty(value = "请求方式 和url 配合使用 (我们用 路径匹配的方式做权限管理的时候用到)")
-    private String method;
-
     @ApiModelProperty(value = "父级id")
     private String pid;
 
@@ -32,9 +29,6 @@ public class PermissionRespNode {
 
     @ApiModelProperty(value = "菜单权限类型(1:目录;2:菜单;3:按钮)")
     private Integer type;
-
-    @ApiModelProperty(value = "编码(前后端分离 前段对按钮显示隐藏控制 btn-permission-search 代表 菜单权限管理的列表查询按钮)")
-    private String code;
 
     @ApiModelProperty(value = "排序码")
     private Integer orderNum;

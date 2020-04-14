@@ -1,8 +1,6 @@
 package com.company.project.controller;
 
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.vo.req.PermissionAddReqVO;
-import com.company.project.vo.req.PermissionUpdateReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import com.company.project.entity.SysPermission;
 import com.company.project.service.PermissionService;
@@ -12,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,10 +27,8 @@ public class PermissionController {
     @ApiOperation(value = "新增菜单权限接口")
     @LogAnnotation(title = "菜单权限管理", action = "新增菜单权限")
     @RequiresPermissions("sys:permission:add")
-    public DataResult<SysPermission> addPermission(@RequestBody @Valid PermissionAddReqVO vo) {
-        DataResult<SysPermission> result = DataResult.success();
-        result.setData(permissionService.addPermission(vo));
-        return result;
+    public DataResult addPermission(@RequestBody @Valid SysPermission vo) {
+        return DataResult.success(permissionService.addPermission(vo));
     }
 
     @DeleteMapping("/permission/{id}")
@@ -39,19 +36,20 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "删除菜单权限")
     @RequiresPermissions("sys:permission:deleted")
     public DataResult deleted(@PathVariable("id") String id) {
-        DataResult result = DataResult.success();
         permissionService.deleted(id);
-        return result;
+        return DataResult.success();
     }
 
     @PutMapping("/permission")
     @ApiOperation(value = "更新菜单权限接口")
     @LogAnnotation(title = "菜单权限管理", action = "更新菜单权限")
     @RequiresPermissions("sys:permission:update")
-    public DataResult updatePermission(@RequestBody @Valid PermissionUpdateReqVO vo) {
-        DataResult result = DataResult.success();
+    public DataResult updatePermission(@RequestBody @Valid SysPermission vo) {
+        if (StringUtils.isEmpty(vo.getId())) {
+            return DataResult.fail("id不能为空");
+        }
         permissionService.updatePermission(vo);
-        return result;
+        return DataResult.success();
     }
 
     @GetMapping("/permission/{id}")
@@ -59,9 +57,8 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "查询菜单权限")
     @RequiresPermissions("sys:permission:detail")
     public DataResult<SysPermission> detailInfo(@PathVariable("id") String id) {
-        DataResult<SysPermission> result = DataResult.success();
-        result.setData(permissionService.detailInfo(id));
-        return result;
+        return DataResult.success(permissionService.detailInfo(id));
+
     }
 
     @GetMapping("/permissions")
@@ -69,9 +66,7 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "获取所有菜单权限")
     @RequiresPermissions("sys:permission:list")
     public DataResult<List<SysPermission>> getAllMenusPermission() {
-        DataResult<List<SysPermission>> result = DataResult.success();
-        result.setData(permissionService.selectAll());
-        return result;
+        return DataResult.success(permissionService.selectAll());
     }
 
     @GetMapping("/permission/tree")
@@ -79,9 +74,7 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "获取所有目录菜单树")
     @RequiresPermissions(value = {"sys:permission:update", "sys:permission:add"}, logical = Logical.OR)
     public DataResult<List<PermissionRespNode>> getAllMenusPermissionTree(@RequestParam(required = false) String permissionId) {
-        DataResult<List<PermissionRespNode>> result = DataResult.success();
-        result.setData(permissionService.selectAllMenuByTree(permissionId));
-        return result;
+        return DataResult.success(permissionService.selectAllMenuByTree(permissionId));
     }
 
     @GetMapping("/permission/tree/all")
@@ -89,8 +82,6 @@ public class PermissionController {
     @LogAnnotation(title = "菜单权限管理", action = "获取所有目录菜单树")
     @RequiresPermissions(value = {"sys:role:update", "sys:role:add"}, logical = Logical.OR)
     public DataResult<List<PermissionRespNode>> getAllPermissionTree() {
-        DataResult<List<PermissionRespNode>> result = DataResult.success();
-        result.setData(permissionService.selectAllByTree());
-        return result;
+        return DataResult.success(permissionService.selectAllByTree());
     }
 }

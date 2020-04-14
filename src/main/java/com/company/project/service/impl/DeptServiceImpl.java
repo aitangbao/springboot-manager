@@ -11,8 +11,6 @@ import com.company.project.service.DeptService;
 import com.company.project.service.RedisService;
 import com.company.project.service.UserService;
 import com.company.project.common.utils.CodeUtil;
-import com.company.project.vo.req.DeptAddReqVO;
-import com.company.project.vo.req.DeptUpdateReqVO;
 import com.company.project.vo.resp.DeptRespNodeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,8 +34,7 @@ public class DeptServiceImpl implements DeptService {
     private UserService userService;
 
     @Override
-    public SysDept addDept(DeptAddReqVO vo) {
-        System.out.println("fds");
+    public SysDept addDept(SysDept vo) {
         String relationCode;
         long result = redisService.incrby(Constant.DEPT_CODE_KEY, 1);
         String deptCode = CodeUtil.deptCode(String.valueOf(result), 6, "0");
@@ -50,21 +47,19 @@ public class DeptServiceImpl implements DeptService {
         } else {
             relationCode = parent.getRelationCode() + deptCode;
         }
-        SysDept sysDept = new SysDept();
-        BeanUtils.copyProperties(vo, sysDept);
-        sysDept.setCreateTime(new Date());
-        sysDept.setDeptNo(deptCode);
-        sysDept.setRelationCode(relationCode);
-        int count = sysDeptMapper.insert(sysDept);
+        vo.setCreateTime(new Date());
+        vo.setDeptNo(deptCode);
+        vo.setRelationCode(relationCode);
+        int count = sysDeptMapper.insert(vo);
         if (count != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
-        return sysDept;
+        return vo;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateDept(DeptUpdateReqVO vo) {
+    public void updateDept(SysDept vo) {
 
         SysDept sysDept = sysDeptMapper.selectById(vo.getId());
         if (null == sysDept) {

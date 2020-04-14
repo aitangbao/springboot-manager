@@ -49,20 +49,6 @@
                            class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item menu-method" hidden>
-                <div class="layui-form-label">请求方式</div>
-                <div class="layui-input-block">
-                    <input type="method" name="method" placeholder="请输入请求方式，如 GET、POST" autocomplete="off"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item menu-btn" hidden>
-                <div class="layui-form-label">按钮标识</div>
-                <div class="layui-input-block">
-                    <input type="code" name="code" placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list"
-                           autocomplete="off" class="layui-input">
-                </div>
-            </div>
             <div class="layui-form-item">
                 <div class="layui-form-label">排序码</div>
                 <div class="layui-input-block">
@@ -144,7 +130,6 @@
                         {type: 'numbers'},
                         {field: 'name', width: 150, title: '菜单名称'},
                         {field: 'url', width: 150, title: 'url'},
-                        {field: 'method', title: '请求方式'},
                         {
                             field: 'type', title: '类型', templet: function (item) {
                                 if (item.type === 1) {
@@ -161,7 +146,6 @@
                         {field: 'pidName', title: '父级名称'},
                         {field: 'orderNum', title: '排序'},
                         {field: 'perms', title: '资源标识'},
-                        {field: 'code', title: '前后端分离按钮控制标识'},
                         {field: 'createTime', title: '创建时间', minWidth: 120},
                         {
                             field: 'status', title: '状态', templet: function (item) {
@@ -198,8 +182,6 @@
                     $(".operation_menu input[name=url]").val("");
                     $(".operation_menu input[name=perms]").val("");
                     $(".operation_menu input[name=orderNum]").val("");
-                    $(".operation_menu input[name=method]").val("");
-                    $(".operation_menu input[name=code]").val("");
                     $(".operation_menu input[name=status]").attr('checked', 'checked');
                     $(".operation_menu input[name=status]").attr('type', 'hidden').val(1);
                     var x = document.getElementsByClassName("layui-unselect layui-form-switch");
@@ -231,8 +213,6 @@
                     $(".operation_menu input[name=url]").val(data.url);
                     $(".operation_menu input[name=perms]").val(data.perms);
                     $(".operation_menu input[name=orderNum]").val(data.orderNum);
-                    $(".operation_menu input[name=method]").val(data.method);
-                    $(".operation_menu input[name=code]").val(data.code);
                     if (data.status == 1) {
                         $(".operation_menu input[name=status]").attr('checked', 'checked');
                         $(".operation_menu input[name=status]").attr('type', 'hidden').val(1);
