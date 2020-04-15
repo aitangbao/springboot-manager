@@ -194,6 +194,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!StringUtils.isEmpty(vo.getStatus())) {
             queryWrapper.eq("status", vo.getStatus());
         }
+        if (!StringUtils.isEmpty(vo.getDeptNo())) {
+            QueryWrapper queryWrapperDept = new QueryWrapper();
+            queryWrapperDept.select("id").like("relation_code", vo.getDeptNo());
+            List<String> list = sysDeptMapper.selectObjs(queryWrapperDept);
+            queryWrapper.in("dept_id", list);
+        }
         queryWrapper.orderByDesc("create_time");
         IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
         if (!iPage.getRecords().isEmpty()) {

@@ -6,6 +6,9 @@
     <title>Title</title>
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/custom.form.css">
+    <style>
+        .custom-tree-item-clicked{color:#FC9003}
+    </style>
 </head>
 <body>
 <div class="panel panel-default operation_user" hidden>
@@ -56,34 +59,49 @@
         </form>
     </div>
 </div>
-<div class="user_table_div">
-    <div id="searchParam" shiro:hasPermission="sys:user:list">
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
-            </div>
-            <div class="layui-input-inline">
-                <input type="text" id="nickName" class="layui-input" autocomplete="off" placeholder="请输用户昵称">
-            </div>
-            <div class="layui-input-inline">
-                <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
-            </div>
-            <div class="layui-input-inline layui-form">
-                <select id="status">
-                    <option value="">请选择账号状态</option>
-                    <option value="1">正常</option>
-                    <option value="2">禁用</option>
-                </select>
-            </div>
-            <div class="layui-input-inline ">
-                <button class="layui-btn" id="search">查询</button>
+<!-- 左树 -->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md4 layui-col-lg2">
+            <div class="layui-card">
+                <div class="layui-card-body mini-bar" id="leftTree">
+                </div>
             </div>
         </div>
+        <div class="layui-col-sm12 layui-col-md8 layui-col-lg10">
+            <div class="user_table_div">
+                <div id="searchParam" shiro:hasPermission="sys:user:list">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" id="nickName" class="layui-input" autocomplete="off" placeholder="请输用户昵称">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
+                        </div>
+                        <div class="layui-input-inline layui-form">
+                            <select id="status">
+                                <option value="">请选择账号状态</option>
+                                <option value="1">正常</option>
+                                <option value="2">禁用</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline ">
+                            <button class="layui-btn" id="search">查询</button>
+                        </div>
+                    </div>
 
+                </div>
+                <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
+                <div id="laypage"></div>
+            </div>
+
+        </div>
     </div>
-    <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
-    <div id="laypage"></div>
 </div>
+
 <div id="deptTree" style="display: none"></div>
 <div id="roles" class="demo-transfer" style="display: none"></div>
 </body>
@@ -118,6 +136,7 @@
             startTime: null,
             endTime: null,
             nickName: null,
+            deptNo: null,
             page: 1,
             limit: 10
         }
@@ -125,7 +144,10 @@
         //初始化 获取数据
         loadData();
 
+        initLeftTree();
+
         function loadData(page) {
+
             searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
             CoreUtil.sendAjax("/sys/users", JSON.stringify(searchParam), function (res) {
                 //初始化渲染数据
@@ -133,6 +155,7 @@
                     loadTable(res.data.records);
                 }
                 laypageTable(res.data.total);
+
             }, "POST", false, function (res) {
                 layer.msg("抱歉！您暂无获取列表的权限");
                 var noAuthorityData = [];
@@ -407,6 +430,25 @@
                 }
             });
         };
+
+        var loadLeftTree = function (data) {
+            tree.render({
+                elem: '#leftTree'
+                , data: data
+                , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                , click: function (obj) {
+                    console.log(obj)
+                    searchParam.deptNo = obj.data.deptNo;
+                    searchParam.status = $("#status").val();
+                    searchParam.username = $("#username").val();
+                    searchParam.nickName = $("#nickName").val();
+                    $("#leftTree span").removeClass('custom-tree-item-clicked');     //清除旧的样式
+                    $("#leftTree span:contains(" + obj.data.title + ")").addClass('custom-tree-item-clicked');
+                    loadData(1)
+
+                }
+            });
+        };
         $(".operation_user input[name=deptName]").click(function () {
             layer.open({
                 type: 1,
@@ -428,7 +470,18 @@
                 }
             });
         });
-        var initTree = function (id) {
+
+        function initLeftTree(){
+            CoreUtil.sendAjax("/sys/dept/tree", null, function (res) {
+                loadLeftTree(res.data);
+            }, "GET", false, function (res) {
+                layer.msg("抱歉！您暂无获取部门树的权限");
+                var noAuthorityData = [];
+                loadLeftTree(noAuthorityData);
+            });
+        }
+
+        function initTree(id) {
             var param = {deptId: id}
             CoreUtil.sendAjax("/sys/dept/tree", param, function (res) {
                 loadDeptTree(res.data);
@@ -436,6 +489,7 @@
                 layer.msg("抱歉！您暂无获取部门树的权限");
                 var noAuthorityData = [];
                 loadDeptTree(noAuthorityData);
+
             });
         };
         var initTransfer = function (data) {

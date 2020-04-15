@@ -34,6 +34,10 @@ public class SysUser extends PageReqVO implements Serializable {
     @TableField(exist = false)
     private String deptName;
 
+    @TableField(exist = false)
+    private String deptNo;
+
+
     private String realName;
 
     private String nickName;
