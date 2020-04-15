@@ -7,10 +7,10 @@ INSERT INTO `sys_permission` (`id`, `name`, `pid`, `url`, `type`, `order_num`)
 
 -- 菜单对应按钮SQL
 INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`, `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '列表' , '${classname}/listByPage','${classname}:list', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '新增' , '${classname}/add','${classname}:add', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '修改' , '${classname}/update','${classname}:update', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,`method`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '删除' , '${classname}/delete','${classname}:delete', '3');
+    VALUES (replace(uuid(),"-",""), @identity, '列表' , 'sysGoods/listByPage','sysGoods:list', '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '新增' , 'sysGoods/add','sysGoods:add', '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '修改' , 'sysGoods/update','sysGoods:update', '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
+    VALUES (replace(uuid(),"-",""), @identity, '删除' , 'sysGoods/delete','sysGoods:delete', '3');
