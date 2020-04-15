@@ -1,22 +1,3 @@
-/**
- * 菜单栏缩放
- */
-$('body').on('click', '[data-side-fold]', function () {
-    var loading = layer.load(0, {shade: false, time: 2 * 1000});
-    var isShow = $(this).attr('data-side-fold');
-    if (isShow == 1) { // 缩放
-        $(this).attr('data-side-fold', 0);
-        $('.layuimini-tool i').attr('class', 'layui-icon  layui-icon-shrink-right');
-        $('.layui-layout-body').attr('class', 'layui-layout-body layuimini-mini');
-    } else { // 正常
-        $(this).attr('data-side-fold', 1);
-        $('.layuimini-tool i').attr('class', 'layui-icon  layui-icon-shrink-left');
-        $('.layui-layout-body').attr('class', 'layui-layout-body layuimini-all');
-    }
-    layuimini.tabRoll();
-    element.init();
-    layer.close(loading);
-});
 //全屏
 $('body').on('click', '[data-check-screen]', function () {
     var check = $(this).attr('data-check-screen');
@@ -39,7 +20,7 @@ $('body').on('click', '[data-refresh]', function () {
 /**
  * 初始化背景色
  */
-this.initBgColor = function () {
+var initBgColor = function () {
     var bgcolorId = sessionStorage.getItem('layuiminiBgcolorId');
     if (bgcolorId == null || bgcolorId == undefined || bgcolorId == '') {
         bgcolorId = config('BgColorDefault');
