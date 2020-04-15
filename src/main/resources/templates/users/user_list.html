@@ -280,6 +280,7 @@
                 case 'addNewUser':
                     $(".title").html("新增用户");
                     $(".user_table_div").hide();
+                    $("#leftTree").hide();
                     $(".operation_user").show();
                     $(".operation_user input[name=id]").val("");
                     $(".operation_user input[name=pid]").val("");
@@ -309,6 +310,7 @@
                     break;
                 case 'edit':
                     $(".user_table_div").hide();
+                    $("#leftTree").hide();
                     $(".operation_user").show();
                     $(".title").html("编辑用户");
                     $(".operation_user input[name=id]").val(data.id);
@@ -378,6 +380,7 @@
         });
         $("#btn_cancel").click(function () {
             $(".user_table_div").show();
+            $("#leftTree").show();
             $(".operation_user").hide();
             return false;
         });
@@ -403,6 +406,7 @@
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
                     $(".user_table_div").show();
+                    $("#leftTree").show();
                     $(".operation_user").hide();
                     loadData(1);
                 }, "POST", false, function (res) {
@@ -411,6 +415,7 @@
             } else {
                 CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
                     $(".user_table_div").show();
+                    $("#leftTree").show();
                     $(".operation_user").hide();
                     loadData(1);
                 }, "PUT", false, function (res) {
