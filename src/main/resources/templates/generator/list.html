@@ -145,7 +145,6 @@
                 case 'add':
                     token = token.replace("#", "%23");//转义token中的#号
                     window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + data.tableName;
-                    setTimeout(reloadTable, 1000)
                     break;
             }
         });
