@@ -30,7 +30,7 @@ import org.springframework.stereotype.Controller;
  * @author aitangbao
  * @since 2020-03-20
  */
-@Api(tags = {""})
+@Api(tags = "系统模块-代码生成")
 @Slf4j
 @Controller
 @RequestMapping("/")
