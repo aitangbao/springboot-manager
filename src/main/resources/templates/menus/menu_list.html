@@ -35,7 +35,7 @@
                            readonly="readonly" style="background:#eeeeee!important">
                 </div>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item menu_url">
                 <label class="layui-form-label ">接口URL</label>
                 <div class="layui-input-block">
                     <input type="text" name="url" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
@@ -182,6 +182,7 @@
                     initRadio(1);
                     $(".menu-perms").hide();
                     $(".menu_target").hide();
+                    $(".menu_url").hide();
                     form.val('deptInfo', {
                         "id": ""
                         ,"pid": ""
@@ -348,12 +349,15 @@
             if (data.value == '1') {
                 $(".menu-perms").hide();
                 $(".menu_target").hide();
+                $(".menu_url").hide();
             } else if(data.value == '2'){
                 $(".menu-perms").hide();
                 $(".menu_target").show();
+                $(".menu_url").show();
             } else{
                 $(".menu-perms").show();
                 $(".menu_target").hide();
+                $(".menu_url").show();
             }
         });
     });
