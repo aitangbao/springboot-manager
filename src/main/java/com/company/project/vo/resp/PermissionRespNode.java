@@ -21,6 +21,8 @@ public class PermissionRespNode {
     @ApiModelProperty(value = "接口地址")
     private String url;
 
+    private String target;
+
     @ApiModelProperty(value = "父级id")
     private String pid;
 

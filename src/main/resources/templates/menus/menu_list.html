@@ -41,6 +41,13 @@
                     <input type="text" name="url" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
                 </div>
             </div>
+            <div class="layui-form-item menu_target">
+                <label class="layui-form-label ">target</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="target" value="_self" title="_self" checked="" lay-filter="radio-target">
+                    <input type="radio" name="target" value="_target" title="_target" lay-filter="radio-target">
+                </div>
+            </div>
 
             <div class="layui-form-item menu-perms" hidden>
                 <div class="layui-form-label">授权标识</div>
@@ -130,8 +137,9 @@
                         {type: 'numbers'},
                         {field: 'name', width: 150, title: '菜单名称'},
                         {field: 'url', width: 150, title: 'url'},
+                        {field: 'target', width: 70, title: 'target'},
                         {
-                            field: 'type', title: '类型', templet: function (item) {
+                            field: 'type',width: 70, title: '类型', templet: function (item) {
                                 if (item.type === 1) {
                                     return '  <a class="layui-btn layui-btn-xs" >目录</a>';
                                 }
@@ -144,11 +152,11 @@
                             }
                         },
                         {field: 'pidName', title: '父级名称'},
-                        {field: 'orderNum', title: '排序'},
-                        {field: 'perms', title: '资源标识'},
-                        {field: 'createTime', title: '创建时间', minWidth: 120},
+                        {field: 'orderNum', title: '排序',width: 70},
+                        {field: 'perms', title: '资源标识',width: 150},
+                        {field: 'createTime', title: '创建时间', Width: 150},
                         {
-                            field: 'status', title: '状态', templet: function (item) {
+                            field: 'status', title: '状态',width: 100, templet: function (item) {
                                 if (item.status === 1) {
                                     return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" checked disabled>';
                                 }
@@ -172,14 +180,14 @@
                     $(".operation_menu").show();
                     $(".title").html("新增菜单权限");
                     initRadio(1);
-                    $(".menu-method").hide();
-                    $(".menu-btn").hide();
                     $(".menu-perms").hide();
+                    $(".menu_target").hide();
                     $(".operation_menu input[name=id]").val("");
                     $(".operation_menu input[name=pid]").val("");
                     $(".operation_menu input[name=name]").val("");
                     $(".operation_menu input[name=pidName]").val("");
                     $(".operation_menu input[name=url]").val("");
+                    $(".operation_menu input[name=target]").val("_self");
                     $(".operation_menu input[name=perms]").val("");
                     $(".operation_menu input[name=orderNum]").val("");
                     $(".operation_menu input[name=status]").attr('checked', 'checked');
@@ -211,6 +219,7 @@
                     $(".operation_menu input[name=name]").val(data.name);
                     $(".operation_menu input[name=pidName]").val(data.pidName);
                     $(".operation_menu input[name=url]").val(data.url);
+                    $(".operation_menu input[name=target]").val(data.target);
                     $(".operation_menu input[name=perms]").val(data.perms);
                     $(".operation_menu input[name=orderNum]").val(data.orderNum);
                     if (data.status == 1) {
@@ -332,13 +341,14 @@
         });
         form.on('radio(radio-type)', function (data) {
             if (data.value == '1') {
-                $(".menu-method").hide();
-                $(".menu-btn").hide();
                 $(".menu-perms").hide();
-            } else {
-                $(".menu-method").show();
+                $(".menu_target").hide();
+            } else if(data.value == '2'){
+                $(".menu-perms").hide();
+                $(".menu_target").show();
+            } else{
                 $(".menu-perms").show();
-                $(".menu-btn").show();
+                $(".menu_target").hide();
             }
         });
     });

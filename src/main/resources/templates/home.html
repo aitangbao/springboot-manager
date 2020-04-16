@@ -96,7 +96,11 @@
                     ulHtml +='<a>'+child.title+'</a>';
                     ulHtml +=getChild(child.children,"");
                 }else {
-                    ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                    if (child.target == "_blank") {
+                        ulHtml += '<dd><a href="'+child.url+'" target="_blank">';
+                    } else {
+                        ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                    }
                     ulHtml += '<cite>'+child.title+'</cite></a></dd>';
                 }
 
@@ -128,7 +132,11 @@
                                 ulHtml +='<a>'+child.title+'</a>';
                                 ulHtml +=getChild(child.children,"");
                             }else {
-                                ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                                if (child.target == "_blank") {
+                                    ulHtml += '<dd><a href="'+child.url+'" target="_blank">';
+                                } else {
+                                    ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                                }
                                 ulHtml += '<cite>'+child.title+'</cite></a></dd>';
                             }
 
