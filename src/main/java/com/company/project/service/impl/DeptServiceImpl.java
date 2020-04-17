@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
 import com.company.project.common.exception.BusinessException;
@@ -27,8 +26,6 @@ import java.util.List;
 @Slf4j
 public class DeptServiceImpl implements DeptService {
     @Autowired
-    private RedisService redisService;
-    @Autowired
     private SysDeptMapper sysDeptMapper;
     @Autowired
     private UserService userService;
@@ -36,8 +33,7 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public SysDept addDept(SysDept vo) {
         String relationCode;
-        long result = redisService.incrby(Constant.DEPT_CODE_KEY, 1);
-        String deptCode = CodeUtil.deptCode(String.valueOf(result), 6, "0");
+        String deptCode = this.getNewDeptCode();
         SysDept parent = sysDeptMapper.selectById(vo.getPid());
         if (vo.getPid().equals("0")) {
             relationCode = deptCode;
@@ -193,5 +189,11 @@ public class DeptServiceImpl implements DeptService {
             }
         }
         return list;
+    }
+
+    public String getNewDeptCode() {
+        Integer maxDeptCode = sysDeptMapper.getMaxDeptCode() == null ? 0 : sysDeptMapper.getMaxDeptCode();
+        Integer newDeptCode = maxDeptCode + 1;
+        return CodeUtil.padRight(newDeptCode, 6, "0");
     }
 }

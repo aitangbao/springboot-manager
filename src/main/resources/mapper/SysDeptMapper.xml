@@ -27,4 +27,8 @@
     where relation_code LIKE CONCAT(#{relationCode},'%')
   </update>
 
+  <select id="getMaxDeptCode" resultType="java.lang.Integer">
+    select max(CONVERT(right(dept_no,6), SIGNED))  from sys_dept
+  </select>
+
 </mapper>
