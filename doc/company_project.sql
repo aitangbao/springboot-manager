@@ -189,7 +189,14 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_role_permission
 -- ----------------------------
-
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission` (
+  `id` varchar(64) NOT NULL COMMENT '主键',
+  `role_id` varchar(64) DEFAULT NULL COMMENT '角色id',
+  `permission_id` varchar(64) DEFAULT NULL COMMENT '菜单权限id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
