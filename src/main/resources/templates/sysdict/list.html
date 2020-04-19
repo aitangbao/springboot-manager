@@ -12,19 +12,45 @@
   <div class="panel-heading title"></div>
 <div class="layui-card-body">
 <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
-#foreach($column in $columns)
-  #if($column.columnName == $pk.columnName)
-    <input name="${column.attrname}" hidden/>
-  #else
-    <div class="layui-form-item">
-      <label class="layui-form-label">${column.comments}</label>
+      <input name="id" hidden/>
+        <div class="layui-form-item">
+      <label class="layui-form-label">字典名称</label>
       <div class="layui-input-block">
-        <input type="${column.attrname}" name="${column.attrname}" placeholder="请输入${column.comments}" autocomplete="off" class="layui-input">
+        <input type="name" name="name" placeholder="请输入字典名称" autocomplete="off" class="layui-input">
       </div>
     </div>
-  #end
-#end
-<div class="layui-form-item">
+        <div class="layui-form-item">
+      <label class="layui-form-label">字典类型</label>
+      <div class="layui-input-block">
+        <input type="type" name="type" placeholder="请输入字典类型" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">字典码</label>
+      <div class="layui-input-block">
+        <input type="code" name="code" placeholder="请输入字典码" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">字典值</label>
+      <div class="layui-input-block">
+        <input type="value" name="value" placeholder="请输入字典值" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">排序</label>
+      <div class="layui-input-block">
+        <input type="orderNum" name="orderNum" placeholder="请输入排序" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-block">
+        <input type="remark" name="remark" placeholder="请输入备注" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+
+  <div class="layui-form-item">
   <div class="layui-input-block">
     <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
     <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
@@ -35,10 +61,10 @@
 </div>
 
 <div class="table_div">
-  <div id="searchParam"  shiro:hasPermission="${classname}:list">
+  <div id="searchParam"  shiro:hasPermission="sysDict:list">
     <div class="layui-form-item">
       <div class="layui-input-inline">
-        <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
+        <input type="text" id="name" class="layui-input"  autocomplete="off" placeholder="请输入字典名称">
       </div>
 
       <div class="layui-input-inline ">
@@ -53,13 +79,13 @@
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="${classname}:add">添加</button>
-    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="${classname}:delete">删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="sysDict:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysDict:delete">删除</button>
   </div>
 </script>
 <script type="text/html" id="tool">
-  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="${classname}:update">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="${classname}:delete">删除</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysDict:update">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysDict:delete">删除</a>
 </script>
 
 </body>
@@ -78,7 +104,7 @@
   layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
     var ins1;
     var searchParam = {
-      key: null,
+      name: null,
       page: 1,
       limit: 10
     };
@@ -87,7 +113,7 @@
 
     function loadData(page){
       searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
-      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+      CoreUtil.sendAjax("/sysDict/listByPage", JSON.stringify(searchParam), function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
           loadTable(res.data.records);
@@ -126,9 +152,12 @@
         , cols: [
           [
             {type: 'checkbox', fixed: 'left'},
-#foreach($column in $columns)
-            {field: '${column.attrname}', title: '${column.comments}', sort: true},
-#end
+            {field: 'name', title: '字典名称', sort: true},
+            {field: 'type', title: '字典类型', sort: true},
+            {field: 'code', title: '字典码', sort: true},
+            {field: 'value', title: '字典值', sort: true},
+            {field: 'orderNum', title: '排序', sort: true},
+            {field: 'remark', title: '备注', sort: true},
             {width: 120, toolbar: "#tool", title: '操作'}
           ]
         ]
@@ -160,9 +189,14 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("新增");
-#foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val("");
-#end
+          $(".operation input[name=id]").val("");
+          $(".operation input[name=name]").val("");
+          $(".operation input[name=type]").val("");
+          $(".operation input[name=code]").val("");
+          $(".operation input[name=value]").val("");
+          $(".operation input[name=orderNum]").val("");
+          $(".operation input[name=remark]").val("");
+          $(".operation input[name=deleted]").val("");
           break;
       };
     });
@@ -179,9 +213,14 @@
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("编辑");
-#foreach($column in $columns)
-          $(".operation input[name=${column.attrname}]").val(data.${column.attrname});
-#end
+          $(".operation input[name=id]").val(data.id);
+          $(".operation input[name=name]").val(data.name);
+          $(".operation input[name=type]").val(data.type);
+          $(".operation input[name=code]").val(data.code);
+          $(".operation input[name=value]").val(data.value);
+          $(".operation input[name=orderNum]").val(data.orderNum);
+          $(".operation input[name=remark]").val(data.remark);
+          $(".operation input[name=deleted]").val(data.deleted);
           break;
       }
     });
@@ -189,7 +228,7 @@
 
     //执行查询
     $("#search").click(function () {
-      searchParam.key = $("#key").val();
+      searchParam.name = $("#name").val();
       loadData(1);
     });
 
@@ -198,8 +237,8 @@
       //原先分页limit
       var limitOrg = searchParam.limit;
       searchParam.limit = 1000000;
-      searchParam.key = $("#key").val();
-      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+      searchParam.name = $("#name").val();
+      CoreUtil.sendAjax("/sysDict/listByPage", JSON.stringify(searchParam), function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
           table.exportFile(ins1.config.id, res.data.records, 'xls');
@@ -219,7 +258,7 @@
         content: "确定要删除么?",
         yes: function(index, layero){
           layer.close(index); //如果设定了yes回调，需进行手工关闭
-          CoreUtil.sendAjax("/${classname}/delete",JSON.stringify(ids),function (res) {
+          CoreUtil.sendAjax("/sysDict/delete",JSON.stringify(ids),function (res) {
             layer.msg(res.msg, {time:1000},function () {
               loadData(1);
             });
@@ -240,7 +279,7 @@
     //监听保存
     form.on('submit(submit)', function(data){
       if(data.field.id===undefined || data.field.id===null || data.field.id===""){
-        CoreUtil.sendAjax("/${classname}/add",JSON.stringify(data.field),function (res) {
+        CoreUtil.sendAjax("/sysDict/add",JSON.stringify(data.field),function (res) {
           $(".table_div").show();
           $(".operation").hide();
           loadData(1);
@@ -248,7 +287,7 @@
           layer.msg("抱歉！您暂无权限");
         });
       }else {
-        CoreUtil.sendAjax("/${classname}/update",JSON.stringify(data.field),function (res) {
+        CoreUtil.sendAjax("/sysDict/update",JSON.stringify(data.field),function (res) {
           $(".table_div").show();
           $(".operation").hide();
           loadData(1);
