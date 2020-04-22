@@ -157,6 +157,7 @@ INSERT INTO `sys_permission` VALUES ('c6a0d80a81e711ea81a800163e045bb0', '列表
 INSERT INTO `sys_permission` VALUES ('c6a36ae381e711ea81a800163e045bb0', '新增', 'sysDict:add', 'sysDict/add', NULL, 'c69c2d5c81e711ea81a800163e045bb0', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('c6a5e38d81e711ea81a800163e045bb0', '修改', 'sysDict:update', 'sysDict/update', NULL, 'c69c2d5c81e711ea81a800163e045bb0', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('c6a85a8381e711ea81a800163e045bb0', '删除', 'sysDict:delete', 'sysDict/delete', NULL, 'c69c2d5c81e711ea81a800163e045bb0', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission`VALUES ('d372f1a482e69165151a7dbab0937903', '表单构建', '', '/index/build', '_self', '65bdb02f47b94e71c2a2b9e459bde909', 111, 2, 1, '2020-04-22 13:09:41', NULL, 1);
 
 COMMIT;
 
@@ -284,6 +285,8 @@ INSERT INTO `sys_role_permission` VALUES ('fb4478566124bca6293271ee7dcbd844', '1
 INSERT INTO `sys_role_permission` VALUES ('fb4c1a5ca1ab4b4238cb9ae077cccab5', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a0d80a81e711ea81a800163e045bb0', '2020-04-19 11:19:39');
 INSERT INTO `sys_role_permission` VALUES ('fd10394aa407bd568b4bcd461a42282e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '992d1a8d-b5f8-44fc-9a48-4b3e60a7b15e', '2020-04-19 11:19:39');
 INSERT INTO `sys_role_permission` VALUES ('fdc6c66d263baa96d1f02f2ae9d9b455', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('94152317018aed36341fe95b75103d02', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'd372f1a482e69165151a7dbab0937903', '2020-04-22 13:09:51');
+
 COMMIT;
 
 -- ----------------------------
