@@ -116,4 +116,9 @@ public class IndexController {
     public String about() {
         return "about";
     }
+
+    @GetMapping("/build")
+    public String build() {
+        return "build";
+    }
 }
