@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/custom.form.css">
+</head>
+<body>
+<div class="panel panel-default operation" hidden>
+  <div class="panel-heading title"></div>
+<div class="layui-card-body">
+<form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
+      <input name="id" hidden/>
+        <div class="layui-form-item">
+      <label class="layui-form-label">bean名称</label>
+      <div class="layui-input-block">
+        <input type="beanName" name="beanName" placeholder="请输入spring bean名称,如:testTask" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">参数</label>
+      <div class="layui-input-block">
+        <input type="params" name="params" placeholder="请输入参数" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">cron表达式</label>
+      <div class="layui-input-block">
+        <input type="cronExpression" id="cron" name="cronExpression" placeholder="请输入cron表达式,如:0 0 12 * * ?" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-block">
+        <input type="remark" name="remark" placeholder="请输入备注" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  <div class="layui-form-item">
+  <div class="layui-input-block">
+    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
+    <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
+  </div>
+</div>
+</form>
+</div>
+</div>
+
+<div class="table_div">
+  <div id="searchParam"  shiro:hasPermission="sysJob:list">
+    <div class="layui-form-item">
+      <div class="layui-input-inline">
+        <input type="text" id="beanName" class="layui-input"  autocomplete="off" placeholder="请输入bean名称">
+      </div>
+
+      <div class="layui-input-inline ">
+        <button class="layui-btn"   id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
+      </div>
+    </div>
+
+  </div>
+  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+  <div id="laypage"></div>
+</div>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="sysJob:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysJob:delete">删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="pause" shiro:hasPermission="sysJob:pause">暂停</button>
+    <button class="layui-btn layui-btn-sm" lay-event="resume" shiro:hasPermission="sysJob:resume">恢复</button>
+    <button class="layui-btn layui-btn-sm" lay-event="run" shiro:hasPermission="sysJob:run">立即执行</button>
+  </div>
+</script>
+<script type="text/html" id="tool">
+  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysJob:update">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysJob:delete">删除</a>
+</script>
+
+</body>
+</html>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+
+<script>
+
+  var table = layui.table;
+  var laypage = layui.laypage
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+
+
+
+  layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
+    var ins1;
+    var searchParam = {
+      beanName: null,
+      page: 1,
+      limit: 10
+    };
+    //初始化 获取数据
+    loadData();
+
+
+
+    function loadData(page){
+      searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
+      CoreUtil.sendAjax("/sysJob/listByPage", JSON.stringify(searchParam), function (res) {
+        //初始化渲染数据
+        if (res.data.records != null) {
+          loadTable(res.data.records);
+        }
+        laypageTable(res.data.total);
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+    }
+
+    //渲染分页插件
+    function laypageTable(total) {
+      laypage.render({
+        elem: 'laypage'
+        , count: total
+        , limit: searchParam.limit
+        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+        , curr: searchParam.page //获取起始页
+        , jump: function (obj, first) {
+          if(!first){
+            searchParam.page = obj.curr;
+            searchParam.limit = obj.limit;
+            loadData()
+          }
+        }
+      });
+    };
+
+    //渲染table
+    var loadTable = function (data) {
+      //展示已知数据
+      ins1 = table.render({
+        elem: '#showTable'
+        , cols: [
+          [
+            {type: 'checkbox', fixed: 'left'},
+            {field: 'id', title: '任务id', sort: true},
+            {field: 'beanName', title: 'spring bean名称', sort: true},
+            {field: 'params', title: '参数', sort: true},
+            {field: 'cronExpression', title: 'cron表达式', sort: true},
+            {field: 'status', title: '任务状态', sort: true, templet: function (item) {
+                if (item.status === 1) {
+                  return '  <input type="checkbox" lay-skin="switch" lay-text="正常|暂停"  disabled>';
+                }
+                if (item.status === 0) {
+                  return '  <input type="checkbox" lay-skin="switch" lay-text="正常|暂停" checked disabled>';
+                }
+              }},
+            {field: 'remark', title: '备注', sort: true},
+            {field: 'createTime', title: '创建时间', sort: true},
+            {width: 120, toolbar: "#tool", title: '操作'}
+          ]
+        ]
+        , data: data
+        , even: true
+        , limit: data.length
+        , limits: [10, 20, 30, 40, 50]
+        , toolbar: '#toolbar'
+      });
+    };
+
+    //表头工具
+    table.on('toolbar(showTable)', function(obj){
+      switch(obj.event){
+        case 'batchDeleted':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量删除的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialog(ids);
+          }
+          break;
+        case 'pause':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量暂停的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialogPause(ids);
+          }
+          break;
+        case 'resume':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量恢复的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialogResume(ids);
+          }
+          break;
+        case 'run':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量运行的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialogRun(ids);
+          }
+          break;
+        case 'add':
+          $(".table_div").hide();
+          $(".operation").show();
+          $(".title").html("新增");
+          $(".operation input[name=id]").val("");
+          $(".operation input[name=beanName]").val("");
+          $(".operation input[name=params]").val("");
+          $(".operation input[name=cronExpression]").val("");
+          $(".operation input[name=status]").val("");
+          $(".operation input[name=remark]").val("");
+          $(".operation input[name=createTime]").val("");
+          break;
+      };
+    });
+    //列操作
+    table.on('tool(showTable)',function (obj) {
+      var data = obj.data;
+      switch (obj.event) {
+        case 'del':
+          var ids=[];
+          ids.push(data.id);
+          tipDialog(ids);
+          break;
+
+        case 'edit':
+          $(".table_div").hide();
+          $(".operation").show();
+          $(".title").html("编辑");
+          $(".operation input[name=id]").val(data.id);
+          $(".operation input[name=beanName]").val(data.beanName);
+          $(".operation input[name=params]").val(data.params);
+          $(".operation input[name=cronExpression]").val(data.cronExpression);
+          $(".operation input[name=status]").val(data.status);
+          $(".operation input[name=remark]").val(data.remark);
+          $(".operation input[name=createTime]").val(data.createTime);
+          break;
+      }
+    });
+
+
+    //执行查询
+    $("#search").click(function () {
+      searchParam.beanName = $("#beanName").val();
+      loadData(1);
+    });
+
+    //导出
+    $('#export').on('click', function () {
+      //原先分页limit
+      var limitOrg = searchParam.limit;
+      searchParam.limit = 1000000;
+      searchParam.beanName = $("#beanName").val();
+      CoreUtil.sendAjax("/sysJob/listByPage", JSON.stringify(searchParam), function (res) {
+        //初始化渲染数据
+        if (res.data.records != null) {
+          table.exportFile(ins1.config.id, res.data.records, 'xls');
+        }
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+      searchParam.limit = limitOrg;
+
+    });
+
+    //删除
+    var tipDialog=function (ids) {
+      layer.open({
+        content: "确定要删除么?",
+        yes: function(index, layero){
+          layer.close(index); //如果设定了yes回调，需进行手工关闭
+          CoreUtil.sendAjax("/sysJob/delete",JSON.stringify(ids),function (res) {
+            layer.msg(res.msg, {time:1000},function () {
+              loadData(1);
+            });
+          },"DELETE",false,function (res) {
+            layer.msg("抱歉！您暂无删除用户的权限");
+          });
+        }
+      });
+    };
+
+      //暂停
+      var tipDialogPause=function (ids) {
+          layer.open({
+              content: "确定要暂停么?",
+              yes: function(index, layero){
+                  layer.close(index); //如果设定了yes回调，需进行手工关闭
+                  CoreUtil.sendAjax("/sysJob/pause",JSON.stringify(ids),function (res) {
+                      layer.msg(res.msg, {time:1000},function () {
+                          loadData(1);
+                      });
+                  },"POST",false,function (res) {
+                      layer.msg("抱歉！您暂无删除用户的权限");
+                  });
+              }
+          });
+      };
+
+      //恢复
+      var tipDialogResume=function (ids) {
+          layer.open({
+              content: "确定要恢复么?",
+              yes: function(index, layero){
+                  layer.close(index); //如果设定了yes回调，需进行手工关闭
+                  CoreUtil.sendAjax("/sysJob/resume",JSON.stringify(ids),function (res) {
+                      layer.msg(res.msg, {time:1000},function () {
+                          loadData(1);
+                      });
+                  },"POST",false,function (res) {
+                      layer.msg("抱歉！您暂无删除用户的权限");
+                  });
+              }
+          });
+      };
+
+
+      //立即执行
+      var tipDialogRun=function (ids) {
+          layer.open({
+              content: "确定要立即执行么?",
+              yes: function(index, layero){
+                  layer.close(index); //如果设定了yes回调，需进行手工关闭
+                  CoreUtil.sendAjax("/sysJob/run",JSON.stringify(ids),function (res) {
+                      layer.msg(res.msg, {time:1000},function () {
+                          loadData(1);
+                      });
+                  },"POST",false,function (res) {
+                      layer.msg("抱歉！您暂无删除用户的权限");
+                  });
+              }
+          });
+      };
+
+    //返回
+    $("#btn_cancel").click(function() {
+      $(".table_div").show();
+      $(".operation").hide();
+      return false;
+    });
+
+    //监听保存
+    form.on('submit(submit)', function(data){
+      if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+        CoreUtil.sendAjax("/sysJob/add",JSON.stringify(data.field),function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          loadData(1);
+        },"POST",false,function (res) {
+          layer.msg("抱歉！您暂无权限");
+        });
+      }else {
+        CoreUtil.sendAjax("/sysJob/update",JSON.stringify(data.field),function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          loadData(1);
+        },"PUT",false,function (res) {
+          layer.msg("抱歉！您暂无权限");
+        });
+      }
+
+      return false;
+    });
+  });
+</script>

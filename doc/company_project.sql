@@ -158,6 +158,22 @@ INSERT INTO `sys_permission` VALUES ('c6a36ae381e711ea81a800163e045bb0', '新增
 INSERT INTO `sys_permission` VALUES ('c6a5e38d81e711ea81a800163e045bb0', '修改', 'sysDict:update', 'sysDict/update', NULL, 'c69c2d5c81e711ea81a800163e045bb0', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('c6a85a8381e711ea81a800163e045bb0', '删除', 'sysDict:delete', 'sysDict/delete', NULL, 'c69c2d5c81e711ea81a800163e045bb0', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('d372f1a482e69165151a7dbab0937903', '表单构建', '', '/index/build', '_self', '65bdb02f47b94e71c2a2b9e459bde909', 111, 2, 1, '2020-04-22 13:09:41', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('09c7a1ec846211eaab15b4a9fc2c4442', '定时任务日志', NULL, '/index/sysJobLog', '_self', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', 10, 2, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('fc9ca351846111eaab15b4a9fc2c4442', '定时任务', NULL, '/index/sysJob', '_self', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', 10, 2, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('09c7e071846211eaab15b4a9fc2c4442', '列表', 'sysJobLog:list', 'sysJobLog/listByPage', NULL, '09c7a1ec846211eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('09c818a8846211eaab15b4a9fc2c4442', '新增', 'sysJobLog:add', 'sysJobLog/add', NULL, '09c7a1ec846211eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('09c842c3846211eaab15b4a9fc2c4442', '修改', 'sysJobLog:update', 'sysJobLog/update', NULL, '09c7a1ec846211eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('09c875ee846211eaab15b4a9fc2c4442', '删除', 'sysJobLog:delete', 'sysJobLog/delete', NULL, '09c7a1ec846211eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('438641da495235106c2d311703ac4290', '定时任务立即执行', 'sysJob:run', '/sysJob/run', '_self', 'fc9ca351846111eaab15b4a9fc2c4442', 5, 3, 1, '2020-04-22 15:47:54', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('526be97ba24c5a1b3418cdf7ca176b7e', '定时任务恢复', 'sysJob:resume', '/sysJob/resume', '_self', 'fc9ca351846111eaab15b4a9fc2c4442', 4, 3, 1, '2020-04-22 15:48:40', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('eef2b95e5d5ae2ebbb9d835e8850fd1f', '定时任务暂停', 'sysJob:pause', '/sysJob/pause', '_self', 'fc9ca351846111eaab15b4a9fc2c4442', 1, 3, 1, '2020-04-22 15:48:18', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('fc9d3120846111eaab15b4a9fc2c4442', '列表', 'sysJob:list', 'sysJob/listByPage', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('fc9d5be5846111eaab15b4a9fc2c4442', '新增', 'sysJob:add', 'sysJob/add', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('fc9da4f7846111eaab15b4a9fc2c4442', '修改', 'sysJob:update', 'sysJob/update', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('fc9dc9cd846111eaab15b4a9fc2c4442', '删除', 'sysJob:delete', 'sysJob/delete', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+
+
+
 
 COMMIT;
 
@@ -202,91 +218,100 @@ CREATE TABLE `sys_role_permission` (
 -- Records of sys_role_permission
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_permission` VALUES ('0354c8ef11371f47951d6c2028bae811', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a5e38d81e711ea81a800163e045bb0', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('01201760169aa7c9936e46c0d5cd15f7', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '8623c941-5746-4667-9fb8-76f6f5059788', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('0214adfed9bbfe0269e72b86991c6d61', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c0a84726-47d8-4d7a-8d53-0736a4586647', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('0416009f-d518-4b60-a6c9-095f5c1986f7', '8dd881c7-078c-406a-9c5f-242ab9ecfcb5', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2020-01-01 20:01:58');
 INSERT INTO `sys_role_permission` VALUES ('04446925-82bb-4ea1-b91d-a5a191ba04de', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'c30389e8-eb3e-4a0d-99c4-639e1893f50a', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('045ee52f-06e1-4c07-9e2e-25593aefd03a', '8dd881c7-078c-406a-9c5f-242ab9ecfcb5', '3ed79f23-90bf-4669-bc02-42ae392e75c1', '2020-01-01 20:01:58');
 INSERT INTO `sys_role_permission` VALUES ('0469d515-469a-45dc-8809-e1ee9c5f3959', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('04df7dba-cd4a-44ce-a697-443846dd6a08', '2d56198c-d14b-4d02-a625-7559815b62fb', '783aedd8-5d93-46b6-8c6d-e4d3f0f3f466', '2020-01-01 19:59:46');
 INSERT INTO `sys_role_permission` VALUES ('05538029-4906-405b-906a-3fe7ad65b647', '2d56198c-d14b-4d02-a625-7559815b62fb', 'c038dc93-f30d-4802-a090-be352eab341a', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('0578ad0d2a8af19c090735d926a1f815', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'a390845b-a53d-4bc9-af5d-331c37f34e6f', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('0863366eb79b465d013bb65f8a0179af', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '761db494-833d-4a6c-94b4-3a7409fd9a78', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('0e1053893f178288cf83e4e7b29f2878', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c038dc93-f30d-4802-a090-be352eab341a', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('10fac025df81a43250c3ad039287e301', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'b01614ab-0538-4cca-bb61-b46f18c60aa4', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('12e00a4588228664a3896604d827f807', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'e0b16b95-09de-4d60-a283-1eebd424ed47', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('0aa6eb812a915674e4009e0086147359', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '46dbb867-51d6-4523-852f-b12e75b34e3d', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('0bb947bcc52b8c2de194a0d7a58c9ca7', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '475b4c24-40fa-4823-863a-ba6d793b7610', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('0f8b0b9ed115cbcd150dc6838bf67703', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a5e38d81e711ea81a800163e045bb0', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('14935f00-9352-433e-8f2f-8607489d8932', '2d56198c-d14b-4d02-a625-7559815b62fb', '58612968-d93c-4c21-8fdc-a825c0ab0275', '2020-01-01 19:59:46');
+INSERT INTO `sys_role_permission` VALUES ('1620bc21c4ca152b0c1e4149134692bc', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'e0b16b95-09de-4d60-a283-1eebd424ed47', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('16f52080-3fd5-426c-8735-72d44ee401ce', 'b95c69b7-84be-430f-ae57-27a703ae3998', '4018e179-e599-41d0-bac5-c5408e1d4bc6', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('170620ab-ce2a-4b66-b7e3-b491088cc05d', '8dd881c7-078c-406a-9c5f-242ab9ecfcb5', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2020-01-01 20:01:58');
 INSERT INTO `sys_role_permission` VALUES ('1712fa00-97fd-4aec-b61b-df6a946d352d', 'b95c69b7-84be-430f-ae57-27a703ae3998', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('1cf056c9-6447-49d2-bd48-2ef64a180f18', '2d56198c-d14b-4d02-a625-7559815b62fb', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('207b639c9571f93ad32fb5a64675a6bb', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f2ff9320-c643-4c85-8b68-15f86d47b88b', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('22850e325d6866065ec21ba5f4f25953', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('257a4679068332747600f171e1e37a46', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3ed79f23-90bf-4669-bc02-42ae392e75c1', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('25acec16815254397302f9c7958dd435', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a85a8381e711ea81a800163e045bb0', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('27867f225111d2b83eeaec1699edcda0', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'fc9ca351846111eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('2846bc18-1efd-46b0-80c3-cf52e773828e', 'b95c69b7-84be-430f-ae57-27a703ae3998', '0d99b687-3f46-4632-9d56-8dd5e476dae7', '2019-11-09 21:25:31');
+INSERT INTO `sys_role_permission` VALUES ('28980f46c5b177b84844800356c2008b', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('2d7dc7ba-7e79-4f60-b7e0-0aaa979bd7ee', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'b01614ab-0538-4cca-bb61-b46f18c60aa4', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('2e645fba-1bd5-48d4-bd20-c2cb7983e26f', '2d56198c-d14b-4d02-a625-7559815b62fb', 'e0b16b95-09de-4d60-a283-1eebd424ed47', '2020-01-01 19:59:46');
 INSERT INTO `sys_role_permission` VALUES ('2e9b349e-f6a5-499c-937d-a945478accab', 'b95c69b7-84be-430f-ae57-27a703ae3998', '26764d88-1d90-402d-b355-a75deef116f2', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('303cdfa65bafdf56a0ef62823d2066c2', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '1dec779d-a9ec-448a-9389-a2b4eefce119', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('31949c89262a745cabfd6ed8c84015ce', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'b180aafa-0d1a-4898-b838-bc20cd44356d', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('2f02adb5e1c59e4a8c3ff5e9af02f7ce', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'fc9d3120846111eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('2fede6ae1dbcc0d2704e1ae91b41adfc', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'b01614ab-0538-4cca-bb61-b46f18c60aa4', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('304fd1001e7905dafbfe1ae1b2aa3a0f', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '1dec779d-a9ec-448a-9389-a2b4eefce119', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('31bd294f-124e-431f-ac81-da8f689c5e9e', '2d56198c-d14b-4d02-a625-7559815b62fb', '355f387f-a22b-4f8c-9cd6-ae10e930cd70', '2020-01-01 19:59:46');
 INSERT INTO `sys_role_permission` VALUES ('3537366c-49ae-4394-af52-7334537a8105', 'de54c167-e733-4b5b-83dd-ce10edd078f5', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2019-11-19 10:49:39');
+INSERT INTO `sys_role_permission` VALUES ('36c7cf640ef587bf690fb1ec25af7334', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f28b9215-3119-482d-bdc1-1f4c3f7c0869', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('373b5fe0-01db-46cb-acc3-382e525ec42f', '2d56198c-d14b-4d02-a625-7559815b62fb', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('3ab736df0f81a505e2113ad5b85fe042', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '65bdb02f47b94e71c2a2b9e459bde909', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('45184b5c58856e08584a0c22eb4f8cf6', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('3c25cbc6d7c481138dd2739e4fb06837', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('3eba9ff7effd4de33c765cb008438714', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '438641da495235106c2d311703ac4290', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('405946769f35177022272e08544c5ae7', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '0d99b687-3f46-4632-9d56-8dd5e476dae7', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('45a3d20dca4364236500c4fba9a10b57', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a0d80a81e711ea81a800163e045bb0', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('45afb550-8ce5-46eb-bc8d-310023725ac8', 'b95c69b7-84be-430f-ae57-27a703ae3998', '992d1a8d-b5f8-44fc-9a48-4b3e60a7b15e', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('45ebefba7e6c788043e80a641759d1cd', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a36ae381e711ea81a800163e045bb0', '2020-04-19 11:19:39');
 INSERT INTO `sys_role_permission` VALUES ('46745b75-b3f8-4b61-9fc9-535cb5cb2a15', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('510b2e45b9b9cbe24db5ba3a31ee2888', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '43d1bbf7-fc4a-4a10-9ad1-205b16c7c05f', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('4f6043f9c7185c162d947795915e5e13', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a36ae381e711ea81a800163e045bb0', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('5155a37ee7ff91547cd839241ed94fe1', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('51793a9c37b397dfd8e0bc7311e591f8', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'd372f1a482e69165151a7dbab0937903', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('52871004735c49e690d0d711bf4d64ff', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '010bcf8b-3172-4331-9941-25788ca8cbb0', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('55cf5c38-a9ff-4685-b12f-8c558781c648', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'b180aafa-0d1a-4898-b838-bc20cd44356d', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('5a2f8100498218bff6547ac1178ccfff', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'db2d31b7-fdcb-478e-bfde-a55eb8b0aa43', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('5c175a4ec2e5991e290cd9a8655d5c41', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3ed79f23-90bf-4669-bc02-42ae392e75c1', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('59e0cd14166b0b06546f412598bb131f', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'fc9d5be5846111eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('5c89472d5d815b88a30e9685168128f9', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c038dc93-f30d-4802-a090-be352eab341a', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('5e6560a5889dd953577a94ff77705566', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '4018e179-e599-41d0-bac5-c5408e1d4bc6', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('5fa50c70-1741-4aa5-85e4-c61fde3463bc', '2d56198c-d14b-4d02-a625-7559815b62fb', '3ed79f23-90bf-4669-bc02-42ae392e75c1', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('60a1601b27bd9fe7795695c80bf2a3cf', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '355f387f-a22b-4f8c-9cd6-ae10e930cd70', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('61f68bab204f27e259909e0dd452c0b7', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '817a58d1-ec82-4106-870a-bcc0bfaee0e7', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('6ae9cfacb75de02fd2738a86ff190b78', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '1a2ec857-e775-4377-9fb7-e3c77738b3e5', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('70948ea220b5d0ab4974495ae989c1db', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '8623c941-5746-4667-9fb8-76f6f5059788', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('765664470bb55189440d003445161a26', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '58612968-d93c-4c21-8fdc-a825c0ab0275', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('62689535e15e0b011275bbb34ca16439', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3c390dfd-0d9a-46de-9a5b-1ed884febcb2', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('62a70113acd9da14cbac455266084e95', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'db2d31b7-fdcb-478e-bfde-a55eb8b0aa43', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('72eb62e03749aaaff4ba01f42ab96cd8', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'fc9dc9cd846111eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('74a4b07aae4c87db31d2cc163dff349d', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '78f8e29a-cccd-49e5-ada7-5af40dd95312', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('77f34fc87d06c72908ff2279a2de1a08', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '26764d88-1d90-402d-b355-a75deef116f2', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('84c8ea44-854b-4497-96c0-d2593bfa446e', 'b95c69b7-84be-430f-ae57-27a703ae3998', '1a2ec857-e775-4377-9fb7-e3c77738b3e5', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('87355ec0-6e70-464a-ae43-302adc9cd875', '8dd881c7-078c-406a-9c5f-242ab9ecfcb5', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2020-01-01 20:01:58');
 INSERT INTO `sys_role_permission` VALUES ('890428f5-9910-408a-8173-d46370c4236d', '2d56198c-d14b-4d02-a625-7559815b62fb', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('89aea497f327f739c9ba0ddd2d3fb03c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c30389e8-eb3e-4a0d-99c4-639e1893f50a', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('8b6704c8ab4f4b8b843739843a21d6ce', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a85a8381e711ea81a800163e045bb0', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('8a3848c5a0950aac268fd4fd665846eb', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f2ff9320-c643-4c85-8b68-15f86d47b88b', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('8b4902e8e00276d90c46a5d22fb75bba', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c69c2d5c81e711ea81a800163e045bb0', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('8c0345ec3970ea5a9d9226a47c03e1b6', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '37101ed5-e840-4082-ae33-682ca6e41ad8', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('8d148cc4e3bb61c31ef51d4cd9478c6e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '65bdb02f47b94e71c2a2b9e459bde909', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('8dde0149-ba66-46ed-9145-20efa5a33f96', '2d56198c-d14b-4d02-a625-7559815b62fb', '37101ed5-e840-4082-ae33-682ca6e41ad8', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('955a7da348de27f30a96fc66978798cb', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '475b4c24-40fa-4823-863a-ba6d793b7610', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('926b83a8dec45591f74f6a46b333dbcf', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '43d1bbf7-fc4a-4a10-9ad1-205b16c7c05f', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('96730aa8817add9dc7e2e9fd25223394', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '09c7e071846211eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('9b65792e-6e14-4dab-b0a4-58df7d4b1a55', '2d56198c-d14b-4d02-a625-7559815b62fb', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2020-01-01 19:59:46');
-INSERT INTO `sys_role_permission` VALUES ('9dd503b682044b23dc31e8eede1ad77a', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f28b9215-3119-482d-bdc1-1f4c3f7c0869', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('9e907ddf034b37f0b14b1abc30f8d66c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3c390dfd-0d9a-46de-9a5b-1ed884febcb2', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('b0229cd868301574efc3fa48dbd438c5', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '2073345f-7344-43fe-9084-b7add56da652', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('9e5f340a3395eb5d9e1b0d0942cd82ff', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'b180aafa-0d1a-4898-b838-bc20cd44356d', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('9f93309e347ad500e6ecfec95049603b', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f21ed5e8-0756-45dc-91c5-f58a9463caaa', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('a000d490222c5b94b9863b06d099a724', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '355f387f-a22b-4f8c-9cd6-ae10e930cd70', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('a1e5096b787c804882af130561aa8a27', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '992d1a8d-b5f8-44fc-9a48-4b3e60a7b15e', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('b2379db3-09cd-41f7-acff-4dc7724036d8', 'b95c69b7-84be-430f-ae57-27a703ae3998', '355f387f-a22b-4f8c-9cd6-ae10e930cd70', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('b2ba9c26-03a6-41df-a6b5-bc52b5045d53', 'de54c167-e733-4b5b-83dd-ce10edd078f5', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2019-11-19 10:49:39');
 INSERT INTO `sys_role_permission` VALUES ('b353be32-5661-4297-be53-f55fb8973eaa', 'b95c69b7-84be-430f-ae57-27a703ae3998', '475b4c24-40fa-4823-863a-ba6d793b7610', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('b7862bf3fe8cdc40e561cf3e6f8ae98b', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '78f8e29a-cccd-49e5-ada7-5af40dd95312', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('bb7c94171cce91aaaeb59a6ca72f788c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '010bcf8b-3172-4331-9941-25788ca8cbb0', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('c399d89265005af89642a9639c25e51e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c0a84726-47d8-4d7a-8d53-0736a4586647', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('b40a3d811b75bf9af4605df07a85742b', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '783aedd8-5d93-46b6-8c6d-e4d3f0f3f466', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('b4a080117b6c134d903c22e75472cff5', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '526be97ba24c5a1b3418cdf7ca176b7e', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('bd573951753928eeed05d4ec20d663dd', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3a93a7e3-956a-408e-b2e4-108e9ece8f04', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('be71879ab852e7d57366e6b5bd12dfab', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '1a2ec857-e775-4377-9fb7-e3c77738b3e5', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('c3d2afff-d21b-40ae-ac52-d563879fcf24', '8dd881c7-078c-406a-9c5f-242ab9ecfcb5', 'c038dc93-f30d-4802-a090-be352eab341a', '2020-01-01 20:01:58');
-INSERT INTO `sys_role_permission` VALUES ('c48a40020c249a9d8550d93448673836', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '0d99b687-3f46-4632-9d56-8dd5e476dae7', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('c63dab3720fd5d9afda26d9618a0cff0', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '4018e179-e599-41d0-bac5-c5408e1d4bc6', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('c506ace889e2c6b9eaf57d80b51425a2', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '60c3443a-5ec9-4ea7-9484-d2870af93059', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('c664b0cc67b2b2a374fade6e9cf5561e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'a390845b-a53d-4bc9-af5d-331c37f34e6f', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('cbfb8eb5-d44e-47d7-880a-45b976e93184', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('ce8835aeb8758ec2b1e3646e32d3fa0d', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c69c2d5c81e711ea81a800163e045bb0', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('ce912eedfc229fd2fbcbebc15a2ec94b', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '3a93a7e3-956a-408e-b2e4-108e9ece8f04', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('d2f0d0043378edfbd0f1121bc4e6edc3', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '60c3443a-5ec9-4ea7-9484-d2870af93059', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('d142e16b65bcdb50fbb6b4ccde30fae2', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c30389e8-eb3e-4a0d-99c4-639e1893f50a', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('d3928837-f0cb-407f-bf97-eb11019b31ae', '2d56198c-d14b-4d02-a625-7559815b62fb', '78f8e29a-cccd-49e5-ada7-5af40dd95312', '2020-01-01 19:59:46');
 INSERT INTO `sys_role_permission` VALUES ('d3e419f0-6c81-4a58-a86e-48b61e003109', 'b95c69b7-84be-430f-ae57-27a703ae3998', '37101ed5-e840-4082-ae33-682ca6e41ad8', '2019-11-09 21:25:31');
+INSERT INTO `sys_role_permission` VALUES ('d4e4cea0a4317f235f8966b181055baf', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '09c7a1ec846211eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('d6ddd178-0e8d-43c6-8916-abf363ffa39f', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'f2ff9320-c643-4c85-8b68-15f86d47b88b', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('d949f2fdc7a899603550ed0821c31403', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '26764d88-1d90-402d-b355-a75deef116f2', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('d785c055b0557d000bc9c258c5466f1e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'fc9da4f7846111eaab15b4a9fc2c4442', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('d7960d237bd2014eda33a99c29bccb80', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '2073345f-7344-43fe-9084-b7add56da652', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('dcaf7ae345d6393aa6624f16045d6792', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '817a58d1-ec82-4106-870a-bcc0bfaee0e7', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('dd951c39-4493-492b-b77a-93247629f4f2', 'b95c69b7-84be-430f-ae57-27a703ae3998', '8623c941-5746-4667-9fb8-76f6f5059788', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('de5ba8468663a846ac012743d50d967f', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'd6214dcb-8b6d-494b-88fa-f519fc08ff8f', '2020-04-19 11:19:39');
 INSERT INTO `sys_role_permission` VALUES ('e35ecb61-5474-4e9c-afc9-0fd8ad26fb5d', 'b95c69b7-84be-430f-ae57-27a703ae3998', 'e0b16b95-09de-4d60-a283-1eebd424ed47', '2019-11-09 21:25:31');
 INSERT INTO `sys_role_permission` VALUES ('edad371b-820f-42e9-b88f-46dc1476edc6', 'b95c69b7-84be-430f-ae57-27a703ae3998', '58612968-d93c-4c21-8fdc-a825c0ab0275', '2019-11-09 21:25:31');
-INSERT INTO `sys_role_permission` VALUES ('f203cf7131601257ca4347b66fac7310', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'f21ed5e8-0756-45dc-91c5-f58a9463caaa', '2020-04-19 11:19:39');
+INSERT INTO `sys_role_permission` VALUES ('f40541735a799ac570c23518b03cb2db', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'eef2b95e5d5ae2ebbb9d835e8850fd1f', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('f47cf0a30a02b830cd620226725c031c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '761db494-833d-4a6c-94b4-3a7409fd9a78', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('f58d9e73-8929-4c90-a466-afc446339f97', 'de54c167-e733-4b5b-83dd-ce10edd078f5', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2019-11-19 10:49:39');
-INSERT INTO `sys_role_permission` VALUES ('f5a782d97f25cf94fb3ec976363da364', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '37101ed5-e840-4082-ae33-682ca6e41ad8', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('f6517b81e13758ab6564e399dadc893c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '46dbb867-51d6-4523-852f-b12e75b34e3d', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('f9772369b6a1ebddbd18aec553399066', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c30389e8-eb3e-4a0d-99c4-639e1893a05f', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('fb4478566124bca6293271ee7dcbd844', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '783aedd8-5d93-46b6-8c6d-e4d3f0f3f466', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('fb4c1a5ca1ab4b4238cb9ae077cccab5', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'c6a0d80a81e711ea81a800163e045bb0', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('fd10394aa407bd568b4bcd461a42282e', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '992d1a8d-b5f8-44fc-9a48-4b3e60a7b15e', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('fdc6c66d263baa96d1f02f2ae9d9b455', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', '2020-04-19 11:19:39');
-INSERT INTO `sys_role_permission` VALUES ('94152317018aed36341fe95b75103d02', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', 'd372f1a482e69165151a7dbab0937903', '2020-04-22 13:09:51');
-
+INSERT INTO `sys_role_permission` VALUES ('fc81d4958fb04591a7bc0cf4b02379c0', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '58612968-d93c-4c21-8fdc-a825c0ab0275', '2020-04-22 15:48:47');
 COMMIT;
 
 -- ----------------------------
@@ -369,3 +394,38 @@ CREATE TABLE `sys_dict` (
   PRIMARY KEY (`id`),
   UNIQUE KEY(`type`,`code`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8 COMMENT='数据字典表';
+
+DROP TABLE IF EXISTS `sys_job`;
+CREATE TABLE `sys_job`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `cron_expression` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of sys_job
+-- ----------------------------
+INSERT INTO `sys_job` VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
+
+
+
+DROP TABLE IF EXISTS `sys_job_log`;
+CREATE TABLE `sys_job_log`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
+  `job_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
+  `error` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
+  `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `job_id`(`job_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Compact;
+
+

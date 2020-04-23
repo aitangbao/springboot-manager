@@ -21,6 +21,7 @@
         <commons.io.version>2.5</commons.io.version>
         <commons.configuration.version>1.10</commons.configuration.version>
         <velocity.version>1.7</velocity.version>
+        <quartz.version>2.3.0</quartz.version>
     </properties>
 
     <dependencies>
@@ -127,6 +128,22 @@
             <artifactId>velocity</artifactId>
             <groupId>org.apache.velocity</groupId>
             <version>${velocity.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mchange</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.zaxxer</groupId>
+                    <artifactId>HikariCP-java6</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
