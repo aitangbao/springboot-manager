@@ -153,10 +153,10 @@
             {field: 'cronExpression', title: 'cron表达式', sort: true},
             {field: 'status', title: '任务状态', sort: true, templet: function (item) {
                 if (item.status === 1) {
-                  return '  <input type="checkbox" lay-skin="switch" lay-text="正常|暂停"  disabled>';
+                  return '  <input type="checkbox" lay-skin="switch" job_id = "'+item.id+'" lay-filter="jobSwitch"lay-text="正常|暂停">';
                 }
                 if (item.status === 0) {
-                  return '  <input type="checkbox" lay-skin="switch" lay-text="正常|暂停" checked disabled>';
+                  return '  <input type="checkbox" lay-skin="switch" job_id = "'+item.id+'" lay-filter="jobSwitch" lay-text="正常|暂停" checked>';
                 }
               }},
             {field: 'remark', title: '备注', sort: true},
@@ -266,7 +266,21 @@
       }
     });
 
-
+//监听提交
+    form.on('switch(jobSwitch)', function (data) {
+      console.log(data.elem); //得到checkbox原始DOM对象
+      console.log(data.elem.checked); //开关是否开启，true或者false
+      //获取所需属性值
+      var job_id = data.elem.attributes['job_id'].nodeValue;
+      var ids=[];
+      ids.push(job_id);
+      if (data.elem.checked) {
+        tipDialogResume(ids);
+      } else {
+        tipDialogPause(ids);
+      }
+      return false;
+    });
     //执行查询
     $("#search").click(function () {
       searchParam.beanName = $("#beanName").val();

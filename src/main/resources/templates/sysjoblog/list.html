@@ -110,7 +110,14 @@
             {field: 'jobId', title: '任务id', sort: true},
             {field: 'beanName', title: 'spring bean名称', sort: true},
             {field: 'params', title: '参数', sort: true},
-            {field: 'status', title: '任务状态    0：成功    1：失败', sort: true},
+            {field: 'status', title: '任务状态', width:110, sort: true, templet: function (item) {
+                if (item.status === 1) {
+                  return '  <button type="button"  class="layui-btn  layui-btn-xs layui-btn-danger">失败</button>';
+                }
+                if (item.status === 0) {
+                  return '  <button type="button"  class="layui-btn   layui-btn-xs">成功</button>';
+                }
+              }},
             {field: 'error', title: '失败信息', sort: true},
             {field: 'times', title: '耗时(单位：毫秒)', sort: true},
             {field: 'createTime', title: '创建时间', sort: true}]
