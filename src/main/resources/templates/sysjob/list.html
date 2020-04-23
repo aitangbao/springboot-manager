@@ -275,9 +275,17 @@
       var ids=[];
       ids.push(job_id);
       if (data.elem.checked) {
-        tipDialogResume(ids);
+        CoreUtil.sendAjax("/sysJob/resume",JSON.stringify(ids),function (res) {
+          layer.msg(res.msg, {time:1000});
+        },"POST",false,function (res) {
+          layer.msg("抱歉！您暂无删除用户的权限");
+        });
       } else {
-        tipDialogPause(ids);
+        CoreUtil.sendAjax("/sysJob/pause",JSON.stringify(ids),function (res) {
+          layer.msg(res.msg, {time:1000});
+        },"POST",false,function (res) {
+          layer.msg("抱歉！您暂无删除用户的权限");
+        });
       }
       return false;
     });
