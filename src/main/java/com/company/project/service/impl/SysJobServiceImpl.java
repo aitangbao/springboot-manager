@@ -1,5 +1,6 @@
 package com.company.project.service.impl;
 
+import com.company.project.common.exception.BusinessException;
 import com.company.project.common.job.utils.ScheduleUtils;
 import com.company.project.common.utils.Constant;
 import org.quartz.CronTrigger;
@@ -55,6 +56,11 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
 
     @Override
     public void updateJobById(SysJobEntity sysJob) {
+        SysJobEntity sysJobEntity = this.getById(sysJob.getId());
+        if (sysJobEntity == null) {
+            throw new BusinessException("获取定时任务异常");
+        }
+        sysJob.setStatus(sysJobEntity.getStatus());
         ScheduleUtils.updateScheduleJob(scheduler, sysJob);
 
         this.updateById(sysJob);
