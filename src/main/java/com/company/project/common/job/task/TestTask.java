@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class TestTask {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	public void test(String params){
+	public void run(String params){
 		logger.debug("TestTask定时任务正在执行，参数为：{}", params);
 	}
 }
