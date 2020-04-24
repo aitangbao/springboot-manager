@@ -1,10 +1,4 @@
-package com.company.project.common.job.utils; /**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package com.company.project.common.job.utils;
 
 import com.company.project.common.utils.SpringContextUtils;
 import com.company.project.entity.SysJobEntity;
