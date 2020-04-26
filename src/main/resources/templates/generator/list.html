@@ -1,154 +1,227 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css">
-    <link rel="stylesheet" href="/css/custom.form.css">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/custom.form.css">
 </head>
 <body>
 <div class="table_div">
-    <div id="searchParam" shiro:hasPermission="${entity?uncap_first}:list">
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <input type="text" id="tableName" class="layui-input" autocomplete="off" placeholder="请输入表名">
-            </div>
-            <div class="layui-input-inline ">
-                <button class="layui-btn" id="search">查询</button>
-            </div>
-        </div>
+  <div id="searchParam"  shiro:hasPermission="sysGenerator:list">
+    <div class="layui-form-item">
+      <div class="layui-input-inline">
+        <input type="text" id="tableName" class="layui-input"  autocomplete="off" placeholder="请输入表名">
+      </div>
 
+      <div class="layui-input-inline ">
+        <button class="layui-btn"   id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
+      </div>
     </div>
-    <table class="layui-table" id="showTable" lay-filter="showTable"></table>
-    <div id="laypage"></div>
+
+  </div>
+  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+  <div id="laypage"></div>
 </div>
-<script type="text/html" id="tool">
-    <a class="layui-btn layui-btn-xs" lay-event="add" shiro:hasPermission="sysGenerator:add">生成</a>
-</script>
 <script type="text/html" id="toolbar">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="batchAdd" shiro:hasPermission="sysGenerator:add">批量生成</button>
-    </div>
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="batchAdd"  shiro:hasPermission="sysGenerator:add">批量生成</button>
+  </div>
 </script>
+<script type="text/html" id="tool">
+  <a class="layui-btn layui-btn-xs" lay-event="add" shiro:hasPermission="sysGenerator:add">生成</a>
+</script>
+
 </body>
 </html>
 <script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js?v=1111"></script>
+<script src="/js/core.util.js"></script>
 <script>
-    var table = layui.table;
-    var laypage = layui.laypage
-    var form = layui.form;
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var laydate = layui.laydate;
-    var flag;
-    var token = CoreUtil.getData("access_token");
 
-    layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
-        var searchParam = {
-            pageNum: 1,
-            pageSize: 10
-        };
-        CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
-            //初始化分页器
-            laypageTable(res.data.total, searchParam.pageNum);
-            //初始化渲染数据
-            if (res.data.records != null) {
-                loadTable(res.data.records);
-            }
-        }, "POST", false, function (res) {
-            layer.msg("抱歉！您暂无获取列表的权限");
-            var noAuthorityData = [];
-            loadTable(noAuthorityData);
-        });
-        //渲染分页插件
-        var laypageTable = function (count, currentPage) {
-            laypage.render({
-                elem: 'laypage'
-                , count: count
-                , limit: searchParam.pageSize
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: location.hash.replace('#!currentPage=', '') //获取起始页
-                , hash: 'currentPage' //自定义hash值
-                , jump: function (obj, first) {
-                    if (!first) {
-                        flag = true;
-                        searchParam.pageNum = obj.curr;
-                        searchParam.pageSize = obj.limit;
-                        CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
-                            if (res.data.records != null) {
-                                loadTable(res.data.records);
-
-                                laypageTable(res.data.total, searchParam.pageNum);
-                            }
-
-                        }, "POST", false, function (res) {
-                            layer.msg("抱歉！您暂无获取列表的权限");
-                            var noAuthorityData = [];
-                            loadTable(noAuthorityData);
-                        });
-                    }
-                }
-            });
-        };
-
-        //渲染table
-        var loadTable = function (data) {
-            //展示已知数据
-            table.render({
-                elem: '#showTable'
-                , cols: [
-                    [
-                        {type: 'checkbox', fixed: 'left'},
-                        {field: 'tableName', title: '表名', width: 180, sort: true},
-                        {field: 'tableComment', title: '表备注', width: 150, sort: true},
-                        {field: 'createTime', title: '表创建时间', width: 180, sort: true},
-                        {field: 'genTime', title: '上次生成时间', width: 180, sort: true},
-                        {width: 100, toolbar: "#tool", title: '操作'}
-                    ]
-                ]
-                , data: data
-                , even: true
-                , limit: data.length
-                , limits: [10, 20, 30, 40, 50]
-                , toolbar: '#toolbar'
+  var table = layui.table;
+  var laypage = layui.laypage
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+  var token = CoreUtil.getData("access_token");
 
 
-            });
-        };
+  layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
+    var ins1;
+    var searchParam = {
+      tableName: null,
+      page: 1,
+      limit: 10
+    };
+    //初始化 获取数据
+    loadData();
 
-        //表头工具栏事件
-        table.on('toolbar(showTable)', function (obj) {
-            switch (obj.event) {
-                case 'batchAdd':
-                    var checkStatus = table.checkStatus(obj.config.id);
-                    var data = checkStatus.data;
-                    if (data.length == 0) {
-                        layer.msg("请选择要批量生成的表");
-                    } else {
-                        var tables = [];
-                        $(data).each(function (index, item) {
-                            tables.push(item.tableName);
-                        });
-                        token = token.replace("#", "%23");//转义token中的#号
-                        window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + tables.toString();
-                        setTimeout(reloadTable, 1000)
-                    }
-                    break;
-            }
-            ;
-        });
-        //操作工具栏事件
-        table.on('tool(showTable)', function (obj) {
-            var data = obj.data;
-            switch (obj.event) {
-                case 'add':
-                    token = token.replace("#", "%23");//转义token中的#号
-                    window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + data.tableName;
-                    break;
-            }
-        });
-    });
+    function loadData(page){
+      searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
+      CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
+        //初始化渲染数据
+        if (res.data.records != null) {
+          loadTable(res.data.records);
+        }
+        laypageTable(res.data.total);
+      }, "POST", false, function (res) {
+        layer.msg("抱歉！您暂无获取列表的权限");
+        var noAuthorityData = [];
+        loadTable(noAuthorityData);
+      });
+    }
+
+    //渲染分页插件
+    function laypageTable(total) {
+      laypage.render({
+        elem: 'laypage'
+        , count: total
+        , limit: searchParam.limit
+        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+        , curr: searchParam.page //获取起始页
+        , jump: function (obj, first) {
+          if(!first){
+            searchParam.page = obj.curr;
+            searchParam.limit = obj.limit;
+            loadData()
+          }
+        }
+      });
+    };
+
+    //渲染table
+    var loadTable = function (data) {
+      //展示已知数据
+      ins1 = table.render({
+        elem: '#showTable'
+        , cols: [
+          [
+              {type: 'checkbox', fixed: 'left'},
+              {field: 'tableName', title: '表名', width: 180, sort: true},
+              {field: 'tableComment', title: '表备注', width: 150, sort: true},
+              {field: 'createTime', title: '表创建时间', width: 180, sort: true},
+              {field: 'genTime', title: '上次生成时间', width: 180, sort: true},
+              {width: 100, toolbar: "#tool", title: '操作'}
+
+          ]
+        ]
+        , data: data
+        , even: true
+        , limit: data.length
+        , limits: [10, 20, 30, 40, 50]
+        , toolbar: '#toolbar'
+      });
+    };
+
+      //表头工具栏事件
+      table.on('toolbar(showTable)', function (obj) {
+          switch (obj.event) {
+              case 'batchAdd':
+                  var checkStatus = table.checkStatus(obj.config.id);
+                  var data = checkStatus.data;
+                  if (data.length == 0) {
+                      layer.msg("请选择要批量生成的表");
+                  } else {
+                      var tables = [];
+                      $(data).each(function (index, item) {
+                          tables.push(item.tableName);
+                      });
+                      token = token.replace("#", "%23");//转义token中的#号
+                      window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + tables.toString();
+                  }
+                  break;
+          }
+          ;
+      });
+      //操作工具栏事件
+      table.on('tool(showTable)', function (obj) {
+          var data = obj.data;
+          switch (obj.event) {
+              case 'add':
+                  token = token.replace("#", "%23");//转义token中的#号
+                  window.location.href = "/sysGenerator/add?authorization=" + token + "&tables=" + data.tableName;
+                  break;
+          }
+      });
+
+
+      //执行查询
+      $("#search").click(function () {
+          searchParam.tableName = $("#tableName").val();
+          loadData(1);
+      });
+
+      //导出
+      $('#export').on('click', function () {
+          //原先分页limit
+          var limitOrg = searchParam.limit;
+          searchParam.limit = 1000000;
+          searchParam.tableName = $("#tableName").val();
+          CoreUtil.sendAjax("/sysGenerator/listByPage", JSON.stringify(searchParam), function (res) {
+              //初始化渲染数据
+              if (res.data.records != null) {
+                  table.exportFile(ins1.config.id, res.data.records, 'xls');
+              }
+          }, "POST", false, function (res) {
+              layer.msg("抱歉！您暂无获取列表的权限");
+              var noAuthorityData = [];
+              loadTable(noAuthorityData);
+          });
+          searchParam.limit = limitOrg;
+
+      });
+
+      //删除
+      var tipDialog=function (ids) {
+          layer.open({
+              content: "确定要删除么?",
+              yes: function(index, layero){
+                  layer.close(index); //如果设定了yes回调，需进行手工关闭
+                  CoreUtil.sendAjax("/sysGenerator/delete",JSON.stringify(ids),function (res) {
+                      layer.msg(res.msg, {time:1000},function () {
+                          loadData(1);
+                      });
+                  },"DELETE",false,function (res) {
+                      layer.msg("抱歉！您暂无删除用户的权限");
+                  });
+              }
+          });
+      };
+
+      //返回
+      $("#btn_cancel").click(function() {
+          $(".table_div").show();
+          $(".operation").hide();
+          return false;
+      });
+
+      //监听保存
+      form.on('submit(submit)', function(data){
+          if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+              CoreUtil.sendAjax("/sysGenerator/add",JSON.stringify(data.field),function (res) {
+                  $(".table_div").show();
+                  $(".operation").hide();
+                  loadData(1);
+              },"POST",false,function (res) {
+                  layer.msg("抱歉！您暂无权限");
+              });
+          }else {
+              CoreUtil.sendAjax("/sysGenerator/update",JSON.stringify(data.field),function (res) {
+                  $(".table_div").show();
+                  $(".operation").hide();
+                  loadData(1);
+              },"PUT",false,function (res) {
+                  layer.msg("抱歉！您暂无权限");
+              });
+          }
+
+          return false;
+      });
+  });
+
 
 
 </script>
