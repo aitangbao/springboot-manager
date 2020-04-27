@@ -389,7 +389,6 @@ CREATE TABLE `sys_dict` (
   `value` varchar(1000) NOT NULL COMMENT '字典值',
   `order_num` int DEFAULT 0 COMMENT '排序',
   `remark` varchar(255) COMMENT '备注',
-  `deleted` tinyint DEFAULT 1 COMMENT '删除标记 1未删除；0已删除',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY(`type`,`code`)

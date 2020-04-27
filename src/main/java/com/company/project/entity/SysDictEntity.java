@@ -71,11 +71,6 @@ public class SysDictEntity extends PageReqVO implements Serializable {
 	@TableField("create_time")
 	private Date createTime;
 
-	/**
-	 * 删除标记 1未删除；0已删除
-	 */
-	@TableLogic
-	private Integer deleted;
 
 
 }
