@@ -1,6 +1,7 @@
 package com.company.project.controller;
 
 
+import com.company.project.entity.oshi.SystemHardwareInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -120,5 +121,16 @@ public class IndexController {
     @GetMapping("/build")
     public String build() {
         return "build";
+    }
+
+    @GetMapping("/systemInfo")
+    public String systemInfo(Model model) {
+
+        SystemHardwareInfo systemHardwareInfo = new SystemHardwareInfo();
+        systemHardwareInfo.copyTo();
+
+        model.addAttribute("server", systemHardwareInfo);
+
+        return "systemInfo";
     }
 }
