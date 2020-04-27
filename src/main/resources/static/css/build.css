@@ -1,0 +1,111 @@
+@charset "UTF-8";
+
+/*元素面板*/
+.element-panel{
+    padding-top: 10px;
+}
+.element-panel .layui-form-item,
+.element-panel .layui-form-item .layui-form-label,
+.build-panel .build-item,
+.build-panel .build-item .layui-form-label
+{
+    cursor: move;
+}
+.drag-box{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 2px 1px rgba(0,0,0,.12);
+    opacity: 0.6;
+}
+.drag-box .layui-form-item{
+    margin-bottom: 10px;
+}
+
+/*构建面板*/
+.build-card{
+    overflow: hidden;
+}
+.build-panel{
+    min-height: 500px;
+    overflow: hidden;
+    padding: 0;
+    margin: 15px;
+}
+.build-panel.active{
+    background-color: #fdffcd;
+}
+.build-panel #shell-item{
+    background-color: #eeeeee;
+    border: 1px dashed #c3c3c3;
+}
+.build-panel .build-item{
+    position: relative;
+}
+.build-panel .build-item:hover{
+    padding-top: 10px;
+    border: 1px dashed #ffc664;
+}
+.build-panel .build-item:hover .control{
+    display: block;
+}
+.build-panel .build-item .control{
+    position: absolute;
+    top: 0;
+    right: 6px;
+    font-size: 12px;
+    color: #009688;
+    display: none;
+    z-index: 999999;
+}
+.build-panel .build-item .control a{
+    color: #009688;
+}
+.build-item-edit .build-edit-box{
+    position: relative;
+    width: 500px;
+    height: 317px;
+    display: block;
+}
+.build-item-edit .build-edit{
+    display: block;
+    width: 460px;
+    height: 287px;
+    border: 10px solid #F8F8F8;
+    border-top-width: 0;
+    padding: 10px;
+    line-height: 20px;
+    overflow: auto;
+    background-color: #3F3F3F;
+    color: #eee;
+    font-size: 12px;
+    font-family: Courier New, serif;
+}
+.build-item-edit .build-edit-btn{
+    position: absolute;
+    z-index: 99999;
+    right: 34px;
+    bottom: 26px;
+    width: 58px;
+    height: 30px;
+    border: none;
+    color: #ffffff;
+    border-radius: 2px;
+    background-color: #009688;
+    cursor: pointer;
+}
+.build-item-edit .build-edit-btn:hover{
+    background-color: #007c6e;
+}
+.build-generate{
+    float: right;
+    margin-top: 6px;
+    margin-right: 2px;
+    color: #009688;
+    border-color: #009688;
+}
+.build-generate:hover{
+    background-color: #009688;
+    color: #FFFFFF;
+}
