@@ -1,9 +1,9 @@
 package com.company.project.controller;
 
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.common.utils.SpringContextUtils;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.job.utils.ScheduleJob;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.quartz.Scheduler;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -17,11 +17,11 @@ import io.swagger.annotations.ApiParam;
 
 import java.util.Date;
 import java.util.List;
+
 import com.company.project.common.utils.DataResult;
 
 import com.company.project.entity.SysJobEntity;
 import com.company.project.service.SysJobService;
-
 
 
 /**
@@ -39,30 +39,27 @@ public class SysJobController {
 
 
     /**
-    * 跳转到页面
-    */
+     * 跳转到页面
+     */
     @GetMapping("/index/sysJob")
     public String sysJob() {
         return "sysjob/list";
-        }
+    }
 
     @ApiOperation(value = "新增")
     @LogAnnotation(title = "新增")
     @PostMapping("sysJob/add")
     @RequiresPermissions("sysJob:add")
     @ResponseBody
-    public DataResult add(@RequestBody SysJobEntity sysJob){
+    public DataResult add(@RequestBody SysJobEntity sysJob) {
         if (!isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
         }
-        if (StringUtils.isEmpty(sysJob.getBeanName())) {
-            return DataResult.fail("bean名称不能为空");
+        DataResult dataResult = ScheduleJob.judgeBean(sysJob.getBeanName());
+        if (BaseResponseCode.SUCCESS.getCode() != dataResult.getCode()) {
+            return dataResult;
         }
-        Object target = SpringContextUtils.getBean(sysJob.getBeanName());
-        if (target == null) {
-            return DataResult.fail("bean不存在，请检查");
 
-        }
         sysJobService.saveJob(sysJob);
         return DataResult.success();
     }
@@ -72,7 +69,7 @@ public class SysJobController {
     @RequiresPermissions("sysJob:delete")
     @LogAnnotation(title = "删除")
     @ResponseBody
-    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
+    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysJobService.delete(ids);
         return DataResult.success();
     }
@@ -82,10 +79,15 @@ public class SysJobController {
     @RequiresPermissions("sysJob:update")
     @LogAnnotation(title = "更新")
     @ResponseBody
-    public DataResult update(@RequestBody SysJobEntity sysJob){
+    public DataResult update(@RequestBody SysJobEntity sysJob) {
         if (!isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
         }
+        DataResult dataResult = ScheduleJob.judgeBean(sysJob.getBeanName());
+        if (BaseResponseCode.SUCCESS.getCode() != dataResult.getCode()) {
+            return dataResult;
+        }
+
         sysJobService.updateJobById(sysJob);
         return DataResult.success();
     }
@@ -94,7 +96,7 @@ public class SysJobController {
     @PostMapping("sysJob/listByPage")
     @RequiresPermissions("sysJob:list")
     @ResponseBody
-    public DataResult findListByPage(@RequestBody SysJobEntity sysJob){
+    public DataResult findListByPage(@RequestBody SysJobEntity sysJob) {
         Page page = new Page(sysJob.getPage(), sysJob.getLimit());
         QueryWrapper queryWrapper = new QueryWrapper();
         //查询条件示例
@@ -113,7 +115,7 @@ public class SysJobController {
     @PostMapping("/sysJob/run")
     @RequiresPermissions("sysJob:run")
     @ResponseBody
-    public DataResult run(@RequestBody  List<String> ids){
+    public DataResult run(@RequestBody List<String> ids) {
         sysJobService.run(ids);
 
         return DataResult.success();
@@ -126,7 +128,7 @@ public class SysJobController {
     @PostMapping("/sysJob/pause")
     @RequiresPermissions("sysJob:pause")
     @ResponseBody
-    public DataResult pause(@RequestBody  List<String> ids){
+    public DataResult pause(@RequestBody List<String> ids) {
         sysJobService.pause(ids);
 
         return DataResult.success();
@@ -139,13 +141,13 @@ public class SysJobController {
     @PostMapping("/sysJob/resume")
     @RequiresPermissions("sysJob:resume")
     @ResponseBody
-    public DataResult resume(@RequestBody  List<String> ids){
+    public DataResult resume(@RequestBody List<String> ids) {
         sysJobService.resume(ids);
 
         return DataResult.success();
     }
 
-    public static boolean isValidExpression(String cronExpression){
+    public static boolean isValidExpression(String cronExpression) {
         CronTriggerImpl trigger = new CronTriggerImpl();
         try {
             trigger.setCronExpression(cronExpression);

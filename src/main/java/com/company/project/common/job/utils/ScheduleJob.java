@@ -1,5 +1,6 @@
 package com.company.project.common.job.utils;
 
+import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.SpringContextUtils;
 import com.company.project.entity.SysJobEntity;
 import com.company.project.entity.SysJobLogEntity;
@@ -75,4 +76,27 @@ public class ScheduleJob extends QuartzJobBean {
 			scheduleJobLogService.save(log);
 		}
     }
+
+    public static DataResult judgeBean(String beanName) {
+
+		if (org.springframework.util.StringUtils.isEmpty(beanName)) {
+			return DataResult.fail("spring bean名称不能为空");
+		}
+
+		Object target = SpringContextUtils.getBean(beanName);
+		if (target == null) {
+			return DataResult.fail("spring bean不存在，请检查");
+		}
+		Method method;
+		try {
+			method = target.getClass().getDeclaredMethod("run", String.class);
+		} catch (Exception e) {
+			return DataResult.fail("spring bean中的run方法不存在，请检查");
+		}
+		if (method == null) {
+			return DataResult.fail("spring bean中的run方法不存在，请检查");
+		}
+
+		return DataResult.success();
+	}
 }
