@@ -137,7 +137,7 @@ $(function() {
 	        dataType: "json",
 	        success: function (data) {
 	        	var data = data.data;
-	            if (data && data.length > 0) {
+	            if (data && data.length == 5) {
 	                var strHTML = "<ul>";
 	                for (var i = 0; i < data.length; i++) {
 	                    strHTML += "<li>" + data[i] + "</li>";

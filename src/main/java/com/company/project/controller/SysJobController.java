@@ -174,7 +174,7 @@ public class SysJobController {
             CronTriggerImpl cronTriggerImpl = new CronTriggerImpl();
             cronTriggerImpl.setCronExpression(cron);
             // 这个是重点，一行代码搞定
-            List<Date> dates = TriggerUtils.computeFireTimes(cronTriggerImpl, null, 8);
+            List<Date> dates = TriggerUtils.computeFireTimes(cronTriggerImpl, null, 5);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (Date date : dates) {
                 list.add(dateFormat.format(date));
