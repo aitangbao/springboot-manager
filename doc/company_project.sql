@@ -171,7 +171,7 @@ INSERT INTO `sys_permission` VALUES ('fc9d3120846111eaab15b4a9fc2c4442', '列表
 INSERT INTO `sys_permission` VALUES ('fc9d5be5846111eaab15b4a9fc2c4442', '新增', 'sysJob:add', 'sysJob/add', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('fc9da4f7846111eaab15b4a9fc2c4442', '修改', 'sysJob:update', 'sysJob/update', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('fc9dc9cd846111eaab15b4a9fc2c4442', '删除', 'sysJob:delete', 'sysJob/delete', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO `sys_permission` VALUES ('83fd0ce6f2a70e3d79d37d5fa3f260f9', '定时任务清空', 'sysJobLog:delete', '/sysJobLog/delete', '_self', '09c7a1ec846211eaab15b4a9fc2c4442', 22, 3, 1, '2020-04-29 09:11:41', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('83fd0ce6f2a70e3d79d37d5fa3f260f9', '定时日志清空', 'sysJobLog:delete', '/sysJobLog/delete', '_self', '09c7a1ec846211eaab15b4a9fc2c4442', 22, 3, 1, '2020-04-29 09:11:41', NULL, 1);
 
 
 
