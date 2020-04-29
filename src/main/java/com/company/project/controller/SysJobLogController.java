@@ -44,7 +44,7 @@ public class SysJobLogController {
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("sysJobLog/listByPage")
-    @RequiresPermissions("sysJobLog:list")
+    @RequiresPermissions("sysJob:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog){
         Page page = new Page(sysJobLog.getPage(), sysJobLog.getLimit());
@@ -60,7 +60,7 @@ public class SysJobLogController {
 
     @ApiOperation(value = "清空")
     @DeleteMapping("sysJobLog/delete")
-    @RequiresPermissions("sysJobLog:delete")
+    @RequiresPermissions("sysJob:delete")
     @LogAnnotation(title = "清空")
     @ResponseBody
     public DataResult delete() {

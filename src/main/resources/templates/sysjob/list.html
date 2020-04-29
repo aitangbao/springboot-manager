@@ -71,6 +71,7 @@
     <button class="layui-btn layui-btn-sm" lay-event="pause" shiro:hasPermission="sysJob:pause">暂停</button>
     <button class="layui-btn layui-btn-sm" lay-event="resume" shiro:hasPermission="sysJob:resume">恢复</button>
     <button class="layui-btn layui-btn-sm" lay-event="run" shiro:hasPermission="sysJob:run">立即执行</button>
+    <button class="layui-btn layui-btn-danger layui-btn-sm" style="float: right" lay-event="jobLog" shiro:hasPermission="sysJob:list">任务日志</button>
   </div>
 </script>
 <script type="text/html" id="tool">
@@ -238,6 +239,11 @@
           $(".operation input[name=status]").val("");
           $(".operation input[name=remark]").val("");
           $(".operation input[name=createTime]").val("");
+          break;
+        case 'jobLog':
+          var tabId = new Date().getTime();
+          window.parent.active.tabAdd("/index/sysJobLog",tabId,"定时任务日志")
+          window.parent.active.tabChange(tabId);
           break;
       };
     });
