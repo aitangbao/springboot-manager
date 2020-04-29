@@ -55,20 +55,36 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## **效果图**
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155558_5d147e58_997722.png "1.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155606_956168f4_997722.png "2.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155614_c7419788_997722.png "3.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155651_d29c3266_997722.png "4.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155659_51c388db_997722.png "5.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155735_b2e1dad9_997722.png "7.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155741_00f5243e_997722.png "8.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155749_eaef1832_997722.png "9.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155756_180aad93_997722.png "10.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155917_0685f188_997722.png "20.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155803_6c9408a4_997722.png "11.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155856_8b017168_997722.png "12.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155904_7595775a_997722.png "13.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0429/155911_e973d280_997722.png "16.png")
+![1](http://tuchuang.aitangbao.com.cn/20200429161346.png)
+
+![2](http://tuchuang.aitangbao.com.cn/20200429161348.png)
+
+![3](http://tuchuang.aitangbao.com.cn/20200429161353.png)
+
+![4](http://tuchuang.aitangbao.com.cn/20200429161355.png)
+
+![5](http://tuchuang.aitangbao.com.cn/20200429161404.png)
+
+![7](http://tuchuang.aitangbao.com.cn/20200429161359.png)
+
+![8](http://tuchuang.aitangbao.com.cn/20200429161412.png)
+
+![9](http://tuchuang.aitangbao.com.cn/20200429161414.png)
+
+![20](http://tuchuang.aitangbao.com.cn/20200429161417.png)
+
+![10](http://tuchuang.aitangbao.com.cn/20200429161419.png)
+
+![11](http://tuchuang.aitangbao.com.cn/20200429161421.png)
+
+![12](http://tuchuang.aitangbao.com.cn/20200429161423.png)
+
+![13](http://tuchuang.aitangbao.com.cn/20200429161425.png)
+
+![16](http://tuchuang.aitangbao.com.cn/20200429161428.png)
+
+
+
 
 ### 交流群
 <img width="250px" height="300px" src="http://www.aitangbao.com.cn/static/weixin_share.jpg" alt="" style="zoom:25%;" />
