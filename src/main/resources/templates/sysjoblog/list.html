@@ -15,7 +15,7 @@
 </div>
 
 <div class="table_div">
-  <div id="searchParam"  shiro:hasPermission="sysJobLog:list">
+  <div id="searchParam"  shiro:hasPermission="sysJob:list">
     <div class="layui-form-item">
       <div class="layui-input-inline">
         <input type="text" id="jobId" class="layui-input"  autocomplete="off" placeholder="请输入任务id">
@@ -33,14 +33,9 @@
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysJobLog:delete">清空</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysJob:delete">清空</button>
   </div>
 </script>
-<script type="text/html" id="tool">
-  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysJobLog:update">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysJobLog:delete">删除</a>
-</script>
-
 </body>
 </html>
 <script src="/layui/layui.all.js"></script>
