@@ -1,5 +1,6 @@
 package com.company.project.controller;
 
+import com.company.project.common.aop.annotation.LogAnnotation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -56,5 +57,17 @@ public class SysJobLogController {
         IPage<SysJobLogEntity> iPage = sysJobLogService.page(page, queryWrapper);
         return DataResult.success(iPage);
     }
+
+    @ApiOperation(value = "清空")
+    @DeleteMapping("sysJobLog/delete")
+    @RequiresPermissions("sysJobLog:delete")
+    @LogAnnotation(title = "清空")
+    @ResponseBody
+    public DataResult delete() {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        sysJobLogService.remove(queryWrapper);
+        return DataResult.success();
+    }
+
 
 }

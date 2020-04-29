@@ -33,8 +33,7 @@
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="sysJobLog:add">添加</button>
-    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysJobLog:delete">删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysJobLog:delete">清空</button>
   </div>
 </script>
 <script type="text/html" id="tool">
@@ -126,6 +125,7 @@
         , even: true
         , limit: data.length
         , limits: [10, 20, 30, 40, 50]
+        , toolbar: '#toolbar'
       });
     };
 
@@ -157,22 +157,27 @@
 
     });
 
-    //删除
-    var tipDialog=function (ids) {
-      layer.open({
-        content: "确定要删除么?",
-        yes: function(index, layero){
-          layer.close(index); //如果设定了yes回调，需进行手工关闭
-          CoreUtil.sendAjax("/sysJobLog/delete",JSON.stringify(ids),function (res) {
-            layer.msg(res.msg, {time:1000},function () {
-              loadData(1);
-            });
-          },"DELETE",false,function (res) {
-            layer.msg("抱歉！您暂无删除用户的权限");
+    //表头工具
+    table.on('toolbar(showTable)', function(obj){
+      switch(obj.event){
+        case 'batchDeleted':
+          layer.open({
+            content: "确定要清空么?",
+            yes: function(index, layero){
+              layer.close(index); //如果设定了yes回调，需进行手工关闭
+              CoreUtil.sendAjax("/sysJobLog/delete",{},function (res) {
+                layer.msg(res.msg, {time:1000},function () {
+                  loadData(1);
+                });
+              },"DELETE",false,function (res) {
+                layer.msg("抱歉！您暂无权限");
+              });
+            }
           });
-        }
-      });
-    };
+
+          break;
+      };
+    });
 
     //返回
     $("#btn_cancel").click(function() {
