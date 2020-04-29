@@ -4,6 +4,7 @@ import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.job.utils.ScheduleJob;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.quartz.TriggerUtils;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -157,4 +161,29 @@ public class SysJobController {
             return false;
         }
     }
+
+
+    @ApiOperation(value = "获取运行时间")
+    @LogAnnotation(title = "获取运行时间")
+    @GetMapping("sysJob/getRecentTriggerTime")
+    @RequiresPermissions("sysJob:add")
+    @ResponseBody
+    public DataResult getRecentTriggerTime(String cron) {
+        List<String> list = new ArrayList<String>();
+        try {
+            CronTriggerImpl cronTriggerImpl = new CronTriggerImpl();
+            cronTriggerImpl.setCronExpression(cron);
+            // 这个是重点，一行代码搞定
+            List<Date> dates = TriggerUtils.computeFireTimes(cronTriggerImpl, null, 8);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (Date date : dates) {
+                list.add(dateFormat.format(date));
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return DataResult.success(list);
+    }
+
 }

@@ -29,6 +29,8 @@
       <label class="layui-form-label">cron表达式</label>
       <div class="layui-input-block">
         <input type="cronExpression" id="cron" name="cronExpression" placeholder="请输入cron表达式,如:0 0 12 * * ?" autocomplete="off" class="layui-input">
+        <button onclick="genCron()" style="position: absolute;top: 0;right: 24px;
+    cursor: pointer;" type="button" class="layui-btn">生成</button>
       </div>
     </div>
         <div class="layui-form-item">
@@ -274,8 +276,6 @@
 
 //监听提交
     form.on('switch(jobSwitch)', function (data) {
-      console.log(data.elem); //得到checkbox原始DOM对象
-      console.log(data.elem.checked); //开关是否开启，true或者false
       //获取所需属性值
       var job_id = data.elem.attributes['job_id'].nodeValue;
       var ids=[];
@@ -420,4 +420,27 @@
       return false;
     });
   });
+
+
+  function genCron() {
+    layer.open({
+      type: 2,
+      title: "cron表达式生成",
+      shadeClose: true,
+      shade: 0.4,
+      area: ['80%', '100%'],
+      content: "/sCron/index.html",
+      btn: ['确定','关闭'],
+      yes: function (index, layero) {
+        var body = layer.getChildFrame('body', index);
+        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+        var cron = body.find('#cron').val();
+        $("#cron").val(cron)
+        layer.close(index);
+      },
+      cancel: function(){
+        //右上角关闭回调
+      }
+    });
+  }
 </script>

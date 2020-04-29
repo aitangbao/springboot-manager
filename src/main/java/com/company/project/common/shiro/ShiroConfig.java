@@ -78,6 +78,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/captcha.jpg", "anon");
 
         filterChainDefinitionMap.put("/csrf", "anon");
+        filterChainDefinitionMap.put("/sCron/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/layui/**", "anon");
