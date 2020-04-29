@@ -94,7 +94,7 @@
   var layer = layui.layer;
   var $ = jQuery = layui.jquery;
   var laydate = layui.laydate;
-
+  var tabId = new Date().getTime();
 
 
   layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
@@ -243,7 +243,7 @@
           $(".operation input[name=createTime]").val("");
           break;
         case 'jobLog':
-          var tabId = new Date().getTime();
+          window.parent.active.tabDelete(tabId);
           window.parent.active.tabAdd("/index/sysJobLog",tabId,"定时任务日志")
           window.parent.active.tabChange(tabId);
           break;
