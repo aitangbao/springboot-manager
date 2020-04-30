@@ -3,6 +3,9 @@ package com.company.project.mapper;
 import com.company.project.entity.SysDictDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 数据字典详情
@@ -13,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysDictDetailMapper extends BaseMapper<SysDictDetailEntity> {
-	
+
+    List<SysDictDetailEntity> listAll(@Param(value = "dictId") String dictId);
 }

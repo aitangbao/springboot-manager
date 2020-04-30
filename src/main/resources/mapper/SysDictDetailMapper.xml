@@ -13,5 +13,11 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <select id="listAll" resultType="com.company.project.entity.SysDictDetailEntity">
+        select t1.*,t2.`name` as dictName from sys_dict_detail t1
+        left join sys_dict t2 on t2.id = t1.dict_id
+        where t1.dict_id = #{dictId}
+    </select>
+
 
 </mapper>

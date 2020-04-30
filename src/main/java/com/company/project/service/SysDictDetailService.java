@@ -3,6 +3,8 @@ package com.company.project.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysDictDetailEntity;
 
+import java.util.List;
+
 /**
  * 数据字典详情
  *
@@ -12,5 +14,6 @@ import com.company.project.entity.SysDictDetailEntity;
  */
 public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 
+    List<SysDictDetailEntity> listAll(String dictId);
 }
 

@@ -58,5 +58,10 @@ public class SysDictDetailEntity extends PageReqVO implements Serializable {
 	@TableField("create_time")
 	private Date createTime;
 
+	/**
+	 * 字典name
+	 */
+	@TableField(exist = false)
+	private String dictName;
 
 }

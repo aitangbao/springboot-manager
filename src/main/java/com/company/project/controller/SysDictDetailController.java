@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.company.project.common.utils.DataResult;
@@ -85,11 +86,10 @@ public class SysDictDetailController {
     @RequiresPermissions("sysDict:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail){
-        QueryWrapper queryWrapper = new QueryWrapper();
-        //查询条件示例
-        queryWrapper.eq("dict_id", sysDictDetail.getDictId());
-        queryWrapper.orderByAsc("sort");
-        List<SysDictDetailEntity> list = sysDictDetailService.list(queryWrapper);
+        if (StringUtils.isEmpty(sysDictDetail.getDictId())) {
+            return DataResult.success(new ArrayList<>());
+        }
+        List<SysDictDetailEntity> list = sysDictDetailService.listAll(sysDictDetail.getDictId());
         return DataResult.success(list);
     }
 
