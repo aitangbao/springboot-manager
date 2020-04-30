@@ -187,8 +187,8 @@
                 , cols: [
                     [
                         {type: 'checkbox', fixed: 'left'},
-                        {field: 'name', title: '字典名称', sort: true},
-                        {field: 'remark', title: '描述', sort: true},
+                        {field: 'name', title: '字典名称', sort: true,event: 'setDetail'},
+                        {field: 'remark', title: '描述', sort: true,event: 'setDetail'},
                         {width: 120, toolbar: "#tool", title: '操作'}
                     ]
                 ]
@@ -237,12 +237,7 @@
         }
 
         loadDetail(null);
-        //监听行单击事件（双击事件为：rowDouble）
-        table.on('row(showTable)', function (obj) {
-            var data = obj.data;
-            currentDictId = data.id;
-            loadDetail(currentDictId)
-        });
+
         //表头工具
         table.on('toolbar(showTable)', function (obj) {
             switch (obj.event) {
@@ -311,6 +306,11 @@
                         cancel: function () {
                         }
                     });
+                    break;
+                case 'setDetail':
+                    var data = obj.data;
+                    currentDictId = data.id;
+                    loadDetail(currentDictId)
                     break;
             }
         });
