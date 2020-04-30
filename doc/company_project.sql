@@ -373,21 +373,38 @@ COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
--- 数据字典
+-- 数据字典表
 DROP TABLE IF EXISTS `sys_dict`;
-CREATE TABLE `sys_dict` (
-  `id` varchar(64) NOT NULL ,
-  `name` varchar(100) NOT NULL COMMENT '字典名称',
-  `type` varchar(100) NOT NULL COMMENT '字典类型',
-  `code` varchar(100) NOT NULL COMMENT '字典码',
-  `value` varchar(1000) NOT NULL COMMENT '字典值',
-  `order_num` int DEFAULT 0 COMMENT '排序',
-  `remark` varchar(255) COMMENT '备注',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY(`type`,`code`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8 COMMENT='数据字典表';
+CREATE TABLE `sys_dict`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = Compact;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+INSERT INTO `sys_dict`(`id`, `name`, `remark`, `create_time`) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
+
+
+-- 数据字典详情
+DROP TABLE IF EXISTS `sys_dict_detail`;
+CREATE TABLE `sys_dict_detail`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
+  `sort` smallint(6) NULL DEFAULT NULL COMMENT '排序',
+  `dict_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典详情' ROW_FORMAT = Compact;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
+INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
+
 
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job`  (

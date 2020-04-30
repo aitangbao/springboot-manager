@@ -1,5 +1,6 @@
 package com.company.project.controller;
 
+import com.company.project.service.SysDictDetailService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -32,7 +33,8 @@ import com.company.project.service.SysDictService;
 public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
-
+    @Autowired
+    private SysDictDetailService sysDictDetailService;
 
     /**
      * 跳转到页面
@@ -47,12 +49,14 @@ public class SysDictController {
     @RequiresPermissions("sysDict:add")
     @ResponseBody
     public DataResult add(@RequestBody SysDictEntity sysDict) {
+        if (StringUtils.isEmpty(sysDict.getName())) {
+            return DataResult.fail("字典名称不能为空");
+        }
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("type", sysDict.getType());
-        queryWrapper.eq("code", sysDict.getCode());
+        queryWrapper.eq("name", sysDict.getName());
         SysDictEntity q = sysDictService.getOne(queryWrapper);
         if (q != null) {
-            return DataResult.fail("字典类型-字典码已存在");
+            return DataResult.fail("字典名称已存在");
         }
         sysDict.setCreateTime(new Date());
         sysDictService.save(sysDict);
@@ -65,6 +69,10 @@ public class SysDictController {
     @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysDictService.removeByIds(ids);
+        //删除detail
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("dict_id", ids);
+        sysDictDetailService.remove(queryWrapper);
         return DataResult.success();
     }
 
@@ -73,13 +81,14 @@ public class SysDictController {
     @RequiresPermissions("sysDict:update")
     @ResponseBody
     public DataResult update(@RequestBody SysDictEntity sysDict) {
-
+        if (StringUtils.isEmpty(sysDict.getName())) {
+            return DataResult.fail("字典名称不能为空");
+        }
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("type", sysDict.getType());
-        queryWrapper.eq("code", sysDict.getCode());
+        queryWrapper.eq("name", sysDict.getName());
         SysDictEntity q = sysDictService.getOne(queryWrapper);
         if (q != null && !q.getId().equals(sysDict.getId())) {
-            return DataResult.fail("字典类型-字典码已存在");
+            return DataResult.fail("字典名称已存在");
         }
 
         sysDictService.updateById(sysDict);
@@ -96,8 +105,10 @@ public class SysDictController {
         //查询条件示例
         if (!StringUtils.isEmpty(sysDict.getName())) {
             queryWrapper.like("name", sysDict.getName());
+            queryWrapper.or();
+            queryWrapper.like("remark", sysDict.getName());
         }
-        queryWrapper.orderByAsc("name", "order_num");
+        queryWrapper.orderByAsc("name");
         IPage<SysDictEntity> iPage = sysDictService.page(page, queryWrapper);
         return DataResult.success(iPage);
     }
