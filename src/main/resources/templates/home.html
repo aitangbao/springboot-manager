@@ -5,23 +5,76 @@
     <title>后台管理系统</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
-        .layui-tab-title .layui-this { background-color:#009688; color: #eee;}
-        .first-tab i.layui-tab-close{
-            display:none!important;
+        .layui-tab-title .layui-this {
+            background-color: #009688;
+            color: #eee;
         }
+
+        .first-tab i.layui-tab-close {
+            display: none !important;
+        }
+
         .layui-layout-admin .layui-header {
             background-color: #1aa094 !important;
         }
+
         .layui-layout-admin .layui-logo {
-            background-color: #0c0c0c!important;
+            background-color: #0c0c0c !important;
         }
+
         /**选择配色方案 */
-        .layuimini-color .color-title {padding: 10px 0 10px 20px;border-bottom: 1px solid #d9dada;margin-bottom: 8px;}
-        .layuimini-color .color-content {padding: 0 5px 0 5px;}
-        .layuimini-color .color-content ul {list-style: none;text-align: center;}
-        .layuimini-color .color-content ul li {position: relative;display: inline-block;vertical-align: top;width: 80px;height: 50px;margin: 0 15px 15px 0;padding: 2px 2px 4px 2px;background-color: #f2f2f2;cursor: pointer;font-size: 12px;color: #666;}
-        .layuimini-color .color-content li.layui-this:after, .layuimini-color .color-content li:hover:after {width: 100%;height: 100%;padding: 4px;top: -5px;left: -5px;border-color: #d8d8d8;opacity: 1;}
-        .layuimini-color .color-content li:after {content: '';position: absolute;z-index: 20;top: 50%;left: 50%;width: 1px;height: 0;border: 1px solid #f2f2f2;transition: all .3s;-webkit-transition: all .3s;opacity: 0;}
+        .layuimini-color .color-title {
+            padding: 10px 0 10px 20px;
+            border-bottom: 1px solid #d9dada;
+            margin-bottom: 8px;
+        }
+
+        .layuimini-color .color-content {
+            padding: 0 5px 0 5px;
+        }
+
+        .layuimini-color .color-content ul {
+            list-style: none;
+            text-align: center;
+        }
+
+        .layuimini-color .color-content ul li {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            width: 80px;
+            height: 50px;
+            margin: 0 15px 15px 0;
+            padding: 2px 2px 4px 2px;
+            background-color: #f2f2f2;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .layuimini-color .color-content li.layui-this:after, .layuimini-color .color-content li:hover:after {
+            width: 100%;
+            height: 100%;
+            padding: 4px;
+            top: -5px;
+            left: -5px;
+            border-color: #d8d8d8;
+            opacity: 1;
+        }
+
+        .layuimini-color .color-content li:after {
+            content: '';
+            position: absolute;
+            z-index: 20;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 0;
+            border: 1px solid #f2f2f2;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+            opacity: 0;
+        }
 
     </style>
     <style id="layuimini-bg-color">
@@ -29,52 +82,54 @@
 </head>
 <!--参考 layui 后台布局-->
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">Springboot-Manager</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item" lay-unselect>
-                    <a href="javascript:;" data-refresh="刷新"><i class="layui-icon layui-icon-refresh"></i></a>
-                </li>
-                <li class="layui-nav-item " lay-unselect>
-                    <a href="javascript:;" data-check-screen="full"><i class="layui-icon layui-icon-screen-full"></i></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <div><span id="nickName">guest</span></div>
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info" class="menuNvaBar">基本资料</a></dd>
-                        <dd><a href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password" class="menuNvaBar">更换密码</a></dd>
-                        <dd><a href="javascript:;" id="logout">退出</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item layuimini-select-bgcolor mobile layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" data-bgcolor="配色方案"><i class="layui-icon layui-icon-more-vertical"></i></a>
-                </li>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">Springboot-Manager</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" lay-unselect>
+                <a href="javascript:;" data-refresh="刷新"><i class="layui-icon layui-icon-refresh"></i></a>
+            </li>
+            <li class="layui-nav-item " lay-unselect>
+                <a href="javascript:;" data-check-screen="full"><i class="layui-icon layui-icon-screen-full"></i></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <div><span id="nickName">guest</span></div>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info"
+                           class="menuNvaBar">基本资料</a></dd>
+                    <dd><a href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password"
+                           class="menuNvaBar">更换密码</a></dd>
+                    <dd><a href="javascript:;" id="logout">退出</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layuimini-select-bgcolor mobile layui-hide-xs" lay-unselect>
+                <a href="javascript:;" data-bgcolor="配色方案"><i class="layui-icon layui-icon-more-vertical"></i></a>
+            </li>
+        </ul>
+    </div>
+    <!-- 左侧菜单-->
+    <div id="mainmenu" class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <div class="navBar layui-side-scroll" id="navBarId"></div>
+        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-tab" lay-filter="tab" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="first-tab layui-this"><i class="layui-icon layui-icon-home"></i> 主页</li>
             </ul>
-        </div>
-        <!-- 左侧菜单-->
-        <div id="mainmenu" class="layui-side layui-bg-black" >
-            <div class="layui-side-scroll">
-                <div class="navBar layui-side-scroll" id="navBarId"></div>
-            </div>
-        </div>
-        <div class="layui-body">
-            <!-- 内容主体区域 -->
-            <div class="layui-tab" lay-filter="tab" lay-allowclose="true">
-                <ul class="layui-tab-title">
-                    <li class="first-tab layui-this">主页</li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show"  >
-                        <iframe th:src="@{/index/main}" frameborder="0" name="content" width="100%" id="home"></iframe>
-                    </div>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe th:src="@{/index/main}" frameborder="0" name="content" width="100%" id="home"></iframe>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
@@ -89,74 +144,74 @@
     $(function () {
         FrameWH();
         //递归获取导航栏无线层级
-        var getChild=function (item,ulHtml) {
+        var getChild = function (item, ulHtml) {
             ulHtml += '<dl class="layui-nav-child">';
-            $.each(item,function (index,child) {
-                if(child.children !=null&& child.children.length>0){
-                    ulHtml +='<a>'+child.title+'</a>';
-                    ulHtml +=getChild(child.children,"");
-                }else {
+            $.each(item, function (index, child) {
+                if (child.children != null && child.children.length > 0) {
+                    ulHtml += '<a>' + child.title + '</a>';
+                    ulHtml += getChild(child.children, "");
+                } else {
                     if (child.target == "_blank") {
-                        ulHtml += '<dd><a href="'+child.url+'" target="_blank">';
+                        ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
                     } else {
-                        ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                        ulHtml += '<dd><a href="javascript:;" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                     }
-                    ulHtml += '<cite>'+child.title+'</cite></a></dd>';
+                    ulHtml += '<cite>' + child.title + '</cite></a></dd>';
                 }
 
             });
             ulHtml += "</dl>"
             return ulHtml;
         };
-        CoreUtil.sendAjax("/sys/home/",null,function (res) {
-            $("#deptName").html("所属部门: "+res.data.userInfo.deptName);
+        CoreUtil.sendAjax("/sys/home/", null, function (res) {
+            $("#deptName").html("所属部门: " + res.data.userInfo.deptName);
             $("#nickName").html(res.data.userInfo.username);
-            var data=res.data.menus;
-            if(data!= "" && data.length>0){
+            var data = res.data.menus;
+            if (data != "" && data.length > 0) {
                 var ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav">';
-                if(data!= null&&data.length > 0){
+                if (data != null && data.length > 0) {
 
-                $.each(data,function(index,item){
-                    if(index == 0){
-                        ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
-                    }else{
-                        ulHtml += '<li class="layui-nav-item">';
-                    }
-                    ulHtml += '<a href="javascript:;">';
-                    ulHtml += '<cite>'+item.title+'</cite>';
-                    ulHtml += '</a>'
-                    if(item.children != null && item.children.length > 0){
-                        ulHtml += '<dl class="layui-nav-child">';
-                        $.each(item.children,function(index,child){
-                            if(child.children !=null&& child.children.length>0){
-                                ulHtml +='<a>'+child.title+'</a>';
-                                ulHtml +=getChild(child.children,"");
-                            }else {
-                                if (child.target == "_blank") {
-                                    ulHtml += '<dd><a href="'+child.url+'" target="_blank">';
+                    $.each(data, function (index, item) {
+                        if (index == 0) {
+                            ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
+                        } else {
+                            ulHtml += '<li class="layui-nav-item">';
+                        }
+                        ulHtml += '<a href="javascript:;">';
+                        ulHtml += '<cite>' + item.title + '</cite>';
+                        ulHtml += '</a>'
+                        if (item.children != null && item.children.length > 0) {
+                            ulHtml += '<dl class="layui-nav-child">';
+                            $.each(item.children, function (index, child) {
+                                if (child.children != null && child.children.length > 0) {
+                                    ulHtml += '<a>' + child.title + '</a>';
+                                    ulHtml += getChild(child.children, "");
                                 } else {
-                                    ulHtml += '<dd><a href="javascript:;" data-url="'+child.url+'" data-title="'+child.title+'" data-id="'+child.id+'" class="menuNvaBar">';
+                                    if (child.target == "_blank") {
+                                        ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
+                                    } else {
+                                        ulHtml += '<dd><a href="javascript:;" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
+                                    }
+                                    ulHtml += '<cite>' + child.title + '</cite></a></dd>';
                                 }
-                                ulHtml += '<cite>'+child.title+'</cite></a></dd>';
-                            }
 
-                        });
-                        ulHtml += "</dl>"
-                    }
-                    ulHtml += '</li>'
-                });
+                            });
+                            ulHtml += "</dl>"
+                        }
+                        ulHtml += '</li>'
+                    });
                 }
                 ulHtml += '</ul>';
                 $(".navBar").html(ulHtml);
                 element.init();  //初始化页面元素
 
-            }else{
+            } else {
                 $("#navBarId").empty();
             }
 
             top.layer.closeAll();
-        },"GET",false);
-        $(document).on('click','.menuNvaBar',function () {
+        }, "GET", false);
+        $(document).on('click', '.menuNvaBar', function () {
             var dataid = $(this);
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
                 active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
@@ -180,27 +235,29 @@
         });
     });
     //删除前确认对话框
-    var logoutDialog=function () {
+    var logoutDialog = function () {
         layer.open({
             content: '确定要退出登录么？',
-            yes: function(index, layero){
+            yes: function (index, layero) {
                 layer.close(index); //如果设定了yes回调，需进行手工关闭
-                CoreUtil.sendAjax("/sys/user/logout",null,function (res) {
-                    layui.data('LocalData',null);
-                    top.window.location.href="/index/login";
-                },"GET",true);
+                CoreUtil.sendAjax("/sys/user/logout", null, function (res) {
+                    layui.data('LocalData', null);
+                    top.window.location.href = "/index/login";
+                }, "GET", true);
             }
         });
     }
     //触发事件
-    var active={
-        tabAdd : function (url,id,title) {
-            if(url!=""&&url!=null&&url!=undefined){
-            element.tabAdd('tab',{
-                title: title
-                , content: '<iframe data-frameid="' + id + '" frameborder="0" name="content" width="100%" src="' + url + '"></iframe>'
-                , id: id
-            })
+    var active = {
+        tabAdd: function (url, id, title) {
+            if (url != "" && url != null && url != undefined) {
+                element.tabAdd('tab', {
+                    title: title
+                    ,
+                    content: '<iframe data-frameid="' + id + '" frameborder="0" name="content" width="100%" src="' + url + '"></iframe>'
+                    ,
+                    id: id
+                })
             }
             FrameWH();//计算框架高度
         },
@@ -213,6 +270,7 @@
             element.tabDelete("tab", id);//删除
         }
     };
+
     function FrameWH() {
         var h = $(window).height() - 41 - 10 - 35 - 10 - 44 - 10;
         $("iframe").css("height", h + "px");
