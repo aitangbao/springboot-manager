@@ -59,7 +59,7 @@
             <div class="layui-form-item menu_icon" hidden>
                 <div class="layui-form-label">图标</div>
                 <div class="layui-input-block">
-                    <input type="text" id="iconFonts" name="icon" lay-filter="iconFonts" class="layui-input">
+                    <input type="text" id="iconPicker" name="icon" lay-filter="iconPicker" class="layui-input">
                 </div>
             </div>
 
@@ -109,13 +109,13 @@
     var element = layui.element;
     var treetable;
     var selectNode = null;
-    var IconFonts;
+    var iconPicker;
     layui.config({
         base: '/'
     }).extend({
         treetable: 'treetable-lay/treetable',
-        IconFonts: 'js/iconFonts',
-    }).use(['treetable', 'table', 'tree','IconFonts'], function () {
+        iconPicker: 'js/iconPicker'
+    }).use(['treetable', 'table', 'tree',"iconPicker"], function () {
         var reloadTreeTable = function () {
             CoreUtil.sendAjax("/sys/permissions", null, function (res) {
                 renderTable(res.data);
@@ -127,7 +127,7 @@
         };
         reloadTreeTable();
         treetable = layui.treetable;
-        IconFonts=layui.IconFonts;
+        iconPicker = layui.iconPicker;
         var table = layui.table;
         var tree = layui.tree;
         var renderTable = function (data) {
@@ -208,6 +208,8 @@
                         ,"orderNum": ""
                         ,"target": "_self"
                     });
+                    iconPicker.checkIcon('iconPicker', 'layui-icon-star-fill');
+
                     $(".operation_menu input[name=status]").attr('checked', 'checked');
                     $(".operation_menu input[name=status]").attr('type', 'hidden').val(1);
                     var x = document.getElementsByClassName("layui-unselect layui-form-switch");
@@ -221,18 +223,17 @@
         });
 
 
-        //图标选择器
-        IconFonts.render({
+        iconPicker.render({
             // 选择器，推荐使用input
-            elem: '#iconFonts', //选择器ID
-            // 数据类型：fontClass/layui_icon，
-            type: 'layui_icon',
+            elem: '#iconPicker',
+            // 数据类型：fontClass/unicode，推荐使用fontClass
+            type: 'fontClass',
             // 是否开启搜索：true/false
             search: true,
             // 是否开启分页
             page: true,
             // 每页显示数量，默认12
-            limit: 16,
+            limit: 12,
             // 点击回调
             click: function (data) {
                 console.log(data);
@@ -261,7 +262,7 @@
                         ,"perms": data.perms
                         ,"orderNum": data.orderNum
                     });
-                    $('.layui-iconpicker-item .layui-icon').html('').attr("class",'layui-icon '+data.icon)
+                    iconPicker.checkIcon('iconPicker', data.icon);
                     if (data.status == 1) {
                         $(".operation_menu input[name=status]").attr('checked', 'checked');
                         $(".operation_menu input[name=status]").attr('type', 'hidden').val(1);
