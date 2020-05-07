@@ -84,5 +84,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 
 ### 交流群
+> 群二维码每周会定期更新，如果未更新请先清除浏览器缓存, 或私聊作者
+
 <img width="250px" height="300px" src="http://www.aitangbao.com.cn/static/weixin_share.jpg" alt="" style="zoom:25%;" />
 
