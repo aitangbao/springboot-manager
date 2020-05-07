@@ -116,14 +116,14 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         /**
          * id 不为空说明是编辑
          */
-        if (!StringUtils.isEmpty(sysPermission.getId())) {
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("pid", sysPermission.getId());
-            List<SysPermission> list = sysPermissionMapper.selectList(queryWrapper);
-            if (!list.isEmpty()) {
-                throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_UPDATE);
-            }
-        }
+//        if (!StringUtils.isEmpty(sysPermission.getId())) {
+//            QueryWrapper queryWrapper = new QueryWrapper();
+//            queryWrapper.eq("pid", sysPermission.getId());
+//            List<SysPermission> list = sysPermissionMapper.selectList(queryWrapper);
+//            if (!list.isEmpty()) {
+//                throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_UPDATE);
+//            }
+//        }
 
     }
 
@@ -162,10 +162,10 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         /**
          * 所有管理这个菜单权限用户将重新刷新token
          */
-        if (!sysPermission.getPerms().equals(update.getPerms())) {
-            //刷新权限
-            httpSessionService.refreshPermission(update.getId());
-        }
+//        if (!sysPermission.getPerms().equals(update.getPerms())) {
+//            //刷新权限
+//            httpSessionService.refreshPermission(update.getId());
+//        }
 
     }
 

@@ -56,6 +56,14 @@
                            class="layui-input">
                 </div>
             </div>
+            <div class="layui-form-item menu_icon" hidden>
+                <div class="layui-form-label">图标</div>
+                <div class="layui-input-block">
+                    <input type="text" id="iconFonts" name="icon" lay-filter="iconFonts" class="layui-input">
+                </div>
+            </div>
+
+
             <div class="layui-form-item">
                 <div class="layui-form-label">排序码</div>
                 <div class="layui-input-block">
@@ -101,11 +109,13 @@
     var element = layui.element;
     var treetable;
     var selectNode = null;
+    var IconFonts;
     layui.config({
         base: '/'
     }).extend({
-        treetable: 'treetable-lay/treetable'
-    }).use(['treetable', 'table', 'tree'], function () {
+        treetable: 'treetable-lay/treetable',
+        IconFonts: 'js/iconFonts',
+    }).use(['treetable', 'table', 'tree','IconFonts'], function () {
         var reloadTreeTable = function () {
             CoreUtil.sendAjax("/sys/permissions", null, function (res) {
                 renderTable(res.data);
@@ -117,6 +127,7 @@
         };
         reloadTreeTable();
         treetable = layui.treetable;
+        IconFonts=layui.IconFonts;
         var table = layui.table;
         var tree = layui.tree;
         var renderTable = function (data) {
@@ -137,6 +148,9 @@
                         {type: 'numbers'},
                         {field: 'name', width: 150, title: '菜单名称'},
                         {field: 'url', width: 150, title: 'url'},
+                        {field: 'icon', width: 80, title: '图标',templet:function (item) {
+                            return '<i class="icon-color layui-icon '+item.icon+'"></i>';
+                            }},
                         {field: 'target', width: 80, title: 'target'},
                         {
                             field: 'type',width: 70, title: '类型', templet: function (item) {
@@ -183,6 +197,7 @@
                     $(".menu-perms").hide();
                     $(".menu_target").hide();
                     $(".menu_url").hide();
+                    $(".menu_icon").show();
                     form.val('deptInfo', {
                         "id": ""
                         ,"pid": ""
@@ -202,6 +217,25 @@
                     form.render(); //更新全部
                     initTree("");
                     break;
+            }
+        });
+
+
+        //图标选择器
+        IconFonts.render({
+            // 选择器，推荐使用input
+            elem: '#iconFonts', //选择器ID
+            // 数据类型：fontClass/layui_icon，
+            type: 'layui_icon',
+            // 是否开启搜索：true/false
+            search: true,
+            // 是否开启分页
+            page: true,
+            // 每页显示数量，默认12
+            limit: 16,
+            // 点击回调
+            click: function (data) {
+                console.log(data);
             }
         });
 
@@ -227,6 +261,7 @@
                         ,"perms": data.perms
                         ,"orderNum": data.orderNum
                     });
+                    $('.layui-iconpicker-item .layui-icon').html('').attr("class",'layui-icon '+data.icon)
                     if (data.status == 1) {
                         $(".operation_menu input[name=status]").attr('checked', 'checked');
                         $(".operation_menu input[name=status]").attr('type', 'hidden').val(1);
@@ -350,16 +385,21 @@
                 $(".menu-perms").hide();
                 $(".menu_target").hide();
                 $(".menu_url").hide();
+                $(".menu_icon").show();
             } else if(data.value == '2'){
                 $(".menu-perms").hide();
                 $(".menu_target").show();
                 $(".menu_url").show();
+                $(".menu_icon").show();
             } else{
                 $(".menu-perms").show();
                 $(".menu_target").hide();
                 $(".menu_url").show();
+                $(".menu_icon").hide();
             }
         });
+
+
     });
 
     function zhzs(value) {

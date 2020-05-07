@@ -25,6 +25,8 @@ public class SysPermission implements Serializable {
 
     private String url;
 
+    private String icon;
+
     private String target;
 
     @NotNull(message = "所属菜单不能为空")

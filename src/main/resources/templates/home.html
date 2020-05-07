@@ -5,86 +5,22 @@
     <title>后台管理系统</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
-        .layui-tab-title .layui-this {
-            background-color: #009688;
-            color: #eee;
-        }
-
-        .first-tab i.layui-tab-close {
-            display: none !important;
-        }
-
-        .layui-layout-admin .layui-header {
-            background-color: #1aa094 !important;
-        }
-
-        .layui-layout-admin .layui-logo {
-            background-color: #0c0c0c !important;
-        }
-
-        /**选择配色方案 */
-        .layuimini-color .color-title {
-            padding: 10px 0 10px 20px;
-            border-bottom: 1px solid #d9dada;
-            margin-bottom: 8px;
-        }
-
-        .layuimini-color .color-content {
-            padding: 0 5px 0 5px;
-        }
-
-        .layuimini-color .color-content ul {
-            list-style: none;
-            text-align: center;
-        }
-
-        .layuimini-color .color-content ul li {
-            position: relative;
-            display: inline-block;
-            vertical-align: top;
-            width: 80px;
-            height: 50px;
-            margin: 0 15px 15px 0;
-            padding: 2px 2px 4px 2px;
-            background-color: #f2f2f2;
-            cursor: pointer;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .layuimini-color .color-content li.layui-this:after, .layuimini-color .color-content li:hover:after {
-            width: 100%;
-            height: 100%;
-            padding: 4px;
-            top: -5px;
-            left: -5px;
-            border-color: #d8d8d8;
-            opacity: 1;
-        }
-
-        .layuimini-color .color-content li:after {
-            content: '';
-            position: absolute;
-            z-index: 20;
-            top: 50%;
-            left: 50%;
-            width: 1px;
-            height: 0;
-            border: 1px solid #f2f2f2;
-            transition: all .3s;
-            -webkit-transition: all .3s;
-            opacity: 0;
-        }
+        .layui-tab-title .layui-this{background-color:#009688;color:#eee;}.first-tab i.layui-tab-close{display:none !important;}.layui-layout-admin .layui-header{background-color:#1aa094 !important;}.layui-layout-admin .layui-logo{background-color:#0c0c0c !important;}.layuimini-color .color-title{padding:10px 0 10px 20px;border-bottom:1px solid #d9dada;margin-bottom:8px;}.layuimini-color .color-content{padding:0 5px 0 5px;}.layuimini-color .color-content ul{list-style:none;text-align:center;}.layuimini-color .color-content ul li{position:relative;display:inline-block;vertical-align:top;width:80px;height:50px;margin:0 15px 15px 0;padding:2px 2px 4px 2px;background-color:#f2f2f2;cursor:pointer;font-size:12px;color:#666;}.layuimini-color .color-content li.layui-this:after,.layuimini-color .color-content li:hover:after{width:100%;height:100%;padding:4px;top:-5px;left:-5px;border-color:#d8d8d8;opacity:1;}.layuimini-color .color-content li:after{content:'';position:absolute;z-index:20;top:50%;left:50%;width:1px;height:0;border:1px solid #f2f2f2;transition:all .3s;-webkit-transition:all .3s;opacity:0;}
+        .layuimini-tool-left {position:absolute!important;top:0;left:200px;width:60px;height:100%;line-height:60px;text-align:center;color:#ffffff!important;}
 
     </style>
-    <style id="layuimini-bg-color">
-    </style>
+
 </head>
 <!--参考 layui 后台布局-->
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">Springboot-Manager</div>
+
+        <a>
+            <div class="layuimini-tool-left"  onclick="iconHide()"><i class="icon-color layui-icon layui-icon-shrink-right" style="color:white" id="hide"></i></div>
+        </a>
+
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect>
@@ -113,7 +49,9 @@
     <!-- 左侧菜单-->
     <div id="mainmenu" class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <div class="navBar layui-side-scroll" id="navBarId"></div>
+            <div class="navBar layui-side-scroll" id="navBarId">
+
+            </div>
         </div>
     </div>
     <div class="layui-body">
@@ -168,7 +106,7 @@
             $("#nickName").html(res.data.userInfo.username);
             var data = res.data.menus;
             if (data != "" && data.length > 0) {
-                var ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav">';
+                var ulHtml = '<ul class="layui-nav layui-nav-tree layui-left-nav" onclick="ulHide()">';
                 if (data != null && data.length > 0) {
 
                     $.each(data, function (index, item) {
@@ -178,7 +116,7 @@
                             ulHtml += '<li class="layui-nav-item">';
                         }
                         ulHtml += '<a href="javascript:;">';
-                        ulHtml += '<cite>' + item.title + '</cite>';
+                        ulHtml += '<i class="icon-color layui-icon '+item.icon+'"></i><cite> ' + item.title + '</cite>';
                         ulHtml += '</a>'
                         if (item.children != null && item.children.length > 0) {
                             ulHtml += '<dl class="layui-nav-child">';
@@ -192,7 +130,7 @@
                                     } else {
                                         ulHtml += '<dd><a href="javascript:;" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                                     }
-                                    ulHtml += '<cite>' + child.title + '</cite></a></dd>';
+                                    ulHtml += '<i class="icon-color layui-icon '+child.icon+'"></i><cite> ' + child.title + '</cite></a></dd>';
                                 }
 
                             });
@@ -202,7 +140,7 @@
                     });
                 }
                 ulHtml += '</ul>';
-                $(".navBar").html(ulHtml);
+                $(".navBar").append(ulHtml);
                 element.init();  //初始化页面元素
 
             } else {
@@ -275,6 +213,44 @@
         var h = $(window).height() - 41 - 10 - 35 - 10 - 44 - 10;
         $("iframe").css("height", h + "px");
     };
+
+
+    //显示隐藏侧边栏
+    var isShow=1;
+    function iconHide(){
+        if(isShow===1)
+            hide();
+        else
+            show();
+        isShow*=-1;
+    }
+    function hide(){
+        $('.layuimini-tool-left').animate({left:'50px'});
+
+        $('.layui-side cite').hide();
+        $('.layui-side').animate({width:'55px'});
+        $('.layui-logo').html("SM")
+        $('.layui-logo').animate({width:'55px'});
+        $('.layui-body').animate({left:'60px'});
+        document.getElementById('hide').className="layui-color layui-icon layui-icon-spread-left";
+        $(".layui-side li").removeClass("layui-nav-itemed");
+    }
+    function show(){
+        $('.layuimini-tool-left').animate({left:'200px'});
+
+        $('.layui-side cite').show();
+        $('.layui-side').animate({width:'200px'});
+        $('.layui-body').animate({left:'200px'});
+        $('.layui-logo').html("Springboot-Manager")
+        $('.layui-logo').animate({width:'200px'});
+        document.getElementById('hide').className="layui-color layui-icon layui-icon-shrink-right";
+
+    }
+    function ulHide(){
+        if(isShow===-1)
+            show();
+        isShow=1;
+    }
 
 </script>
 

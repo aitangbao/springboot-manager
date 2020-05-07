@@ -21,6 +21,9 @@ public class PermissionRespNode {
     @ApiModelProperty(value = "接口地址")
     private String url;
 
+    @ApiModelProperty(value = "icon")
+    private String icon;
+
     private String target;
 
     @ApiModelProperty(value = "父级id")
