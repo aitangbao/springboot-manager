@@ -72,7 +72,7 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script src="/js/jquery.js"></script>
-<script src="/js/home.js?v=1121"></script>
+<script src="/js/home.js?v=11211"></script>
 <script>
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
@@ -92,7 +92,7 @@
                     if (child.target == "_blank") {
                         ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
                     } else {
-                        ulHtml += '<dd><a href="javascript:;" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
+                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                     }
                     ulHtml += '<cite>' + child.title + '</cite></a></dd>';
                 }
@@ -116,7 +116,10 @@
                             ulHtml += '<li class="layui-nav-item">';
                         }
                         ulHtml += '<a href="javascript:;">';
-                        ulHtml += '<i class="icon-color layui-icon '+item.icon+'"></i><cite> ' + item.title + '</cite>';
+                        if (!CoreUtil.isEmpty(item.icon)) {
+                            ulHtml += '<i class="layui-icon '+item.icon+'"></i>';
+                        }
+                        ulHtml += '<cite> ' + item.title + '</cite>';
                         ulHtml += '</a>'
                         if (item.children != null && item.children.length > 0) {
                             ulHtml += '<dl class="layui-nav-child">';
@@ -128,9 +131,12 @@
                                     if (child.target == "_blank") {
                                         ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
                                     } else {
-                                        ulHtml += '<dd><a href="javascript:;" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
+                                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                                     }
-                                    ulHtml += '<i class="icon-color layui-icon '+child.icon+'"></i><cite> ' + child.title + '</cite></a></dd>';
+                                    if (!CoreUtil.isEmpty(child.icon)) {
+                                        ulHtml += '<i class="layui-icon '+child.icon+'"></i>';
+                                    }
+                                    ulHtml += '<cite> ' + child.title + '</cite></a></dd>';
                                 }
 
                             });
@@ -152,7 +158,12 @@
         $(document).on('click', '.menuNvaBar', function () {
             var dataid = $(this);
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
-                active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                } else {
+                    var title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + dataid.attr("data-title");
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
+                }
             } else {
                 var isData = false;
                 $.each($(".layui-tab-title li[lay-id]"), function () {
@@ -161,7 +172,12 @@
                     }
                 })
                 if (isData == false) {
-                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                    if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
+                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                    } else {
+                        var title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + dataid.attr("data-title");
+                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
+                    }
                 }
             }
             active.tabChange(dataid.attr("data-id"));
