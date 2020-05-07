@@ -55,7 +55,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## **效果图**
 
-![1](http://tuchuang.aitangbao.com.cn/20200429161346.png)
+![image-20200507134713461](http://tuchuang.aitangbao.com.cn/20200507134721.png)
 
 ![2](http://tuchuang.aitangbao.com.cn/20200429161348.png)
 
