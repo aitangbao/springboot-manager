@@ -285,3 +285,41 @@ var config = function (name) {
 };
 
 
+//显示隐藏侧边栏
+var isShow=1;
+function iconHide(){
+    if(isShow===1)
+        hide();
+    else
+        show();
+    isShow*=-1;
+}
+function hide(){
+    $('.layuimini-tool-left').animate({left:'50px'});
+
+    $('.layui-side cite').hide();
+    $('.layui-side').animate({width:'55px'});
+    $('.layui-logo').html("SM")
+    $('.layui-logo').animate({width:'55px'});
+    $('.layui-body').animate({left:'60px'});
+    document.getElementById('hide').className="layui-color layui-icon layui-icon-spread-left";
+    $(".layui-side li").removeClass("layui-nav-itemed");
+}
+function show(){
+    $('.layuimini-tool-left').animate({left:'200px'});
+
+    $('.layui-side cite').show();
+    $('.layui-side').animate({width:'200px'});
+    $('.layui-body').animate({left:'200px'});
+    $('.layui-logo').html("Springboot-Manager")
+    $('.layui-logo').animate({width:'200px'});
+    document.getElementById('hide').className="layui-color layui-icon layui-icon-shrink-right";
+
+}
+function ulHide(){
+    if(isShow===-1)
+        show();
+    isShow=1;
+}
+
+
