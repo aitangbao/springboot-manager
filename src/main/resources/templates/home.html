@@ -7,7 +7,12 @@
     <style>
         .layui-tab-title .layui-this{background-color:#009688;color:#eee;}.first-tab i.layui-tab-close{display:none !important;}.layui-layout-admin .layui-header{background-color:#1aa094 !important;}.layui-layout-admin .layui-logo{background-color:#0c0c0c !important;}.layuimini-color .color-title{padding:10px 0 10px 20px;border-bottom:1px solid #d9dada;margin-bottom:8px;}.layuimini-color .color-content{padding:0 5px 0 5px;}.layuimini-color .color-content ul{list-style:none;text-align:center;}.layuimini-color .color-content ul li{position:relative;display:inline-block;vertical-align:top;width:80px;height:50px;margin:0 15px 15px 0;padding:2px 2px 4px 2px;background-color:#f2f2f2;cursor:pointer;font-size:12px;color:#666;}.layuimini-color .color-content li.layui-this:after,.layuimini-color .color-content li:hover:after{width:100%;height:100%;padding:4px;top:-5px;left:-5px;border-color:#d8d8d8;opacity:1;}.layuimini-color .color-content li:after{content:'';position:absolute;z-index:20;top:50%;left:50%;width:1px;height:0;border:1px solid #f2f2f2;transition:all .3s;-webkit-transition:all .3s;opacity:0;}
         .layuimini-tool-left {position:absolute!important;top:0;left:200px;width:60px;height:100%;line-height:60px;text-align:center;color:#ffffff!important;}
-
+        .closeBox {height:35px !important;}
+        .closeBox > li {line-height:35px !important;}
+        .closeBox {position:absolute;right: -10px;top: 16px;background-color:#fff !important;color:#000;border-bottom:1px solid #e2e2e2;padding:0 10px !important;}
+        .closeBox .layui-nav-item {line-height:40px;}
+        .closeBox .layui-nav-item > a,.closeBox .layui-nav-item > a:hover {color:#000;}
+        .closeBox .layui-nav-child {top:40px;}
     </style>
     <style id="layuimini-bg-color">
     </style>
@@ -58,8 +63,17 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="tab" lay-allowclose="true">
-            <ul class="layui-tab-title">
-                <li class="first-tab layui-this"><i class="layui-icon layui-icon-home"></i> 主页</li>
+            <ul class="layui-tab-title" style="width: 90%">
+                <li class="first-tab layui-this"><i class="layui-icon layui-icon-home"></i> <span>主页</span></li>
+            </ul>
+            <ul class="layui-nav closeBox">
+                <li class="layui-nav-item">
+                    <a href="javascript:;"> <i class="layui-icon layui-icon-circle-dot"></i> 页面操作</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-page-close="other"><i class="layui-icon layui-icon-close"></i> 关闭其他</a></dd>
+                        <dd><a href="javascript:;" data-page-close="all"><i class="layui-icon layui-icon-close-fill"></i> 关闭全部</a></dd>
+                    </dl>
+                </li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -160,9 +174,11 @@
             var dataid = $(this);
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
                 if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
-                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                    var title = "<span>"+dataid.attr("data-title")+"</span>";
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
                 } else {
-                    var title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + dataid.attr("data-title");
+                    var title = "<span>"+dataid.attr("data-title")+"</span>";
+                    title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + title;
                     active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
                 }
             } else {
@@ -174,9 +190,11 @@
                 })
                 if (isData == false) {
                     if (CoreUtil.isEmpty(dataid.attr("data-icon"))){
-                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                        var title = "<span>"+dataid.attr("data-title")+"</span>";
+                        active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
                     } else {
-                        var title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + dataid.attr("data-title");
+                        var title = "<span>"+dataid.attr("data-title")+"</span>";
+                        title = '<i class="layui-icon '+dataid.attr("data-icon")+'"></i> ' + title;
                         active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), title);
                     }
                 }

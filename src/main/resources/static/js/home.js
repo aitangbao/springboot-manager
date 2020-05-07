@@ -322,4 +322,41 @@ function ulHide(){
     isShow=1;
 }
 
+/**
+ * 选项卡操作
+ */
+$('body').on('click', '[data-page-close]', function () {
+    var loading = layer.load(0, {shade: false, time: 2 * 1000});
+    var closeType = $(this).attr('data-page-close');
 
+    if (closeType == 'all') {
+            if($(".layui-tab-title li").length > 1){
+                $(".layui-tab-title li").each(function(){
+                    if($(this).attr("lay-id") != ''){
+                        element.tabDelete("tab",$(this).attr("lay-id")).init();
+                    }
+                })
+            }else{
+                layer.msg("没有可以关闭的窗口了@_@");
+            }
+    } else {
+        if($(".layui-tab-title li").length > 1){
+
+            console.log($(".layui-tab-title li").length)
+            console.log($(".layui-tab-title li.layui-this span").text())
+            if ($(".layui-tab-title li").length == 2 && $(".layui-tab-title li.layui-this span").text()!="主页"){
+                layer.msg("没有可以关闭的窗口了@_@");
+            } else {
+                $(".layui-tab-title li").each(function(){
+                    if($(this).attr("lay-id") != '' && !$(this).hasClass("layui-this")){
+                        element.tabDelete("tab",$(this).attr("lay-id")).init();
+                    }
+                })
+            }
+
+        }else{
+            layer.msg("没有可以关闭的窗口了@_@");
+        }
+    }
+    layer.close(loading);
+});
