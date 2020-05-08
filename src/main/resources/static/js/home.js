@@ -314,7 +314,10 @@ function show(){
     $('.layui-logo').html("Springboot-Manager")
     $('.layui-logo').animate({width:'200px'});
     document.getElementById('hide').className="layui-color layui-icon layui-icon-shrink-right";
-
+    var id = $(".layui-tab-title li.layui-this").attr("lay-id");
+    if (!CoreUtil.isEmpty(id)) {
+        $("a[data-id='"+id+"']").parents("li").addClass("layui-nav-itemed")
+    }
 }
 function ulHide(){
     if(isShow===-1)
