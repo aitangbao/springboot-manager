@@ -1,5 +1,6 @@
 package com.company.project.common.exception;
 
+import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.exception.code.ResponseCodeInterface;
 
 public class BusinessException extends RuntimeException{
@@ -21,7 +22,7 @@ public class BusinessException extends RuntimeException{
 
     public BusinessException(String message) {
         super(message);
-        this.messageCode = 500;
+        this.messageCode = BaseResponseCode.OPERATION_ERRO.getCode();
         this.detailMessage = message;
     }
     /**
