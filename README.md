@@ -40,12 +40,23 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ## 开发建议
 - Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
 - 如果表有是否删除字段，需要在Model注解@TableLogic 默认1未删 0删除， 或@TableLogic(value="逻辑未删除值",delval="逻辑删除值")   
-- 代码生成使用：   
-     1、点击[代码生成]菜单，生成一个或多个表的代码压缩包，下载到本地   
-     2、解压下载的代码，直接复制main文件夹到本地项目的src目录下   
-     3、执行sql脚本，生成菜单   
-     4、修改角色所绑定的菜单的权限，刷新页面查看即可   
 
+## 使用说明
+1. 使用IDE导入本项目，IDE需要安装lombok插件
+2. 下载redis 启动redis
+3. 创建company_project数据库
+4. 导入doc下的company_project.sql
+5. 运行项目
+   1、直接运行CompanyProjectApplication.java
+   2、项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
+6. 接口文档访问 http://localhost:8080/doc.html
+7. 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
+8. 代码生成使用：
+   1、点击[代码生成]菜单，生成一个或多个表的代码，下载到本地
+   2、解压下载的代码，直接复制main文件夹到本地项目的src目录下
+   3、数据库执行sql，生成菜单
+   4、点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
+   
 ## 参与贡献
 1. Fork 本项目
 2. 新建 feature_xxx 分支
