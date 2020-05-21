@@ -65,36 +65,36 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## **效果图**
 
-![image-20200507134713461](http://tuchuang.aitangbao.com.cn/20200507134721.png)
+![image-20200507134713461](https://images.gitee.com/uploads/images/2020/0521/110629_263d4436_997722.png)
 
-![2](http://tuchuang.aitangbao.com.cn/20200429161348.png)
+![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
 
-![3](http://tuchuang.aitangbao.com.cn/20200429161353.png)
+![3](https://images.gitee.com/uploads/images/2020/0521/110629_59b62d18_997722.png)
 
-![4](http://tuchuang.aitangbao.com.cn/20200429161355.png)
+![4](https://images.gitee.com/uploads/images/2020/0521/110629_4f2a354d_997722.png)
 
-![5](http://tuchuang.aitangbao.com.cn/20200429161404.png)
+![5](https://images.gitee.com/uploads/images/2020/0521/110630_a38ee132_997722.png)
 
-![7](http://tuchuang.aitangbao.com.cn/20200429161359.png)
+![7](https://images.gitee.com/uploads/images/2020/0521/110629_edd63da6_997722.png)
 
-![image-20200430172452726](http://tuchuang.aitangbao.com.cn/20200430172453.png)
+![image-20200430172452726](https://images.gitee.com/uploads/images/2020/0521/110630_1eae800b_997722.png)
 
-![9](http://tuchuang.aitangbao.com.cn/20200429161414.png)
+![9](https://images.gitee.com/uploads/images/2020/0521/110630_ab5c75a2_997722.png)
 
-![12](http://tuchuang.aitangbao.com.cn/20200429161423.png)
+![12](https://images.gitee.com/uploads/images/2020/0521/110630_8e6fe6f2_997722.png)
 
-![13](http://tuchuang.aitangbao.com.cn/20200429161425.png)
+![13](https://images.gitee.com/uploads/images/2020/0521/110630_bcf841b9_997722.png)
 
-![16](http://tuchuang.aitangbao.com.cn/20200429161428.png)
+![16](https://images.gitee.com/uploads/images/2020/0521/110630_4f083ac7_997722.png)
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！
 
-![image-20200506154143271](http://tuchuang.aitangbao.com.cn/20200506154222.png)
+![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
 
 
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
 
-<img width="250px" height="300px" src="http://tuchuang.aitangbao.com.cn/20200514133931.jpg" alt="" style="zoom:25%;" />
+<img width="250px" height="300px" src="https://images.gitee.com/uploads/images/2020/0521/110630_190ef34f_997722.jpeg" alt="" style="zoom:25%;" />
 
