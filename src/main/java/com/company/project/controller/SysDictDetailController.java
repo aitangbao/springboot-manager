@@ -1,5 +1,7 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -12,11 +14,11 @@ import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.company.project.common.utils.DataResult;
 
 import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.service.SysDictDetailService;
-
 
 
 /**
@@ -36,7 +38,7 @@ public class SysDictDetailController {
     @PostMapping("sysDictDetail/add")
     @RequiresPermissions("sysDict:add")
     @ResponseBody
-    public DataResult add(@RequestBody SysDictDetailEntity sysDictDetail){
+    public DataResult add(@RequestBody SysDictDetailEntity sysDictDetail) {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
         }
@@ -56,7 +58,7 @@ public class SysDictDetailController {
     @DeleteMapping("sysDictDetail/delete")
     @RequiresPermissions("sysDict:delete")
     @ResponseBody
-    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
+    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysDictDetailService.removeByIds(ids);
         return DataResult.success();
     }
@@ -65,7 +67,7 @@ public class SysDictDetailController {
     @PutMapping("sysDictDetail/update")
     @RequiresPermissions("sysDict:update")
     @ResponseBody
-    public DataResult update(@RequestBody SysDictDetailEntity sysDictDetail){
+    public DataResult update(@RequestBody SysDictDetailEntity sysDictDetail) {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
         }
@@ -81,16 +83,15 @@ public class SysDictDetailController {
         return DataResult.success();
     }
 
+
     @ApiOperation(value = "查询列表数据")
-    @PostMapping("sysDictDetail/list")
+    @PostMapping("sysDictDetail/listByPage")
     @RequiresPermissions("sysDict:list")
     @ResponseBody
-    public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail){
-        if (StringUtils.isEmpty(sysDictDetail.getDictId())) {
-            return DataResult.success(new ArrayList<>());
-        }
-        List<SysDictDetailEntity> list = sysDictDetailService.listAll(sysDictDetail.getDictId());
-        return DataResult.success(list);
+    public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail) {
+        Page page = new Page(sysDictDetail.getPage(), sysDictDetail.getLimit());
+        IPage<SysDictDetailEntity> iPage = sysDictDetailService.listByPage(page, sysDictDetail.getDictId());
+        return DataResult.success(iPage);
     }
 
 }

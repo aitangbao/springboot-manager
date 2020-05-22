@@ -1,5 +1,7 @@
 package com.company.project.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.entity.SysDictDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,5 +19,5 @@ import java.util.List;
 @Mapper
 public interface SysDictDetailMapper extends BaseMapper<SysDictDetailEntity> {
 
-    List<SysDictDetailEntity> listAll(@Param(value = "dictId") String dictId);
+    IPage<SysDictDetailEntity> listByPage(Page page,@Param(value = "dictId")  String dictId);
 }

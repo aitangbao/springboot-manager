@@ -1,5 +1,7 @@
 package com.company.project.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysDictDetailEntity;
 
@@ -14,6 +16,6 @@ import java.util.List;
  */
 public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 
-    List<SysDictDetailEntity> listAll(String dictId);
+    IPage<SysDictDetailEntity> listByPage(Page page, String dictId);
 }
 

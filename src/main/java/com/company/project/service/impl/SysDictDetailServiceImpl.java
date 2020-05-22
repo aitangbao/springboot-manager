@@ -1,5 +1,7 @@
 package com.company.project.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.mapper.SysDictDetailMapper;
 import com.company.project.mapper.SysDictMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
     private SysDictDetailMapper sysDictDetailMapper;
 
     @Override
-    public List<SysDictDetailEntity> listAll(String dictId) {
-        return sysDictDetailMapper.listAll(dictId);
+    public IPage<SysDictDetailEntity> listByPage(Page page, String dictId) {
+        return sysDictDetailMapper.listByPage(page, dictId);
     }
 }

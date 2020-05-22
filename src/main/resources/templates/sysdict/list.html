@@ -96,6 +96,7 @@
         <div class="layui-col-sm12 layui-col-md6 layui-col-lg6" style="margin-top: 43px;">
             <div class="table_detail_div">
                 <table class="layui-table" id="showTableDetail" lay-filter="showTableDetail"></table>
+                <div id="laypageD"></div>
             </div>
         </div>
     </div>
@@ -134,7 +135,6 @@
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
-    var currentDictId;
 
     layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
         var ins1;
@@ -143,9 +143,14 @@
             page: 1,
             limit: 10
         };
+        var searchParamD = {
+            dictId: null,
+            page: 1,
+            limit: 10
+        };
         //初始化 获取数据
         loadData();
-
+        loadDataD();
         function loadData(page) {
             searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
             CoreUtil.sendAjax("/sysDict/listByPage", JSON.stringify(searchParam), function (res) {
@@ -158,6 +163,20 @@
                 layer.msg("抱歉！您暂无获取列表的权限");
                 var noAuthorityData = [];
                 loadTable(noAuthorityData);
+            });
+        }
+        function loadDataD(page) {
+            searchParamD.page = CoreUtil.isEmpty(page) ? searchParamD.page : page;
+            CoreUtil.sendAjax("/sysDictDetail/listByPage", JSON.stringify(searchParamD), function (res) {
+                //初始化渲染数据
+                if (res.data.records != null) {
+                    loadTableDetail(res.data.records);
+                }
+                laypageTableD(res.data.total);
+            }, "POST", false, function (res) {
+                layer.msg("抱歉！您暂无获取列表的权限");
+                var noAuthorityData = [];
+                loadTableDetail(noAuthorityData);
             });
         }
 
@@ -174,6 +193,23 @@
                         searchParam.page = obj.curr;
                         searchParam.limit = obj.limit;
                         loadData()
+                    }
+                }
+            });
+        };
+        //渲染分页插件
+        function laypageTableD(total) {
+            laypage.render({
+                elem: 'laypageD'
+                , count: total
+                , limit: searchParamD.limit
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , curr: searchParamD.page //获取起始页
+                , jump: function (obj, first) {
+                    if (!first) {
+                        searchParamD.page = obj.curr;
+                        searchParamD.limit = obj.limit;
+                        loadDataD()
                     }
                 }
             });
@@ -219,26 +255,11 @@
                 , data: data
                 , even: true
                 , toolbar: '#toolbarDetail'
-                , limit: 100
+                , limit: data.length
+                , limits: [10, 20, 30, 40, 50]
             });
         };
 
-
-
-        var loadDetail = function(dictId){
-            CoreUtil.sendAjax("/sysDictDetail/list", JSON.stringify({"dictId": dictId}), function (res) {
-                //初始化渲染数据
-                if (res.data != null) {
-                    loadTableDetail(res.data);
-                }
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取列表的权限");
-                var noAuthorityData = [];
-                loadTableDetail(noAuthorityData);
-            });
-        }
-
-        loadDetail(null);
 
         //表头工具
         table.on('toolbar(showTable)', function (obj) {
@@ -253,7 +274,7 @@
                         var ids = [];
                         $(data).each(function (index, item) {
                             ids.push(item.id);
-                            containCurrentIdFlag = (item.id === currentDictId);
+                            containCurrentIdFlag = (item.id === searchParamD.dictId);
                         });
                         tipDialog(ids, containCurrentIdFlag);
                     }
@@ -287,7 +308,7 @@
                 case 'del':
                     var ids = [];
                     ids.push(data.id);
-                    var containCurrentIdFlag = (data.id === currentDictId);
+                    var containCurrentIdFlag = (data.id === searchParamD.dictId);
                     tipDialog(ids,containCurrentIdFlag);
                     break;
                 case 'edit':
@@ -311,8 +332,8 @@
                     break;
                 case 'setDetail':
                     var data = obj.data;
-                    currentDictId = data.id;
-                    loadDetail(currentDictId)
+                    searchParamD.dictId = data.id;
+                    loadDataD(1)
                     break;
             }
         });
@@ -335,12 +356,12 @@
                     }
                     break;
                 case 'add':
-                    if (CoreUtil.isEmpty(currentDictId)) {
+                    if (CoreUtil.isEmpty(searchParamD.dictId)) {
                         layer.msg("请先选中左侧行后，再执行添加操作", {time: 3000});
                         return;
                     }
                     $("#detailId").val("");
-                    $(".operation input[name=dictId]").val(currentDictId);
+                    $(".operation input[name=dictId]").val(searchParamD.dictId);
                     $(".operation input[name=value]").val("");
                     $(".operation input[name=label]").val("");
                     $(".operation input[name=sort]").val("");
@@ -400,8 +421,8 @@
         $("#search").click(function () {
             searchParam.name = $("#name").val();
             loadData(1);
-            currentDictId = null;
-            loadDetail(currentDictId);
+            searchParamD.dictId = null;
+            loadDataD(1);
         });
 
 
@@ -415,9 +436,9 @@
                         layer.msg(res.msg, {time: 1000}, function () {
                             loadData(1);
                             if (containCurrentIdFlag) {
-                                currentDictId = null;
+                                searchParamD.dictId = null;
                             }
-                            loadDetail(currentDictId);
+                            loadDataD(1);
                         });
                     }, "DELETE", false, function (res) {
                         layer.msg("抱歉！您暂无删除用户的权限");
@@ -434,7 +455,7 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendAjax("/sysDictDetail/delete", JSON.stringify(ids), function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            loadDetail(currentDictId);
+                            loadDataD(1);
                         });
                     }, "DELETE", false, function (res) {
                         layer.msg("抱歉！您暂无删除用户的权限");
@@ -474,7 +495,7 @@
                 CoreUtil.sendAjax("/sysDictDetail/add", JSON.stringify(data.field), function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadDetail(currentDictId);
+                    loadDataD(1);
                 }, "POST", false, function (res) {
                     layer.msg("抱歉！您暂无权限");
                 });
@@ -482,7 +503,7 @@
                 CoreUtil.sendAjax("/sysDictDetail/update", JSON.stringify(data.field), function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadDetail(currentDictId);
+                    loadDataD(1);
                 }, "PUT", false, function (res) {
                     layer.msg("抱歉！您暂无权限");
                 });
