@@ -166,6 +166,7 @@ INSERT INTO `sys_permission` VALUES ('fc9d3120846111eaab15b4a9fc2c4442', '列表
 INSERT INTO `sys_permission` VALUES ('fc9d5be5846111eaab15b4a9fc2c4442', '新增', 'sysJob:add', NULL, 'sysJob/add', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('fc9da4f7846111eaab15b4a9fc2c4442', '修改', 'sysJob:update', NULL, 'sysJob/update', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('fc9dc9cd846111eaab15b4a9fc2c4442', '删除', 'sysJob:delete', NULL, 'sysJob/delete', NULL, 'fc9ca351846111eaab15b4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('9b02bb94c01d69b8dabeaeae1c85bbee', '系统信息', '', '', '/index/systemInfo', '_self', '65bdb02f47b94e71c2a2b9e459bde909', 1, 2, 1, '2020-05-26 14:21:47', '2020-05-26 14:23:01', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -304,6 +305,8 @@ INSERT INTO `sys_role_permission` VALUES ('f40541735a799ac570c23518b03cb2db', '1
 INSERT INTO `sys_role_permission` VALUES ('f47cf0a30a02b830cd620226725c031c', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '761db494-833d-4a6c-94b4-3a7409fd9a78', '2020-04-22 15:48:47');
 INSERT INTO `sys_role_permission` VALUES ('f58d9e73-8929-4c90-a466-afc446339f97', 'de54c167-e733-4b5b-83dd-ce10edd078f5', '3dac936c-c4e1-4560-ac93-905502f61ae0', '2019-11-19 10:49:39');
 INSERT INTO `sys_role_permission` VALUES ('fc81d4958fb04591a7bc0cf4b02379c0', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '58612968-d93c-4c21-8fdc-a825c0ab0275', '2020-04-22 15:48:47');
+INSERT INTO `sys_role_permission` VALUES ('db395de99411e893a25859c1e4052623', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '9b02bb94c01d69b8dabeaeae1c85bbee', '2020-05-26 14:21:56');
+
 COMMIT;
 
 -- ----------------------------
