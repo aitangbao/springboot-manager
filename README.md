@@ -77,6 +77,8 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ![7](https://images.gitee.com/uploads/images/2020/0521/110629_edd63da6_997722.png)
 
+![](http://tuchuang.aitangbao.com.cn/20200527110224.png)
+
 ![image-20200430172452726](https://images.gitee.com/uploads/images/2020/0521/110630_1eae800b_997722.png)
 
 ![9](https://images.gitee.com/uploads/images/2020/0521/110630_ab5c75a2_997722.png)
@@ -96,5 +98,5 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
 
-<img width="250px" height="300px" src="https://images.gitee.com/uploads/images/2020/0521/110630_190ef34f_997722.jpeg" alt="" style="zoom:25%;" />
+<img width="250px" height="300px" src="http://tuchuang.aitangbao.com.cn/20200527110312.jpg" alt="" style="zoom:25%;" />
 
