@@ -60,6 +60,7 @@
                 <div class="layui-form-label">图标</div>
                 <div class="layui-input-block">
                     <input type="text" id="iconPicker" name="icon" lay-filter="iconPicker" class="layui-input">
+
                 </div>
             </div>
 
@@ -189,6 +190,9 @@
             var data = obj.data;
             switch (obj.event) {
                 case 'addMenu':
+                    if ($("#reset_icon").length === 0){
+                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
+                    }
                     selectNode = null;
                     $(".menu-table").hide();
                     $(".operation_menu").show();
@@ -247,6 +251,9 @@
                     deletedMenu(data.id, data.name);
                     break;
                 case 'edit':
+                    if ($("#reset_icon").length === 0){
+                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
+                    }
                     selectNode = null;
                     $(".menu-table").hide();
                     $(".operation_menu").show();
@@ -338,6 +345,7 @@
             return false;
         });
 
+
         $(".operation_menu input[name=pidName]").click(function () {
             layer.open({
                 type: 1,
@@ -412,6 +420,9 @@
         return value;
     }
 
+    function resetIcon(){
+        iconPicker.checkIcon('iconPicker', 'layui-icon-star-fill');
+    }
 
 </script>
 </body>
