@@ -116,7 +116,7 @@
             ulHtml += "</dl>"
             return ulHtml;
         };
-        CoreUtil.sendAjax("/sys/home/", null, function (res) {
+        CoreUtil.sendGet("/sys/home/", null, function (res) {
             $("#deptName").html("所属部门: " + res.data.userInfo.deptName);
             $("#nickName").html(res.data.userInfo.username);
             var data = res.data.menus;
@@ -169,7 +169,7 @@
             }
 
             top.layer.closeAll();
-        }, "GET", false);
+        });
         $(document).on('click', '.menuNvaBar', function () {
             var dataid = $(this);
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
@@ -213,10 +213,10 @@
             content: '确定要退出登录么？',
             yes: function (index, layero) {
                 layer.close(index); //如果设定了yes回调，需进行手工关闭
-                CoreUtil.sendAjax("/sys/user/logout", null, function (res) {
+                CoreUtil.sendGet("/sys/user/logout", null, function (res) {
                     layui.data('LocalData', null);
                     top.window.location.href = "/index/login";
-                }, "GET", true);
+                });
             }
         });
     }

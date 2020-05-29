@@ -42,14 +42,13 @@
       </div>
 
       <div class="layui-input-inline ">
-        <button class="layui-btn"   id="search">查询</button>
+        <button class="layui-btn" onclick="search()"  id="search">查询</button>
         <button class="layui-btn"   id="export">导出全部</button>
       </div>
     </div>
 
   </div>
   <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
-  <div id="laypage"></div>
 </div>
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
@@ -67,78 +66,47 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
-
+  //获取token
+  var token = CoreUtil.getData("access_token");
+  //地址栏转义token中的#号
+  var tokenQuery = token.replace("#", "%23");
+  var tableIns1;
   var table = layui.table;
-  var laypage = layui.laypage
   var form = layui.form;
   var layer = layui.layer;
   var $ = jQuery = layui.jquery;
   var laydate = layui.laydate;
 
-  layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
-    var ins1;
-    var searchParam = {
-      key: null,
-      page: 1,
-      limit: 10
-    };
-    //初始化 获取数据
-    loadData();
+  layui.use(['table', 'layer', 'laydate'], function () {
 
-    function loadData(page){
-      searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
-      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
-        //初始化渲染数据
-        if (res.data.records != null) {
-          loadTable(res.data.records);
+    //加载table
+    tableIns1 = table.render({
+      elem: '#showTable'
+      , contentType: 'application/json'
+      , headers: {"authorization": token}
+      , page: true //开启分页
+      , url: '/${classname}/listByPage' //数据接口
+      , method: 'POST'
+      , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+        return {
+          "code": res.code, //解析接口状态
+          "msg": res.msg, //解析提示文本
+          "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+          "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
         }
-        laypageTable(res.data.total);
-      }, "POST", false, function (res) {
-        layer.msg("抱歉！您暂无获取列表的权限");
-        var noAuthorityData = [];
-        loadTable(noAuthorityData);
-      });
-    }
-
-    //渲染分页插件
-    function laypageTable(total) {
-      laypage.render({
-        elem: 'laypage'
-        , count: total
-        , limit: searchParam.limit
-        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-        , curr: searchParam.page //获取起始页
-        , jump: function (obj, first) {
-          if(!first){
-            searchParam.page = obj.curr;
-            searchParam.limit = obj.limit;
-            loadData()
-          }
-        }
-      });
-    };
-
-    //渲染table
-    var loadTable = function (data) {
-      //展示已知数据
-      ins1 = table.render({
-        elem: '#showTable'
-        , cols: [
-          [
-            {type: 'checkbox', fixed: 'left'},
+      }
+      , cols: [
+        [
+          {type: 'checkbox', fixed: 'left'},
 #foreach($column in $columns)
-            {field: '${column.attrname}', title: '${column.comments}', sort: true},
+          {field: '${column.attrname}', title: '${column.comments}', sort: true},
 #end
-            {width: 120, toolbar: "#tool", title: '操作'}
-          ]
+          {width: 120, toolbar: "#tool", title: '操作'}
         ]
-        , data: data
-        , even: true
-        , limit: data.length
-        , limits: [10, 20, 30, 40, 50]
-        , toolbar: '#toolbar'
-      });
-    };
+      ]
+      , toolbar: '#toolbar'
+    });
+
 
     //表头工具
     table.on('toolbar(showTable)', function(obj){
@@ -186,31 +154,19 @@
       }
     });
 
-
-    //执行查询
-    $("#search").click(function () {
-      searchParam.key = $("#key").val();
-      loadData(1);
-    });
-
     //导出
     $('#export').on('click', function () {
       //原先分页limit
-      var limitOrg = searchParam.limit;
-      searchParam.limit = 1000000;
-      searchParam.key = $("#key").val();
-      CoreUtil.sendAjax("/${classname}/listByPage", JSON.stringify(searchParam), function (res) {
+      var exportParams = {
+        limit: 10000,
+        key: $("#key").val()
+      };
+      CoreUtil.sendPost("/${classname}/listByPage", exportParams, function (res) {
         //初始化渲染数据
         if (res.data.records != null) {
-          table.exportFile(ins1.config.id, res.data.records, 'xls');
+          table.exportFile(tableIns1.config.id, res.data.records, 'xls');
         }
-      }, "POST", false, function (res) {
-        layer.msg("抱歉！您暂无获取列表的权限");
-        var noAuthorityData = [];
-        loadTable(noAuthorityData);
       });
-      searchParam.limit = limitOrg;
-
     });
 
     //删除
@@ -219,12 +175,10 @@
         content: "确定要删除么?",
         yes: function(index, layero){
           layer.close(index); //如果设定了yes回调，需进行手工关闭
-          CoreUtil.sendAjax("/${classname}/delete",JSON.stringify(ids),function (res) {
+          CoreUtil.sendDelete("/${classname}/delete",ids,function (res) {
             layer.msg(res.msg, {time:1000},function () {
-              loadData(1);
+              search();
             });
-          },"DELETE",false,function (res) {
-            layer.msg("抱歉！您暂无删除用户的权限");
           });
         }
       });
@@ -240,24 +194,33 @@
     //监听保存
     form.on('submit(submit)', function(data){
       if(data.field.id===undefined || data.field.id===null || data.field.id===""){
-        CoreUtil.sendAjax("/${classname}/add",JSON.stringify(data.field),function (res) {
+        CoreUtil.sendPost("/${classname}/add",data.field,function (res) {
           $(".table_div").show();
           $(".operation").hide();
-          loadData(1);
-        },"POST",false,function (res) {
-          layer.msg("抱歉！您暂无权限");
+          search();
         });
       }else {
-        CoreUtil.sendAjax("/${classname}/update",JSON.stringify(data.field),function (res) {
+        CoreUtil.sendPut("/${classname}/update",data.field,function (res) {
           $(".table_div").show();
           $(".operation").hide();
-          loadData(1);
-        },"PUT",false,function (res) {
-          layer.msg("抱歉！您暂无权限");
+          search();
         });
       }
 
       return false;
     });
   });
+
+  //执行查询
+  function search() {
+    //这里以搜索为例
+    tableIns1.reload({
+      where: { //设定异步数据接口的额外参数，任意设
+        key: $("#key").val()
+      }
+      , page: {
+        curr: 1 //重新从第 1 页开始
+      }
+    });
+  };
 </script>

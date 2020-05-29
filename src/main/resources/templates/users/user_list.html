@@ -89,13 +89,12 @@
                             </select>
                         </div>
                         <div class="layui-input-inline ">
-                            <button class="layui-btn" id="search">查询</button>
+                            <button class="layui-btn" onclick="search()" id="search">查询</button>
                         </div>
                     </div>
 
                 </div>
                 <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
-                <div id="laypage"></div>
             </div>
 
         </div>
@@ -120,148 +119,108 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
+    //获取token
+    var token = CoreUtil.getData("access_token");
+    //地址栏转义token中的#号
+    var tokenQuery = token.replace("#", "%23");
+    var tableIns1;
     var table = layui.table;
-    var laypage = layui.laypage
     var form = layui.form;
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
     var tree = layui.tree;
     var transfer = layui.transfer;
-
-    layui.use(['table', 'laypage', 'layer', 'laydate', 'tree', 'transfer'], function () {
-        var searchParam = {
-            username: null,
-            status: null,
-            startTime: null,
-            endTime: null,
-            nickName: null,
-            deptNo: null,
-            page: 1,
-            limit: 10
-        }
-
-        //初始化 获取数据
-        loadData();
+    var deptNo = null;
+    var startTime = null;
+    var endTime = null;
+    layui.use(['table', 'layer', 'laydate', 'tree', 'transfer'], function () {
 
         initLeftTree();
 
-        function loadData(page) {
-
-            searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
-            CoreUtil.sendAjax("/sys/users", JSON.stringify(searchParam), function (res) {
-                //初始化渲染数据
-                if (res.data.records != null) {
-                    loadTable(res.data.records);
+        //加载table
+        tableIns1 = table.render({
+            elem: '#user_table'
+            , contentType: 'application/json'
+            , headers: {"authorization": token}
+            , page: true //开启分页
+            , url: '/sys/users' //数据接口
+            , method: 'POST'
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                    "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
                 }
-                laypageTable(res.data.total);
-
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取列表的权限");
-                var noAuthorityData = [];
-                loadTable(noAuthorityData);
-            });
-        }
-
-        var laypageTable = function (total) {
-            laypage.render({
-                elem: 'laypage'
-                , count: total
-                , limit: searchParam.limit
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: searchParam.page
-                , jump: function (obj, first) {
-                    if (!first) {
-                        searchParam.page = obj.curr;
-                        searchParam.limit = obj.limit;
-                        loadData()
-                    }
-                }
-            });
-        };
-        //渲染table
-        var loadTable = function (data) {
-            table.render({
-                elem: '#user_table'
-                , cols: [
-                    [
-                        {type: 'checkbox', fixed: 'left'},
-                        {field: 'username', title: '账号', width: 130},
-                        {field: 'phone', title: '手机号', width: 130},
-                        {field: 'deptName', title: '所属公司', width: 120},
-                        {field: 'realName', title: '真实名称', width: 120},
-                        {field: 'nickName', title: '昵称', width: 130},
-                        {field: 'email', title: '邮箱', width: 150},
-                        {
-                            field: 'sex', title: '性别', width: 100, templet: function (item) {
-                                if (item.sex === 1) {
-                                    return "男";
-                                }
-                                if (item.sex === 2) {
-                                    return "女";
-                                }
+            }
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'username', title: '账号', width: 130},
+                    {field: 'phone', title: '手机号', width: 130},
+                    {field: 'deptName', title: '所属公司', width: 120},
+                    {field: 'realName', title: '真实名称', width: 120},
+                    {field: 'nickName', title: '昵称', width: 130},
+                    {field: 'email', title: '邮箱', width: 150},
+                    {
+                        field: 'sex', title: '性别', width: 100, templet: function (item) {
+                            if (item.sex === 1) {
+                                return "男";
                             }
-                        },
-                        {field: 'createTime', title: '创建时间', minWidth: 120},
-                        {field: 'updateTime', title: '更新时间', minWidth: 120},
-                        {
-                            field: 'status', title: '状态', width: 100, templet: function (item) {
-                                if (item.status === 1) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" checked disabled>';
-                                }
-                                if (item.status === 2) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" disabled>';
-                                }
+                            if (item.sex === 2) {
+                                return "女";
                             }
-                        },
-                        {
-                            field: 'createWhere', title: '注册涞源', width: 100, templet: function (item) {
-                                if (item.createWhere === 1) {
-                                    return "Web";
-                                }
-                                if (item.createWhere === 2) {
-                                    return "Android";
-                                }
-                                if (item.createWhere === 3) {
-                                    return "Ios";
-                                }
+                        }
+                    },
+                    {field: 'createTime', title: '创建时间', minWidth: 120},
+                    {field: 'updateTime', title: '更新时间', minWidth: 120},
+                    {
+                        field: 'status', title: '状态', width: 100, templet: function (item) {
+                            if (item.status === 1) {
+                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" checked disabled>';
                             }
-                        },
-                        {width: 300, toolbar: "#tool", title: '操作'}
-                    ]
+                            if (item.status === 2) {
+                                return '  <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" disabled>';
+                            }
+                        }
+                    },
+                    {
+                        field: 'createWhere', title: '注册涞源', width: 100, templet: function (item) {
+                            if (item.createWhere === 1) {
+                                return "Web";
+                            }
+                            if (item.createWhere === 2) {
+                                return "Android";
+                            }
+                            if (item.createWhere === 3) {
+                                return "Ios";
+                            }
+                        }
+                    },
+                    {width: 300, toolbar: "#tool", title: '操作'}
                 ]
-                , data: data
-                , even: true
-                , limit: data.length
-                , limits: [10, 20, 30, 40, 50]
-                , toolbar: '#toolbar'
+            ]
+            , toolbar: '#toolbar'
+        });
 
-            });
-        };
         laydate.render({
             elem: '#createTime'
             , type: 'datetime'
             , range: '~'
             , done: function (value, date, endDate) {
                 if (value != null && value != undefined && value != "") {
-                    searchParam.startTime = value.split("~")[0];
-                    searchParam.endTime = value.split("~")[1];
+                    startTime = value.split("~")[0];
+                    endTime = value.split("~")[1];
                 } else {
-                    searchParam.startTime = null;
-                    searchParam.endTime = null;
+                    startTime = null;
+                    endTime = null;
                 }
 
             }
         });
-        $("#search").click(function () {
-            searchParam.status = $("#status").val();
-            searchParam.username = $("#username").val();
-            searchParam.nickName = $("#nickName").val();
-            loadData(1)
-        });
 
         table.on('toolbar(user_table)', function (obj) {
-
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'batchDeleted':
@@ -295,7 +254,7 @@
                     var d = document.getElementsByTagName('em')[0];
                     d.firstChild.nodeValue = '启用';
                     form.render(); //更新全部
-                    initTree("");
+
                     break;
             }
             ;
@@ -334,10 +293,10 @@
                         d.firstChild.nodeValue = '禁用';
                     }
                     form.render(); //更新全部
-                    initTree("");
+
                     break;
                 case 'operationRole':
-                    CoreUtil.sendAjax("/sys/user/roles/" + data.id, null, function (res) {
+                    CoreUtil.sendGet("/sys/user/roles/" + data.id, null, function (res) {
                         initTransfer(res.data);
                         layer.open({
                             type: 1,
@@ -361,18 +320,14 @@
                                         roleIds.push(item.value);
                                     });
                                 }
-                                CoreUtil.sendAjax("/sys/user/roles/" + data.id, JSON.stringify(roleIds), function (res) {
+                                CoreUtil.sendPut("/sys/user/roles/" + data.id, roleIds, function (res) {
                                     layer.msg(res.msg);
-                                    loadData(1);
-                                }, "PUT", false, function (res) {
-                                    layer.msg("抱歉！您暂无赋予用户角色的权限");
+                                    search()
                                 });
 
                                 layer.close(index);
                             }
                         });
-                    }, "GET", false, function (res) {
-                        layer.msg("抱歉！您暂无查询用户所拥有角色列表的权限");
                     });
 
                     break;
@@ -389,11 +344,9 @@
                 content: '确定要删除' + username + "用户么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sys/user", JSON.stringify(userIds), function (res) {
+                    CoreUtil.sendDelete("/sys/user", userIds, function (res) {
                         layer.msg(res.msg);
-                        loadData(1);
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除用户的权限");
+                        search()
                     });
                 }
             });
@@ -404,22 +357,18 @@
         });
         form.on('submit(submit)', function (data) {
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPost("/sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
-                    loadData(1);
-                }, "POST", false, function (res) {
-                    layer.msg("抱歉！您暂无新增用户的权限");
+                    search()
                 });
             } else {
-                CoreUtil.sendAjax("/sys/user", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPut("/sys/user", data.field, function (res) {
                     $(".user_table_div").show();
                     $("#leftTree").show();
                     $(".operation_user").hide();
-                    loadData(1);
-                }, "PUT", false, function (res) {
-                    layer.msg("抱歉！您暂无编辑用户的权限");
+                    search()
                 });
             }
             return false;
@@ -443,13 +392,10 @@
                 , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
                 , click: function (obj) {
                     console.log(obj)
-                    searchParam.deptNo = obj.data.deptNo;
-                    searchParam.status = $("#status").val();
-                    searchParam.username = $("#username").val();
-                    searchParam.nickName = $("#nickName").val();
+                    deptNo = obj.data.deptNo;
                     $("#leftTree span").removeClass('custom-tree-item-clicked');     //清除旧的样式
                     $("#leftTree span:contains(" + obj.data.title + ")").addClass('custom-tree-item-clicked');
-                    loadData(1)
+                    search()
 
                 }
             });
@@ -477,26 +423,11 @@
         });
 
         function initLeftTree(){
-            CoreUtil.sendAjax("/sys/dept/tree", null, function (res) {
+            CoreUtil.sendGet("/sys/dept/tree", null, function (res) {
                 loadLeftTree(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取部门树的权限");
-                var noAuthorityData = [];
-                loadLeftTree(noAuthorityData);
+                loadDeptTree(res.data);
             });
         }
-
-        function initTree(id) {
-            var param = {deptId: id}
-            CoreUtil.sendAjax("/sys/dept/tree", param, function (res) {
-                loadDeptTree(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取部门树的权限");
-                var noAuthorityData = [];
-                loadDeptTree(noAuthorityData);
-
-            });
-        };
         var initTransfer = function (data) {
             transfer.render({
                 elem: '#roles'
@@ -514,5 +445,23 @@
             })
         }
     });
+
+    //执行查询
+    function search() {
+        //这里以搜索为例
+        tableIns1.reload({
+            where: { //设定异步数据接口的额外参数，任意设
+                username: $("#username").val(),
+                startTime: startTime,
+                endTime: endTime,
+                nickName: $("#nickName").val(),
+                status: $("#status").val(),
+                deptNo: deptNo
+            }
+            , page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+    };
 </script>
 </html>

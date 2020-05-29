@@ -81,22 +81,21 @@
                     <div class="layui-form-item">
                         <div class="layui-input-inline">
                             <input type="text" id="name" class="layui-input" autocomplete="off" placeholder="请输入字典名称或描述 ">
+                            <input type="text" id="dictId" style="display: none" class="layui-input" autocomplete="off" placeholder="请输入字典名称或描述 ">
                         </div>
 
                         <div class="layui-input-inline ">
-                            <button class="layui-btn" id="search">查询</button>
+                            <button class="layui-btn" onclick="search()" id="search">查询</button>
                         </div>
                     </div>
 
                 </div>
                 <table class="layui-table" id="showTable" lay-filter="showTable"></table>
-                <div id="laypage"></div>
             </div>
         </div>
         <div class="layui-col-sm12 layui-col-md6 layui-col-lg6" style="margin-top: 43px;">
             <div class="table_detail_div">
                 <table class="layui-table" id="showTableDetail" lay-filter="showTableDetail"></table>
-                <div id="laypageD"></div>
             </div>
         </div>
     </div>
@@ -128,137 +127,77 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
-
+    //获取token
+    var token = CoreUtil.getData("access_token");
+    //地址栏转义token中的#号
+    var tokenQuery = token.replace("#", "%23");
+    var tableIns1;
+    var tableIns2;
+    var selectDictId = null;
     var table = layui.table;
-    var laypage = layui.laypage
     var form = layui.form;
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
 
-    layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
-        var ins1;
-        var searchParam = {
-            name: null,
-            page: 1,
-            limit: 10
-        };
-        var searchParamD = {
-            dictId: null,
-            page: 1,
-            limit: 10
-        };
-        //初始化 获取数据
-        loadData();
-        loadDataD();
-        function loadData(page) {
-            searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
-            CoreUtil.sendAjax("/sysDict/listByPage", JSON.stringify(searchParam), function (res) {
-                //初始化渲染数据
-                if (res.data.records != null) {
-                    loadTable(res.data.records);
-                }
-                laypageTable(res.data.total);
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取列表的权限");
-                var noAuthorityData = [];
-                loadTable(noAuthorityData);
-            });
-        }
-        function loadDataD(page) {
-            searchParamD.page = CoreUtil.isEmpty(page) ? searchParamD.page : page;
-            CoreUtil.sendAjax("/sysDictDetail/listByPage", JSON.stringify(searchParamD), function (res) {
-                //初始化渲染数据
-                if (res.data.records != null) {
-                    loadTableDetail(res.data.records);
-                }
-                laypageTableD(res.data.total);
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取列表的权限");
-                var noAuthorityData = [];
-                loadTableDetail(noAuthorityData);
-            });
-        }
+    layui.use(['table', 'layer', 'laydate'], function () {
 
-        //渲染分页插件
-        function laypageTable(total) {
-            laypage.render({
-                elem: 'laypage'
-                , count: total
-                , limit: searchParam.limit
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: searchParam.page //获取起始页
-                , jump: function (obj, first) {
-                    if (!first) {
-                        searchParam.page = obj.curr;
-                        searchParam.limit = obj.limit;
-                        loadData()
-                    }
-                }
-            });
-        };
-        //渲染分页插件
-        function laypageTableD(total) {
-            laypage.render({
-                elem: 'laypageD'
-                , count: total
-                , limit: searchParamD.limit
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: searchParamD.page //获取起始页
-                , jump: function (obj, first) {
-                    if (!first) {
-                        searchParamD.page = obj.curr;
-                        searchParamD.limit = obj.limit;
-                        loadDataD()
-                    }
-                }
-            });
-        };
 
-        //渲染table
-        var loadTable = function (data) {
-            //展示已知数据
-            ins1 = table.render({
-                elem: '#showTable'
-                , cols: [
-                    [
-                        {type: 'checkbox', fixed: 'left'},
-                        {field: 'name', title: '字典名称', sort: true,event: 'setDetail'},
-                        {field: 'remark', title: '描述', sort: true,event: 'setDetail'},
-                        {width: 120, toolbar: "#tool", title: '操作'}
-                    ]
+        //加载table
+        tableIns1 = table.render({
+            elem: '#showTable'
+            , contentType: 'application/json'
+            , headers: {"authorization": token}
+            , page: true //开启分页
+            , url: '/sysDict/listByPage' //数据接口
+            , method: 'POST'
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                    "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+                }
+            }
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'name', title: '字典名称', sort: true,event: 'setDetail'},
+                    {field: 'remark', title: '描述', sort: true,event: 'setDetail'},
+                    {width: 120, toolbar: "#tool", title: '操作'}
                 ]
-                , data: data
-                , even: true
-                , limit: data.length
-                , limits: [10, 20, 30, 40, 50]
-                , toolbar: '#toolbar'
-                , event: "showDetail"
-            });
-        };
+            ]
+            , toolbar: '#toolbar'
+        });
 
-        //渲染table
-        var loadTableDetail = function (data) {
-            //展示已知数据
-            ins1 = table.render({
-                elem: '#showTableDetail'
-                , cols: [
-                    [
-                        {type: 'checkbox', fixed: 'left'},
-                        {field: 'dictName', title: '字典名称', sort: true},
-                        {field: 'value', title: '字典值', sort: true},
-                        {field: 'label', title: '字典标签', sort: true},
-                        {field: 'sort', title: '排序', sort: true},
-                        {width: 120, toolbar: "#toolDetail", title: '操作'}
-                    ]
+        //加载table
+        tableIns2 = table.render({
+            elem: '#showTableDetail'
+            , contentType: 'application/json'
+            , headers: {"authorization": token}
+            , page: true //开启分页
+            , url: '/sysDictDetail/listByPage' //数据接口
+            , method: 'POST'
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                    "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+                }
+            }
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'dictName', title: '字典名称', sort: true},
+                    {field: 'value', title: '字典值', sort: true},
+                    {field: 'label', title: '字典标签', sort: true},
+                    {field: 'sort', title: '排序', sort: true},
+                    {width: 120, toolbar: "#toolDetail", title: '操作'}
                 ]
-                , data: data
-                , even: true
-                , toolbar: '#toolbarDetail'
-                , limit: data.length
-                , limits: [10, 20, 30, 40, 50]
-            });
-        };
+            ]
+            , toolbar: '#toolbarDetail'
+        });
 
 
         //表头工具
@@ -274,7 +213,7 @@
                         var ids = [];
                         $(data).each(function (index, item) {
                             ids.push(item.id);
-                            containCurrentIdFlag = (item.id === searchParamD.dictId);
+                            containCurrentIdFlag = (item.id === selectDictId);
                         });
                         tipDialog(ids, containCurrentIdFlag);
                     }
@@ -308,7 +247,7 @@
                 case 'del':
                     var ids = [];
                     ids.push(data.id);
-                    var containCurrentIdFlag = (data.id === searchParamD.dictId);
+                    var containCurrentIdFlag = (data.id === selectDictId);
                     tipDialog(ids,containCurrentIdFlag);
                     break;
                 case 'edit':
@@ -332,14 +271,14 @@
                     break;
                 case 'setDetail':
                     var data = obj.data;
-                    searchParamD.dictId = data.id;
-                    loadDataD(1)
+                    selectDictId = data.id;
+                    searchDetail();
                     break;
             }
         });
 
 
-        //表头工具
+        //详情表头工具
         table.on('toolbar(showTableDetail)', function (obj) {
             switch (obj.event) {
                 case 'batchDeleted':
@@ -356,12 +295,12 @@
                     }
                     break;
                 case 'add':
-                    if (CoreUtil.isEmpty(searchParamD.dictId)) {
+                    if (CoreUtil.isEmpty(selectDictId)) {
                         layer.msg("请先选中左侧行后，再执行添加操作", {time: 3000});
                         return;
                     }
                     $("#detailId").val("");
-                    $(".operation input[name=dictId]").val(searchParamD.dictId);
+                    $(".operation input[name=dictId]").val(selectDictId);
                     $(".operation input[name=value]").val("");
                     $(".operation input[name=label]").val("");
                     $(".operation input[name=sort]").val("");
@@ -383,7 +322,8 @@
             }
             ;
         });
-        //列操作
+
+        //详情列操作
         table.on('tool(showTableDetail)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
@@ -417,48 +357,35 @@
         });
 
 
-        //执行查询
-        $("#search").click(function () {
-            searchParam.name = $("#name").val();
-            loadData(1);
-            searchParamD.dictId = null;
-            loadDataD(1);
-        });
-
-
         //删除
         var tipDialog = function (ids,containCurrentIdFlag) {
             layer.open({
                 content: "确定要删除么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sysDict/delete", JSON.stringify(ids), function (res) {
+                    CoreUtil.sendDelete("/sysDict/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            loadData(1);
+                            search()
                             if (containCurrentIdFlag) {
-                                searchParamD.dictId = null;
+                                selectDictId = null;
                             }
-                            loadDataD(1);
+                            searchDetail();
                         });
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除用户的权限");
                     });
                 }
             });
         };
 
-        //删除
+        //详情删除
         var tipDialogDetail = function (ids) {
             layer.open({
                 content: "确定要删除么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sysDictDetail/delete", JSON.stringify(ids), function (res) {
+                    CoreUtil.sendDelete("/sysDictDetail/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            loadDataD(1);
+                            searchDetail();
                         });
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除用户的权限");
                     });
                 }
             });
@@ -468,20 +395,16 @@
         //监听保存
         form.on('submit(submit)', function (data) {
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendAjax("/sysDict/add", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPost("/sysDict/add", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadData(1);
-                }, "POST", false, function (res) {
-                    layer.msg("抱歉！您暂无权限");
+                    search()
                 });
             } else {
-                CoreUtil.sendAjax("/sysDict/update", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPut("/sysDict/update", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadData(1);
-                }, "PUT", false, function (res) {
-                    layer.msg("抱歉！您暂无权限");
+                    search()
                 });
             }
 
@@ -489,27 +412,50 @@
         });
 
 
-        //监听保存
+        //详情监听保存
         form.on('submit(submitDetail)', function (data) {
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendAjax("/sysDictDetail/add", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPost("/sysDictDetail/add", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadDataD(1);
-                }, "POST", false, function (res) {
-                    layer.msg("抱歉！您暂无权限");
+                    searchDetail();
                 });
             } else {
-                CoreUtil.sendAjax("/sysDictDetail/update", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPut("/sysDictDetail/update", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    loadDataD(1);
-                }, "PUT", false, function (res) {
-                    layer.msg("抱歉！您暂无权限");
+                    searchDetail();
                 });
             }
 
             return false;
         });
     });
+
+    //执行查询
+    function search() {
+        //这里以搜索为例
+        tableIns1.reload({
+            where: { //设定异步数据接口的额外参数，任意设
+                name: $("#name").val()
+            }
+            , page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+    };
+
+    //执行查询
+    function searchDetail() {
+        //这里以搜索为例
+        tableIns2.reload({
+            where: { //设定异步数据接口的额外参数，任意设
+                dictId: selectDictId
+            }
+            , page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+    };
+    
 </script>

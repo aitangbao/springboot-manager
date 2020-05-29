@@ -75,7 +75,7 @@
     var form = layui.form;
     var element = layui.element;
     $(function () {
-        CoreUtil.sendAjax("/sys/user", null, function (res) {
+        CoreUtil.sendGet("/sys/user", null, function (res) {
             if (res.data != null) {
                 $(".layui-container input[name=id]").val(res.data.id);
                 $(".layui-container input[name=username]").val(res.data.username);
@@ -96,13 +96,13 @@
                 }
                 form.render(); //更新全部
             }
-        }, "GET", false);
+        });
 
         //监听提交
         form.on('submit(submit)', function (data) {
-            CoreUtil.sendAjax("/sys/user/info", JSON.stringify(data.field), function (res) {
+            CoreUtil.sendPut("/sys/user/info", data.field, function (res) {
                 layer.msg(res.msg);
-            }, "PUT", false);
+            });
             return false;
         });
 

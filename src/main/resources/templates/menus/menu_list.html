@@ -118,12 +118,8 @@
         iconPicker: 'js/iconPicker'
     }).use(['treetable', 'table', 'tree',"iconPicker"], function () {
         var reloadTreeTable = function () {
-            CoreUtil.sendAjax("/sys/permissions", null, function (res) {
+            CoreUtil.sendGet("/sys/permissions", null, function (res) {
                 renderTable(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取菜单权限列表的权限");
-                var noAuthorityData = [];
-                renderTable(noAuthorityData);
             });
         };
         reloadTreeTable();
@@ -295,23 +291,17 @@
                 content: '确定要删除' + menuName + "?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sys/permission/" + menuId, null, function (res) {
+                    CoreUtil.sendDelete("/sys/permission/" + menuId, null, function (res) {
                         layer.msg(res.msg);
                         reloadTreeTable();
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除菜单权限的权限");
                     });
                 }
             });
         };
         var initTree = function (id) {
             var param = {permissionId: id}
-            CoreUtil.sendAjax("/sys/permission/tree", param, function (res) {
+            CoreUtil.sendGet("/sys/permission/tree", param, function (res) {
                 loadDeptTree(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取菜单权限树的权限");
-                var noAuthorityData = [];
-                loadDeptTree(noAuthorityData);
             });
         };
         var loadDeptTree = function (data) {
@@ -371,21 +361,16 @@
         form.on('submit(submit)', function (data) {
             console.log(data)
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendAjax("/sys/permission", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPost("/sys/permission", data.field, function (res) {
                     reloadTreeTable();
                     $(".menu-table").show();
                     $(".operation_menu").hide();
-                }, "POST", false, function (res) {
-                    layer.msg("抱歉！您暂无新增菜单权限的权限");
-
                 });
             } else {
-                CoreUtil.sendAjax("/sys/permission", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPut("/sys/permission", data.field, function (res) {
                     reloadTreeTable();
                     $(".menu-table").show();
                     $(".operation_menu").hide();
-                }, "PUT", false, function (res) {
-                    layer.msg("抱歉！您暂无编辑菜单权限的权限");
                 });
             }
             return false;

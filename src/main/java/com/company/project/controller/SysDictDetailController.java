@@ -90,6 +90,9 @@ public class SysDictDetailController {
     @ResponseBody
     public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail) {
         Page page = new Page(sysDictDetail.getPage(), sysDictDetail.getLimit());
+        if (sysDictDetail == null ||StringUtils.isEmpty(sysDictDetail.getDictId())) {
+            DataResult.success();
+        }
         IPage<SysDictDetailEntity> iPage = sysDictDetailService.listByPage(page, sysDictDetail.getDictId());
         return DataResult.success(iPage);
     }

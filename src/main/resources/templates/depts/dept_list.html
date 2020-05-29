@@ -90,12 +90,8 @@
         treetable: 'treetable-lay/treetable'
     }).use(['treetable', 'table', 'tree'], function () {
         var reloadTreeTable = function () {
-            CoreUtil.sendAjax("/sys/depts", null, function (res) {
+            CoreUtil.sendGet("/sys/depts", null, function (res) {
                 renderTable(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取部门列表的权限");
-                var noAuthorityData = [];
-                renderTable(noAuthorityData);
             });
         };
         reloadTreeTable();
@@ -215,11 +211,9 @@
                 content: '确定要删除' + menuName + "?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sys/dept/" + deptId, null, function (res) {
+                    CoreUtil.sendDelete("/sys/dept/" + deptId, null, function (res) {
                         layer.msg(res.msg);
                         reloadTreeTable();
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除部门数据的权限");
                     });
                 }
             });
@@ -267,20 +261,16 @@
         });
         form.on('submit(submit)', function (data) {
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendAjax("/sys/dept", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPost("/sys/dept", data.field, function (res) {
                     reloadTreeTable();
                     $(".dept-table").show();
                     $(".operation_dept").hide();
-                }, "POST", false, function (res) {
-                    layer.msg("抱歉！您暂无新增部门的权限");
                 });
             } else {
-                CoreUtil.sendAjax("/sys/dept", JSON.stringify(data.field), function (res) {
+                CoreUtil.sendPut("/sys/dept", data.field, function (res) {
                     reloadTreeTable();
                     $(".dept-table").show();
                     $(".operation_dept").hide();
-                }, "PUT", false, function (res) {
-                    layer.msg("抱歉！您暂无编辑部门的权限");
                 });
             }
 
@@ -288,12 +278,8 @@
         });
         var initTree = function (id) {
             var param = {deptId: id}
-            CoreUtil.sendAjax("/sys/dept/tree", param, function (res) {
+            CoreUtil.sendGet("/sys/dept/tree", param, function (res) {
                 loadDeptTree(res.data);
-            }, "GET", false, function (res) {
-                layer.msg("抱歉！您暂无获取部门树的权限");
-                var noAuthorityData = [];
-                loadDeptTree(noAuthorityData);
             });
         };
 

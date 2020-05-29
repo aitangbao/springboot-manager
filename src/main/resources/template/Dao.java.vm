@@ -1,4 +1,4 @@
-package ${package}.dao;
+package ${package}.mapper;
 
 import ${package}.entity.${className}Entity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

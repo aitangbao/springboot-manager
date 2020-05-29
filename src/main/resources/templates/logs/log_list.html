@@ -19,7 +19,7 @@
             <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
         </div>
         <div class="layui-input-inline ">
-            <button class="layui-btn" id="search">查询</button>
+            <button class="layui-btn" onclick="search()" id="search">查询</button>
         </div>
     </div>
 
@@ -40,6 +40,11 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
+    //获取token
+    var token = CoreUtil.getData("access_token");
+    //地址栏转义token中的#号
+    var tokenQuery = token.replace("#", "%23");
+    var tableIns1;
     var table = layui.table;
     var laypage = layui.laypage
     var form = layui.form;
@@ -47,78 +52,41 @@
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
     var flag;
+    var startTime = null;
+    var endTime = null;
     layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
-        var searchParam = {
-            username: null,
-            startTime: null,
-            operation: null,
-            userId: null,
-            endTime: null,
-            page: 1,
-            limit: 10
-        };
-        //初始化 获取数据
-        loadData();
 
-        function loadData(page) {
-            searchParam.page = CoreUtil.isEmpty(page) ? searchParam.page : page;
-            CoreUtil.sendAjax("/sys/logs", JSON.stringify(searchParam), function (res) {
-                //初始化渲染数据
-                if (res.data.records != null) {
-                    loadTable(res.data.records);
+        //加载table
+        tableIns1 = table.render({
+            elem: '#log_table'
+            , contentType: 'application/json'
+            , headers: {"authorization": token}
+            , page: true //开启分页
+            , url: '/sys/logs' //数据接口
+            , method: 'POST'
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                    "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
                 }
-                laypageTable(res.data.total);
-            }, "POST", false, function (res) {
-                layer.msg("抱歉！您暂无获取列表的权限");
-                var noAuthorityData = [];
-                loadTable(noAuthorityData);
-            });
-        }
-
-        //渲染分页插件
-        var laypageTable = function (total) {
-            laypage.render({
-                elem: 'laypage'
-                , count: total
-                , limit: searchParam.limit
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , curr: searchParam.page
-                , jump: function (obj, first) {
-                    if (!first) {
-                        flag = true;
-                        searchParam.page = obj.curr;
-                        searchParam.limit = obj.limit;
-                        loadData()
-                    }
-                }
-            });
-        };
-
-        //渲染table
-        var loadTable = function (data) {
-            //展示已知数据
-            table.render({
-                elem: '#log_table'
-                , cols: [
-                    [
-                        {type: 'checkbox', fixed: 'left'},
-                        {field: 'username', title: '账号', width: 130},
-                        {field: 'operation', title: '用户操作', width: 140},
-                        {field: 'method', title: '请求方法', width: 400},
-                        {field: 'params', title: '请求参数', width: 300},
-                        {field: 'createTime', title: '创建时间', minWidth: 120},
-                        {width: 150, toolbar: "#tool", title: '操作'}
-                    ]
+            }
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'username', title: '账号', width: 130},
+                    {field: 'operation', title: '用户操作', width: 140},
+                    {field: 'method', title: '请求方法', width: 400},
+                    {field: 'params', title: '请求参数', width: 300},
+                    {field: 'createTime', title: '创建时间', minWidth: 120},
+                    {width: 150, toolbar: "#tool", title: '操作'}
                 ]
-                , data: data
-                , even: true
-                , limit: data.length
-                , limits: [10, 20, 30, 40, 50]
-                , toolbar: '#toolbar'
+            ]
+            , toolbar: '#toolbar'
+        });
 
 
-            });
-        };
         //日期范围
         laydate.render({
             elem: '#createTime'
@@ -126,24 +94,16 @@
             , range: '~'
             , done: function (value, date, endDate) {
                 if (value != null && value != undefined && value != "") {
-                    searchParam.startTime = value.split("~")[0];
-                    searchParam.endTime = value.split("~")[1];
+                    startTime = value.split("~")[0];
+                    endTime = value.split("~")[1];
                 } else {
                     //清空时间的时候要清空以前选择的日期
-                    searchParam.startTime = null;
-                    searchParam.endTime = null;
+                    startTime = null;
+                    endTime = null;
                 }
 
             }
         });
-        //执行查询
-        $("#search").click(function () {
-            searchParam.userId = $("#userId").val();
-            searchParam.operation = $("#operation").val();
-            searchParam.username = $("#username").val();
-            loadData(1)
-        });
-
 
         //表头工具栏事件
         table.on('toolbar(log_table)', function (obj) {
@@ -182,15 +142,30 @@
                 content: '确定要删除么',
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendAjax("/sys/logs", JSON.stringify(logIds), function (res) {
+                    CoreUtil.sendDelete("/sys/logs", logIds, function (res) {
                         layer.msg(res.msg);
-                        loadData(1);
-                    }, "DELETE", false, function (res) {
-                        layer.msg("抱歉！您暂无删除操作日志的权限");
+                        search();
                     });
                 }
             });
         }
     });
+
+    //执行查询
+    function search() {
+        //这里以搜索为例
+        tableIns1.reload({
+            where: { //设定异步数据接口的额外参数，任意设
+                username: $("#username").val(),
+                operation: $("#operation").val(),
+                userId: $("#userId").val(),
+                startTime: startTime,
+                endTime: endTime,
+            }
+            , page: {
+                curr: 1 //重新从第 1 页开始
+            }
+        });
+    };
 </script>
 </html>
