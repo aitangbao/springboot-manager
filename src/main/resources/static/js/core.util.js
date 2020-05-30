@@ -3,55 +3,27 @@
 var CoreUtil = (function () {
     var coreUtil = {};
 
+    /*GET*/
+    coreUtil.sendGet = function(url, params, ft){
+        this.sendAJAX(url, params, ft, "GET")
+    }
+
     /*POST*/
     coreUtil.sendPost = function(url, params, ft){
-        this.sendAJAX(url, params, ft, "POST")
+        this.sendAJAX(url, JSON.stringify(params), ft, "POST")
     }
     /*PUT*/
     coreUtil.sendPut = function(url, params, ft){
-        this.sendAJAX(url, params, ft, "PUT")
+        this.sendAJAX(url, JSON.stringify(params), ft, "PUT")
     }
     /*DELETE*/
     coreUtil.sendDelete = function(url, params, ft){
-        this.sendAJAX(url, params, ft, "DELETE")
+        this.sendAJAX(url, JSON.stringify(params), ft, "DELETE")
     }
 
 
     /*ajax*/
     coreUtil.sendAJAX = function(url, params, ft, method){
-        var loadIndex = top.layer.load(0, {shade: false});
-        $.ajax({
-            url: url,
-            cache: false,
-            async: true,
-            data: JSON.stringify(params),
-            type: method,
-            contentType: 'application/json; charset=UTF-8',
-            dataType: "json",
-            beforeSend: function(request) {
-                request.setRequestHeader("authorization", CoreUtil.getData("access_token"));
-            },
-            success: function (res) {
-                top.layer.close(loadIndex);
-                if (res.code==0){
-                    if(ft!=null&&ft!=undefined){
-                        ft(res);
-                    }
-                }else if(res.code==401001){ //凭证过期重新登录
-                    layer.msg("凭证过期请重新登录", {time:2000}, function () {
-                        top.window.location.href="/index/login"
-                    })
-                }else if(res.code==401008){ //凭证过期重新登录
-                    layer.msg("抱歉！您暂无权限", {time:2000})
-                } else {
-                    layer.msg(res.msg);
-                }
-            }
-        })
-    }
-
-    /*get*/
-    coreUtil.sendGet = function(url, params, ft, method){
         var loadIndex = top.layer.load(0, {shade: false});
         $.ajax({
             url: url,
@@ -83,22 +55,7 @@ var CoreUtil = (function () {
         })
     }
 
-    /*表单数据封装成 json String*/
-    coreUtil.formJson = function (frm) {  //frm：form表单的id
-        var o = {};
-        var a = $("#"+frm).serializeArray();
-        $.each(a, function() {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [ o[this.name] ];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return JSON.stringify(o);
-    };
+
     /*存入本地缓存*/
     coreUtil.setData = function(key, value){
         layui.data('LocalData',{
