@@ -26,7 +26,7 @@ import com.company.project.service.SysJobLogService;
  */
 @Api(tags = "定时任务日志")
 @RestController
-@RequestMapping("/")
+@RequestMapping("/sysJobLog")
 public class SysJobLogController {
     @Autowired
     private SysJobLogService sysJobLogService;

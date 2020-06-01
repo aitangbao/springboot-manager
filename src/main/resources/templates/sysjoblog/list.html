@@ -118,25 +118,6 @@
             $(".operation").hide();
             return false;
         });
-
-        //监听保存
-        form.on('submit(submit)', function (data) {
-            if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendPost("/sysJobLog/add", data.field, function (res) {
-                    $(".table_div").show();
-                    $(".operation").hide();
-                    search();
-                });
-            } else {
-                CoreUtil.sendPut("/sysJobLog/update", data.field, function (res) {
-                    $(".table_div").show();
-                    $(".operation").hide();
-                    search();
-                });
-            }
-
-            return false;
-        });
     });
 
     //执行查询
