@@ -46,10 +46,7 @@ public class DeptServiceImpl implements DeptService {
         vo.setCreateTime(new Date());
         vo.setDeptNo(deptCode);
         vo.setRelationCode(relationCode);
-        int count = sysDeptMapper.insert(vo);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysDeptMapper.insert(vo);
         return vo;
     }
 
@@ -65,14 +62,8 @@ public class DeptServiceImpl implements DeptService {
         SysDept update = new SysDept();
         BeanUtils.copyProperties(vo, update);
         update.setUpdateTime(new Date());
-        int count = sysDeptMapper.updateById(update);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
-
-        /**
-         * 说明层级发生了变化
-         */
+        sysDeptMapper.updateById(update);
+        /** 说明层级发生了变化 */
         if (!StringUtils.isEmpty(vo.getPid()) && !vo.getPid().equals(sysDept.getPid())) {
             SysDept parent = sysDeptMapper.selectById(vo.getPid());
             if (!vo.getPid().equals("0") && null == parent) {
@@ -82,13 +73,11 @@ public class DeptServiceImpl implements DeptService {
             SysDept oldParent = sysDeptMapper.selectById(sysDept.getPid());
             String oldRelationCode;
             String newRelationCode;
-            /**
-             * 根目录降到其他目录
-             */
+            /** 根目录降到其他目录 */
             if (sysDept.getPid().equals("0")) {
                 oldRelationCode = sysDept.getDeptNo();
                 newRelationCode = parent.getRelationCode() + sysDept.getDeptNo();
-            } else if (vo.getPid().equals("0")) {//其他目录升级到跟目录
+            } else if (vo.getPid().equals("0")) { // 其他目录升级到跟目录
                 oldRelationCode = sysDept.getRelationCode();
                 newRelationCode = sysDept.getDeptNo();
             } else {
@@ -108,7 +97,6 @@ public class DeptServiceImpl implements DeptService {
     public void deleted(String id) {
         SysDept sysDept = sysDeptMapper.selectById(id);
         if (null == sysDept) {
-            log.error("传入 的 id:{}不合法", id);
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -139,7 +127,7 @@ public class DeptServiceImpl implements DeptService {
             queryWrapper.notIn("id", childIds);
             list = sysDeptMapper.selectList(queryWrapper);
         }
-        //默认加一个顶级方便新增顶级部门
+        // 默认加一个顶级方便新增顶级部门
         DeptRespNodeVO respNodeVO = new DeptRespNodeVO();
         respNodeVO.setTitle("默认顶级部门");
         respNodeVO.setId("0");
@@ -192,7 +180,8 @@ public class DeptServiceImpl implements DeptService {
     }
 
     public String getNewDeptCode() {
-        Integer maxDeptCode = sysDeptMapper.getMaxDeptCode() == null ? 0 : sysDeptMapper.getMaxDeptCode();
+        Integer maxDeptCode =
+                sysDeptMapper.getMaxDeptCode() == null ? 0 : sysDeptMapper.getMaxDeptCode();
         Integer newDeptCode = maxDeptCode + 1;
         return CodeUtil.padRight(newDeptCode, 6, "0");
     }

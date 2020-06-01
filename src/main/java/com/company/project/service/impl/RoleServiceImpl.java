@@ -2,6 +2,7 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.entity.SysRole;
 import com.company.project.common.exception.BusinessException;
@@ -18,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,10 +40,7 @@ public class RoleServiceImpl implements RoleService {
     public SysRole addRole(SysRole vo) {
 
         vo.setCreateTime(new Date());
-        int count = sysRoleMapper.insert(vo);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysRoleMapper.insert(vo);
         if (null != vo.getPermissions() && !vo.getPermissions().isEmpty()) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
             reqVO.setRoleId(vo.getId());
@@ -61,20 +60,16 @@ public class RoleServiceImpl implements RoleService {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         vo.setUpdateTime(new Date());
-        int count = sysRoleMapper.updateById(vo);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysRoleMapper.updateById(vo);
         rolePermissionService.removeByRoleId(sysRole.getId());
         if (!CollectionUtils.isEmpty(vo.getPermissions())) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
             reqVO.setRoleId(sysRole.getId());
             reqVO.setPermissionIds(vo.getPermissions());
             rolePermissionService.addRolePermission(reqVO);
-            //刷新权限
+            // 刷新权限
             httpSessionService.refreshRolePermission(sysRole.getId());
         }
-
     }
 
     @Override
@@ -85,25 +80,22 @@ public class RoleServiceImpl implements RoleService {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         List<PermissionRespNode> permissionRespNodes = permissionService.selectAllByTree();
-        Set<String> checkList = new HashSet<>(rolePermissionService.getPermissionIdsByRoleId(sysRole.getId()));
-        setheckced(permissionRespNodes, checkList);
+        Set<String> checkList =
+                new HashSet<>(rolePermissionService.getPermissionIdsByRoleId(sysRole.getId()));
+        setChecked(permissionRespNodes, checkList);
         sysRole.setPermissionRespNodes(permissionRespNodes);
         return sysRole;
     }
 
-
-    private void setheckced(List<PermissionRespNode> list, Set<String> checkList) {
-
+    private void setChecked(List<PermissionRespNode> list, Set<String> checkList) {
         for (PermissionRespNode node : list) {
-
-            if (checkList.contains(node.getId()) && (node.getChildren() == null || node.getChildren().isEmpty())) {
+            if (checkList.contains(node.getId())
+                    && (node.getChildren() == null || node.getChildren().isEmpty())) {
                 node.setChecked(true);
             }
-            setheckced((List<PermissionRespNode>) node.getChildren(), checkList);
-
+            setChecked((List<PermissionRespNode>) node.getChildren(), checkList);
         }
     }
-
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -114,7 +106,7 @@ public class RoleServiceImpl implements RoleService {
         queryWrapper.select("user_id").eq("role_id", id);
         rolePermissionService.removeByRoleId(id);
         userRoleService.removeByRoleId(id);
-        //刷新权限
+        // 刷新权限
         httpSessionService.refreshRolePermission(id);
     }
 
@@ -125,10 +117,10 @@ public class RoleServiceImpl implements RoleService {
         if (!StringUtils.isEmpty(vo.getName())) {
             queryWrapper.like("name", vo.getName());
         }
-        if (!StringUtils.isEmpty(vo.getStartTime()) ) {
+        if (!StringUtils.isEmpty(vo.getStartTime())) {
             queryWrapper.gt("create_time", vo.getStartTime());
         }
-        if (!StringUtils.isEmpty(vo.getEndTime()) ) {
+        if (!StringUtils.isEmpty(vo.getEndTime())) {
             queryWrapper.lt("create_time", vo.getEndTime());
         }
         if (!StringUtils.isEmpty(vo.getStatus())) {
@@ -155,16 +147,12 @@ public class RoleServiceImpl implements RoleService {
         if (null == sysRoles || sysRoles.isEmpty()) {
             return null;
         }
-        List<String> list = new ArrayList<>();
-        for (SysRole sysRole : sysRoles) {
-            list.add(sysRole.getName());
-        }
+        List<String> list = sysRoles.stream().map(SysRole::getName).collect(Collectors.toList());
         return list;
     }
 
     @Override
     public List<SysRole> selectAllRoles() {
-        return sysRoleMapper.selectList(null);
+        return sysRoleMapper.selectList(Wrappers.emptyWrapper());
     }
-
 }

@@ -60,10 +60,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     public SysPermission addPermission(SysPermission sysPermission) {
         verifyForm(sysPermission);
         sysPermission.setCreateTime(new Date());
-        int count = sysPermissionMapper.insert(sysPermission);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysPermissionMapper.insert(sysPermission);
         return sysPermission;
     }
 
@@ -155,10 +152,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             verifyForm(update);
         }
         update.setUpdateTime(new Date());
-        int count = sysPermissionMapper.updateById(update);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysPermissionMapper.updateById(update);
         /**
          * 所有管理这个菜单权限用户将重新刷新token
          */
@@ -188,10 +182,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (!childs.isEmpty()) {
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
-        int count = sysPermissionMapper.deleteById(permissionId);
-        if (count != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysPermissionMapper.deleteById(permissionId);
         //删除和角色关联
         rolePermissionService.removeByPermissionId(permissionId);
         //刷新权限

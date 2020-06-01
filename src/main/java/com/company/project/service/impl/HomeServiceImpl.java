@@ -38,7 +38,6 @@ public class HomeServiceImpl implements HomeService {
                 vo.setDeptId(sysDept.getId());
                 vo.setDeptName(sysDept.getName());
             }
-
         }
 
         List<PermissionRespNode> menus = permissionService.permissionTreeList(userId);
