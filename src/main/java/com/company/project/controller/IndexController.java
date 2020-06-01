@@ -130,7 +130,7 @@ public class IndexController {
         return "sysjob/list";
     }
 
-    @GetMapping("/index/sysJobLog")
+    @GetMapping("/sysJobLog")
     public String sysJobLog() {
         return "sysjoblog/list";
     }
