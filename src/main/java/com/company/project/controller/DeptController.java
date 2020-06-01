@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @RequestMapping("/sys")
 @RestController
 @Api(tags = "组织模块-机构管理")

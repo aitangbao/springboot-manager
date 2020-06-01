@@ -2,16 +2,15 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,16 +27,16 @@ import com.company.project.service.SysDictDetailService;
  * @email *****@mail.com
  * @date 2020-04-30 15:13:16
  */
-@Controller
-@RequestMapping("/")
+@Api(tags = "字典明细管理")
+@RestController
+@RequestMapping("/sysDictDetail")
 public class SysDictDetailController {
     @Autowired
     private SysDictDetailService sysDictDetailService;
 
     @ApiOperation(value = "新增")
-    @PostMapping("sysDictDetail/add")
+    @PostMapping("/add")
     @RequiresPermissions("sysDict:add")
-    @ResponseBody
     public DataResult add(@RequestBody SysDictDetailEntity sysDictDetail) {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
@@ -55,18 +54,16 @@ public class SysDictDetailController {
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("sysDictDetail/delete")
+    @DeleteMapping("/delete")
     @RequiresPermissions("sysDict:delete")
-    @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysDictDetailService.removeByIds(ids);
         return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
-    @PutMapping("sysDictDetail/update")
+    @PutMapping("/update")
     @RequiresPermissions("sysDict:update")
-    @ResponseBody
     public DataResult update(@RequestBody SysDictDetailEntity sysDictDetail) {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
@@ -85,9 +82,8 @@ public class SysDictDetailController {
 
 
     @ApiOperation(value = "查询列表数据")
-    @PostMapping("sysDictDetail/listByPage")
+    @PostMapping("/listByPage")
     @RequiresPermissions("sysDict:list")
-    @ResponseBody
     public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail) {
         Page page = new Page(sysDictDetail.getPage(), sysDictDetail.getLimit());
         if (sysDictDetail == null ||StringUtils.isEmpty(sysDictDetail.getDictId())) {

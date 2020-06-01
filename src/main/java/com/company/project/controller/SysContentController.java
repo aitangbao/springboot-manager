@@ -1,12 +1,12 @@
 package com.company.project.controller;
 
 import com.company.project.common.exception.BusinessException;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -31,24 +31,18 @@ import sun.misc.BASE64Encoder;
  * @email *****@mail.com
  * @date 2020-05-26 17:00:59
  */
-@Controller
-@RequestMapping("/")
+@Api(tags = "文章管理")
+@RestController
+@RequestMapping("/sysContent")
 public class SysContentController {
     @Autowired
     private SysContentService sysContentService;
 
-    /**
-     * 跳转到页面
-     */
-    @GetMapping("/index/sysContent")
-    public String sysContent() {
-        return "syscontent/list";
-    }
+
 
     @ApiOperation(value = "新增")
-    @PostMapping("sysContent/add")
+    @PostMapping("/add")
     @RequiresPermissions("sysContent:add")
-    @ResponseBody
     public DataResult add(@RequestBody SysContentEntity sysContent) {
         sysContent.setCreateTime(new Date());
         sysContentService.save(sysContent);
@@ -56,27 +50,24 @@ public class SysContentController {
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("sysContent/delete")
+    @DeleteMapping("/delete")
     @RequiresPermissions("sysContent:delete")
-    @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysContentService.removeByIds(ids);
         return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
-    @PutMapping("sysContent/update")
+    @PutMapping("/update")
     @RequiresPermissions("sysContent:update")
-    @ResponseBody
     public DataResult update(@RequestBody SysContentEntity sysContent) {
         sysContentService.updateById(sysContent);
         return DataResult.success();
     }
 
     @ApiOperation(value = "查询分页数据")
-    @PostMapping("sysContent/listByPage")
+    @PostMapping("/listByPage")
     @RequiresPermissions("sysContent:list")
-    @ResponseBody
     public DataResult findListByPage(@RequestBody SysContentEntity sysContent) {
         Page page = new Page(sysContent.getPage(), sysContent.getLimit());
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -89,10 +80,9 @@ public class SysContentController {
     }
 
 
-    //富文本中图片上传
-    @ResponseBody
+    @ApiOperation(value = "富文本中图片上传")
     @RequiresPermissions(value = {"sysContent:update", "sysContent:add"}, logical = Logical.OR)
-    @RequestMapping(value = "picture/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/picture/upload", method = RequestMethod.POST)
     public DataResult upload(MultipartFile file) {
         String data = null;
         try {

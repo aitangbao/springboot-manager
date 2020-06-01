@@ -1,17 +1,15 @@
 package com.company.project.controller;
 
 import com.company.project.common.aop.annotation.LogAnnotation;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import java.util.List;
 import com.company.project.common.utils.DataResult;
 
 import com.company.project.entity.SysJobLogEntity;
@@ -26,26 +24,16 @@ import com.company.project.service.SysJobLogService;
  * @email *****@mail.com
  * @date 2020-04-22 14:23:35
  */
-@Controller
+@Api(tags = "定时任务日志")
+@RestController
 @RequestMapping("/")
 public class SysJobLogController {
     @Autowired
     private SysJobLogService sysJobLogService;
 
-
-    /**
-    * 跳转到页面
-    */
-    @GetMapping("/index/sysJobLog")
-    public String sysJobLog() {
-        return "sysjoblog/list";
-        }
-
-
     @ApiOperation(value = "查询分页数据")
-    @PostMapping("sysJobLog/listByPage")
+    @PostMapping("/listByPage")
     @RequiresPermissions("sysJob:list")
-    @ResponseBody
     public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog){
         Page page = new Page(sysJobLog.getPage(), sysJobLog.getLimit());
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -58,16 +46,14 @@ public class SysJobLogController {
         return DataResult.success(iPage);
     }
 
-    @ApiOperation(value = "清空")
-    @DeleteMapping("sysJobLog/delete")
+    @ApiOperation(value = "清空定时任务日志")
+    @DeleteMapping("/delete")
     @RequiresPermissions("sysJob:delete")
     @LogAnnotation(title = "清空")
-    @ResponseBody
     public DataResult delete() {
         QueryWrapper queryWrapper = new QueryWrapper();
         sysJobLogService.remove(queryWrapper);
         return DataResult.success();
     }
-
 
 }

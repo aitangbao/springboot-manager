@@ -3,13 +3,13 @@ package com.company.project.controller;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.job.utils.ScheduleJob;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -35,26 +35,17 @@ import com.company.project.service.SysJobService;
  * @email *****@mail.com
  * @date 2020-04-22 14:23:36
  */
-@Controller
-@RequestMapping("/")
+@Api(tags = "定时任务")
+@RestController
+@RequestMapping("/sysJob")
 public class SysJobController {
     @Autowired
     private SysJobService sysJobService;
 
-
-    /**
-     * 跳转到页面
-     */
-    @GetMapping("/index/sysJob")
-    public String sysJob() {
-        return "sysjob/list";
-    }
-
     @ApiOperation(value = "新增")
     @LogAnnotation(title = "新增")
-    @PostMapping("sysJob/add")
+    @PostMapping("/add")
     @RequiresPermissions("sysJob:add")
-    @ResponseBody
     public DataResult add(@RequestBody SysJobEntity sysJob) {
         if (!isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
@@ -69,20 +60,18 @@ public class SysJobController {
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("sysJob/delete")
+    @DeleteMapping("/delete")
     @RequiresPermissions("sysJob:delete")
     @LogAnnotation(title = "删除")
-    @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysJobService.delete(ids);
         return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
-    @PutMapping("sysJob/update")
+    @PutMapping("/update")
     @RequiresPermissions("sysJob:update")
     @LogAnnotation(title = "更新")
-    @ResponseBody
     public DataResult update(@RequestBody SysJobEntity sysJob) {
         if (!isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
@@ -97,9 +86,8 @@ public class SysJobController {
     }
 
     @ApiOperation(value = "查询分页数据")
-    @PostMapping("sysJob/listByPage")
+    @PostMapping("/listByPage")
     @RequiresPermissions("sysJob:list")
-    @ResponseBody
     public DataResult findListByPage(@RequestBody SysJobEntity sysJob) {
         Page page = new Page(sysJob.getPage(), sysJob.getLimit());
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -115,10 +103,10 @@ public class SysJobController {
     /**
      * 立即执行任务
      */
+    @ApiOperation(value = "立即执行任务")
     @LogAnnotation(title = "立即执行任务")
-    @PostMapping("/sysJob/run")
+    @PostMapping("/run")
     @RequiresPermissions("sysJob:run")
-    @ResponseBody
     public DataResult run(@RequestBody List<String> ids) {
         sysJobService.run(ids);
 
@@ -128,10 +116,10 @@ public class SysJobController {
     /**
      * 暂停定时任务
      */
+    @ApiOperation(value = "暂停定时任务")
     @LogAnnotation(title = "暂停定时任务")
-    @PostMapping("/sysJob/pause")
+    @PostMapping("/pause")
     @RequiresPermissions("sysJob:pause")
-    @ResponseBody
     public DataResult pause(@RequestBody List<String> ids) {
         sysJobService.pause(ids);
 
@@ -141,10 +129,10 @@ public class SysJobController {
     /**
      * 恢复定时任务
      */
+    @ApiOperation(value = "恢复定时任务")
     @LogAnnotation(title = "恢复定时任务")
-    @PostMapping("/sysJob/resume")
+    @PostMapping("/resume")
     @RequiresPermissions("sysJob:resume")
-    @ResponseBody
     public DataResult resume(@RequestBody List<String> ids) {
         sysJobService.resume(ids);
 
@@ -165,9 +153,8 @@ public class SysJobController {
 
     @ApiOperation(value = "获取运行时间")
     @LogAnnotation(title = "获取运行时间")
-    @GetMapping("sysJob/getRecentTriggerTime")
+    @GetMapping("/getRecentTriggerTime")
     @RequiresPermissions("sysJob:add")
-    @ResponseBody
     public DataResult getRecentTriggerTime(String cron) {
         List<String> list = new ArrayList<String>();
         try {
