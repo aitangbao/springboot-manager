@@ -163,7 +163,7 @@
       };
       CoreUtil.sendPost("/${classname}/listByPage", exportParams, function (res) {
         //初始化渲染数据
-        if (res.data.records != null) {
+        if (res.data != null && res.data.records != null) {
           table.exportFile(tableIns1.config.id, res.data.records, 'xls');
         }
       });

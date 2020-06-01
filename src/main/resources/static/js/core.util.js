@@ -1,5 +1,4 @@
-/*CoreUtil*/
-/*工具类，类似java静态工具类*/
+/*工具类*/
 var CoreUtil = (function () {
     var coreUtil = {};
 
@@ -51,6 +50,14 @@ var CoreUtil = (function () {
                 } else {
                     layer.msg(res.msg);
                 }
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                top.layer.close(loadIndex);
+                if(XMLHttpRequest.status==404){
+                    top.window.location.href="/index/404";
+                }else{
+                    layer.msg("服务器好像除了点问题！请稍后试试");
+                }
             }
         })
     }
@@ -67,24 +74,6 @@ var CoreUtil = (function () {
     coreUtil.getData = function(key){
         var localData = layui.data('LocalData');
         return localData[key];
-    };
-
-
-    coreUtil.formattime=function (val) {
-        var date=new Date(val);
-        var year=date.getFullYear();
-        var month=date.getMonth()+1;
-        month=month>9?month:('0'+month);
-        var day=date.getDate();
-        day=day>9?day:('0'+day);
-        var hh=date.getHours();
-        hh=hh>9?hh:('0'+hh);
-        var mm=date.getMinutes();
-        mm=mm>9?mm:('0'+mm);
-        var ss=date.getSeconds();
-        ss=ss>9?ss:('0'+ss);
-        var time=year+'-'+month+'-'+day+' '+hh+':'+mm+':'+ss;
-        return time;
     };
 
     //判断字符是否为空的方法
