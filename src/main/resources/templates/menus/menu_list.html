@@ -262,7 +262,11 @@
                         ,"perms": data.perms
                         ,"orderNum": data.orderNum
                     });
-                    iconPicker.checkIcon('iconPicker', data.icon);
+                    if (!CoreUtil.isEmpty(data.icon)) {
+                        iconPicker.checkIcon('iconPicker', data.icon);
+                    } else {
+                        iconPicker.checkIcon('iconPicker', "");
+                    }
                     if ($("#reset_icon").length === 0){
                         $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
                     }
