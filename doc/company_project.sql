@@ -430,3 +430,28 @@ INSERT INTO `sys_content` VALUES ('1265451035091066882', 'java开源后台管理
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 2020.5.27添加文章管理 end
+
+
+
+-- 2020.6.15添加文件管理 begin
+INSERT INTO `sys_permission`VALUES ('88fd1359aa3911ea883eb4a9fc2c4442', '文件管理', '', '', '/index/sysFiles', '_self', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', 10, 2, 1, NULL, '2020-06-15 16:00:29', 1);
+INSERT INTO `sys_permission`VALUES ('88fd59f1aa3911ea883eb4a9fc2c4442', '列表', 'sysFiles:list', NULL, 'sysFiles/listByPage', NULL, '88fd1359aa3911ea883eb4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission`VALUES ('88fd953aaa3911ea883eb4a9fc2c4442', '新增', 'sysFiles:add', NULL, 'sysFiles/add', NULL, '88fd1359aa3911ea883eb4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission`VALUES ('88fded61aa3911ea883eb4a9fc2c4442', '删除', 'sysFiles:delete', NULL, 'sysFiles/delete', NULL, '88fd1359aa3911ea883eb4a9fc2c4442', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_role_permission` VALUES ('91da6c687aaedcf00b4e9891f6529d78', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '88fd1359aa3911ea883eb4a9fc2c4442', '2020-06-15 15:21:17');
+INSERT INTO `sys_role_permission` VALUES ('91da6c687aaedcf00b4e9891f1239d78', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '88fd59f1aa3911ea883eb4a9fc2c4442', '2020-06-15 15:21:17');
+INSERT INTO `sys_role_permission` VALUES ('91da6c687aaedcf00b4e9891f1349d78', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '88fd953aaa3911ea883eb4a9fc2c4442', '2020-06-15 15:21:17');
+INSERT INTO `sys_role_permission` VALUES ('91da6c687aaedcf00b4e9891f1769d78', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '88fded61aa3911ea883eb4a9fc2c4442', '2020-06-15 15:21:17');
+
+DROP TABLE IF EXISTS `sys_files`;
+CREATE TABLE `sys_files`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
+  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件上传' ROW_FORMAT = Compact;
+
+SET FOREIGN_KEY_CHECKS = 1;
+-- 2020.6.15添加文件管理 end

@@ -1,9 +1,12 @@
 package com.company.project.common.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.company.project.common.config.FileUploadProperties;
+import lombok.AllArgsConstructor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
@@ -13,7 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
+@AllArgsConstructor
+@EnableConfigurationProperties(FileUploadProperties.class)
 public class ShiroConfig {
+
+    private final FileUploadProperties fileUploadProperties;
 
     @Bean(name = "shiroDialect")
     public ShiroDialect shiroDialect(){
@@ -76,8 +83,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/captcha.jpg", "anon");
-
         filterChainDefinitionMap.put("/csrf", "anon");
+        //文件上传可直接访问
+        filterChainDefinitionMap.put(fileUploadProperties.getAccessUrl(), "anon");
         filterChainDefinitionMap.put("/sCron/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");

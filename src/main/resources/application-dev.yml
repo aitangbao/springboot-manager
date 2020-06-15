@@ -43,3 +43,10 @@ spring:
         max-idle: 8 # 连接池中的最大空闲连接
         min-idle: 0 # 连接池中的最小空闲连接
     timeout: 3000ms # 连接超时时间（毫秒
+
+file:
+  #文件上传目录 绝对路径 末尾请加 /
+  path: F:/files/ #windows
+  #path: /data/files/ #linux
+  #文件预览、下载的url, 末尾请勿加 /
+  url: http://localhost:8080/files

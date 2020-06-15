@@ -134,4 +134,9 @@ public class IndexController {
     public String sysJobLog() {
         return "sysjoblog/list";
     }
+
+    @GetMapping("/sysFiles")
+    public String sysFiles() {
+        return "sysfiles/list";
+    }
 }
