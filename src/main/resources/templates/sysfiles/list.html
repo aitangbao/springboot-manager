@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="table_div">
+  <input id="copy_in" style="display: none" />
   <div id="searchParam"  shiro:hasPermission="sysFiles:add">
     <div class="layui-form-item">
       <div class="layui-input-inline ">
@@ -27,6 +28,8 @@
   </div>
 </script>
 <script type="text/html" id="tool">
+  <a class="layui-btn layui-btn-xs" lay-event="pre" shiro:hasPermission="sysFiles:list">预览</a>
+  <a class="layui-btn layui-btn-xs" lay-event="copy" shiro:hasPermission="sysFiles:list">一键复制</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysFiles:delete">删除</a>
 </script>
 
@@ -67,12 +70,9 @@
       , cols: [
         [
           {type: 'checkbox', fixed: 'left'},
-          {field: 'fileName', title: '文件名', sort: true, width:250},
-          {field: 'url', title: 'URL地址', sort: true, templet:function (item) {
-              return '<a target="_blank" href="'+item.url+'">'+item.url+'</a>';
-            }},
-          {field: 'createDate', title: '创建时间', sort: true, width:180},
-          {width: 120, toolbar: "#tool", title: '操作'}
+          {field: 'fileName', title: '文件名', sort: true},
+          {field: 'createDate', title: '创建时间', sort: true},
+          {width: 120, toolbar: "#tool", title: '操作', width:200}
         ]
       ]
       , toolbar: '#toolbar'
@@ -118,6 +118,21 @@
           var ids=[];
           ids.push(data.id);
           tipDialog(ids);
+          break;
+        case 'pre':
+          //预览
+          window.open(data.url,'_blank');
+          break;
+        case 'copy':
+          var Url2=data.url;
+          var oInput = document.createElement('input');
+          oInput.value = Url2;
+          document.body.appendChild(oInput);
+          oInput.select(); // 选择对象
+          document.execCommand("Copy"); // 执行浏览器复制命令
+          oInput.className = 'oInput';
+          oInput.style.display='none';
+          layer.msg('已复制成功！');
           break;
       }
     });

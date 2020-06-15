@@ -66,7 +66,25 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 3. 提交代码
 4. 提交 Pull Request
 
-
+## 菜单
+- 组织管理
+	- 菜单权限管理
+	- 角色管理
+	- 用户管理
+	- 部门管理
+- 系统管理
+	- 代码生成
+	- 文件管理
+	- 文章管理
+	- 字典管理
+	- 定时任务
+	- 日志管理
+- 其他
+	- 系统信息
+	- 表单构建
+	- SQL监控
+	- 接口管理
+	
 ## **效果图**
 
 ![image-20200507134713461](https://images.gitee.com/uploads/images/2020/0521/110629_263d4436_997722.png)
