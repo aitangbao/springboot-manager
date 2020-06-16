@@ -1,7 +1,7 @@
 1. 使用IDE导入本项目，IDE需要安装lombok插件
 2. 下载redis 启动redis
-3. 创建company_project数据库
-4. 导入company_project.sql
+3. 创建数据库, 导入.sql
+4. 配置application.yml中的redis以及数据库连接
 5. 运行项目
    1、直接运行CompanyProjectApplication.java
    2、项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
