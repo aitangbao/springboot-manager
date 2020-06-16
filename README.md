@@ -1,7 +1,8 @@
 # springboot-manager
 
 ## 介绍
-基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统  
+基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统    
+数据库支持支持MySQL、Oracle等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
 开发最精简，可当脚手架，适合你来diy  
@@ -16,7 +17,7 @@
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
 - 集成国人风格的knife4j，自动生成接口文档
-- 提供代码生成器，生成从Html到Mapper，爽歪歪  
+- 提供代码生成器(MySQL、Oracle等主流数据库)，生成从Html到Mapper，爽歪歪  
 
 ## 代码仓库
 Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
@@ -119,4 +120,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
-<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200608172358.jpg" alt="" style="zoom:25%;" />
+<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200616151928.jpg" alt="" style="zoom:25%;" />
