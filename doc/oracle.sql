@@ -14,6 +14,7 @@ CREATE TABLE sys_dept (
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_dept" IS '部门';
 
 -- 代码生成
 CREATE TABLE sys_generator (
@@ -24,6 +25,7 @@ CREATE TABLE sys_generator (
   gen_time timestamp,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_generator" IS '代码生成';
 
 -- 日志
 CREATE TABLE sys_log (
@@ -38,7 +40,7 @@ CREATE TABLE sys_log (
   create_time timestamp,
   PRIMARY KEY (id)
 );
-
+COMMENT ON TABLE "sys_log" IS '日志';
 
 -- 菜单权限
 CREATE TABLE sys_permission  (
@@ -57,7 +59,7 @@ CREATE TABLE sys_permission  (
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
-
+COMMENT ON TABLE "sys_permission" IS '菜单权限';
 
 -- 角色
 CREATE TABLE sys_role (
@@ -70,7 +72,7 @@ CREATE TABLE sys_role (
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
-
+COMMENT ON TABLE "sys_role" IS '角色';
 
 -- 角色权限关联表
 CREATE TABLE sys_role_permission (
@@ -80,6 +82,7 @@ CREATE TABLE sys_role_permission (
   create_time timestamp,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_role_permission" IS '角色权限关联表';
 
 
 -- 用户
@@ -103,7 +106,7 @@ CREATE TABLE sys_user (
   update_time timestamp,
   PRIMARY KEY (id)
 );
-
+COMMENT ON TABLE "sys_user" IS '用户';
 
 -- 用户角色
 CREATE TABLE sys_user_role (
@@ -113,6 +116,8 @@ CREATE TABLE sys_user_role (
   create_time timestamp,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_user_role" IS '用户角色';
+
 
 -- 数据字典
 CREATE TABLE sys_dict  (
@@ -122,6 +127,7 @@ CREATE TABLE sys_dict  (
   create_time timestamp,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_dict" IS '数据字典';
 
 -- 数据字典明细
 CREATE TABLE sys_dict_detail  (
@@ -133,6 +139,7 @@ CREATE TABLE sys_dict_detail  (
   create_time timestamp,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_dict_detail" IS '数据字典明细';
 
 -- 定时任务
 CREATE TABLE sys_job  (
@@ -145,6 +152,7 @@ CREATE TABLE sys_job  (
   create_time timestamp ,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_job" IS '定时任务';
 
 -- 定时任务日志
 CREATE TABLE sys_job_log  (
@@ -158,7 +166,7 @@ CREATE TABLE sys_job_log  (
   create_time timestamp ,
   PRIMARY KEY (id)
  );
-
+COMMENT ON TABLE "sys_job_log" IS '定时任务日志';
 
 -- 文章管理
  CREATE TABLE sys_content  (
@@ -168,6 +176,7 @@ CREATE TABLE sys_job_log  (
   create_time timestamp ,
   PRIMARY KEY (id)
 );
+COMMENT ON TABLE "sys_content" IS '文章管理';
 
 -- 文件管理
 CREATE TABLE sys_files  (
@@ -178,7 +187,7 @@ CREATE TABLE sys_files  (
   file_path varchar2(255) ,
   PRIMARY KEY (id)
 );
-
+COMMENT ON TABLE "sys_files" IS '文件管理';
 
 
 -- 初始数据

@@ -37,17 +37,19 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ## 使用说明
 - 使用IDE导入本项目，IDE需要安装lombok插件
 - 下载redis 启动redis
-- 创建company_project数据库，导入doc下的company_project.sql
+- 创建数据库, 导入***.sql
+- 配置application-dev.yml中的redis以及数据库连接
 - 运行项目
    	1. 直接运行CompanyProjectApplication.java
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
 - 代码生成使用：
-	1. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地
-	2. 解压下载的代码，直接复制main文件夹到本地项目的src目录下
-	3. 数据库执行sql，生成菜单
-	4. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
+    1. application-dev.yml中配置要生成的表，存在于哪种类型的数据库。project.database=mysql
+	2. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地
+	3. 解压下载的代码，直接复制main文件夹到本地项目的src目录下
+	4. 数据库执行sql，生成菜单
+	5. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
 	
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
