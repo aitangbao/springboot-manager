@@ -16,5 +16,4 @@ import java.util.Map;
 @Mapper
 public interface SysJobMapper extends BaseMapper<SysJobEntity> {
 
-    int updateBatch(Map<String, Object> map);
 }

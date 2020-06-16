@@ -26,6 +26,6 @@ public interface SysJobService extends IService<SysJobEntity> {
 
     void resume(List<String> ids);
 
-    int updateBatch(List<String> ids, int status);
+    void updateBatch(List<String> ids, int status);
 }
 

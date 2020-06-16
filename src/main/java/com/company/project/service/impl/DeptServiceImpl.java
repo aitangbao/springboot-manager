@@ -1,5 +1,6 @@
 package com.company.project.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
@@ -7,7 +8,6 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.service.DeptService;
-import com.company.project.service.RedisService;
 import com.company.project.service.UserService;
 import com.company.project.common.utils.CodeUtil;
 import com.company.project.vo.resp.DeptRespNodeVO;
@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Slf4j
@@ -84,7 +85,14 @@ public class DeptServiceImpl implements DeptService {
                 oldRelationCode = oldParent.getRelationCode();
                 newRelationCode = parent.getRelationCode();
             }
-            sysDeptMapper.updateRelationCode(oldRelationCode, newRelationCode, sysDept.getRelationCode());
+            LambdaQueryWrapper<SysDept> wrapper = new LambdaQueryWrapper<>();
+            wrapper.likeLeft(SysDept::getDeptNo, sysDept.getDeptNo());
+            List<SysDept> list = sysDeptMapper.selectList(wrapper);
+            list.parallelStream().forEach(entity -> {
+                String relationCode = entity.getRelationCode().replace(oldRelationCode, newRelationCode);
+                entity.setRelationCode(relationCode);
+                sysDeptMapper.updateById(entity);
+            });
         }
     }
 
@@ -179,10 +187,25 @@ public class DeptServiceImpl implements DeptService {
         return list;
     }
 
+    //获取新的部门编码
     public String getNewDeptCode() {
-        Integer maxDeptCode =
-                sysDeptMapper.getMaxDeptCode() == null ? 0 : sysDeptMapper.getMaxDeptCode();
-        Integer newDeptCode = maxDeptCode + 1;
-        return CodeUtil.padRight(newDeptCode, 6, "0");
+        LambdaQueryWrapper<SysDept> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(SysDept::getDeptNo);
+        //获取所有的deptCode
+        List<Object> deptCodes = sysDeptMapper.selectObjs(lambdaQueryWrapper);
+        AtomicReference<Integer> maxDeptCode = new AtomicReference<>(0);
+
+        //遍历获取最大的DeptCode
+        deptCodes.stream().forEach(o -> {
+            String str = String.valueOf(o);
+            if (str.length() >= 7) {
+                Integer one = Integer.parseInt(str.substring(str.length()-5));
+                if (one > maxDeptCode.get()) {
+                    maxDeptCode.set(one);
+                }
+            }
+        });
+
+        return CodeUtil.padRight(maxDeptCode.get() + 1, 6, "0");
     }
 }

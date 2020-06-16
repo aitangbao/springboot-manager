@@ -86,8 +86,8 @@ public class SysDictDetailController {
     @RequiresPermissions("sysDict:list")
     public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail) {
         Page page = new Page(sysDictDetail.getPage(), sysDictDetail.getLimit());
-        if (sysDictDetail == null ||StringUtils.isEmpty(sysDictDetail.getDictId())) {
-            DataResult.success();
+        if (sysDictDetail == null || StringUtils.isEmpty(sysDictDetail.getDictId())) {
+            return DataResult.success();
         }
         IPage<SysDictDetailEntity> iPage = sysDictDetailService.listByPage(page, sysDictDetail.getDictId());
         return DataResult.success(iPage);
