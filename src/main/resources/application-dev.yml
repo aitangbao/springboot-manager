@@ -50,3 +50,7 @@ file:
   #path: /data/files/ #linux
   #文件预览、下载的url, 末尾请勿加 /
   url: http://localhost:8080/files
+
+#代码生成模块 指定数据库，可选值有【mysql、oracle】
+project:
+  database: mysql

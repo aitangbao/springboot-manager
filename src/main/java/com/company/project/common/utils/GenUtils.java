@@ -1,16 +1,13 @@
 package com.company.project.common.utils;
 
 import com.company.project.common.exception.BusinessException;
-import com.company.project.common.utils.DateUtils;
 import com.company.project.entity.ColumnEntity;
 import com.company.project.entity.TableEntity;
-import io.netty.util.internal.StringUtil;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -35,7 +32,8 @@ public class GenUtils {
         templates.add("template/Service.java.vm");
         templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
-        templates.add("template/menu.sql.vm");
+        templates.add("template/menu.mysql.sql.vm");
+        templates.add("template/menu.oracle.sql.vm");
         templates.add("template/list.html.vm");
 
         return templates;
@@ -211,8 +209,12 @@ public class GenUtils {
             return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
         }
 
-        if (template.contains("menu.sql.vm")) {
-            return className.toLowerCase() + "_menu.sql";
+        if (template.contains("menu.mysql.sql.vm")) {
+            return className.toLowerCase() + "_menu.mysql.sql";
+        }
+
+        if (template.contains("menu.oracle.sql.vm")) {
+            return className.toLowerCase() + "_menu.oracle.sql";
         }
 
         if (template.contains("list.html.vm")) {

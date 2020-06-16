@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.utils.GenUtils;
 import com.company.project.entity.SysGenerator;
-import com.company.project.mapper.SysGeneratorMapper;
+import com.company.project.mapper.GeneratorMapper;
 import com.company.project.service.ISysGeneratorService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,14 @@ import java.util.zip.ZipOutputStream;
  */
 @Service
 @Slf4j
-public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, SysGenerator> implements ISysGeneratorService {
+public class SysGeneratorServiceImpl  implements ISysGeneratorService{
 
     @Autowired
-    private SysGeneratorMapper sysGeneratorMapper;
+    private GeneratorMapper generatorMapper;
 
     @Override
     public IPage<SysGenerator> selectAllTables(Page page, SysGenerator vo) {
-        return sysGeneratorMapper.selectAllTables(page, vo);
+        return generatorMapper.selectAllTables(page, vo);
     }
 
     @Override
@@ -51,18 +50,18 @@ public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, Sys
             SysGenerator sysGenerator = new SysGenerator();
             sysGenerator.setGenTime(new Date());
             sysGenerator.setTableName(tableName);
-            sysGeneratorMapper.insert(sysGenerator);
+            generatorMapper.insert(sysGenerator);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
 
     public Map<String, String> queryTable(String tableName) {
-        return sysGeneratorMapper.queryTable(tableName);
+        return generatorMapper.queryTable(tableName);
     }
 
     public List<Map<String, String>> queryColumns(String tableName) {
-        return sysGeneratorMapper.queryColumns(tableName);
+        return generatorMapper.queryColumns(tableName);
     }
 
 
