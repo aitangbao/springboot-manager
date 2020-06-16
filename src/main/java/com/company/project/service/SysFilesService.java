@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface SysFilesService extends IService<SysFilesEntity> {
 
-    void saveFile(MultipartFile file);
+    DataResult saveFile(MultipartFile file);
 
     void removeByIdsAndFiles(List<String> ids);
 }

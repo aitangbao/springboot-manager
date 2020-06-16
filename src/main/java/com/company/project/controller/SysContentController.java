@@ -78,30 +78,4 @@ public class SysContentController {
         IPage<SysContentEntity> iPage = sysContentService.page(page, queryWrapper);
         return DataResult.success(iPage);
     }
-
-
-    @ApiOperation(value = "富文本中图片上传")
-    @RequiresPermissions(value = {"sysContent:update", "sysContent:add"}, logical = Logical.OR)
-    @RequestMapping(value = "/picture/upload", method = RequestMethod.POST)
-    public DataResult upload(MultipartFile file) {
-        String data = null;
-        try {
-            //判断是否有文件且是否为图片文件
-            BASE64Encoder encoder = new BASE64Encoder();
-            // 通过base64来转化图片
-            data = encoder.encode(file.getBytes());
-        } catch (Exception e) {
-            throw new BusinessException("图片上传失败");
-        }
-        if (!StringUtils.isEmpty(data)) {
-            data = "data:image/jpeg;base64," + data;
-            Map<String, String> resultMap = new HashMap<>();
-            resultMap.put("src", data);
-            return DataResult.success(resultMap);
-        } else {
-            return DataResult.fail("上传图片失败");
-        }
-
-    }
-
 }

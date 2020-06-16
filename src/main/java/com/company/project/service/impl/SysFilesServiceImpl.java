@@ -3,6 +3,7 @@ package com.company.project.service.impl;
 import cn.hutool.core.io.FileUtil;
 import com.company.project.common.config.FileUploadProperties;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FileUtils;
@@ -16,9 +17,7 @@ import com.company.project.service.SysFilesService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 @EnableConfigurationProperties(FileUploadProperties.class)
@@ -28,7 +27,7 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
     private final FileUploadProperties fileUploadProperties;
 
     @Override
-    public void saveFile(MultipartFile file) {
+    public DataResult saveFile(MultipartFile file) {
         //存储文件夹
         String createTime = DateUtils.format(new Date(), DateUtils.DATEPATTERN);
         String newPath = fileUploadProperties.getPath() + createTime + File.separator;
@@ -57,6 +56,9 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
             sysFilesEntity.setFilePath(newFilePathName);
             sysFilesEntity.setUrl(url);
             this.save(sysFilesEntity);
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("src", url);
+            return DataResult.success(resultMap);
         } catch (Exception e) {
             throw new BusinessException("上传文件失败");
         }

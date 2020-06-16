@@ -1,6 +1,7 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,13 @@ public class SysFilesController {
 
     @ApiOperation(value = "新增")
     @PostMapping("/upload")
-    @RequiresPermissions("sysFiles:add")
+    @RequiresPermissions(value = {"sysFiles:add", "sysContent:update", "sysContent:add"}, logical = Logical.OR)
     public DataResult add(@RequestParam(value = "file") MultipartFile file) {
         //判断文件是否空
         if (file == null || file.getOriginalFilename() == null || "".equalsIgnoreCase(file.getOriginalFilename().trim())) {
             return DataResult.fail("文件为空");
         }
-        sysFilesService.saveFile(file);
-        return DataResult.success();
+        return sysFilesService.saveFile(file);
     }
 
     @ApiOperation(value = "删除")

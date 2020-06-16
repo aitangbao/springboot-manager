@@ -11,11 +11,11 @@ spring:
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://localhost:3306/company_project?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
-        slave_1:
+        oracle:
           username: root
           password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://xx.xx.xx.xx:3307/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
+          driver-class-name: oracle.jdbc.driver.OracleDriver
+          url: jdbc:oracle:thin:@localhost:1521/company_project
         slave_2:
           username: root
           password: 123456
