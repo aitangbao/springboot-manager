@@ -16,11 +16,11 @@ spring:
           password: 123456
           driver-class-name: oracle.jdbc.driver.OracleDriver
           url: jdbc:oracle:thin:@localhost:1521/company_project
-        slave_2:
-          username: root
+        sqlServer:
+          username: sa
           password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://xx.xx.xx.xx:3308/dynamic?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://localhost:1433;databaseName=company_project
   redis:
     key:
       prefix:
@@ -51,6 +51,6 @@ file:
   #文件预览、下载的url, 末尾请勿加 /
   url: http://localhost:8080/files
 
-#代码生成模块 指定数据库，可选值有【mysql、oracle】
+#代码生成模块 指定数据库，可选值有【mysql、oracle、sqlServer】
 project:
   database: mysql

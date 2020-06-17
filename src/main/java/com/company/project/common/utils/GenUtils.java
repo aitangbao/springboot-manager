@@ -34,6 +34,7 @@ public class GenUtils {
         templates.add("template/Controller.java.vm");
         templates.add("template/menu.mysql.sql.vm");
         templates.add("template/menu.oracle.sql.vm");
+        templates.add("template/menu.sqlServer.sql.vm");
         templates.add("template/list.html.vm");
 
         return templates;
@@ -113,6 +114,7 @@ public class GenUtils {
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
+        map.put("identity",UUID.randomUUID().toString().replace("-",""));
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -215,6 +217,10 @@ public class GenUtils {
 
         if (template.contains("menu.oracle.sql.vm")) {
             return className.toLowerCase() + "_menu.oracle.sql";
+        }
+
+        if (template.contains("menu.sqlServer.sql.vm")) {
+            return className.toLowerCase() + "_menu.sqlServer.sql";
         }
 
         if (template.contains("list.html.vm")) {

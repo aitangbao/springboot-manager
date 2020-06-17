@@ -1,0 +1,12 @@
+-- 默认上级目录菜单为其他
+INSERT INTO sys_permission (id, name, pid, url,target, type,order_num)
+    VALUES ('${identity}', '${classname}' ,'65bdb02f47b94e71c2a2b9e459bde909', '/index/${classname}','_self', '2', '10');
+-- 菜单对应按钮SQL
+INSERT INTO sys_permission (id,pid, name, url, perms, type)
+    VALUES (newId(), '${identity}', '列表' , '${classname}/listByPage','${classname}:list', '3');
+INSERT INTO sys_permission (id,pid, name, url, perms,  type)
+    VALUES (newId(), '${identity}', '新增' , '${classname}/add','${classname}:add', '3');
+INSERT INTO sys_permission (id,pid, name, url, perms,  type)
+    VALUES (newId(), '${identity}', '修改' , '${classname}/update','${classname}:update', '3');
+INSERT INTO sys_permission (id,pid, name, url, perms,  type)
+    VALUES (newId(), '${identity}', '删除' , '${classname}/delete','${classname}:delete', '3');

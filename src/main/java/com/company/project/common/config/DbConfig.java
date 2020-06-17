@@ -4,6 +4,7 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.mapper.GeneratorMapper;
 import com.company.project.mapper.SysGeneratorMysqlMapper;
 import com.company.project.mapper.SysGeneratorOracleMapper;
+import com.company.project.mapper.SysGeneratorSqlServerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ public class DbConfig {
     private SysGeneratorMysqlMapper sysGeneratorMysqlMapper;
     @Autowired
     private SysGeneratorOracleMapper sysGeneratorOracleMapper;
+    @Autowired
+    private SysGeneratorSqlServerMapper sysGeneratorSqlServerMapper;
 
     @Bean
     @Primary
@@ -29,6 +32,8 @@ public class DbConfig {
             return sysGeneratorMysqlMapper;
         }else if("oracle".equalsIgnoreCase(database)){
             return sysGeneratorOracleMapper;
+        }else if("sqlServer".equalsIgnoreCase(database)){
+            return sysGeneratorSqlServerMapper;
         }else {
             throw new BusinessException("不支持当前数据库：" + database);
         }
