@@ -1,3 +1,7 @@
+# 端口
+server:
+  port: 8080
+
 spring:
   profiles:
     active: dev
@@ -15,9 +19,20 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
+  # redis token信息
+  redis:
+    key:
+      prefix:
+        userToken: "user:token:"
+        passwordError: "user:password:error:"
+        permissionRefresh: "user:token:permissionRefresh:"
+      expire:
+        userToken: 604800 # 7天 7*24*3600
+        passwordError: 3600 # 一个小时
+        permissionRefresh: 604800 # 7天 7*24*3600
+    allowMultipleLogin: true # 允许多处登陆
 
-server:
-  port: 8080
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -26,3 +41,7 @@ mybatis-plus:
     db-config:
       logic-delete-value: 0
       logic-not-delete-value: 1
+
+#使用代码生成模块时 指定要生成的表存在于哪种数据库，可选值有【mysql、oracle、sqlServer】
+project:
+  database: mysql
