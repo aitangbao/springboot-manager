@@ -38,7 +38,7 @@
                 <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off"
                        class="layui-input admin-input admin-input-verify">
                 <img class="admin-captcha" width="90" height="30" src="/sys/getVerify">
-                <img  onClick="this.src=this.src+'?'+Math.random();" class="admin-captcha" width="90" height="30" src="/sys/getVerify">
+                <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="30" src="/sys/getVerify">
             </div>
             <button class="layui-btn admin-button" lay-submit="" lay-filter="login">登 陆</button>
         </form>
@@ -72,6 +72,7 @@
             $.post('/sys/checkVerify?imageCode=' + data.captcha, {}, function (res) {
                 if (res.code != 0) {
                     layer.msg(res.msg)
+                    $("#img").click();
                 } else {
                     $.ajax({
                         type: 'POST',

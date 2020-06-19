@@ -6,7 +6,7 @@ public class Constant {
     public static final String USERID_KEY = "userid-key";
     public static final String USERNAME_KEY = "username-key";
     public static final String ROLES_KEY = "roles-key";
-
+    public static final String DEPT_TYPE = "D";
     /**
      * 正常token
      */

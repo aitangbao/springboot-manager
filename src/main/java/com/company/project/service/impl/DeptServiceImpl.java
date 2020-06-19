@@ -2,6 +2,7 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
 import com.company.project.common.exception.BusinessException;
@@ -9,7 +10,6 @@ import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.service.DeptService;
 import com.company.project.service.UserService;
-import com.company.project.common.utils.CodeUtil;
 import com.company.project.vo.resp.DeptRespNodeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -206,6 +206,28 @@ public class DeptServiceImpl implements DeptService {
             }
         });
 
-        return CodeUtil.padRight(maxDeptCode.get() + 1, 6, "0");
+        return padRight(maxDeptCode.get() + 1, 6, "0");
+    }
+
+
+    /**
+     * 右补位，左对齐
+     *
+     * @param len    目标字符串长度
+     * @param alexin 补位字符
+     * @return 目标字符串
+     * 以alexin 做为补位
+     * @pparam oriStr  原字符串
+     */
+    public static String padRight(int oriStr, int len, String alexin) {
+        StringBuffer str = new StringBuffer();
+        int strlen = String.valueOf(oriStr).length();
+        if (strlen < len) {
+            for (int i = 0; i < len - strlen; i++) {
+                str.append(alexin);
+            }
+        }
+        str.append(oriStr);
+        return Constant.DEPT_TYPE + str.toString();
     }
 }
