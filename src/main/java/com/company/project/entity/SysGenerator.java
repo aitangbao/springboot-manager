@@ -24,32 +24,10 @@ public class SysGenerator extends PageReqVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * ID
-     */
-    private String id;
-
-    /**
-     * 表名
-     */
     private String tableName;
 
-    /**
-     * 菜单名称
-     */
-    private String menuName;
-
-    /**
-     * 上级菜单
-     */
-    private String pid;
-
-    private Date genTime;
-
-    @TableField(exist = false)
     private Date createTime;
 
-    @TableField(exist = false)
     private String tableComment;
 
 }

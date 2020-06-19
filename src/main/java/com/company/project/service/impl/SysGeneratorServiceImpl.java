@@ -47,10 +47,6 @@ public class SysGeneratorServiceImpl  implements ISysGeneratorService{
             List<Map<String, String>> columns = queryColumns(tableName);
             //生成代码
             GenUtils.generatorCode(table, columns, zip);
-            SysGenerator sysGenerator = new SysGenerator();
-            sysGenerator.setGenTime(new Date());
-            sysGenerator.setTableName(tableName);
-            generatorMapper.insert(sysGenerator);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();

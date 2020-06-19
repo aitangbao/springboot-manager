@@ -16,17 +16,6 @@ CREATE TABLE `sys_dept` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统部门';
 
--- 代码生成
-DROP TABLE IF EXISTS `sys_generator`;
-CREATE TABLE `sys_generator` (
-  `id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT 'ID',
-  `table_name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '表名',
-  `menu_name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '菜单名称',
-  `pid` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '上级菜单',
-  `gen_time` datetime DEFAULT NULL  COMMENT '上次生成时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin  COMMENT='代码生成';
-
 -- 系统日志
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log` (
@@ -179,14 +168,6 @@ CREATE TABLE `sys_job_log`  (
 -- 初始化数据
 INSERT INTO `sys_dept` VALUES ('4bd0b0a3-097d-4902-a1f7-641ea3b771bd', 'D000002', '部门1', '72a4f388-50f8-4019-8c67-530cd7c74e7a', 1, 'D000001D000002', NULL, '张杨', '13899999999', '2019-11-05 12:24:50', '2019-11-09 21:22:55', 1);
 INSERT INTO `sys_dept` VALUES ('72a4f388-50f8-4019-8c67-530cd7c74e7a', 'D000001', '总公司', '0', 1, 'D000001', NULL, '小李', '13888888888', '2019-11-07 22:43:33', NULL, 1);
-INSERT INTO `sys_generator` VALUES ('1', 'sys_dept', '部门管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('2', 'sys_generator', '代码生成', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('3', 'sys_log', '日志管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('4', 'sys_permission', '权限管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('5', 'sys_role', '角色管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('6', 'sys_role_permission', '角色权限管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('7', 'sys_user', '用户管理', '0', '2020-03-20 13:16:47');
-INSERT INTO `sys_generator` VALUES ('8', 'sys_user_role', '用户角色管理', '0', '2020-03-20 13:16:47');
 INSERT INTO `sys_permission` VALUES ('010bcf8b-3172-4331-9941-25788ca8cbb0', '删除', 'sysGenerator:delete', NULL, 'sysGenerator/delete', NULL, '43d1bbf7-fc4a-4a10-9ad1-205b16c7c05f', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO `sys_permission` VALUES ('0d99b687-3f46-4632-9d56-8dd5e476dae7', 'SQL 监控', '', '', '/druid/sql.html', '_self', '65bdb02f47b94e71c2a2b9e459bde909', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
 INSERT INTO `sys_permission` VALUES ('1a2ec857-e775-4377-9fb7-e3c77738b3e5', '新增', 'sys:role:add', NULL, '/sys/role', NULL, 'e0b16b95-09de-4d60-a283-1eebd424ed47', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);

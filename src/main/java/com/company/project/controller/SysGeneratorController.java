@@ -39,7 +39,7 @@ public class SysGeneratorController {
      * 生成代码
      */
     @ApiOperation(value = "生成")
-    @GetMapping("/add")
+    @GetMapping("/gen")
     @RequiresPermissions("sysGenerator:add")
     @LogAnnotation(title = "代码生成", action = "代码生成")
     public void code(String tables, HttpServletResponse response) throws IOException {

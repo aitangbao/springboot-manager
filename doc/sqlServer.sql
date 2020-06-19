@@ -15,16 +15,6 @@ CREATE TABLE sys_dept (
   PRIMARY KEY (id)
 );
 
--- 代码生成
-CREATE TABLE sys_generator (
-  id varchar(64),
-  table_name varchar(255),
-  menu_name varchar(255),
-  pid varchar(64),
-  gen_time datetime,
-  PRIMARY KEY (id)
-);
-
 -- 日志
 CREATE TABLE sys_log (
   id varchar(64),
@@ -188,15 +178,6 @@ INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690
 
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
-
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('1', 'sys_dept', '部门管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('2', 'sys_generator', '代码生成', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('3', 'sys_log', '日志管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('4', 'sys_permission', '权限管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('5', 'sys_role', '角色管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('6', 'sys_role_permission', '角色权限管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('7', 'sys_user', '用户管理', '0', '2020-03-20 13:16:47');
-INSERT INTO sys_generator(id, table_name, menu_name, pid, gen_time) VALUES ('8', 'sys_user_role', '用户角色管理', '0', '2020-03-20 13:16:47');
 
 INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
 

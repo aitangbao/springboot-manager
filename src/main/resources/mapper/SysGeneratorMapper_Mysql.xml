@@ -2,15 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.project.mapper.SysGeneratorMysqlMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.company.project.entity.SysGenerator">
-        <id column="id" property="id" />
-        <result column="table_name" property="tableName" />
-        <result column="menu_name" property="menuName" />
-        <result column="pid" property="pid" />
-        <result column="gen_time" property="genTime" />
-    </resultMap>
-
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, table_name, menu_name, pid, gen_time
@@ -19,13 +10,6 @@
     <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
 
 
-        SELECT
-        t1.tableComment,
-        t1.tableName,
-        t1.createTime,
-        t2.gen_time
-        FROM
-        (
         SELECT
         TABLE_NAME AS tableName,
         TABLE_COMMENT AS tableComment,
@@ -37,18 +21,8 @@
         <if test="vo.tableName != null and vo.tableName != ''">
             and TABLE_NAME LIKE concat('%',#{vo.tableName},'%')
         </if>
-        ) AS t1
-        LEFT JOIN (
-        SELECT
-        table_name,
-        max( gen_time )  as gen_time
-        FROM
-        sys_generator
-        GROUP BY
-        table_name
-        ) t2 ON t1.tableName = t2.table_name
         ORDER BY
-        createTime DESC
+        CREATE_TIME DESC
 
     </select>
 

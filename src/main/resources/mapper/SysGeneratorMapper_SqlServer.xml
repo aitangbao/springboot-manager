@@ -18,25 +18,14 @@
     <!-- 获取列表 -->
     <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
 
-		select t.*,t2.gen_time from
+		select * from
 		(
-		select cast(so.name as varchar(500)) as tableName, cast(sep.value as varchar(500)) as tableComment, getDate() as
-		createTime
+		select cast(so.name as varchar(500)) as tableName, cast(sep.value as varchar(500)) as tableComment, getDate() as createTime
 		from sysobjects so
 		left JOIN sys.extended_properties sep
 		on sep.major_id=so.id and sep.minor_id=0
 		where (xtype='U' or xtype='v')
-		) t
-		LEFT JOIN (
-		SELECT
-		table_name,
-		max( gen_time )  as gen_time
-		FROM
-		sys_generator
-		GROUP BY
-		table_name
-		) t2 ON t.tableName = t2.table_name
-		where 1 = 1
+		) t where 1=1
 		<if test="vo.tableName != null and vo.tableName.trim() != ''">
 			and t.tableName like concat('%', #{vo.tableName}, '%')
 		</if>

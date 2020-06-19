@@ -28,20 +28,18 @@
         id, table_name, menu_name, pid, gen_time
     </sql>
     <!-- 获取列表 -->
-    <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
-        SELECT
-        t1.TABLE_NAME as tableName,
-        t1.COMMENTS as tableComment,
-        t1.created as createTime,
-        t2.gen_time as gen_time
-        FROM
-        ( SELECT a.TABLE_NAME, b.COMMENTS,uo.created FROM user_tables a, user_tab_comments b,user_objects uo
-        WHERE a.TABLE_NAME = b.TABLE_NAME and a.table_name = uo.object_name and uo.object_type='TABLE'
-        <if test="vo.tableName != null and vo.tableName != ''">
-            and upper(a.TABLE_NAME) LIKE '%'||#{field_name}||'%'
+    <select id="selectAllTables"  resultMap="tableMap">
+        select dt.table_name tableName,
+        dtc.comments tableComment,
+        uo.created createTime
+        from user_tables dt,
+        user_tab_comments dtc,
+        user_objects uo
+        where dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type='TABLE'
+        <if test="vo.tableName != null and vo.tableName.trim() != ''">
+            and dt.table_name like concat('%', UPPER(#{vo.tableName}))
         </if>
-        ORDER BY TABLE_NAME ) t1
-        LEFT JOIN ( SELECT table_name, max( gen_time ) AS gen_time FROM sys_generator GROUP BY table_name ) t2 ON upper( t1.TABLE_NAME ) = upper( t2.table_name )
+        order by uo.CREATED desc
     </select>
 
 

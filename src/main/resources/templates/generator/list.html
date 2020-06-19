@@ -73,7 +73,6 @@
           {field: 'tableName', title: '表名', sort: true},
           {field: 'tableComment', title: '表备注',  sort: true},
           {field: 'createTime', title: '表创建时间',  sort: true},
-          {field: 'genTime', title: '上次生成时间',  sort: true},
           { toolbar: "#tool", title: '操作'}
         ]
       ]
@@ -93,7 +92,7 @@
                       $(data).each(function (index, item) {
                           tables.push(item.tableName);
                       });
-                      $.fileDownload("/sysGenerator/add?authorization=" + tokenQuery + "&tables=" + tables,{httpMethod: 'get'})
+                      $.fileDownload("/sysGenerator/gen?authorization=" + tokenQuery + "&tables=" + tables,{httpMethod: 'get'})
                   }
                   break;
           }
@@ -104,7 +103,7 @@
           var data = obj.data;
           switch (obj.event) {
               case 'gen':
-                $.fileDownload("/sysGenerator/add?authorization=" + tokenQuery + "&tables=" + data.tableName,{httpMethod: 'get'})
+                $.fileDownload("/sysGenerator/gen?authorization=" + tokenQuery + "&tables=" + data.tableName,{httpMethod: 'get'})
                 break;
           }
       });
