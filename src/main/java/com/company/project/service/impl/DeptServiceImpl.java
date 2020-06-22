@@ -44,9 +44,9 @@ public class DeptServiceImpl implements DeptService {
         } else {
             relationCode = parent.getRelationCode() + deptCode;
         }
-        vo.setCreateTime(new Date());
         vo.setDeptNo(deptCode);
         vo.setRelationCode(relationCode);
+        vo.setStatus(1);
         sysDeptMapper.insert(vo);
         return vo;
     }
@@ -62,7 +62,6 @@ public class DeptServiceImpl implements DeptService {
         }
         SysDept update = new SysDept();
         BeanUtils.copyProperties(vo, update);
-        update.setUpdateTime(new Date());
         sysDeptMapper.updateById(update);
         /** 说明层级发生了变化 */
         if (!StringUtils.isEmpty(vo.getPid()) && !vo.getPid().equals(sysDept.getPid())) {

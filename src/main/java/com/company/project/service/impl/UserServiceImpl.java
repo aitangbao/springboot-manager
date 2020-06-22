@@ -65,7 +65,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         sysUser.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);
-        sysUser.setCreateTime(new Date());
         int i = sysUserMapper.insert(sysUser);
         if (i != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
@@ -140,7 +139,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
 
         BeanUtils.copyProperties(vo, sysUser);
-        sysUser.setUpdateTime(new Date());
         if (!StringUtils.isEmpty(vo.getPassword())) {
             String newPassword = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
             sysUser.setPassword(newPassword);
@@ -163,7 +161,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
 
         BeanUtils.copyProperties(vo, sysUser);
-        sysUser.setUpdateTime(new Date());
         if (!StringUtils.isEmpty(vo.getPassword())) {
             String newPassword = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
             sysUser.setPassword(newPassword);
@@ -232,7 +229,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         vo.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), vo.getSalt());
         vo.setPassword(encode);
-        vo.setCreateTime(new Date());
         int i = sysUserMapper.insert(vo);
         if (i != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
@@ -269,7 +265,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (sysUser.getPassword().equals(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()))) {
             throw new BusinessException("新密码不能与旧密码相同");
         }
-        sysUser.setUpdateTime(new Date());
         sysUser.setPassword(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()));
         int i = sysUserMapper.updateById(sysUser);
         if (i != 1) {

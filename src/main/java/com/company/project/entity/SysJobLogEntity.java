@@ -1,5 +1,6 @@
 package com.company.project.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -67,7 +68,7 @@ public class SysJobLogEntity extends PageReqVO implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	@TableField("create_time")
+	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
 
 

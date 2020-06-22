@@ -51,7 +51,6 @@ public class SysDictController {
         if (q != null) {
             return DataResult.fail("字典名称已存在");
         }
-        sysDict.setCreateTime(new Date());
         sysDictService.save(sysDict);
         return DataResult.success();
     }

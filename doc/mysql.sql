@@ -5,14 +5,14 @@ CREATE TABLE `sys_dept` (
   `dept_no` varchar(18) DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
   `name` varchar(300) DEFAULT NULL COMMENT '部门名称',
   `pid` varchar(64) NOT NULL COMMENT '父级id',
-  `status` tinyint(4) DEFAULT '1' COMMENT '状态(1:正常；0:弃用)',
+  `status` tinyint(4) COMMENT '状态(1:正常；0:弃用)',
   `relation_code` varchar(3000) DEFAULT NULL COMMENT '为了维护更深层级关系',
   `dept_manager_id` varchar(64) DEFAULT NULL COMMENT '部门经理user_id',
   `manager_name` varchar(255) DEFAULT NULL COMMENT '部门经理名称',
   `phone` varchar(20) DEFAULT NULL COMMENT '部门经理联系电话',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
+  `deleted` tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统部门';
 
@@ -41,12 +41,12 @@ CREATE TABLE `sys_permission`  (
   `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
   `target` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
   `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
-  `order_num` int(11) NULL DEFAULT 0 COMMENT '排序',
+  `order_num` int(11) NULL COMMENT '排序',
   `type` tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
-  `status` tinyint(4) NULL DEFAULT 1 COMMENT '状态1:正常 0：禁用',
+  `status` tinyint(4) NULL COMMENT '状态1:正常 0：禁用',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) NULL DEFAULT 1 COMMENT '是否删除(1未删除；0已删除)',
+  `deleted` tinyint(4) NULL  COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = Compact;
 
@@ -56,10 +56,10 @@ CREATE TABLE `sys_role` (
   `id` varchar(64) NOT NULL COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '角色名称',
   `description` varchar(300) DEFAULT NULL,
-  `status` tinyint(4) DEFAULT '1' COMMENT '状态(1:正常0:弃用)',
+  `status` tinyint(4) COMMENT '状态(1:正常0:弃用)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
+  `deleted` tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色';
 
@@ -87,7 +87,7 @@ CREATE TABLE `sys_user` (
   `email` varchar(50) DEFAULT NULL COMMENT '邮箱(唯一)',
   `status` tinyint(4) DEFAULT '1' COMMENT '账户状态(1.正常 2.锁定 )',
   `sex` tinyint(4) DEFAULT '1' COMMENT '性别(1.男 2.女)',
-  `deleted` tinyint(4) DEFAULT '1' COMMENT '是否删除(1未删除；0已删除)',
+  `deleted` tinyint(4)  COMMENT '是否删除(1未删除；0已删除)',
   `create_id` varchar(64) DEFAULT NULL COMMENT '创建人',
   `update_id` varchar(64) DEFAULT NULL COMMENT '更新人',
   `create_where` tinyint(4) DEFAULT '1' COMMENT '创建来源(1.web 2.android 3.ios )',

@@ -59,7 +59,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Override
     public SysPermission addPermission(SysPermission sysPermission) {
         verifyForm(sysPermission);
-        sysPermission.setCreateTime(new Date());
+        sysPermission.setStatus(1);
         sysPermissionMapper.insert(sysPermission);
         return sysPermission;
     }
@@ -151,7 +151,6 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (sysPermission.getType().equals(update.getType()) || !sysPermission.getPid().equals(update.getPid())) {
             verifyForm(update);
         }
-        update.setUpdateTime(new Date());
         sysPermissionMapper.updateById(update);
         /**
          * 所有管理这个菜单权限用户将重新刷新token

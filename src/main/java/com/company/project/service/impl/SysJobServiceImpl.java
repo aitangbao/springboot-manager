@@ -47,7 +47,6 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
 
     @Override
     public void saveJob(SysJobEntity sysJob) {
-        sysJob.setCreateTime(new Date());
         sysJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
         this.save(sysJob);
 

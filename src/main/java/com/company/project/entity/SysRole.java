@@ -1,9 +1,6 @@
 package com.company.project.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import com.company.project.vo.req.PageReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,11 +23,14 @@ public class SysRole extends PageReqVO implements Serializable {
 
     private Integer status;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @TableLogic
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
     @TableField(exist = false)

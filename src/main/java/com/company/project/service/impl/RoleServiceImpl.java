@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public SysRole addRole(SysRole vo) {
 
-        vo.setCreateTime(new Date());
+        vo.setStatus(1);
         sysRoleMapper.insert(vo);
         if (null != vo.getPermissions() && !vo.getPermissions().isEmpty()) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
@@ -59,7 +59,6 @@ public class RoleServiceImpl implements RoleService {
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        vo.setUpdateTime(new Date());
         sysRoleMapper.updateById(vo);
         rolePermissionService.removeByRoleId(sysRole.getId());
         if (!CollectionUtils.isEmpty(vo.getPermissions())) {

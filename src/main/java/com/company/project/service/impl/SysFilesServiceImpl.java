@@ -51,7 +51,6 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
             FileUtils.copyInputStreamToFile(file.getInputStream(), outFile);
             //保存文件记录
             SysFilesEntity sysFilesEntity = new SysFilesEntity();
-            sysFilesEntity.setCreateDate(new Date());
             sysFilesEntity.setFileName(fileName);
             sysFilesEntity.setFilePath(newFilePathName);
             sysFilesEntity.setUrl(url);

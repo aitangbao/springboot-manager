@@ -37,7 +37,6 @@ public class SysContentController {
     @PostMapping("/add")
     @RequiresPermissions("sysContent:add")
     public DataResult add(@RequestBody SysContentEntity sysContent) {
-        sysContent.setCreateTime(new Date());
         sysContentService.save(sysContent);
         return DataResult.success();
     }

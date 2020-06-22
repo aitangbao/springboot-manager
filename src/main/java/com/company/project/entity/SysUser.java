@@ -1,9 +1,6 @@
 package com.company.project.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import com.company.project.vo.req.PageReqVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -49,6 +46,7 @@ public class SysUser extends PageReqVO implements Serializable {
     private Integer sex;
 
     @TableLogic
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
     private String createId;
@@ -57,8 +55,10 @@ public class SysUser extends PageReqVO implements Serializable {
 
     private Integer createWhere;
 
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @TableField(exist = false)

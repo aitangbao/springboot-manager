@@ -40,8 +40,7 @@ public class ScheduleJob extends QuartzJobBean {
         log.setJobId(scheduleJob.getId());
         log.setBeanName(scheduleJob.getBeanName());
         log.setParams(scheduleJob.getParams());
-        log.setCreateTime(new Date());
-        
+
         //任务开始时间
         long startTime = System.currentTimeMillis();
         

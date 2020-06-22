@@ -48,7 +48,6 @@ public class SysDictDetailController {
         if (q != null) {
             return DataResult.fail("字典名称-字典值已存在");
         }
-        sysDictDetail.setCreateTime(new Date());
         sysDictDetailService.save(sysDictDetail);
         return DataResult.success();
     }
