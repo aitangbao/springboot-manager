@@ -229,6 +229,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         vo.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), vo.getSalt());
         vo.setPassword(encode);
+        vo.setStatus(1);
+        vo.setCreateWhere(1);
         int i = sysUserMapper.insert(vo);
         if (i != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
