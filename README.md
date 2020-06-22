@@ -33,6 +33,9 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 如果表有是否删除字段，需要在Model注解@TableLogic 默认1未删 0删除， 或@TableLogic(value="逻辑未删除值",delval="逻辑删除值")   
 - 数据库建表时主键请统一格式: `id` varchar(50) 类型; 列名请勿使用mysql关键字
 - 建议业务失败直接使用throw new BusinessException("ErrorMessage")抛出，由统一异常处理器来封装业务失败的响应结果，会直接被封装为{"code":500002,"message":"ErrorMessage"}返回，尽情抛出；
+- token支持header跟query传参形式，如:
+    - ajax中设置header:```beforeSend: function(request) {request.setRequestHeader("authorization", "有效的token");}```
+    - query:```?authorization=有效的token ```
 
 ## 使用说明
 - 使用IDE导入本项目，IDE需要安装lombok插件
@@ -122,4 +125,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
-<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200616151928.jpg" alt="" style="zoom:25%;" />
+<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200622155013.jpg" alt="" style="zoom:25%;" />
