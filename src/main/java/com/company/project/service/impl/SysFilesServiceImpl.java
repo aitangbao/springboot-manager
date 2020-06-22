@@ -5,8 +5,8 @@ import com.company.project.common.config.FileUploadProperties;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.DateUtils;
-import lombok.AllArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,12 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.*;
 
-@AllArgsConstructor
 @EnableConfigurationProperties(FileUploadProperties.class)
 @Service("sysFilesService")
 public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEntity> implements SysFilesService {
 
-    private final FileUploadProperties fileUploadProperties;
+    @Autowired
+    private  FileUploadProperties fileUploadProperties;
 
     @Override
     public DataResult saveFile(MultipartFile file) {
