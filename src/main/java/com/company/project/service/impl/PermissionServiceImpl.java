@@ -17,6 +17,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
+/**
+ * 菜单权限
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service
 @Slf4j
 public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements PermissionService {

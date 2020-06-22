@@ -6,6 +6,13 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * UserOwnRoleRespVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class UserOwnRoleRespVO {
     @ApiModelProperty("所有角色集合")

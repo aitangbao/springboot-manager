@@ -4,6 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
+
+/**
+ * HomeRespVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class HomeRespVO {
     @ApiModelProperty(value = "用户信息")

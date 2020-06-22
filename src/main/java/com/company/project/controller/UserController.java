@@ -23,6 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * 用户管理
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RestController
 @Api(tags = "组织模块-用户管理")
 @RequestMapping("/sys")

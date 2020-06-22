@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * 角色和菜单关联
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RequestMapping("/sys")
 @RestController
 @Api(tags = "组织管理-角色和菜单关联接口")

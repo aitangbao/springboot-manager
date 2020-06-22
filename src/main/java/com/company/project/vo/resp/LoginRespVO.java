@@ -6,7 +6,11 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @ClassName: LoginRespVO
+ * LoginRespVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class LoginRespVO {

@@ -17,7 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Spring MVC 配置
+ * spring mvc 配置
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Configuration
 @EnableConfigurationProperties(FileUploadProperties.class)

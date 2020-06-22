@@ -3,7 +3,11 @@ package com.company.project.entity.oshi.model;
 import lombok.Data;
 
 /**
- * 系统文件相关信息
+ * SysFileInfo
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class SysFileInfo {

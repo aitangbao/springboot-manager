@@ -1,14 +1,18 @@
 package com.company.project.vo.req;
 
-        import io.swagger.annotations.ApiModelProperty;
-        import lombok.Data;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-        import javax.validation.constraints.NotBlank;
-        import javax.validation.constraints.NotEmpty;
-        import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
- * @ClassName: UserRoleOperationReqVO
+ * UserRoleOperationReqVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class UserRoleOperationReqVO {

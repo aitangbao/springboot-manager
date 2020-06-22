@@ -20,7 +20,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 代码生成器   工具类
+ * 代码生成器 工具类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class GenUtils {
 

@@ -4,7 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @ClassName: UpdatePasswordReqVO
+ * UpdatePasswordReqVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class UpdatePasswordReqVO {

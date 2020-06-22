@@ -1,12 +1,11 @@
 package com.company.project.mapper;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * 代码生成mysql Mapper
  *
- * @author aitangbao
- * @since 2020-03-20
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface SysGeneratorMysqlMapper extends GeneratorMapper {
 }

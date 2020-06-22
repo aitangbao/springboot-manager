@@ -12,6 +12,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * 系统日志
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service
 public class LogServiceImpl implements LogService {
     @Autowired

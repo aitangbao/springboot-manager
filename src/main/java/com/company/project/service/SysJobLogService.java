@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysJobLogEntity;
 
 /**
- * 定时任务日志
+ * 定时任务 服务类
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-22 14:23:35
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface SysJobLogService extends IService<SysJobLogEntity> {
 

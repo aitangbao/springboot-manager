@@ -21,7 +21,11 @@ import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
- * Created by huoth on 2018/5/3.
+ * 日志切面
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Aspect
 @Component

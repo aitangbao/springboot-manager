@@ -2,8 +2,8 @@ package com.company.project.entity.oshi;
 
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.NumberUtil;
+import com.company.project.common.utils.IPUtils;
 import com.company.project.entity.oshi.model.*;
-import com.company.project.entity.oshi.util.IpInfoUtils;
 import lombok.Data;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -21,6 +21,10 @@ import java.util.Properties;
 
 /**
  * 服务器相关信息
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class SystemHardwareInfo {
@@ -106,7 +110,7 @@ public class SystemHardwareInfo {
      */
     private void setSysInfo() {
         Properties props = System.getProperties();
-        sys.setComputerName(IpInfoUtils.getHostName());
+        sys.setComputerName(IPUtils.getHostName());
         sys.setComputerIp(NetUtil.getLocalhostStr());
         sys.setOsName(props.getProperty("os.name"));
         sys.setOsArch(props.getProperty("os.arch"));

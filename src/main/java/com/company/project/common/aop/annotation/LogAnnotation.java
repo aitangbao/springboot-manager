@@ -3,8 +3,12 @@ package com.company.project.common.aop.annotation;
 import java.lang.annotation.*;
 
 /**
-* @ClassName:       LogAnnotation
-*/
+ * LogAnnotation
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

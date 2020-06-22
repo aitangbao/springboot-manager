@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 首页
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RestController
 @RequestMapping("/sys")
 @Api(tags = "首页数据")

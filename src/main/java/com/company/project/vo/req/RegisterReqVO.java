@@ -7,7 +7,11 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
- * @ClassName: RegisterReqVO
+ * RegisterReqVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class RegisterReqVO {

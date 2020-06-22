@@ -1,5 +1,13 @@
 package com.company.project.common.exception.code;
 
+
+/**
+ * 错误码
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public enum BaseResponseCode implements ResponseCodeInterface {
     /**
      * 错误码

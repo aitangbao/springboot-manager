@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 数据库接口
+ * 代码生成 Mapper
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface GeneratorMapper extends BaseMapper<SysGenerator> {
 

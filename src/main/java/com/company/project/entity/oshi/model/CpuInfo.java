@@ -4,7 +4,11 @@ import cn.hutool.core.util.NumberUtil;
 import lombok.Setter;
 
 /**
- * CPU相关信息
+ * CpuInfo
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Setter
 public class CpuInfo {

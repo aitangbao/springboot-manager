@@ -21,8 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
 
+
 /**
  * 自定义过滤器
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Slf4j
 public class CustomAccessControlFilter extends AccessControlFilter {

@@ -7,6 +7,13 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 部门
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class SysDept implements Serializable {
     @TableId(type = IdType.UUID)

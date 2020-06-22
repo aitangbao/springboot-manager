@@ -9,6 +9,10 @@ import java.util.Properties;
 
 /**
  * 生成验证码配置
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Configuration
 public class KaptchaConfig {

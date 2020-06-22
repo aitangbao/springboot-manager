@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Primary;
 
 /**
  * 数据库配置
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Configuration
 public class DbConfig {

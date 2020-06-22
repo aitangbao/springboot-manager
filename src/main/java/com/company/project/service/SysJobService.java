@@ -6,11 +6,11 @@ import com.company.project.entity.SysJobEntity;
 import java.util.List;
 
 /**
- * 定时任务
+ * 定时任务 服务类
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-22 14:23:36
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface SysJobService extends IService<SysJobEntity> {
 

@@ -5,9 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @ClassName MyBatisPlusConfig
- * @Version 1.0
- **/
+ * mybatis plus config
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Configuration
 public class MyBatisPlusConfig {
     /**

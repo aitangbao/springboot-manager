@@ -10,6 +10,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 用户
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class SysUser extends PageReqVO implements Serializable {
     @TableId(type = IdType.UUID)

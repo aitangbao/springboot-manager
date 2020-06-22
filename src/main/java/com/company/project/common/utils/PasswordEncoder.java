@@ -3,9 +3,12 @@ package com.company.project.common.utils;
 import java.security.MessageDigest;
 
 /**
-* @ClassName:       PasswordEncoder
-*                   密码加密
-*/
+ * 密码加密
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public class PasswordEncoder {
 
 	private final static String[] hexDigits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d",

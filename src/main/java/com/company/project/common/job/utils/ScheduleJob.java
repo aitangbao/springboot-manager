@@ -19,6 +19,10 @@ import java.util.Date;
 
 /**
  * 定时任务
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class ScheduleJob extends QuartzJobBean {
 	private Logger logger = LoggerFactory.getLogger(getClass());

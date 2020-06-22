@@ -9,6 +9,13 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 用户角色
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class SysUserRole implements Serializable {
     @TableId(type = IdType.UUID)

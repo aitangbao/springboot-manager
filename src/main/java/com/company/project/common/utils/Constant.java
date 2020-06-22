@@ -1,5 +1,12 @@
 package com.company.project.common.utils;
 
+/**
+ * Constant
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public class Constant {
 
     public static final String PERMISSIONS_KEY = "permissions-key";

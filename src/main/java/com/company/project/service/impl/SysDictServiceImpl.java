@@ -7,7 +7,13 @@ import com.company.project.mapper.SysDictMapper;
 import com.company.project.entity.SysDictEntity;
 import com.company.project.service.SysDictService;
 
-
+/**
+ * 数据字典 服务类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service("sysDictService")
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDictEntity> implements SysDictService {
 

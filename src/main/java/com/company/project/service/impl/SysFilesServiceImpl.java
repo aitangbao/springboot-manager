@@ -19,6 +19,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.*;
 
+/**
+ * 文件上传 服务类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @EnableConfigurationProperties(FileUploadProperties.class)
 @Service("sysFilesService")
 public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEntity> implements SysFilesService {

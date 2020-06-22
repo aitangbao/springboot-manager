@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 系统操作日志
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RequestMapping("/sys")
 @Api(tags = "系统模块-系统操作日志管理")
 @RestController

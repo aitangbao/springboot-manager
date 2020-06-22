@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 定时任务日志
- * 
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-22 14:23:35
+ * 定时任务日志、 Mapper
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Mapper
 public interface SysJobLogMapper extends BaseMapper<SysJobLogEntity> {

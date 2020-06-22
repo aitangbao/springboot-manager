@@ -7,6 +7,10 @@ import org.quartz.*;
 
 /**
  * 定时任务工具类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class ScheduleUtils {
     private final static String JOB_NAME = "TASK_";

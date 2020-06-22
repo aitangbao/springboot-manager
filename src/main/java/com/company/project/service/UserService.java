@@ -9,6 +9,13 @@ import com.company.project.vo.resp.UserOwnRoleRespVO;
 
 import java.util.List;
 
+/**
+ * 用户 服务类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public interface UserService extends IService<SysUser> {
 
     String register(RegisterReqVO vo);

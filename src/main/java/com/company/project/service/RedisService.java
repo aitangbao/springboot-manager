@@ -12,9 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author : aitangbao
+ * redis
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
-
 @Service
 public class RedisService {
     @Autowired

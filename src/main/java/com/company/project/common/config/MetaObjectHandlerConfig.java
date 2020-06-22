@@ -9,6 +9,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
+
+/**
+ * mybatis plus 默认值配置
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Component
 public class MetaObjectHandlerConfig implements MetaObjectHandler {
 

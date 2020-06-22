@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysDictEntity;
 
 /**
- * 数据字典表
+ * 数据字典 服务类
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-19 10:44:04
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface SysDictService extends IService<SysDictEntity> {
 

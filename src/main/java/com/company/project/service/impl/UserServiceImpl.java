@@ -28,6 +28,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
+/**
+ * 用户 服务类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements UserService {

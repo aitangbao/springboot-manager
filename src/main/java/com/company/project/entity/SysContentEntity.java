@@ -12,11 +12,11 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 
+ * 内容管理
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-05-26 17:00:59
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 @TableName("sys_content")

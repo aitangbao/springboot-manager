@@ -11,6 +11,13 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 操作日志
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class SysLog extends PageReqVO implements Serializable {
     @TableId(type = IdType.UUID)

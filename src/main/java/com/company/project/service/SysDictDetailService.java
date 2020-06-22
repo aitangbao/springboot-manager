@@ -8,11 +8,11 @@ import com.company.project.entity.SysDictDetailEntity;
 import java.util.List;
 
 /**
- * 数据字典详情
+ * 数据字典 服务类
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-30 15:13:16
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 

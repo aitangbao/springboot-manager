@@ -1,7 +1,11 @@
 package com.company.project.entity;
 
 /**
- * 代码生成：列的属性
+ * 代码生成 列属性
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class ColumnEntity {
 	//列名

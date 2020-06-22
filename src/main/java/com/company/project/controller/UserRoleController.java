@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * 用户和角色关联
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RequestMapping("/sys")
 @RestController
 @Api(tags = "组织管理-用户和角色关联接口")

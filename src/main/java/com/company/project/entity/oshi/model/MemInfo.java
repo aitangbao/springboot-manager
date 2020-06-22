@@ -4,7 +4,11 @@ import cn.hutool.core.util.NumberUtil;
 import lombok.Setter;
 
 /**
- * 內存相关信息
+ * MemInfo
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Setter
 public class MemInfo {

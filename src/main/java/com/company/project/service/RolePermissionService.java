@@ -6,6 +6,13 @@ import com.company.project.vo.req.RolePermissionOperationReqVO;
 
 import java.util.List;
 
+/**
+ * 角色权限关联
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public interface RolePermissionService extends IService<SysRolePermission> {
 
     int removeByRoleId(String roleId);

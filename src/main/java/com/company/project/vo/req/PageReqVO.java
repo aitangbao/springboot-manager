@@ -4,7 +4,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
+/**
+ * PageReqVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Data
 public class PageReqVO {
     @ApiModelProperty(value = "第几页")

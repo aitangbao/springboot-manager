@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 
+/**
+ * 视图
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Api(tags = "视图")
 @Controller
 @RequestMapping("/index")

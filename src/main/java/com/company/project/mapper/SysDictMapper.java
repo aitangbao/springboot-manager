@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 数据字典表
- * 
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-19 10:44:04
+ * 字典 Mapper
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Mapper
 public interface SysDictMapper extends BaseMapper<SysDictEntity> {

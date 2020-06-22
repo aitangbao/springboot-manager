@@ -15,7 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-
+/**
+ * 角色管理
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RequestMapping("/sys")
 @RestController
 @Api(tags = "组织模块-角色管理")

@@ -14,9 +14,9 @@ import lombok.Data;
 /**
  * 定时任务日志
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-22 14:23:35
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 @TableName("sys_job_log")

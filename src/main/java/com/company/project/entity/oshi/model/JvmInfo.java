@@ -9,7 +9,11 @@ import java.lang.management.ManagementFactory;
 import java.util.Date;
 
 /**
- * JVM相关信息
+ * JvmInfo
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Setter
 public class JvmInfo {

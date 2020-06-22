@@ -15,6 +15,13 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * ShiroConfig
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Configuration
 @EnableConfigurationProperties(FileUploadProperties.class)
 public class ShiroConfig {

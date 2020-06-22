@@ -2,11 +2,14 @@ package com.company.project.common.utils;
 
 import java.util.UUID;
 
+
 /**
-* @ClassName:       PasswordUtils
-*                   密码工具类
-* @Version:         0.0.1
-*/
+ * 密码工具类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 public class PasswordUtils {
 
 	/**

@@ -8,7 +8,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * @ClassName: RolePermissionOperationReqVO
+ * RolePermissionOperationReqVO
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Data
 public class RolePermissionOperationReqVO {

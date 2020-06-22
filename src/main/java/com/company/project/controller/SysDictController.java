@@ -22,11 +22,11 @@ import com.company.project.service.SysDictService;
 
 
 /**
- * 数据字典表
+ * 字典管理
  *
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-19 10:44:04
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Api(tags = "字典管理")
 @RestController

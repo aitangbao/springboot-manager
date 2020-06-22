@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.entity.SysGenerator;
 
 /**
- * <p>
- *  服务类
- * </p>
+ * 代码生成
  *
- * @author aitangbao
- * @since 2020-03-20
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public interface ISysGeneratorService {
 

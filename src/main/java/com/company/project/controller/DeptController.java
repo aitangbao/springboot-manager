@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * 部门管理
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @RequestMapping("/sys")
 @RestController
 @Api(tags = "组织模块-机构管理")

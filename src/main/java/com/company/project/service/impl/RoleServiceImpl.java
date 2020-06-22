@@ -21,6 +21,13 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 角色
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service
 @Slf4j
 public class RoleServiceImpl implements RoleService {

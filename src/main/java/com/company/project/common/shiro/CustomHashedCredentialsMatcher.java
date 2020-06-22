@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 
-
 /**
  * 认证
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class CustomHashedCredentialsMatcher extends SimpleCredentialsMatcher {
 

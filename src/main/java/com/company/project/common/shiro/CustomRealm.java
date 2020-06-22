@@ -22,6 +22,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 授权
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Slf4j
 public class CustomRealm extends AuthorizingRealm {
     @Autowired

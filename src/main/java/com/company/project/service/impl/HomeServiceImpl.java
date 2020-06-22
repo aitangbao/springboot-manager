@@ -15,6 +15,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 首页
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service
 public class HomeServiceImpl implements HomeService {
     @Autowired

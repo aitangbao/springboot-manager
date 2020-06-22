@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.Map;
 
 /**
- * 定时任务
- * 
- * @author manager
- * @email *****@mail.com
- * @date 2020-04-22 14:23:36
+ * 定时任务 Mapper
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Mapper
 public interface SysJobMapper extends BaseMapper<SysJobEntity> {

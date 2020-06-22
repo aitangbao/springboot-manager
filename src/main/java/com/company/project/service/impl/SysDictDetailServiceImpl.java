@@ -15,7 +15,13 @@ import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.service.SysDictDetailService;
 import org.springframework.util.CollectionUtils;
 
-
+/**
+ * 数据字典 服务类
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
+ */
 @Service("sysDictDetailService")
 public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, SysDictDetailEntity> implements SysDictDetailService {
 

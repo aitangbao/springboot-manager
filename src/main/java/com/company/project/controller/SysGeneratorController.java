@@ -19,12 +19,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>
- * 前端控制器
- * </p>
+ * 代码生成
  *
- * @author aitangbao
- * @since 2020-03-20
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 @Api(tags = "系统模块-代码生成")
 @Slf4j

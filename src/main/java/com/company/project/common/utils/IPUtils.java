@@ -5,10 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
- * IP地址
+ * IPUtils
  *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class IPUtils {
 
@@ -51,6 +56,17 @@ public class IPUtils {
 		}
 
 		return ip;
+	}
+
+	/**
+	 * 获取客户端主机名称
+	 */
+	public static String getHostName() {
+		try {
+			return InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+		}
+		return "未知";
 	}
 
 }

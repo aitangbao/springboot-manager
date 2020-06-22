@@ -5,7 +5,10 @@ import java.util.Date;
 
 /**
  * 日期处理
- * 
+ *
+ * @author wenbin
+ * @version V1.0
+ * @date 2020年3月18日
  */
 public class DateUtils {
 	/** 时间格式(yyyy-MM-dd) */
