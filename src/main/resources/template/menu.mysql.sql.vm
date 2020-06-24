@@ -2,15 +2,15 @@
 set @parentId = "65bdb02f47b94e71c2a2b9e459bde909"; -- 上级目录菜单id（此菜单id是 其他）
 set @name = "${classname}"; -- 此目录名称，可修改
 set @identity = replace(uuid(),"-","");-- 此目录id
-INSERT INTO `sys_permission` (`id`, `name`, `pid`, `url`,`target`, `type`, `order_num`)
-    VALUES (@identity, @name ,@parentId, '/index/${classname}','_self', '2', '10');
+INSERT INTO `sys_permission` (`id`, `name`, `pid`, `url`,`target`, `type`, `order_num`, `deleted`)
+    VALUES (@identity, @name ,@parentId, '/index/${classname}','_self', '2', '10', 1);
 
 -- 菜单对应按钮SQL
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`, `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '列表' , '${classname}/listByPage','${classname}:list', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '新增' , '${classname}/add','${classname}:add', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '修改' , '${classname}/update','${classname}:update', '3');
-INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`)
-    VALUES (replace(uuid(),"-",""), @identity, '删除' , '${classname}/delete','${classname}:delete', '3');
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`, `type`, `deleted`)
+    VALUES (replace(uuid(),"-",""), @identity, '列表' , '${classname}/listByPage','${classname}:list', '3', 1);
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`, `deleted`)
+    VALUES (replace(uuid(),"-",""), @identity, '新增' , '${classname}/add','${classname}:add', '3', 1);
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`, `deleted`)
+    VALUES (replace(uuid(),"-",""), @identity, '修改' , '${classname}/update','${classname}:update', '3', 1);
+INSERT INTO `sys_permission` (`id`,`pid`, `name`, `url`, `perms`,  `type`, `deleted`)
+    VALUES (replace(uuid(),"-",""), @identity, '删除' , '${classname}/delete','${classname}:delete', '3', 1);
