@@ -23,14 +23,16 @@ public class KaptchaConfig {
         Properties properties = new Properties();
         // 图片边框
         properties.setProperty("kaptcha.border", "no");
+        //去除干扰线
+        properties.setProperty("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise");
         // 边框颜色
         properties.setProperty("kaptcha.border.color", "105,179,90");
         // 字体颜色
         properties.setProperty("kaptcha.textproducer.font.color", "black");
         // 图片宽
-        properties.setProperty("kaptcha.image.width", "125");
+        properties.setProperty("kaptcha.image.width", "100");
         // 图片高
-        properties.setProperty("kaptcha.image.height", "50");
+        properties.setProperty("kaptcha.image.height", "40");
         // 字体大小
         properties.setProperty("kaptcha.textproducer.font.size", "35");
         // 验证码长度
