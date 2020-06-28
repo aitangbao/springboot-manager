@@ -32,7 +32,7 @@ public class KaptchaConfig {
         // 图片宽
         properties.setProperty("kaptcha.image.width", "100");
         // 图片高
-        properties.setProperty("kaptcha.image.height", "40");
+        properties.setProperty("kaptcha.image.height", "50");
         // 字体大小
         properties.setProperty("kaptcha.textproducer.font.size", "35");
         // 验证码长度
