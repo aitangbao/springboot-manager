@@ -124,15 +124,8 @@ public class HttpSessionService {
      * @return
      */
     public String getCurrentUsername() {
-        String token = getTokenFromHeader();
-        if (null != token) {
-            if (redisDB.exists(USER_TOKEN_PREFIX + token)) {
-                String sessionInfoStr = redisDB.get(USER_TOKEN_PREFIX + token);
-                JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
-                return sessionInfo.getString(Constant.USERNAME_KEY);
-            } else {
-                return null;
-            }
+        if (getCurrentSession() != null) {
+            return getCurrentSession().getString(Constant.USERNAME_KEY);
         } else {
             return null;
         }
@@ -144,15 +137,8 @@ public class HttpSessionService {
      * @return
      */
     public String getCurrentUserId() {
-        String token = getTokenFromHeader();
-        if (null != token) {
-            if (redisDB.exists(USER_TOKEN_PREFIX + token)) {
-                String sessionInfoStr = redisDB.get(USER_TOKEN_PREFIX + token);
-                JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
-                return sessionInfo.getString(Constant.USERID_KEY);
-            } else {
-                return null;
-            }
+        if (getCurrentSession() != null) {
+            return getCurrentSession().getString(Constant.USERID_KEY);
         } else {
             return null;
         }
