@@ -18,12 +18,6 @@ public interface PermissionService extends IService<SysPermission> {
 
     List<SysPermission> getPermission(String userId);
 
-    SysPermission addPermission(SysPermission vo);
-
-    SysPermission detailInfo(String permissionId);
-
-    void updatePermission(SysPermission vo);
-
     void deleted(String permissionId);
 
     List<SysPermission> selectAll();

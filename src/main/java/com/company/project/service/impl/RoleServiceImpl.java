@@ -1,12 +1,16 @@
 package com.company.project.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysRole;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.entity.SysRolePermission;
+import com.company.project.entity.SysUserRole;
 import com.company.project.mapper.SysRoleMapper;
 import com.company.project.service.*;
 import com.company.project.vo.req.RolePermissionOperationReqVO;
@@ -30,7 +34,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implements RoleService {
     @Autowired
     private SysRoleMapper sysRoleMapper;
     @Autowired
@@ -67,7 +71,10 @@ public class RoleServiceImpl implements RoleService {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         sysRoleMapper.updateById(vo);
-        rolePermissionService.removeByRoleId(sysRole.getId());
+        //删除角色权限关联
+        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(SysRolePermission::getRoleId, sysRole.getId());
+        rolePermissionService.remove(queryWrapper);
         if (!CollectionUtils.isEmpty(vo.getPermissions())) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
             reqVO.setRoleId(sysRole.getId());
@@ -86,14 +93,16 @@ public class RoleServiceImpl implements RoleService {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         List<PermissionRespNode> permissionRespNodes = permissionService.selectAllByTree();
-        Set<String> checkList =
-                new HashSet<>(rolePermissionService.getPermissionIdsByRoleId(sysRole.getId()));
+        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, sysRole.getId());
+        Set<Object> checkList =
+                new HashSet<>(rolePermissionService.listObjs(queryWrapper));
         setChecked(permissionRespNodes, checkList);
         sysRole.setPermissionRespNodes(permissionRespNodes);
         return sysRole;
     }
 
-    private void setChecked(List<PermissionRespNode> list, Set<String> checkList) {
+    private void setChecked(List<PermissionRespNode> list, Set<Object> checkList) {
         for (PermissionRespNode node : list) {
             if (checkList.contains(node.getId())
                     && (node.getChildren() == null || node.getChildren().isEmpty())) {
@@ -106,34 +115,18 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deletedRole(String id) {
+        //删除角色
         sysRoleMapper.deleteById(id);
-
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("user_id").eq("role_id", id);
-        rolePermissionService.removeByRoleId(id);
-        userRoleService.removeByRoleId(id);
+        //删除角色权限关联
+        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(SysRolePermission::getRoleId, id);
+        rolePermissionService.remove(queryWrapper);
+        //删除角色用户关联
+        LambdaQueryWrapper<SysUserRole> roleQueryWrapper = new LambdaQueryWrapper();
+        roleQueryWrapper.eq(SysUserRole::getRoleId, id);
+        userRoleService.remove(roleQueryWrapper);
         // 刷新权限
         httpSessionService.refreshRolePermission(id);
-    }
-
-    @Override
-    public IPage<SysRole> pageInfo(SysRole vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
-        QueryWrapper queryWrapper = new QueryWrapper();
-        if (!StringUtils.isEmpty(vo.getName())) {
-            queryWrapper.like("name", vo.getName());
-        }
-        if (!StringUtils.isEmpty(vo.getStartTime())) {
-            queryWrapper.gt("create_time", vo.getStartTime());
-        }
-        if (!StringUtils.isEmpty(vo.getEndTime())) {
-            queryWrapper.lt("create_time", vo.getEndTime());
-        }
-        if (!StringUtils.isEmpty(vo.getStatus())) {
-            queryWrapper.eq("status", vo.getStatus());
-        }
-        queryWrapper.orderByDesc("create_time");
-        return sysRoleMapper.selectPage(page, queryWrapper);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.company.project.entity.SysUserRole;
 import com.company.project.service.HttpSessionService;
+import com.company.project.service.UserRoleService;
 import com.company.project.vo.req.*;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
@@ -37,6 +40,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRoleService userRoleService;
     @Autowired
     private HttpSessionService httpSessionService;
 
@@ -147,8 +152,11 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "删除用户")
     @RequiresPermissions("sys:user:deleted")
     public DataResult deletedUser(@RequestBody @ApiParam(value = "用户id集合") List<String> userIds, HttpServletRequest request) {
-        String userId = httpSessionService.getCurrentUserId();
-        userService.deletedUsers(userIds, userId);
+        //删除用户， 删除redis的绑定的角色跟权限
+        httpSessionService.abortUserByUserIds(userIds);
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(SysUser::getId, userIds);
+        userService.remove(queryWrapper);
         return DataResult.success();
     }
 
@@ -167,9 +175,18 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "赋予角色-用户赋予角色接口")
     @RequiresPermissions("sys:user:update:role")
     public DataResult<UserOwnRoleRespVO> setUserOwnRole(@PathVariable("userId") String userId, @RequestBody List<String> roleIds) {
-        DataResult result = DataResult.success();
-        userService.setUserOwnRole(userId, roleIds);
-        return result;
+
+        LambdaQueryWrapper<SysUserRole> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(SysUserRole::getUserId, userId);
+        userRoleService.remove(queryWrapper);
+        if (null != roleIds && !roleIds.isEmpty()) {
+            UserRoleOperationReqVO reqVO = new UserRoleOperationReqVO();
+            reqVO.setUserId(userId);
+            reqVO.setRoleIds(roleIds);
+            userRoleService.addUserRoleInfo(reqVO);
+        }
+        httpSessionService.refreshUerId(userId);
+        return  DataResult.success();
     }
 
 

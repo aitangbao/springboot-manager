@@ -64,7 +64,7 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "查询组织详情")
     @RequiresPermissions("sys:dept:detail")
     public DataResult<SysDept> detailInfo(@PathVariable("id") String id) {
-        return DataResult.success(deptService.detailInfo(id));
+        return DataResult.success(deptService.getById(id));
     }
 
     @GetMapping("/dept/tree")
@@ -81,4 +81,5 @@ public class DeptController {
     @RequiresPermissions("sys:dept:list")
     public DataResult<List<SysDept>> getDeptAll() {
         return DataResult.success(deptService.selectAll());    }
+
 }

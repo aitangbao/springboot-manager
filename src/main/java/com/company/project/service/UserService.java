@@ -40,8 +40,5 @@ public interface UserService extends IService<SysUser> {
     void deletedUsers(List<String> userIds,String operationId);
 
     UserOwnRoleRespVO getUserOwnRole(String userId);
-
-    void setUserOwnRole(String userId,List<String> roleIds);
-
     void updateUserInfoMy(SysUser vo, String userId);
 }

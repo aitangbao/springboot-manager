@@ -1,7 +1,9 @@
 package com.company.project.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysRole;
+import com.company.project.entity.SysRolePermission;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * @version V1.0
  * @date 2020年3月18日
  */
-public interface RoleService {
+public interface RoleService  extends IService<SysRole> {
 
     SysRole addRole(SysRole vo);
 
@@ -21,8 +23,6 @@ public interface RoleService {
     SysRole detailInfo(String id);
 
     void deletedRole(String id);
-
-    IPage<SysRole> pageInfo(SysRole vo);
 
     List<SysRole> getRoleInfoByUserId(String userId);
 

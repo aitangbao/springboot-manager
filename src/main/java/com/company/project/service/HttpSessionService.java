@@ -2,10 +2,14 @@ package com.company.project.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.company.project.common.utils.Constant;
+import com.company.project.entity.SysRolePermission;
 import com.company.project.entity.SysUser;
+import com.company.project.entity.SysUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -74,7 +78,7 @@ public class HttpSessionService {
      */
     public static String getUserIdByToken(String token) {
         if (StringUtils.isBlank(token) || !token.contains("#")) {
-            return "";
+            return "" ;
         } else {
             return token.substring(token.indexOf("#") + 1);
         }
@@ -239,15 +243,20 @@ public class HttpSessionService {
      * @param permissionId
      */
     public void refreshPermission(String permissionId) {
-        //根据权限id，更新redis权限
-        List<String> roleIds = rolePermissionService.getRoleIds(permissionId);
+        //根据权限id，获取所有角色id
+        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, permissionId);
+        List<Object> roleIds = rolePermissionService.listObjs(queryWrapper);
         if (!roleIds.isEmpty()) {
-            List<String> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
+            //根据角色id， 获取关联用户
+            LambdaQueryWrapper<SysUserRole> sysUserRoleQueryWrapper = new LambdaQueryWrapper();
+            sysUserRoleQueryWrapper.select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds);
+            List<Object> userIds = userRoleService.listObjs(sysUserRoleQueryWrapper);
             if (!userIds.isEmpty()) {
-                for (String userId : userIds) {
-                    redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
-                }
-
+                //删除用户redis
+                userIds.parallelStream().forEach(userId -> {
+                    redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId.toString(), redisPermissionRefreshExpire);
+                });
             }
         }
     }
@@ -265,7 +274,7 @@ public class HttpSessionService {
 
         // 根据length生成相应长度的随机字符串
         for (int i = 0; i < length; i++) {
-            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num" ;
 
             //输出字母还是数字
             if ("char".equalsIgnoreCase(charOrNum)) {

@@ -1,6 +1,9 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysRole;
 import com.company.project.service.RoleService;
@@ -71,7 +74,22 @@ public class RoleController {
     @LogAnnotation(title = "角色管理", action = "分页获取角色信息")
     @RequiresPermissions("sys:role:list")
     public DataResult<IPage<SysRole>> pageInfo(@RequestBody SysRole vo) {
-        return DataResult.success(roleService.pageInfo(vo));
+        Page page = new Page(vo.getPage(), vo.getLimit());
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper();
+        if (!StringUtils.isEmpty(vo.getName())) {
+            queryWrapper.like(SysRole::getName, vo.getName());
+        }
+        if (!StringUtils.isEmpty(vo.getStartTime())) {
+            queryWrapper.gt(SysRole::getCreateTime, vo.getStartTime());
+        }
+        if (!StringUtils.isEmpty(vo.getEndTime())) {
+            queryWrapper.lt(SysRole::getCreateTime, vo.getEndTime());
+        }
+        if (!StringUtils.isEmpty(vo.getStatus())) {
+            queryWrapper.eq(SysRole::getStatus, vo.getStatus());
+        }
+        queryWrapper.orderByDesc(SysRole::getCreateTime);
+        return DataResult.success(roleService.page(page, queryWrapper));
     }
 
 }

@@ -40,7 +40,7 @@ public class HomeServiceImpl implements HomeService {
 
         if (sysUser != null) {
             BeanUtils.copyProperties(sysUser, vo);
-            SysDept sysDept = deptService.detailInfo(sysUser.getDeptId());
+            SysDept sysDept = deptService.getById(sysUser.getDeptId());
             if (sysDept != null) {
                 vo.setDeptId(sysDept.getId());
                 vo.setDeptName(sysDept.getName());

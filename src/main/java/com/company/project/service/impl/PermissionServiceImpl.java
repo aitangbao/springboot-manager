@@ -1,10 +1,12 @@
 package com.company.project.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysPermission;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.entity.SysRolePermission;
 import com.company.project.mapper.SysPermissionMapper;
 import com.company.project.service.*;
 import com.company.project.vo.resp.PermissionRespNode;
@@ -49,124 +51,17 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (roleIds.isEmpty()) {
             return null;
         }
-        List<String> permissionIds = rolePermissionService.getPermissionIdsByRoles(roleIds);
+        LambdaQueryWrapper<SysRolePermission> sysRoleQueryWrapper = new LambdaQueryWrapper();
+        sysRoleQueryWrapper.select(SysRolePermission::getPermissionId).in(SysRolePermission::getRoleId, roleIds);
+        List<Object> permissionIds = rolePermissionService.listObjs(sysRoleQueryWrapper);
         if (permissionIds.isEmpty()) {
             return null;
         }
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.in("id", permissionIds);
-        queryWrapper.orderByAsc("order_num");
+        LambdaQueryWrapper<SysPermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(SysPermission::getId, permissionIds);
+        queryWrapper.orderByAsc(SysPermission::getOrderNum);
         List<SysPermission> result = sysPermissionMapper.selectList(queryWrapper);
         return result;
-    }
-
-    /**
-     * 新增菜单权限
-     */
-    @Override
-    public SysPermission addPermission(SysPermission sysPermission) {
-        verifyForm(sysPermission);
-        sysPermission.setStatus(1);
-        sysPermissionMapper.insert(sysPermission);
-        return sysPermission;
-    }
-
-    /**
-     * 操作后的菜单类型是目录的时候 父级必须为目录
-     * 操作后的菜单类型是菜单的时候，父类必须为目录类型
-     * 操作后的菜单类型是按钮的时候 父类必须为菜单类型
-     */
-    private void verifyFormPid(SysPermission sysPermission) {
-        SysPermission parent = sysPermissionMapper.selectById(sysPermission.getPid());
-        switch (sysPermission.getType()) {
-            case 1:
-                if (parent != null) {
-                    if (parent.getType() != 1) {
-                        throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_CATALOG_ERROR);
-                    }
-                } else if (!sysPermission.getPid().equals("0")) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_CATALOG_ERROR);
-                }
-                break;
-            case 2:
-                if (parent == null || parent.getType() != 1) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_MENU_ERROR);
-                }
-                if (StringUtils.isEmpty(sysPermission.getUrl())) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_NOT_NULL);
-                }
-
-                break;
-            case 3:
-                if (parent == null || parent.getType() != 2) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_BTN_ERROR);
-                }
-                if (StringUtils.isEmpty(sysPermission.getPerms())) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_PERMS_NULL);
-                }
-                if (StringUtils.isEmpty(sysPermission.getUrl())) {
-                    throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_NOT_NULL);
-                }
-                break;
-        }
-    }
-
-    /**
-     * 编辑或者新增的时候检验
-     */
-    private void verifyForm(SysPermission sysPermission) {
-
-        verifyFormPid(sysPermission);
-        /**
-         * id 不为空说明是编辑
-         */
-//        if (!StringUtils.isEmpty(sysPermission.getId())) {
-//            QueryWrapper queryWrapper = new QueryWrapper();
-//            queryWrapper.eq("pid", sysPermission.getId());
-//            List<SysPermission> list = sysPermissionMapper.selectList(queryWrapper);
-//            if (!list.isEmpty()) {
-//                throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_UPDATE);
-//            }
-//        }
-
-    }
-
-    /**
-     * 查询菜单权限详情
-     */
-    @Override
-    public SysPermission detailInfo(String permissionId) {
-
-        return sysPermissionMapper.selectById(permissionId);
-    }
-
-    /**
-     * 更新菜单权限
-     */
-    @Override
-    public void updatePermission(SysPermission update) {
-
-        SysPermission sysPermission = sysPermissionMapper.selectById(update.getId());
-        if (null == sysPermission) {
-            log.error("传入 的 id:{}不合法", update.getId());
-            throw new BusinessException(BaseResponseCode.DATA_ERROR);
-        }
-        /**
-         * 只有类型变更
-         * 或者所属菜单变更
-         */
-        if (sysPermission.getType().equals(update.getType()) || !sysPermission.getPid().equals(update.getPid())) {
-            verifyForm(update);
-        }
-        sysPermissionMapper.updateById(update);
-        /**
-         * 所有管理这个菜单权限用户将重新刷新token
-         */
-//        if (!sysPermission.getPerms().equals(update.getPerms())) {
-//            //刷新权限
-//            httpSessionService.refreshPermission(update.getId());
-//        }
-
     }
 
     /**
@@ -182,15 +77,18 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             log.error("传入 的 id:{}不合法", permissionId);
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("pid", permissionId);
+        //获取下一级
+        LambdaQueryWrapper<SysPermission> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(SysPermission::getPid, permissionId);
         List<SysPermission> childs = sysPermissionMapper.selectList(queryWrapper);
         if (!childs.isEmpty()) {
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
         sysPermissionMapper.deleteById(permissionId);
         //删除和角色关联
-        rolePermissionService.removeByPermissionId(permissionId);
+        LambdaQueryWrapper<SysRolePermission> LambdaQueryWrapper = new LambdaQueryWrapper();
+        LambdaQueryWrapper.eq(SysRolePermission::getPermissionId, permissionId);
+        rolePermissionService.remove(LambdaQueryWrapper);
         //刷新权限
         httpSessionService.refreshPermission(permissionId);
     }

@@ -27,13 +27,6 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    public int removeByRoleId(String roleId) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("role_id", roleId);
-        return sysUserRoleMapper.delete(queryWrapper);
-    }
-
-    @Override
     public List<String> getRoleIdsByUserId(String userId) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.select("role_id").eq("user_id", userId);
@@ -47,7 +40,6 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
         if (vo.getRoleIds() == null || vo.getRoleIds().isEmpty()) {
             return;
         }
-        Date createTime = new Date();
         List<SysUserRole> list = new ArrayList<>();
         for (String roleId : vo.getRoleIds()) {
             SysUserRole sysUserRole = new SysUserRole();
@@ -60,21 +52,6 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
         sysUserRoleMapper.delete(queryWrapper);
         //批量插入
         this.saveBatch(list);
-    }
-
-    @Override
-    public int removeByUserId(String userId) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("user_id", userId);
-        return sysUserRoleMapper.delete(queryWrapper);
-    }
-
-    @Override
-    public List<String> getUserIdsByRoleIds(List<String> roleIds) {
-
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("user_id").in("role_id", roleIds);
-        return sysUserRoleMapper.selectObjs(queryWrapper);
     }
 
     @Override

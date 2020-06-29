@@ -2,6 +2,7 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Service
 @Slf4j
-public class DeptServiceImpl implements DeptService {
+public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements DeptService {
     @Autowired
     private SysDeptMapper sysDeptMapper;
     @Autowired
@@ -100,11 +101,6 @@ public class DeptServiceImpl implements DeptService {
                 sysDeptMapper.updateById(entity);
             });
         }
-    }
-
-    @Override
-    public SysDept detailInfo(String id) {
-        return sysDeptMapper.selectById(id);
     }
 
     @Override
@@ -183,14 +179,14 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<SysDept> selectAll() {
-        List<SysDept> list = sysDeptMapper.selectList(new QueryWrapper<>());
-        for (SysDept sysDept : list) {
-            SysDept parent = sysDeptMapper.selectById(sysDept.getPid());
-            if (parent != null) {
-                sysDept.setPidName(parent.getName());
+        List<SysDept> deptList = sysDeptMapper.selectList(new QueryWrapper<>());
+        deptList.parallelStream().forEach(entity -> {
+            SysDept parentDept = sysDeptMapper.selectById(entity.getPid());
+            if (parentDept != null) {
+                entity.setPidName(parentDept.getName());
             }
-        }
-        return list;
+        });
+        return deptList;
     }
 
     //获取新的部门编码

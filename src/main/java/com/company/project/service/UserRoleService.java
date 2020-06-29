@@ -1,5 +1,8 @@
 package com.company.project.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.company.project.entity.SysJobEntity;
+import com.company.project.entity.SysUserRole;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 
 import java.util.List;
@@ -11,19 +14,11 @@ import java.util.List;
  * @version V1.0
  * @date 2020年3月18日
  */
-public interface UserRoleService {
-
-    int removeByRoleId(String roleId);
+public interface UserRoleService  extends IService<SysUserRole> {
 
     List<String> getRoleIdsByUserId(String userId);
 
-
     void addUserRoleInfo(UserRoleOperationReqVO vo);
-
-    int removeByUserId(String userId);
-
-
-    List<String> getUserIdsByRoleIds(List<String> roleIds);
 
     List<String> getUserIdsByRoleId(String roleId);
 }

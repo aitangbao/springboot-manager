@@ -15,15 +15,5 @@ import java.util.List;
  */
 public interface RolePermissionService extends IService<SysRolePermission> {
 
-    int removeByRoleId(String roleId);
-
-    List<String> getPermissionIdsByRoles(List<String> roleIds);
-
     void addRolePermission(RolePermissionOperationReqVO vo);
-
-    int removeByPermissionId(String permissionId);
-
-    List<String> getRoleIds(String permissionId);
-    List<String> getPermissionIdsByRoleId(String roleId);
-
 }
