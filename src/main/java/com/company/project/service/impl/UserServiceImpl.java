@@ -218,12 +218,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public SysUser detailInfo(String userId) {
-
-        return sysUserMapper.selectById(userId);
-    }
-
-    @Override
     public void addUser(SysUser vo) {
 
         QueryWrapper queryWrapper = new QueryWrapper();
@@ -288,19 +282,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.in("dept_id", deptIds);
         return sysUserMapper.selectList(queryWrapper);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deletedUsers(List<String> userIds, String operationId) {
-
-        //删除用户， 删除redis的绑定的角色跟权限
-        httpSessionService.abortUserByUserIds(userIds);
-
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.in("id", userIds);
-        sysUserMapper.delete(queryWrapper);
-
     }
 
     @Override

@@ -35,7 +35,7 @@ public class HomeServiceImpl implements HomeService {
     public HomeRespVO getHomeInfo(String userId) {
 
 
-        SysUser sysUser = userService.detailInfo(userId);
+        SysUser sysUser = userService.getById(userId);
         UserInfoRespVO vo = new UserInfoRespVO();
 
         if (sysUser != null) {

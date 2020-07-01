@@ -2,6 +2,7 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.SysUserRole;
 import com.company.project.service.HttpSessionService;
 import com.company.project.service.UserRoleService;
@@ -13,6 +14,7 @@ import com.company.project.entity.SysUser;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.service.UserService;
 import com.company.project.common.utils.DataResult;
+import com.google.code.kaptcha.Constants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -45,13 +47,12 @@ public class UserController {
     @Autowired
     private HttpSessionService httpSessionService;
 
-
     @PostMapping(value = "/user/login")
     @ApiOperation(value = "用户登录接口")
-    public DataResult<LoginRespVO> login(@RequestBody @Valid LoginReqVO vo) {
-        DataResult<LoginRespVO> result = DataResult.success();
-        result.setData(userService.login(vo));
-        return result;
+    public DataResult<LoginRespVO> login(@RequestBody @Valid LoginReqVO vo, HttpServletRequest request) {
+        //校验图像验证码
+        validImageCode(vo.getCaptcha(), request);
+        return DataResult.success(userService.login(vo));
     }
 
     @PostMapping("/user/register")
@@ -61,7 +62,6 @@ public class UserController {
         result.setData(userService.register(vo));
         return result;
     }
-
 
     @GetMapping("/user/unLogin")
     @ApiOperation(value = "引导客户端去登录")
@@ -98,9 +98,7 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "查询用户详情")
     @RequiresPermissions("sys:user:detail")
     public DataResult<SysUser> detailInfo(@PathVariable("id") String id) {
-        DataResult<SysUser> result = DataResult.success();
-        result.setData(userService.detailInfo(id));
-        return result;
+        return DataResult.success(userService.getById(id));
     }
 
     @GetMapping("/user")
@@ -108,9 +106,7 @@ public class UserController {
     @LogAnnotation(title = "用户管理", action = "查询用户详情")
     public DataResult<SysUser> youSelfInfo(HttpServletRequest request) {
         String userId = httpSessionService.getCurrentUserId();
-        DataResult<SysUser> result = DataResult.success();
-        result.setData(userService.detailInfo(userId));
-        return result;
+        return DataResult.success(userService.getById(userId));
     }
 
     @PostMapping("/users")
@@ -189,5 +185,17 @@ public class UserController {
         return  DataResult.success();
     }
 
+    /**
+     * 校验图像验证码
+     * @param imageCode 验证码
+     * @param request request
+     */
+    private void validImageCode(String imageCode, HttpServletRequest request) {
+        String captchaId = (String)
+                request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        if (!captchaId.equals(imageCode)) {
+            throw new BusinessException("验证码输入有误");
+        }
+    }
 
 }

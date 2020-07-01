@@ -1,6 +1,5 @@
 package com.company.project.controller;
 
-import com.company.project.common.utils.DataResult;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
@@ -8,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,19 +68,6 @@ public class KaptchaController {
             responseOutputStream.close();
         }
 
-    }
-
-    @ApiOperation(value = "校验验证码")
-    @PostMapping(value = "/checkVerify")
-    public DataResult checkVerify(HttpServletRequest request) {
-        String captchaId = (String)
-                request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        String parameter = request.getParameter("imageCode");
-        if (!captchaId.equals(parameter)) {
-            return DataResult.fail("验证码输入有误");
-        } else {
-            return DataResult.success();
-        }
     }
 
 }
