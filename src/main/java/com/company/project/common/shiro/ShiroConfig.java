@@ -78,7 +78,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/user/token", "anon");
         filterChainDefinitionMap.put("/sys/getVerify", "anon");
         filterChainDefinitionMap.put("/sys/checkVerify", "anon");
-        filterChainDefinitionMap.put("/index/**", "anon");
+        filterChainDefinitionMap.put("/index/login", "anon");
         filterChainDefinitionMap.put("*.html", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/doc.html", "anon");
