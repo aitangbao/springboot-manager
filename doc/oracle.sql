@@ -9,8 +9,8 @@ CREATE TABLE sys_dept (
   dept_manager_id varchar2(64),
   manager_name varchar2(255),
   phone varchar2(20),
-  create_time timestamp,
-  update_time timestamp,
+  create_time varchar2(20),
+  update_time varchar2(20),
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
@@ -26,7 +26,7 @@ CREATE TABLE sys_log (
   method varchar2(200),
   params varchar2(1000),
   ip varchar2(64),
-  create_time timestamp,
+  create_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_log" IS '日志';
@@ -43,8 +43,8 @@ CREATE TABLE sys_permission  (
   order_num NUMBER(10, 0),
   type NUMBER(10, 0),
   status NUMBER(10, 0),
-  create_time timestamp,
-  update_time timestamp,
+  create_time varchar2(20),
+  update_time varchar2(20),
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
@@ -56,8 +56,8 @@ CREATE TABLE sys_role (
   name varchar2(255),
   description varchar2(255),
   status NUMBER(10, 0),
-  create_time timestamp,
-  update_time timestamp,
+  create_time varchar2(20),
+  update_time varchar2(20),
   deleted NUMBER(10, 0),
   PRIMARY KEY (id)
 );
@@ -68,7 +68,7 @@ CREATE TABLE sys_role_permission (
   id varchar2(64) ,
   role_id varchar2(64),
   permission_id varchar2(64),
-  create_time timestamp,
+  create_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_role_permission" IS '角色权限关联表';
@@ -91,8 +91,8 @@ CREATE TABLE sys_user (
   create_id varchar2(64),
   update_id varchar2(64),
   create_where NUMBER(10, 0) DEFAULT 1,
-  create_time timestamp,
-  update_time timestamp,
+  create_time varchar2(20),
+  update_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_user" IS '用户';
@@ -102,7 +102,7 @@ CREATE TABLE sys_user_role (
   id varchar2(64),
   user_id varchar2(64),
   role_id varchar2(64),
-  create_time timestamp,
+  create_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_user_role" IS '用户角色';
@@ -113,7 +113,7 @@ CREATE TABLE sys_dict  (
   id varchar2(64) ,
   name varchar2(100) ,
   remark varchar2(255) ,
-  create_time timestamp,
+  create_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_dict" IS '数据字典';
@@ -125,7 +125,7 @@ CREATE TABLE sys_dict_detail  (
   value varchar2(255) ,
   sort NUMBER(10, 0) ,
   dict_id varchar2(50) ,
-  create_time timestamp,
+  create_time varchar2(20),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_dict_detail" IS '数据字典明细';
@@ -138,7 +138,7 @@ CREATE TABLE sys_job  (
   cron_expression varchar2(100) ,
   status  NUMBER(10, 0),
   remark varchar2(255) ,
-  create_time timestamp ,
+  create_time varchar2(20) ,
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_job" IS '定时任务';
@@ -152,7 +152,7 @@ CREATE TABLE sys_job_log  (
   status NUMBER(10, 0),
   error NUMBER(10, 0),
   times NUMBER(10, 0) ,
-  create_time timestamp ,
+  create_time varchar2(20) ,
   PRIMARY KEY (id)
  );
 COMMENT ON TABLE "sys_job_log" IS '定时任务日志';
@@ -162,7 +162,7 @@ COMMENT ON TABLE "sys_job_log" IS '定时任务日志';
   id varchar2(50),
   title varchar2(255),
   content VARCHAR2(4000) ,
-  create_time timestamp ,
+  create_time varchar2(20) ,
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_content" IS '文章管理';
@@ -171,7 +171,7 @@ COMMENT ON TABLE "sys_content" IS '文章管理';
 CREATE TABLE sys_files  (
   id varchar2(50) ,
   url varchar2(200),
-  create_date timestamp ,
+  create_date varchar2(20) ,
   file_name varchar2(255),
   file_path varchar2(255) ,
   PRIMARY KEY (id)
