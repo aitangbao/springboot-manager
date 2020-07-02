@@ -20,6 +20,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -60,7 +61,7 @@ public class CustomAccessControlFilter extends AccessControlFilter {
             getSubject(servletRequest, servletResponse).login(usernamePasswordToken);
         } catch (BusinessException exception) {
             if (HttpContextUtils.isAjaxRequest(request)) {
-                customRsponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
+                customResponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
             } else if (exception.getMessageCode() == BaseResponseCode.TOKEN_ERROR.getCode()) {
                 servletRequest.getRequestDispatcher("/index/login").forward(servletRequest, servletResponse);
             } else if (exception.getMessageCode() == BaseResponseCode.UNAUTHORIZED_ERROR.getCode()) {
@@ -73,9 +74,9 @@ public class CustomAccessControlFilter extends AccessControlFilter {
             if (HttpContextUtils.isAjaxRequest(request)) {
                 if (e.getCause() instanceof BusinessException) {
                     BusinessException exception = (BusinessException) e.getCause();
-                    customRsponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
+                    customResponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
                 } else {
-                    customRsponse(BaseResponseCode.SYSTEM_BUSY.getCode(), BaseResponseCode.SYSTEM_BUSY.getMsg(), servletResponse);
+                    customResponse(BaseResponseCode.SYSTEM_BUSY.getCode(), BaseResponseCode.SYSTEM_BUSY.getMsg(), servletResponse);
                 }
             } else {
                 servletRequest.getRequestDispatcher("/index/403").forward(servletRequest, servletResponse);
@@ -85,9 +86,9 @@ public class CustomAccessControlFilter extends AccessControlFilter {
             if (HttpContextUtils.isAjaxRequest(request)) {
                 if (e.getCause() instanceof BusinessException) {
                     BusinessException exception = (BusinessException) e.getCause();
-                    customRsponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
+                    customResponse(exception.getMessageCode(), exception.getDetailMessage(), servletResponse);
                 } else {
-                    customRsponse(BaseResponseCode.SYSTEM_BUSY.getCode(), BaseResponseCode.SYSTEM_BUSY.getMsg(), servletResponse);
+                    customResponse(BaseResponseCode.SYSTEM_BUSY.getCode(), BaseResponseCode.SYSTEM_BUSY.getMsg(), servletResponse);
                 }
             } else {
                 servletRequest.getRequestDispatcher("/index/500").forward(servletRequest, servletResponse);
@@ -97,7 +98,7 @@ public class CustomAccessControlFilter extends AccessControlFilter {
         return true;
     }
 
-    private void customRsponse(int code, String msg, ServletResponse response) {
+    private void customResponse(int code, String msg, ServletResponse response) {
         try {
             DataResult result = DataResult.getResult(code, msg);
 
@@ -106,10 +107,10 @@ public class CustomAccessControlFilter extends AccessControlFilter {
 
             String userJson = JSON.toJSONString(result);
             OutputStream out = response.getOutputStream();
-            out.write(userJson.getBytes("UTF-8"));
+            out.write(userJson.getBytes(StandardCharsets.UTF_8));
             out.flush();
         } catch (IOException e) {
-            log.error("eror={}", e);
+            log.error("error={}", e, e);
         }
     }
 

@@ -1,8 +1,7 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysRole;
@@ -11,11 +10,10 @@ import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
@@ -29,14 +27,14 @@ import javax.validation.Valid;
 @RestController
 @Api(tags = "组织模块-角色管理")
 public class RoleController {
-    @Autowired
+    @Resource
     private RoleService roleService;
 
     @PostMapping("/role")
     @ApiOperation(value = "新增角色接口")
     @LogAnnotation(title = "角色管理", action = "新增角色")
     @RequiresPermissions("sys:role:add")
-    public DataResult<SysRole> addRole(@RequestBody @Valid SysRole vo) {
+    public DataResult addRole(@RequestBody @Valid SysRole vo) {
         return DataResult.success(roleService.addRole(vo));
     }
 
@@ -53,7 +51,7 @@ public class RoleController {
     @ApiOperation(value = "更新角色信息接口")
     @LogAnnotation(title = "角色管理", action = "更新角色信息")
     @RequiresPermissions("sys:role:update")
-    public DataResult updateDept(@RequestBody SysRole vo, HttpServletRequest request) {
+    public DataResult updateDept(@RequestBody SysRole vo) {
         if (StringUtils.isEmpty(vo.getId())) {
             return DataResult.fail("id不能为空");
         }
@@ -65,7 +63,7 @@ public class RoleController {
     @ApiOperation(value = "查询角色详情接口")
     @LogAnnotation(title = "角色管理", action = "查询角色详情")
     @RequiresPermissions("sys:role:detail")
-    public DataResult<SysRole> detailInfo(@PathVariable("id") String id) {
+    public DataResult detailInfo(@PathVariable("id") String id) {
         return DataResult.success(roleService.detailInfo(id));
     }
 
@@ -73,9 +71,10 @@ public class RoleController {
     @ApiOperation(value = "分页获取角色信息接口")
     @LogAnnotation(title = "角色管理", action = "分页获取角色信息")
     @RequiresPermissions("sys:role:list")
-    public DataResult<IPage<SysRole>> pageInfo(@RequestBody SysRole vo) {
+    @SuppressWarnings("unchecked")
+    public DataResult pageInfo(@RequestBody SysRole vo) {
         Page page = new Page(vo.getPage(), vo.getLimit());
-        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper();
+        LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getName())) {
             queryWrapper.like(SysRole::getName, vo.getName());
         }

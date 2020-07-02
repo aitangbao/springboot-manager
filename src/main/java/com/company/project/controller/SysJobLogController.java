@@ -1,12 +1,12 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +15,7 @@ import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysJobLogEntity;
 import com.company.project.service.SysJobLogService;
 
+import javax.annotation.Resource;
 
 
 /**
@@ -28,7 +29,7 @@ import com.company.project.service.SysJobLogService;
 @RestController
 @RequestMapping("/sysJobLog")
 public class SysJobLogController {
-    @Autowired
+    @Resource
     private SysJobLogService sysJobLogService;
 
     @ApiOperation(value = "查询分页数据")
@@ -36,12 +37,12 @@ public class SysJobLogController {
     @RequiresPermissions("sysJob:list")
     public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog){
         Page page = new Page(sysJobLog.getPage(), sysJobLog.getLimit());
-        QueryWrapper queryWrapper = new QueryWrapper();
+        LambdaQueryWrapper<SysJobLogEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysJobLog.getJobId())) {
-            queryWrapper.like("job_id", sysJobLog.getJobId());
+            queryWrapper.like(SysJobLogEntity::getJobId, sysJobLog.getJobId());
         }
-        queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByDesc(SysJobLogEntity::getCreateTime);
         IPage<SysJobLogEntity> iPage = sysJobLogService.page(page, queryWrapper);
         return DataResult.success(iPage);
     }
@@ -51,8 +52,7 @@ public class SysJobLogController {
     @RequiresPermissions("sysJob:delete")
     @LogAnnotation(title = "清空")
     public DataResult delete() {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        sysJobLogService.remove(queryWrapper);
+        sysJobLogService.remove(Wrappers.emptyWrapper());
         return DataResult.success();
     }
 

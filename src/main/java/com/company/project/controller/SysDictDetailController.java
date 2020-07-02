@@ -1,23 +1,24 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import java.util.Date;
 import java.util.List;
 
 import com.company.project.common.utils.DataResult;
 
 import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.service.SysDictDetailService;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -31,7 +32,7 @@ import com.company.project.service.SysDictDetailService;
 @RestController
 @RequestMapping("/sysDictDetail")
 public class SysDictDetailController {
-    @Autowired
+    @Resource
     private SysDictDetailService sysDictDetailService;
 
     @ApiOperation(value = "新增")
@@ -41,9 +42,9 @@ public class SysDictDetailController {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
         }
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("value", sysDictDetail.getValue());
-        queryWrapper.eq("dict_id", sysDictDetail.getDictId());
+        LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
+        queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());
         SysDictDetailEntity q = sysDictDetailService.getOne(queryWrapper);
         if (q != null) {
             return DataResult.fail("字典名称-字典值已存在");
@@ -67,9 +68,9 @@ public class SysDictDetailController {
         if (StringUtils.isEmpty(sysDictDetail.getValue())) {
             return DataResult.fail("字典值不能为空");
         }
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("value", sysDictDetail.getValue());
-        queryWrapper.eq("dict_id", sysDictDetail.getDictId());
+        LambdaQueryWrapper<SysDictDetailEntity> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(SysDictDetailEntity::getValue, sysDictDetail.getValue());
+        queryWrapper.eq(SysDictDetailEntity::getDictId, sysDictDetail.getDictId());
         SysDictDetailEntity q = sysDictDetailService.getOne(queryWrapper);
         if (q != null && !q.getId().equals(sysDictDetail.getId())) {
             return DataResult.fail("字典名称-字典值已存在");
@@ -85,7 +86,7 @@ public class SysDictDetailController {
     @RequiresPermissions("sysDict:list")
     public DataResult findListByPage(@RequestBody SysDictDetailEntity sysDictDetail) {
         Page page = new Page(sysDictDetail.getPage(), sysDictDetail.getLimit());
-        if (sysDictDetail == null || StringUtils.isEmpty(sysDictDetail.getDictId())) {
+        if (StringUtils.isEmpty(sysDictDetail.getDictId())) {
             return DataResult.success();
         }
         IPage<SysDictDetailEntity> iPage = sysDictDetailService.listByPage(page, sysDictDetail.getDictId());

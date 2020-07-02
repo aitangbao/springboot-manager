@@ -1,17 +1,17 @@
 package com.company.project.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysUserRole;
 import com.company.project.mapper.SysUserRoleMapper;
 import com.company.project.service.UserRoleService;
 import com.company.project.vo.req.UserRoleOperationReqVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,16 +23,14 @@ import java.util.List;
  */
 @Service
 public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements UserRoleService {
-    @Autowired
+    @Resource
     private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    public List<String> getRoleIdsByUserId(String userId) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("role_id").eq("user_id", userId);
+    public List getRoleIdsByUserId(String userId) {
+        LambdaQueryWrapper<SysUserRole> queryWrapper = Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getRoleId).eq(SysUserRole::getUserId, userId);
         return sysUserRoleMapper.selectObjs(queryWrapper);
     }
-
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -47,17 +45,13 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
             sysUserRole.setRoleId(roleId);
             list.add(sysUserRole);
         }
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("user_id", vo.getUserId());
-        sysUserRoleMapper.delete(queryWrapper);
+        sysUserRoleMapper.delete(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, vo.getUserId()));
         //批量插入
         this.saveBatch(list);
     }
 
     @Override
-    public List<String> getUserIdsByRoleId(String roleId) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.select("user_id").eq("role_id", roleId);
-        return sysUserRoleMapper.selectObjs(queryWrapper);
+    public List getUserIdsByRoleId(String roleId) {
+        return sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
     }
 }

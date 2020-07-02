@@ -1,7 +1,6 @@
 package com.company.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.company.project.entity.SysJobEntity;
 import com.company.project.entity.SysUserRole;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 

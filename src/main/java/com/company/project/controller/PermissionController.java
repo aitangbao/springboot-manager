@@ -3,7 +3,6 @@ package com.company.project.controller;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
-import com.company.project.vo.resp.PermissionRespNode;
 import com.company.project.entity.SysPermission;
 import com.company.project.service.PermissionService;
 import com.company.project.common.utils.DataResult;
@@ -11,12 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 菜单权限管理
@@ -29,7 +27,8 @@ import java.util.List;
 @RestController
 @Api(tags = "组织模块-菜单权限管理")
 public class PermissionController {
-    @Autowired
+
+    @Resource
     private PermissionService permissionService;
 
     @PostMapping("/permission")
@@ -64,10 +63,7 @@ public class PermissionController {
         if (null == sysPermission) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        /**
-         * 只有类型变更
-         * 或者所属菜单变更
-         */
+        // 只有类型变更或者所属菜单变更
         if (sysPermission.getType().equals(vo.getType()) || !sysPermission.getPid().equals(vo.getPid())) {
             verifyFormPid(vo);
         }
@@ -79,7 +75,7 @@ public class PermissionController {
     @ApiOperation(value = "查询菜单权限接口")
     @LogAnnotation(title = "菜单权限管理", action = "查询菜单权限")
     @RequiresPermissions("sys:permission:detail")
-    public DataResult<SysPermission> detailInfo(@PathVariable("id") String id) {
+    public DataResult detailInfo(@PathVariable("id") String id) {
         return DataResult.success(permissionService.getById(id));
 
     }
@@ -88,7 +84,7 @@ public class PermissionController {
     @ApiOperation(value = "获取所有菜单权限接口")
     @LogAnnotation(title = "菜单权限管理", action = "获取所有菜单权限")
     @RequiresPermissions("sys:permission:list")
-    public DataResult<List<SysPermission>> getAllMenusPermission() {
+    public DataResult getAllMenusPermission() {
         return DataResult.success(permissionService.selectAll());
     }
 
@@ -96,7 +92,7 @@ public class PermissionController {
     @ApiOperation(value = "获取所有目录菜单树接口")
     @LogAnnotation(title = "菜单权限管理", action = "获取所有目录菜单树")
     @RequiresPermissions(value = {"sys:permission:update", "sys:permission:add"}, logical = Logical.OR)
-    public DataResult<List<PermissionRespNode>> getAllMenusPermissionTree(@RequestParam(required = false) String permissionId) {
+    public DataResult getAllMenusPermissionTree(@RequestParam(required = false) String permissionId) {
         return DataResult.success(permissionService.selectAllMenuByTree(permissionId));
     }
 
@@ -104,7 +100,7 @@ public class PermissionController {
     @ApiOperation(value = "获取所有目录菜单树接口")
     @LogAnnotation(title = "菜单权限管理", action = "获取所有目录菜单树")
     @RequiresPermissions(value = {"sys:role:update", "sys:role:add"}, logical = Logical.OR)
-    public DataResult<List<PermissionRespNode>> getAllPermissionTree() {
+    public DataResult getAllPermissionTree() {
         return DataResult.success(permissionService.selectAllByTree());
     }
 
@@ -114,14 +110,15 @@ public class PermissionController {
      * 操作后的菜单类型是按钮的时候 父类必须为菜单类型
      */
     private void verifyFormPid(SysPermission sysPermission) {
-        SysPermission parent = permissionService.getById(sysPermission.getPid());
+        SysPermission parent;
+        parent = permissionService.getById(sysPermission.getPid());
         switch (sysPermission.getType()) {
             case 1:
                 if (parent != null) {
                     if (parent.getType() != 1) {
                         throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_CATALOG_ERROR);
                     }
-                } else if (!sysPermission.getPid().equals("0")) {
+                } else if (!"0".equals(sysPermission.getPid())) {
                     throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_CATALOG_ERROR);
                 }
                 break;
@@ -145,6 +142,7 @@ public class PermissionController {
                     throw new BusinessException(BaseResponseCode.OPERATION_MENU_PERMISSION_URL_NOT_NULL);
                 }
                 break;
+            default:
         }
     }
 }

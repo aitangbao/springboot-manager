@@ -10,9 +10,9 @@ import com.company.project.vo.resp.HomeRespVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import com.company.project.vo.resp.UserInfoRespVO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,11 +24,11 @@ import java.util.List;
  */
 @Service
 public class HomeServiceImpl implements HomeService {
-    @Autowired
+    @Resource
     private UserService userService;
-    @Autowired
+    @Resource
     private DeptService deptService;
-    @Autowired
+    @Resource
     private PermissionService permissionService;
 
     @Override

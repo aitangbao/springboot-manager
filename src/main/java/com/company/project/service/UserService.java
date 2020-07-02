@@ -32,7 +32,7 @@ public interface UserService extends IService<SysUser> {
 
     void updatePwd(UpdatePasswordReqVO vo,String userId);
 
-    List<SysUser> getUserListByDeptIds(List<String> deptIds);
+    List<SysUser> getUserListByDeptIds(List<Object> deptIds);
 
     UserOwnRoleRespVO getUserOwnRole(String userId);
 

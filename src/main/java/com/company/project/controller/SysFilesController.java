@@ -1,10 +1,9 @@
 package com.company.project.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,6 +17,8 @@ import com.company.project.entity.SysFilesEntity;
 import com.company.project.service.SysFilesService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+
 
 /**
  * 文件上传
@@ -30,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/sysFiles")
 @Api(tags = "文件管理")
 public class SysFilesController {
-    @Autowired
+    @Resource
     private SysFilesService sysFilesService;
 
     @ApiOperation(value = "新增")
@@ -57,10 +58,7 @@ public class SysFilesController {
     @RequiresPermissions("sysFiles:list")
     public DataResult findListByPage(@RequestBody SysFilesEntity sysFiles) {
         Page page = new Page(sysFiles.getPage(), sysFiles.getLimit());
-        LambdaQueryWrapper<SysFilesEntity> queryWrapper = new LambdaQueryWrapper();
-        //查询条件示例
-        queryWrapper.orderByDesc(SysFilesEntity::getCreateDate);
-        IPage<SysFilesEntity> iPage = sysFilesService.page(page, queryWrapper);
+        IPage<SysFilesEntity> iPage = sysFilesService.page(page, Wrappers.<SysFilesEntity>lambdaQuery().orderByDesc(SysFilesEntity::getCreateDate));
         return DataResult.success(iPage);
     }
 

@@ -6,9 +6,9 @@ import com.company.project.service.UserRoleService;
 import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 @Api(tags = "组织管理-用户和角色关联接口")
 public class UserRoleController {
-    @Autowired
+    @Resource
     private UserRoleService userRoleService;
 
     @PostMapping("/user/role")

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
 @EnableConfigurationProperties(FileUploadProperties.class)
 public class ShiroConfig {
 
-    @Autowired
+    @Resource
     private FileUploadProperties fileUploadProperties;
 
     @Bean(name = "shiroDialect")
@@ -41,7 +42,6 @@ public class ShiroConfig {
 
     /**
      * 创建realm
-     * @return
      */
     @Bean
     public CustomRealm customRealm() {
@@ -110,7 +110,6 @@ public class ShiroConfig {
      * 使用代理方式;所以需要开启代码支持;
      *
      * @return org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor
-     * @throws
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {

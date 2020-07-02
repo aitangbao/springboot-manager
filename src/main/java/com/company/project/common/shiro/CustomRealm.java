@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 授权
@@ -31,35 +30,33 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class CustomRealm extends AuthorizingRealm {
-    @Autowired
     @Lazy
-    private UserService userService;
     @Autowired
-    @Lazy
     private PermissionService permissionService;
-    @Autowired
     @Lazy
+    @Autowired
     private RoleService roleService;
+    @Lazy
     @Autowired
     private RedisService redisService;
     @Value("${spring.redis.key.prefix.permissionRefresh}")
     private String redisPermissionRefreshKey;
     @Value("${spring.redis.key.prefix.userToken}")
-    private String USER_TOKEN_PREFIX;
+    private String userTokenPrefix;
     @Lazy
     @Autowired
-    private RedisService redisDB;
+    private RedisService redisDb;
+
 
     /**
      * 执行授权逻辑
-     * @param principalCollection
-     * @return
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        String sessionInfoStr = redisDB.get(USER_TOKEN_PREFIX + principalCollection.getPrimaryPrincipal());
+        String sessionInfoStr = redisDb.get(userTokenPrefix + principalCollection.getPrimaryPrincipal());
         if (StringUtils.isEmpty(sessionInfoStr)) {
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
@@ -81,7 +78,7 @@ public class CustomRealm extends AuthorizingRealm {
             authorizationInfo.setStringPermissions(permissions);
             redisSession.put(Constant.PERMISSIONS_KEY, permissions);
 
-            String redisTokenKey = USER_TOKEN_PREFIX + principalCollection.getPrimaryPrincipal();
+            String redisTokenKey = userTokenPrefix + principalCollection.getPrimaryPrincipal();
             Long redisTokenKeyExpire = redisService.getExpire(redisTokenKey);
             //刷新token绑定的角色权限
             redisService.setAndExpire(redisTokenKey, redisSession.toJSONString(), redisTokenKeyExpire);
@@ -103,14 +100,10 @@ public class CustomRealm extends AuthorizingRealm {
 
     /**
      * 执行认证逻辑
-     * @param authenticationToken
-     * @return
-     * @throws AuthenticationException
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getPrincipal(), getName());
-        return simpleAuthenticationInfo;
+        return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getPrincipal(), getName());
     }
 
     private List<String> getRolesByUserId(String userId) {

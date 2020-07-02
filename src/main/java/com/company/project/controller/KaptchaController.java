@@ -5,11 +5,11 @@ import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream;
 @RequestMapping("/sys")
 public class KaptchaController {
     //这里的captchaProducer要和KaptchaConfig里面的bean命名一样
-    @Autowired
+    @Resource
     private Producer captchaProducer;
 
     @ApiOperation(value = "生成验证码")
@@ -39,12 +39,11 @@ public class KaptchaController {
     public void getVerify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         //用字节数组存储
-        byte[] captchaChallengeAsJpeg = null;
+        byte[] captchaChallengeAsJpeg;
         ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
-        ServletOutputStream responseOutputStream =
-                response.getOutputStream();
-        final HttpSession httpSession=request.getSession();
-        try {
+        try (ServletOutputStream responseOutputStream = response.getOutputStream()) {
+            final HttpSession httpSession = request.getSession();
+
             //生产验证码字符串并保存到session中
             String createText = captchaProducer.createText();
             //打印随机生成的字母和数字
@@ -63,9 +62,6 @@ public class KaptchaController {
             responseOutputStream.flush();
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }finally {
-            responseOutputStream.close();
         }
 
     }

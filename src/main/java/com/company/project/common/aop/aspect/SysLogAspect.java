@@ -13,12 +13,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.Date;
 
 /**
  * 日志切面
@@ -31,11 +31,12 @@ import java.util.Date;
 @Component
 @Slf4j
 public class SysLogAspect {
-
-    @Autowired
+    @Lazy
+    @Resource
     private SysLogMapper sysLogMapper;
 
-    @Autowired
+    @Lazy
+    @Resource
     private HttpSessionService httpSessionService;
     /**
      * 此处的切点是注解的方式
@@ -48,9 +49,6 @@ public class SysLogAspect {
 
     /**
      * 环绕增强,相当于MethodInterceptor
-     * @param point
-     * @return
-     * @throws Throwable
      */
     @Around("logPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
@@ -64,7 +62,7 @@ public class SysLogAspect {
         try {
             saveSysLog(point, time);
         } catch (Exception e) {
-            log.error("e={}",e);
+            log.error("sysLog,exception:{}", e, e);
         }
 
         return result;
@@ -98,7 +96,7 @@ public class SysLogAspect {
 
             sysLog.setParams(params);
         } catch (Exception e) {
-
+            log.error("sysLog,exception:{}", e, e);
         }
         //获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();

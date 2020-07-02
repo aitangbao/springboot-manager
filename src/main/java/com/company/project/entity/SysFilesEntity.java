@@ -10,6 +10,7 @@ import com.company.project.vo.req.PageReqVO;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 文件上传
@@ -18,6 +19,7 @@ import lombok.Data;
  * @version V1.0
  * @date 2020年3月18日
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_files")
 public class SysFilesEntity extends PageReqVO implements Serializable {

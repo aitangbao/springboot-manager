@@ -19,7 +19,7 @@ import java.util.Date;
 public class SysPermission implements Serializable {
 
 
-    @TableId(type = IdType.UUID)
+    @TableId
     private String id;
 
     @NotBlank(message = "菜单权限名称不能为空")

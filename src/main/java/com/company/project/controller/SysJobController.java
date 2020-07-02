@@ -1,5 +1,7 @@
 package com.company.project.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.job.utils.ScheduleJob;
@@ -7,10 +9,8 @@ import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +27,8 @@ import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysJobEntity;
 import com.company.project.service.SysJobService;
 
+import javax.annotation.Resource;
+
 
 /**
  * 定时任务
@@ -39,7 +41,7 @@ import com.company.project.service.SysJobService;
 @RestController
 @RequestMapping("/sysJob")
 public class SysJobController {
-    @Autowired
+    @Resource
     private SysJobService sysJobService;
 
     @ApiOperation(value = "新增")
@@ -47,7 +49,7 @@ public class SysJobController {
     @PostMapping("/add")
     @RequiresPermissions("sysJob:add")
     public DataResult add(@RequestBody SysJobEntity sysJob) {
-        if (!isValidExpression(sysJob.getCronExpression())) {
+        if (isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
         }
         DataResult dataResult = ScheduleJob.judgeBean(sysJob.getBeanName());
@@ -73,7 +75,7 @@ public class SysJobController {
     @RequiresPermissions("sysJob:update")
     @LogAnnotation(title = "更新")
     public DataResult update(@RequestBody SysJobEntity sysJob) {
-        if (!isValidExpression(sysJob.getCronExpression())) {
+        if (isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
         }
         DataResult dataResult = ScheduleJob.judgeBean(sysJob.getBeanName());
@@ -90,10 +92,10 @@ public class SysJobController {
     @RequiresPermissions("sysJob:list")
     public DataResult findListByPage(@RequestBody SysJobEntity sysJob) {
         Page page = new Page(sysJob.getPage(), sysJob.getLimit());
-        QueryWrapper queryWrapper = new QueryWrapper();
+        LambdaQueryWrapper<SysJobEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysJob.getBeanName())) {
-            queryWrapper.like("bean_name", sysJob.getBeanName());
+            queryWrapper.like(SysJobEntity::getBeanName, sysJob.getBeanName());
         }
         IPage<SysJobEntity> iPage = sysJobService.page(page, queryWrapper);
         return DataResult.success(iPage);
@@ -135,18 +137,22 @@ public class SysJobController {
     @RequiresPermissions("sysJob:resume")
     public DataResult resume(@RequestBody List<String> ids) {
         sysJobService.resume(ids);
-
         return DataResult.success();
     }
 
+    /**
+     * 判断cron表达式
+     * @param cronExpression cron表达式
+     * @return 是否有误
+     */
     public static boolean isValidExpression(String cronExpression) {
         CronTriggerImpl trigger = new CronTriggerImpl();
         try {
             trigger.setCronExpression(cronExpression);
             Date date = trigger.computeFirstFireTime(null);
-            return date != null && date.after(new Date());
+            return date == null || !date.after(new Date());
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 
@@ -156,7 +162,7 @@ public class SysJobController {
     @GetMapping("/getRecentTriggerTime")
     @RequiresPermissions("sysJob:add")
     public DataResult getRecentTriggerTime(String cron) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             CronTriggerImpl cronTriggerImpl = new CronTriggerImpl();
             cronTriggerImpl.setCronExpression(cron);

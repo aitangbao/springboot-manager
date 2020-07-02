@@ -2,8 +2,8 @@ package com.company.project.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.company.project.vo.req.PageReqVO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -17,9 +17,10 @@ import java.util.List;
  * @version V1.0
  * @date 2020年3月18日
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SysUser extends PageReqVO implements Serializable {
-    @TableId(type = IdType.UUID)
+    @TableId
     private String id;
 
     @NotBlank(message = "账号不能为空")

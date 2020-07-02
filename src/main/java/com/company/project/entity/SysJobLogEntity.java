@@ -10,6 +10,7 @@ import com.company.project.vo.req.PageReqVO;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 定时任务日志
@@ -18,6 +19,7 @@ import lombok.Data;
  * @version V1.0
  * @date 2020年3月18日
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_job_log")
 public class SysJobLogEntity extends PageReqVO implements Serializable {

@@ -1,7 +1,7 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysPermission;
 import com.company.project.common.exception.BusinessException;
@@ -12,11 +12,11 @@ import com.company.project.service.*;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -29,15 +29,14 @@ import java.util.*;
 @Service
 @Slf4j
 public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements PermissionService {
-    @Autowired
+    @Resource
     private UserRoleService userRoleService;
-    @Autowired
+    @Resource
     private RolePermissionService rolePermissionService;
-    @Autowired
-    private SysPermissionMapper sysPermissionMapper;
-    @Autowired
+    @Resource
+    private  SysPermissionMapper sysPermissionMapper;
+    @Resource
     private HttpSessionService httpSessionService;
-
 
     /**
      * 根据用户查询拥有的权限
@@ -51,17 +50,13 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         if (roleIds.isEmpty()) {
             return null;
         }
-        LambdaQueryWrapper<SysRolePermission> sysRoleQueryWrapper = new LambdaQueryWrapper();
-        sysRoleQueryWrapper.select(SysRolePermission::getPermissionId).in(SysRolePermission::getRoleId, roleIds);
-        List<Object> permissionIds = rolePermissionService.listObjs(sysRoleQueryWrapper);
+        List<Object> permissionIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getPermissionId).in(SysRolePermission::getRoleId, roleIds));
         if (permissionIds.isEmpty()) {
             return null;
         }
-        LambdaQueryWrapper<SysPermission> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.in(SysPermission::getId, permissionIds);
-        queryWrapper.orderByAsc(SysPermission::getOrderNum);
-        List<SysPermission> result = sysPermissionMapper.selectList(queryWrapper);
-        return result;
+
+        LambdaQueryWrapper<SysPermission> queryWrapper = Wrappers.<SysPermission>lambdaQuery().in(SysPermission::getId, permissionIds).orderByAsc(SysPermission::getOrderNum);
+        return sysPermissionMapper.selectList(queryWrapper);
     }
 
     /**
@@ -78,17 +73,13 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         //获取下一级
-        LambdaQueryWrapper<SysPermission> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(SysPermission::getPid, permissionId);
-        List<SysPermission> childs = sysPermissionMapper.selectList(queryWrapper);
+        List<SysPermission> childs = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, permissionId));
         if (!childs.isEmpty()) {
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
         sysPermissionMapper.deleteById(permissionId);
         //删除和角色关联
-        LambdaQueryWrapper<SysRolePermission> LambdaQueryWrapper = new LambdaQueryWrapper();
-        LambdaQueryWrapper.eq(SysRolePermission::getPermissionId, permissionId);
-        rolePermissionService.remove(LambdaQueryWrapper);
+        rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, permissionId));
         //刷新权限
         httpSessionService.refreshPermission(permissionId);
     }
@@ -99,9 +90,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      */
     @Override
     public List<SysPermission> selectAll() {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByAsc("order_num");
-        List<SysPermission> result = sysPermissionMapper.selectList(queryWrapper);
+        List<SysPermission> result = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().orderByAsc(SysPermission::getOrderNum));
         if (!result.isEmpty()) {
             for (SysPermission sysPermission : result) {
                 SysPermission parent = sysPermissionMapper.selectById(sysPermission.getPid());
@@ -152,7 +141,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             return list;
         }
         for (SysPermission sysPermission : all) {
-            if (sysPermission.getPid().equals("0")) {
+            if ("0".equals(sysPermission.getPid())) {
                 PermissionRespNode permissionRespNode = new PermissionRespNode();
                 BeanUtils.copyProperties(sysPermission, permissionRespNode);
                 permissionRespNode.setTitle(sysPermission.getName());

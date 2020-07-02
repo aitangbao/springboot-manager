@@ -1,12 +1,11 @@
 package com.company.project.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.company.project.vo.req.PageReqVO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,9 +17,10 @@ import java.util.Date;
  * @version V1.0
  * @date 2020年3月18日
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SysLog extends PageReqVO implements Serializable {
-    @TableId(type = IdType.UUID)
+    @TableId
     private String id;
 
     private String userId;

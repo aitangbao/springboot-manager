@@ -16,7 +16,10 @@ public class Constant {
     public static final String DEPT_TYPE = "D";
 
     public static final Integer DATA_NOT_DELETED = 1;
-    public static final Integer DATA_DELETED = 0;
+
+    public static final String DB_TYPE_MYSQL = "mysql";
+    public static final String DB_TYPE_ORACLE = "oracle";
+    public static final String DB_TYPE_SQL_SERVER = "sqlServer";
     /**
      * 正常token
      */

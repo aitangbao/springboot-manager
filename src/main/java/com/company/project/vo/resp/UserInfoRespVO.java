@@ -3,8 +3,6 @@ package com.company.project.vo.resp;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * UserInfoRespVO
  *
