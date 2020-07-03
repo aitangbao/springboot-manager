@@ -24,15 +24,20 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties(FileUploadProperties.class)
 public class WebMvcConfigurer extends WebMvcConfigurationSupport {
+
     @Resource
     private FileUploadProperties fileUploadProperties;
 
+    /**
+     *  使用阿里 FastJson 作为JSON MessageConverter
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
         //保留空的字段
         config.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
+        config.setSerializerFeatures(SerializerFeature.WriteDateUseDateFormat);
         //SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
         //SerializerFeature.WriteNullNumberAsZero//Number null -> 0
         // 按需配置，更多参考FastJson文档哈
