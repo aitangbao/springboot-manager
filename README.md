@@ -2,10 +2,10 @@
 
 ## 介绍
 基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统    
-数据库支持支持MySQL、Oracle、sqlServer等主流数据库  
+数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
-开发最精简，可当脚手架，适合你来diy  
+开发最精简，可当脚手架，适合你来 DIY
 
 ## 特征
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
@@ -127,3 +127,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
 <img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200706092217.jpg" alt="" style="zoom:25%;" />
+
