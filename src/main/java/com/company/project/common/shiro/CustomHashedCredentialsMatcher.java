@@ -22,14 +22,14 @@ public class CustomHashedCredentialsMatcher extends SimpleCredentialsMatcher {
 
     @Lazy
     @Autowired
-    private RedisService redisDB;
+    private RedisService redisDb;
     @Value("${spring.redis.key.prefix.userToken}")
-    private String USER_TOKEN_PREFIX;
+    private String userTokenPrefix;
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         String accessToken = (String) token.getPrincipal();
-        if (!redisDB.exists(USER_TOKEN_PREFIX + accessToken)) {
+        if (!redisDb.exists(userTokenPrefix + accessToken)) {
             SecurityUtils.getSubject().logout();
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }

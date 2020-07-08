@@ -24,10 +24,7 @@ public interface UserService extends IService<SysUser> {
 
     void updateUserInfo(SysUser vo, String operationId);
 
-
     IPage<SysUser> pageInfo(SysUser vo);
-
-    SysUser detailInfo(String userId);
 
     void addUser(SysUser vo);
 
@@ -35,10 +32,9 @@ public interface UserService extends IService<SysUser> {
 
     void updatePwd(UpdatePasswordReqVO vo,String userId);
 
-    List<SysUser> getUserListByDeptIds(List<String> deptIds);
-
-    void deletedUsers(List<String> userIds,String operationId);
+    List<SysUser> getUserListByDeptIds(List<Object> deptIds);
 
     UserOwnRoleRespVO getUserOwnRole(String userId);
+
     void updateUserInfoMy(SysUser vo, String userId);
 }

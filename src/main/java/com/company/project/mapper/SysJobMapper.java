@@ -4,8 +4,6 @@ import com.company.project.entity.SysJobEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Map;
-
 /**
  * 定时任务 Mapper
  *

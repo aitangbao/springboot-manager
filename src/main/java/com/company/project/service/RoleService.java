@@ -1,9 +1,7 @@
 package com.company.project.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysRole;
-import com.company.project.entity.SysRolePermission;
 
 import java.util.List;
 

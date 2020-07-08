@@ -20,4 +20,7 @@ public class LoginReqVO {
     @ApiModelProperty(value = "用户密码")
     @NotBlank(message = "密码不能为空")
     private String password;
+    @ApiModelProperty(value = "验证码")
+    @NotBlank(message = "验证码不能为空")
+    private String captcha;
 }

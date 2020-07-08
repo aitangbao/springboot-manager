@@ -13,7 +13,7 @@ import lombok.Data;
  * @date 2020年3月18日
  */
 @Data
-public class DataResult <T>{
+public class DataResult{
 
     /**
      * 请求响应code，0为成功 其他为失败
@@ -27,19 +27,16 @@ public class DataResult <T>{
     @ApiModelProperty(value = "响应异常码详细信息", name = "msg")
     private String msg;
 
-    /**
-     * 响应内容 ， code 0 时为 返回 数据
-     */
     @ApiModelProperty(value = "需要返回的数据", name = "data")
-    private T data;
+    private Object data;
 
-    public DataResult(int code, T data) {
+    public DataResult(int code, Object data) {
         this.code = code;
         this.data = data;
         this.msg=null;
     }
 
-    public DataResult(int code, String msg, T data) {
+    public DataResult(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -58,7 +55,7 @@ public class DataResult <T>{
         this.data=null;
     }
 
-    public DataResult(T data) {
+    public DataResult(Object data) {
         this.data = data;
         this.code=BaseResponseCode.SUCCESS.getCode();
         this.msg=BaseResponseCode.SUCCESS.getMsg();
@@ -70,62 +67,42 @@ public class DataResult <T>{
         this.msg = responseCodeInterface.getMsg();
     }
 
-    public DataResult(ResponseCodeInterface responseCodeInterface, T data) {
+    public DataResult(ResponseCodeInterface responseCodeInterface, Object data) {
         this.data = data;
         this.code = responseCodeInterface.getCode();
         this.msg = responseCodeInterface.getMsg();
     }
     /**
      * 操作成功 data为null
-     * @throws
      */
-    public static <T>DataResult success(){
-        return new <T>DataResult();
+    public static DataResult success(){
+        return new DataResult();
     }
     /**
      * 操作成功 data 不为null
-     * @throws
      */
-    public static <T>DataResult success(T data){
-        return new <T>DataResult(data);
+    public static DataResult success(Object data){
+        return new DataResult(data);
     }
 
     /**
      * 操作失败 data 不为null
-     * @throws
      */
-    public static <T>DataResult fail(String msg){
-        return new <T>DataResult(BaseResponseCode.OPERATION_ERRO.getCode(),msg);
-    }
-
-    /**
-     * 自定义 返回操作 data 可控
-     * @throws
-     */
-    public static <T>DataResult getResult(int code,String msg,T data){
-        return new <T>DataResult(code,msg,data);
+    public static DataResult fail(String msg){
+        return new DataResult(BaseResponseCode.OPERATION_ERRO.getCode(),msg);
     }
     /**
      *  自定义返回  data为null
-     * @throws
      */
-    public static <T>DataResult getResult(int code,String msg){
-        return new <T>DataResult(code,msg);
+    public static DataResult getResult(int code,String msg){
+        return new DataResult(code,msg);
     }
     /**
      * 自定义返回 入参一般是异常code枚举 data为空
-     * @throws
      */
-    public static <T>DataResult getResult(BaseResponseCode responseCode){
-        return new <T>DataResult(responseCode);
+    public static DataResult getResult(BaseResponseCode responseCode){
+        return new DataResult(responseCode);
     }
-    /**
-     * 自定义返回 入参一般是异常code枚举 data 可控
-     * @throws
-     */
-    public static <T>DataResult getResult(BaseResponseCode responseCode,T data){
 
-        return new <T>DataResult(responseCode,data);
-    }
 
 }

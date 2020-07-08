@@ -3,7 +3,6 @@ package com.company.project.entity;
 import java.util.Date;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.company.project.vo.req.PageReqVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

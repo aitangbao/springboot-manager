@@ -8,12 +8,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
@@ -27,7 +27,7 @@ import javax.validation.Valid;
 @RestController
 @Api(tags = "组织管理-角色和菜单关联接口")
 public class RolePermissionController {
-    @Autowired
+    @Resource
     private RolePermissionService rolePermissionService;
 
     @PostMapping("/role/permission")

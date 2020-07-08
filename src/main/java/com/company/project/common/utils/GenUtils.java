@@ -29,7 +29,7 @@ import java.util.zip.ZipOutputStream;
 public class GenUtils {
 
     public static List<String> getTemplates() {
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("template/Entity.java.vm");
         templates.add("template/Dao.java.vm");
         templates.add("template/Dao.xml.vm");
@@ -79,7 +79,7 @@ public class GenUtils {
             //列的数据类型，转换成Java类型
             String attrType = config.getString(columnEntity.getDataType(), "unknowType");
             columnEntity.setAttrType(attrType);
-            if (!hasBigDecimal && attrType.equals("BigDecimal")) {
+            if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
             }
             //是否主键
@@ -103,7 +103,7 @@ public class GenUtils {
         String mainPath = config.getString("mainPath");
         mainPath = StringUtils.isBlank(mainPath) ? "com.company" : mainPath;
         //封装模板数据
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(15);
         map.put("tableName", tableEntity.getTableName());
         map.put("comments", tableEntity.getComments());
         map.put("pk", tableEntity.getPk());
@@ -131,7 +131,7 @@ public class GenUtils {
 
             try {
                 //添加到zip
-                zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"))));
+                zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFileName(template, tableEntity.getClassName(), config.getString("package")))));
                 IOUtils.write(sw.toString(), zip, "UTF-8");
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();

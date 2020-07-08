@@ -37,7 +37,7 @@ public class FileUploadProperties {
 
         //set accessUrl
         if (StringUtils.isEmpty(url)) {
-            this.accessUrl = null;;
+            this.accessUrl = null;
         }
         this.accessUrl = url.substring(url.lastIndexOf("/")) + "/**";
         System.out.println("accessUrl="+accessUrl);

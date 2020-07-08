@@ -1,7 +1,8 @@
 package com.company.project.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysDept;
@@ -20,12 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -39,30 +39,28 @@ import java.util.*;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements UserService {
 
-    @Autowired
+    @Resource
     private SysUserMapper sysUserMapper;
-    @Autowired
+    @Resource
     private RoleService roleService;
-    @Autowired
+    @Resource
     private PermissionService permissionService;
-    @Autowired
+    @Resource
     private UserRoleService userRoleService;
-    @Autowired
+    @Resource
     private SysDeptMapper sysDeptMapper;
-    @Autowired
+    @Resource
     private HttpSessionService httpSessionService;
 
     @Value("${spring.redis.allowMultipleLogin}")
     private Boolean allowMultipleLogin;
     @Value("${spring.profiles.active}")
-    private String env;//当前激活的配置文件
+    private String env;
 
     @Override
     public String register(RegisterReqVO vo) {
 
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("username", vo.getUsername());
-        SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+        SysUser sysUserOne = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
         if (sysUserOne != null) {
             throw new BusinessException("用户名已存在！");
         }
@@ -81,9 +79,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     public LoginRespVO login(LoginReqVO vo) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("username", vo.getUsername());
-        SysUser sysUser = sysUserMapper.selectOne(queryWrapper);
+        SysUser sysUser = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
         if (null == sysUser) {
             throw new BusinessException(BaseResponseCode.NOT_ACCOUNT);
         }
@@ -129,9 +125,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
         //如果用户名变更
         if (!sysUser.getUsername().equals(vo.getUsername())) {
-            QueryWrapper queryWrapper = new QueryWrapper();
-            queryWrapper.eq("username", vo.getUsername());
-            SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+            SysUser sysUserOne = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
             if (sysUserOne != null) {
                 throw new BusinessException("用户名已存在！");
             }
@@ -182,29 +176,29 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     @Override
     public IPage<SysUser> pageInfo(SysUser vo) {
         Page page = new Page(vo.getPage(), vo.getLimit());
-        QueryWrapper queryWrapper = new QueryWrapper();
+        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getUsername())) {
-            queryWrapper.like("username", vo.getUsername());
+            queryWrapper.like(SysUser::getUsername, vo.getUsername());
         }
         if (!StringUtils.isEmpty(vo.getStartTime())) {
-            queryWrapper.gt("create_time", vo.getStartTime());
+            queryWrapper.gt(SysUser::getCreateTime, vo.getStartTime());
         }
         if (!StringUtils.isEmpty(vo.getEndTime())) {
-            queryWrapper.lt("create_time", vo.getEndTime());
+            queryWrapper.lt(SysUser::getCreateTime, vo.getEndTime());
         }
         if (!StringUtils.isEmpty(vo.getNickName())) {
-            queryWrapper.like("nick_name", vo.getNickName());
+            queryWrapper.like(SysUser::getNickName, vo.getNickName());
         }
         if (!StringUtils.isEmpty(vo.getStatus())) {
-            queryWrapper.eq("status", vo.getStatus());
+            queryWrapper.eq(SysUser::getStatus, vo.getStatus());
         }
         if (!StringUtils.isEmpty(vo.getDeptNo())) {
-            QueryWrapper queryWrapperDept = new QueryWrapper();
-            queryWrapperDept.select("id").like("relation_code", vo.getDeptNo());
-            List<String> list = sysDeptMapper.selectObjs(queryWrapperDept);
-            queryWrapper.in("dept_id", list);
+            LambdaQueryWrapper<SysDept> queryWrapperDept = Wrappers.lambdaQuery();
+            queryWrapperDept.select(SysDept::getId).like(SysDept::getRelationCode, vo.getDeptNo());
+            List<Object> list = sysDeptMapper.selectObjs(queryWrapperDept);
+            queryWrapper.in(SysUser::getDeptId, list);
         }
-        queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByDesc(SysUser::getCreateTime);
         IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
         if (!iPage.getRecords().isEmpty()) {
             for (SysUser sysUser : iPage.getRecords()) {
@@ -218,17 +212,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public SysUser detailInfo(String userId) {
-
-        return sysUserMapper.selectById(userId);
-    }
-
-    @Override
     public void addUser(SysUser vo) {
 
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("username", vo.getUsername());
-        SysUser sysUserOne = sysUserMapper.selectOne(queryWrapper);
+        SysUser sysUserOne = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
         if (sysUserOne != null) {
             throw new BusinessException("用户已存在，请勿重复添加！");
         }
@@ -284,23 +270,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public List<SysUser> getUserListByDeptIds(List<String> deptIds) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.in("dept_id", deptIds);
-        return sysUserMapper.selectList(queryWrapper);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deletedUsers(List<String> userIds, String operationId) {
-
-        //删除用户， 删除redis的绑定的角色跟权限
-        httpSessionService.abortUserByUserIds(userIds);
-
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.in("id", userIds);
-        sysUserMapper.delete(queryWrapper);
-
+    public List<SysUser> getUserListByDeptIds(List<Object> deptIds) {
+        return sysUserMapper.selectList(Wrappers.<SysUser>lambdaQuery().in(SysUser::getDeptId, deptIds));
     }
 
     @Override

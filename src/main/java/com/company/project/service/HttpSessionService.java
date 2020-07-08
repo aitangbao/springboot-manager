@@ -2,18 +2,17 @@ package com.company.project.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.entity.SysUser;
 import com.company.project.entity.SysUserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
@@ -28,25 +27,24 @@ import java.util.Set;
  */
 @Service
 public class HttpSessionService {
-
-    @Autowired
-    private RedisService redisDB;
-    @Autowired
+    @Resource
+    private RedisService redisService;
+    @Resource
     private UserRoleService userRoleService;
-    @Autowired
+    @Resource
     private RolePermissionService rolePermissionService;
-    @Autowired
+    @Resource
     private HttpServletRequest request;
-    @Autowired
+    @Resource
     private PermissionService permissionService;
-    @Autowired
+    @Resource
     private RoleService roleService;
 
     @Value("${spring.redis.key.prefix.userToken}")
-    private String USER_TOKEN_PREFIX;
+    private String userTokenPrefix;
 
     @Value("${spring.redis.key.expire.userToken}")
-    private int EXPIRE;
+    private int exire;
 
     @Value("${spring.redis.key.prefix.permissionRefresh}")
     private String redisPermissionRefreshKey;
@@ -55,30 +53,30 @@ public class HttpSessionService {
 
     public String createTokenAndUser(SysUser user, List<String> roles, Set<String> permissions) {
         //方便根据id找到redis的key， 修改密码/退出登陆 方便使用
-        String token = getRandomToken(32) + "#" + user.getId();
+        String token = getRandomToken() + "#" + user.getId();
         JSONObject sessionInfo = new JSONObject();
         sessionInfo.put(Constant.USERID_KEY, user.getId());
         sessionInfo.put(Constant.USERNAME_KEY, user.getUsername());
         sessionInfo.put(Constant.ROLES_KEY, roles);
         sessionInfo.put(Constant.PERMISSIONS_KEY, permissions);
-        String key = USER_TOKEN_PREFIX + token;
+        String key = userTokenPrefix + token;
         //设置该用户已登录的token
-        redisDB.setAndExpire(key, sessionInfo.toJSONString(), EXPIRE);
+        redisService.setAndExpire(key, sessionInfo.toJSONString(), exire);
 
         //登陆后删除权限刷新标志
-        redisDB.del(redisPermissionRefreshKey + user.getId());
+        redisService.del(redisPermissionRefreshKey + user.getId());
         return token;
     }
 
     /**
      * 根据token获取userid
      *
-     * @param token
-     * @return
+     * @param token token
+     * @return userid
      */
     public static String getUserIdByToken(String token) {
         if (StringUtils.isBlank(token) || !token.contains("#")) {
-            return "" ;
+            return "";
         } else {
             return token.substring(token.indexOf("#") + 1);
         }
@@ -87,7 +85,7 @@ public class HttpSessionService {
     /**
      * 获取参数中的token
      *
-     * @return
+     * @return token
      */
     public String getTokenFromHeader() {
         String token = request.getHeader(Constant.ACCESS_TOKEN);
@@ -101,15 +99,14 @@ public class HttpSessionService {
     /**
      * 获取当前session信息
      *
-     * @return
+     * @return session信息
      */
     public JSONObject getCurrentSession() {
         String token = getTokenFromHeader();
         if (null != token) {
-            if (redisDB.exists(USER_TOKEN_PREFIX + token)) {
-                String sessionInfoStr = redisDB.get(USER_TOKEN_PREFIX + token);
-                JSONObject sessionInfo = JSON.parseObject(sessionInfoStr);
-                return sessionInfo;
+            if (redisService.exists(userTokenPrefix + token)) {
+                String sessionInfoStr = redisService.get(userTokenPrefix + token);
+                return JSON.parseObject(sessionInfoStr);
             } else {
                 return null;
             }
@@ -119,9 +116,9 @@ public class HttpSessionService {
     }
 
     /**
-     * 获取当前session信息
+     * 获取当前session信息 username
      *
-     * @return
+     * @return username
      */
     public String getCurrentUsername() {
         if (getCurrentSession() != null) {
@@ -132,9 +129,9 @@ public class HttpSessionService {
     }
 
     /**
-     * 获取当前session信息
+     * 获取当前session信息 UserId
      *
-     * @return
+     * @return UserId
      */
     public String getCurrentUserId() {
         if (getCurrentSession() != null) {
@@ -150,7 +147,7 @@ public class HttpSessionService {
      */
     public void abortUserByToken() {
         String token = getTokenFromHeader();
-        redisDB.del(USER_TOKEN_PREFIX + token);
+        redisService.del(userTokenPrefix + token);
     }
 
     /**
@@ -159,14 +156,14 @@ public class HttpSessionService {
     public void abortAllUserByToken() {
         String token = getTokenFromHeader();
         String userId = getUserIdByToken(token);
-        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + userId);
+        redisService.delKeys(userTokenPrefix + "*#" + userId);
     }
 
     /**
      * 使用户的token失效
      */
     public void abortUserById(String userId) {
-        redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + userId);
+        redisService.delKeys(userTokenPrefix + "*#" + userId);
     }
 
     /**
@@ -175,7 +172,7 @@ public class HttpSessionService {
     public void abortUserByUserIds(List<String> userIds) {
         if (CollectionUtils.isNotEmpty(userIds)) {
             for (String id : userIds) {
-                redisDB.delKeys(USER_TOKEN_PREFIX + "*#" + id);
+                redisService.delKeys(userTokenPrefix + "*#" + id);
             }
 
         }
@@ -184,13 +181,13 @@ public class HttpSessionService {
     /**
      * 根据用户id， 刷新redis用户权限
      *
-     * @param userId
+     * @param userId userId
      */
     public void refreshUerId(String userId) {
-        Set<String> keys = redisDB.keys("#" + userId);
+        Set<String> keys = redisService.keys("#" + userId);
         //如果修改了角色/权限， 那么刷新权限
         for (String key : keys) {
-            JSONObject redisSession = JSON.parseObject(redisDB.get(key));
+            JSONObject redisSession = JSON.parseObject(redisService.get(key));
 
             List<String> roleNames = getRolesByUserId(userId);
             if (roleNames != null && !roleNames.isEmpty()) {
@@ -199,25 +196,23 @@ public class HttpSessionService {
             Set<String> permissions = getPermissionsByUserId(userId);
             redisSession.put(Constant.PERMISSIONS_KEY, permissions);
 
-            Long redisTokenKeyExpire = redisDB.getExpire(key);
+            Long redisTokenKeyExpire = redisService.getExpire(key);
             //刷新token绑定的角色权限
-            redisDB.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
+            redisService.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
 
         }
-
-
     }
 
     /**
      * 根据角色id， 刷新redis用户权限
      *
-     * @param roleId
+     * @param roleId roleId
      */
     public void refreshRolePermission(String roleId) {
         List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
         if (!userIds.isEmpty()) {
             for (String userId : userIds) {
-                redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
+                redisService.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
             }
 
         }
@@ -226,23 +221,18 @@ public class HttpSessionService {
     /**
      * 根据权限id， 刷新redis用户权限
      *
-     * @param permissionId
+     * @param permissionId permissionId
      */
     public void refreshPermission(String permissionId) {
         //根据权限id，获取所有角色id
-        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, permissionId);
-        List<Object> roleIds = rolePermissionService.listObjs(queryWrapper);
+        List<Object> roleIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, permissionId));
         if (!roleIds.isEmpty()) {
             //根据角色id， 获取关联用户
-            LambdaQueryWrapper<SysUserRole> sysUserRoleQueryWrapper = new LambdaQueryWrapper();
-            sysUserRoleQueryWrapper.select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds);
-            List<Object> userIds = userRoleService.listObjs(sysUserRoleQueryWrapper);
+            List<Object> userIds = userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds));
             if (!userIds.isEmpty()) {
                 //删除用户redis
-                userIds.parallelStream().forEach(userId -> {
-                    redisDB.setAndExpire(redisPermissionRefreshKey + userId, userId.toString(), redisPermissionRefreshExpire);
-                });
+                userIds.parallelStream().forEach(userId ->
+                        redisService.setAndExpire(redisPermissionRefreshKey + userId, userId.toString(), redisPermissionRefreshExpire));
             }
         }
     }
@@ -251,24 +241,23 @@ public class HttpSessionService {
     /**
      * 生成随机的token
      *
-     * @param length
-     * @return
+     * @return token
      */
-    private String getRandomToken(int length) {
+    private String getRandomToken() {
         Random random = new Random();
         StringBuilder randomStr = new StringBuilder();
 
         // 根据length生成相应长度的随机字符串
-        for (int i = 0; i < length; i++) {
-            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num" ;
+        for (int i = 0; i < 32; i++) {
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
 
             //输出字母还是数字
             if ("char".equalsIgnoreCase(charOrNum)) {
                 //输出是大写字母还是小写字母
                 int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;
                 randomStr.append((char) (random.nextInt(26) + temp));
-            } else if ("num".equalsIgnoreCase(charOrNum)) {
-                randomStr.append(String.valueOf(random.nextInt(10)));
+            } else {
+                randomStr.append(random.nextInt(10));
             }
         }
 

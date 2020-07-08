@@ -1,11 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
 package com.company.project.common.utils;
 
 import org.springframework.beans.BeansException;
@@ -36,22 +28,6 @@ public class SpringContextUtils implements ApplicationContextAware {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	public static <T> T getBean(String name, Class<T> requiredType) {
-		return applicationContext.getBean(name, requiredType);
-	}
-
-	public static boolean containsBean(String name) {
-		return applicationContext.containsBean(name);
-	}
-
-	public static boolean isSingleton(String name) {
-		return applicationContext.isSingleton(name);
-	}
-
-	public static Class<? extends Object> getType(String name) {
-		return applicationContext.getType(name);
 	}
 
 }

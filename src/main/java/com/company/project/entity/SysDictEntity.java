@@ -7,6 +7,7 @@ import com.company.project.vo.req.PageReqVO;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 字典管理
@@ -15,6 +16,7 @@ import lombok.Data;
  * @version V1.0
  * @date 2020年3月18日
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("sys_dict")
 public class SysDictEntity extends PageReqVO implements Serializable {

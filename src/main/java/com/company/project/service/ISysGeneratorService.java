@@ -14,7 +14,7 @@ import com.company.project.entity.SysGenerator;
 public interface ISysGeneratorService {
 
 
-    IPage<SysGenerator> selectAllTables(Page page, SysGenerator vo);
+    IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, SysGenerator vo);
 
     byte[] generatorCode(String[] split);
 }

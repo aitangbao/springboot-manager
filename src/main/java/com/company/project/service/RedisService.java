@@ -2,7 +2,6 @@ package com.company.project.service;
 
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -20,8 +19,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class RedisService {
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private final StringRedisTemplate redisTemplate;
+
+    public RedisService(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     public boolean exists(String key) {
         return this.redisTemplate.hasKey(key);
@@ -41,8 +43,7 @@ public class RedisService {
 
 
     public String get(String key) {
-        String value = this.redisTemplate.opsForValue().get(key);
-        return value;
+        return this.redisTemplate.opsForValue().get(key);
     }
 
     public void del(String key) {
@@ -54,11 +55,11 @@ public class RedisService {
 
     public void setAndExpire(String key, String value, long seconds) {
         this.redisTemplate.opsForValue().set(key, value);
-        this.redisTemplate.expire(key, (long) seconds, TimeUnit.SECONDS);
+        this.redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
     }
 
 
-    public Set keys(String pattern) {
+    public Set<String> keys(String pattern) {
         return redisTemplate.keys("*" + pattern);
     }
 
@@ -67,14 +68,6 @@ public class RedisService {
         if (!CollectionUtils.isEmpty(keys)) {
             this.redisTemplate.delete(keys);
         }
-    }
-
-
-    public long incrby(String key, long increment) {
-        if (null == key) {
-            throw new BusinessException(BaseResponseCode.DATA_ERROR.getCode(), "key不能为空");
-        }
-        return redisTemplate.opsForValue().increment(key, increment);
     }
 
 

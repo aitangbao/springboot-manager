@@ -17,7 +17,7 @@ public class PasswordUtils {
 	 * @param salt 盐
 	 * @param rawPass 明文 
 	 * @param encPass 密文
-	 * @return
+	 * @return 是否匹配
 	 */
 	public static boolean matches(String salt, String rawPass, String encPass) {
 		return new PasswordEncoder(salt).matches(encPass, rawPass);
@@ -26,8 +26,8 @@ public class PasswordUtils {
 	/**
 	 * 明文密码加密
 	 * @param rawPass 明文
-	 * @param salt
-	 * @return
+	 * @param salt 盐
+	 * @reture 加密后
 	 */
 	public static String encode(String rawPass, String salt) {
 		return new PasswordEncoder(salt).encode(rawPass);
@@ -35,13 +35,10 @@ public class PasswordUtils {
 
 	/**
 	 * 获取加密盐
-	 * @return
+	 * @return 盐值
 	 */
 	public static String getSalt() {
 		return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
 	}
 
-	public static void main(String[] args) {
-		System.out.println(encode("123456", "324ce32d86224b00a02b"));
-	}
 }

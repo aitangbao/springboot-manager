@@ -7,14 +7,11 @@ import com.company.project.entity.SysJobLogEntity;
 import com.company.project.service.SysJobLogService;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 
 
 /**
@@ -27,15 +24,18 @@ import java.util.Date;
 public class ScheduleJob extends QuartzJobBean {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Autowired
-	SysJobLogService sysJobLogService;
+	final SysJobLogService sysJobLogService;
+
+	public ScheduleJob(SysJobLogService sysJobLogService) {
+		this.sysJobLogService = sysJobLogService;
+	}
 
 
-    @Override
-    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+	@Override
+    protected void executeInternal(JobExecutionContext context){
         SysJobEntity scheduleJob = (SysJobEntity) context.getMergedJobDataMap()
         		.get(SysJobEntity.JOB_PARAM_KEY);
-        
+
         //获取spring bean
         SysJobLogService scheduleJobLogService = (SysJobLogService) SpringContextUtils.getBean("sysJobLogService");
         
@@ -53,6 +53,7 @@ public class ScheduleJob extends QuartzJobBean {
         	logger.debug("任务准备执行，任务ID：" + scheduleJob.getId());
 
 			Object target = SpringContextUtils.getBean(scheduleJob.getBeanName());
+			assert target != null;
 			Method method = target.getClass().getDeclaredMethod("run", String.class);
 			method.invoke(target, scheduleJob.getParams());
 			
@@ -74,11 +75,18 @@ public class ScheduleJob extends QuartzJobBean {
 			log.setStatus(1);
 			log.setError(StringUtils.substring(e.toString(), 0, 2000));
 		}finally {
+			assert scheduleJobLogService != null;
 			scheduleJobLogService.save(log);
 		}
     }
 
-    public static DataResult judgeBean(String beanName) {
+	/**
+	 * 判断bean是否有效
+	 *
+	 * @param beanName beanName
+	 * @return 返回信息
+	 */
+	public static DataResult judgeBean(String beanName) {
 
 		if (org.springframework.util.StringUtils.isEmpty(beanName)) {
 			return DataResult.fail("spring bean名称不能为空");

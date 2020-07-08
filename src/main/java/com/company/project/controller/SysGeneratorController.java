@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/sysGenerator")
 public class SysGeneratorController {
-
     @Resource
     private ISysGeneratorService sysGeneratorService;
 

@@ -8,7 +8,6 @@ import com.company.project.mapper.GeneratorMapper;
 import com.company.project.service.ISysGeneratorService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -25,12 +24,14 @@ import java.util.zip.ZipOutputStream;
 @Service
 @Slf4j
 public class SysGeneratorServiceImpl  implements ISysGeneratorService{
+    private final GeneratorMapper generatorMapper;
 
-    @Autowired
-    private GeneratorMapper generatorMapper;
+    public SysGeneratorServiceImpl(GeneratorMapper generatorMapper) {
+        this.generatorMapper = generatorMapper;
+    }
 
     @Override
-    public IPage<SysGenerator> selectAllTables(Page page, SysGenerator vo) {
+    public IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, SysGenerator vo) {
         return generatorMapper.selectAllTables(page, vo);
     }
 

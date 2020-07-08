@@ -1,5 +1,7 @@
 package ${package}.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -72,9 +74,9 @@ public class ${className}Controller {
     @ResponseBody
     public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
         Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
-        QueryWrapper queryWrapper = new QueryWrapper();
+        LambdaQueryWrapper<${className}Entity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
-        //queryWrapper.eq("id", ${classname}.getId());
+        //queryWrapper.eq(${className}Entity::getId, ${classname}.getId());
         IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
         return DataResult.success(iPage);
     }

@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 public class SysDept implements Serializable {
-    @TableId(type = IdType.UUID)
+    @TableId
     private String id;
 
     private String deptNo;

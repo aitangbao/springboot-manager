@@ -1,7 +1,7 @@
 package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.entity.SysLog;
@@ -10,10 +10,10 @@ import com.company.project.common.utils.DataResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,17 +27,16 @@ import java.util.List;
 @Api(tags = "系统模块-系统操作日志管理")
 @RestController
 public class SysLogController {
-
-    @Autowired
+    @Resource
     private LogService logService;
 
     @PostMapping("/logs")
     @ApiOperation(value = "分页查询系统操作日志接口")
     @LogAnnotation(title = "系统操作日志管理", action = "分页查询系统操作日志")
     @RequiresPermissions("sys:log:list")
-    public DataResult<IPage<SysLog>> pageInfo(@RequestBody SysLog vo) {
+    public DataResult pageInfo(@RequestBody SysLog vo) {
         Page page = new Page(vo.getPage(), vo.getLimit());
-        LambdaQueryWrapper<SysLog> queryWrapper = new LambdaQueryWrapper();
+        LambdaQueryWrapper<SysLog> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getUsername()) ) {
             queryWrapper.like(SysLog::getUsername, vo.getUsername());
         }

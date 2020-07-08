@@ -5,7 +5,6 @@ import com.company.project.common.job.utils.ScheduleUtils;
 import com.company.project.common.utils.Constant;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -15,10 +14,8 @@ import com.company.project.service.SysJobService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
-import java.util.HashMap;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 定时任务 服务类
@@ -29,11 +26,10 @@ import java.util.Map;
  */
 @Service("sysJobService")
 public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> implements SysJobService {
-    @Autowired
+    @Resource
     private Scheduler scheduler;
-
-    @Autowired
-    SysJobMapper sysJobMapper;
+    @Resource
+    private SysJobMapper sysJobMapper;
     /**
      * 项目启动时，初始化定时器
      */
@@ -109,9 +105,6 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
 
     @Override
     public void updateBatch(List<String> ids, int status){
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("list", ids);
-        map.put("status", status);
         ids.parallelStream().forEach(id -> {
             SysJobEntity sysJobEntity = new SysJobEntity();
             sysJobEntity.setId(id);

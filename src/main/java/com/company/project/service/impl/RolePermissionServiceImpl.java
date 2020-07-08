@@ -1,7 +1,6 @@
 package com.company.project.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.mapper.SysRolePermissionMapper;
@@ -31,9 +30,7 @@ public class RolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapp
             sysRolePermission.setRoleId(vo.getRoleId());
             list.add(sysRolePermission);
         }
-        LambdaQueryWrapper<SysRolePermission> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(SysRolePermission::getRoleId, vo.getRoleId());
-        this.remove(queryWrapper);
+        this.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getRoleId, vo.getRoleId()));
         this.saveBatch(list);
     }
 

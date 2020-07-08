@@ -1,6 +1,5 @@
 package com.company.project.controller;
 
-
 import com.company.project.entity.oshi.SystemHardwareInfo;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
@@ -9,9 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-
 
 /**
  * 视图

@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysDictDetailEntity;
 
-import java.util.List;
-
 /**
  * 数据字典 服务类
  *
@@ -16,6 +14,6 @@ import java.util.List;
  */
 public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 
-    IPage<SysDictDetailEntity> listByPage(Page page, String dictId);
+    IPage<SysDictDetailEntity> listByPage(Page<SysDictDetailEntity> page, String dictId);
 }
 

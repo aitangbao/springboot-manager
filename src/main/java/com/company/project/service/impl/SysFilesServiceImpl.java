@@ -6,7 +6,6 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.DateUtils;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +15,7 @@ import com.company.project.entity.SysFilesEntity;
 import com.company.project.service.SysFilesService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
 
@@ -29,9 +29,8 @@ import java.util.*;
 @EnableConfigurationProperties(FileUploadProperties.class)
 @Service("sysFilesService")
 public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEntity> implements SysFilesService {
-
-    @Autowired
-    private  FileUploadProperties fileUploadProperties;
+    @Resource
+    private FileUploadProperties fileUploadProperties;
 
     @Override
     public DataResult saveFile(MultipartFile file) {
@@ -73,7 +72,7 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
     @Override
     public void removeByIdsAndFiles(List<String> ids) {
         List<SysFilesEntity> list = this.listByIds(ids);
-        list.stream().forEach(entity -> {
+        list.forEach(entity -> {
             //如果之前的文件存在，删除
             if (FileUtil.exist(entity.getFilePath())) {
                 FileUtil.del(entity.getFilePath());
@@ -86,11 +85,11 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
     /**
      * 获取文件后缀名
      *
-     * @param fileName
-     * @return
+     * @param fileName 文件名
+     * @return 后缀名
      */
     private String getFileType(String fileName) {
-        if (fileName != null && fileName.indexOf(".") >= 0) {
+        if (fileName != null && fileName.contains(".")) {
             return fileName.substring(fileName.lastIndexOf("."));
         }
         return "";
