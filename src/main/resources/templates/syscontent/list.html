@@ -77,6 +77,8 @@
 <script src="/layui/layui.all.js"></script>
 <script src="/js/core.util.js"></script>
 <script>
+    //文章类型字典数据
+    var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g,"\"");
     //获取token
     var token = CoreUtil.getData("access_token");
     //地址栏转义token中的#号
@@ -120,6 +122,11 @@
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'id', title: 'id', sort: true},
                     {field: 'title', title: '标题', sort: true},
+                    {field: 'type', title: '类型', sort: true, templet: function (item) {
+                        //获取类型对应的字典label
+                        return CoreUtil.selectDictLabel(datas, item.type);
+                        }
+                    },
                     {field: 'content', title: '内容', sort: true},
                     {field: 'createTime', title: '创建时间', sort: true},
                     {width: 200, toolbar: "#tool", title: '操作'}

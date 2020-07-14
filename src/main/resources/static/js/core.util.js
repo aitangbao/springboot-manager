@@ -84,5 +84,20 @@ var CoreUtil = (function () {
             return false;
         }
     }
+
+    //字典数据回显
+    coreUtil.selectDictLabel = function (datas, value) {
+        datas = JSON.parse(datas);
+        var label = "";
+        $.each(datas, function(index, dict) {
+            if (dict.value == ('' + value)) {
+                label = dict.label;
+                return false;
+            }
+        });
+        return label;
+    }
+
+
     return coreUtil;
 })(CoreUtil, window);
