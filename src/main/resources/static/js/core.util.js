@@ -95,6 +95,10 @@ var CoreUtil = (function () {
                 return false;
             }
         });
+        //匹配不到，返回未知
+        if (CoreUtil.isEmpty(label)) {
+            return "未知";
+        }
         return label;
     }
 
