@@ -20,6 +20,14 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+                    <select id="type" name="type" lay-filter="select-type" th:with="type=${@sysDictService.getType('content_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.label}" th:value="${dict.value}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">内容</label>
                 <div class="layui-input-block">
                     <textarea id="content" name=content style="display: none;"></textarea>
@@ -143,6 +151,9 @@
                     $(".operation input[name=id]").val("");
                     $(".operation input[name=title]").val("");
                     layedit.setContent(editIndex, "");
+                    //渲染select 默认选中第一个
+                    $("#type option:first").prop("selected", 'selected');
+                    form.render();
                     break;
             }
             ;
@@ -163,6 +174,9 @@
                     $(".operation input[name=id]").val(data.id);
                     $(".operation input[name=title]").val(data.title);
                     layedit.setContent(editIndex, data.content);
+                    //渲染select 默认选中
+                    $("#type").find('option[value="'+data.type+'"]').prop('selected',true);
+                    form.render();
                     break;
                 case 'preview':
                     layer.open({

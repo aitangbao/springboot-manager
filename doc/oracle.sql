@@ -161,6 +161,7 @@ COMMENT ON TABLE "sys_job_log" IS '定时任务日志';
  CREATE TABLE sys_content  (
   id varchar2(50),
   title varchar2(255),
+  type NUMBER(10, 0),
   content VARCHAR2(4000) ,
   create_time varchar2(20) ,
   PRIMARY KEY (id)

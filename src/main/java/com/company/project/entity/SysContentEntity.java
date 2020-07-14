@@ -44,6 +44,12 @@ public class SysContentEntity extends PageReqVO implements Serializable {
 	private String content;
 
 	/**
+	 *
+	 */
+	@TableField("type")
+	private String type;
+
+	/**
 	 * 
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)
