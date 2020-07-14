@@ -23,7 +23,7 @@ public class SysDictEntity extends PageReqVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * 主键
 	 */
 	@TableId("id")
 	private String id;
