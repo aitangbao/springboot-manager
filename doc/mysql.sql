@@ -317,7 +317,7 @@ DROP TABLE IF EXISTS `sys_content`;
 CREATE TABLE `sys_content`  (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
-  `type` int(11) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '文章类型',
+  `type` int(11)  DEFAULT NULL COMMENT '文章类型',
   `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
