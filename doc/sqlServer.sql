@@ -154,6 +154,7 @@ CREATE TABLE sys_job_log  (
  CREATE TABLE sys_content  (
   id varchar(50),
   title varchar(255),
+  type int,
   content varchar(4000) ,
   create_time datetime ,
   PRIMARY KEY (id)

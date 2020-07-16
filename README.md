@@ -47,11 +47,11 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
-- 代码生成使用：
-   1、 application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql
-	2. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地
-	3. 解压下载的代码，直接复制main文件夹到本地项目的src目录下
-	4. 数据库执行sql，生成菜单
+- 代码生成使用  
+    1. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
+    2. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
+    3. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
+    4. 数据库执行sql，生成菜单
 	5. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
 	
 ## 技术文档
@@ -126,5 +126,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com
-<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200706092217.jpg" alt="" style="zoom:25%;" />
-
+<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200716082600.jpg" alt="" style="zoom:25%;" />

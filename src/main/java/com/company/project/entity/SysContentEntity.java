@@ -26,25 +26,31 @@ public class SysContentEntity extends PageReqVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * 主键id
 	 */
 	@TableId("id")
 	private String id;
 
 	/**
-	 * 
+	 * 主题
 	 */
 	@TableField("title")
 	private String title;
 
 	/**
-	 * 
+	 * 内容
 	 */
 	@TableField("content")
 	private String content;
 
 	/**
-	 * 
+	 * 类型（数据字典）
+	 */
+	@TableField("type")
+	private String type;
+
+	/**
+	 * 创建时间
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
