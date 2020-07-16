@@ -23,7 +23,8 @@
 Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
 GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager) 
 
-## 项目演示
+## 开发文档&项目演示
+- 开发文档：[http://doc.aitangbao.com.cn](http://doc.aitangbao.com.cn) 
 - 演示地址：[http://manager.aitangbao.com.cn](http://manager.aitangbao.com.cn/login) 
 - 账号密码：guest/123456
 - 带宽1m 不太给力 请见谅 :joy:
