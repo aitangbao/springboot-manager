@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @version V1.0
  * @date 2020年3月18日
  */
-@Mapper
 public interface SysJobLogMapper extends BaseMapper<SysJobLogEntity> {
 	
 }
