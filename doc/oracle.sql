@@ -185,9 +185,12 @@ INSERT INTO sys_dept(id, dept_no, name, pid, status, relation_code, dept_manager
 INSERT INTO sys_dept(id, dept_no, name, pid, status, relation_code, dept_manager_id, manager_name, phone, create_time, update_time, deleted) VALUES ('72a4f388-50f8-4019-8c67-530cd7c74e7a', 'D000001', '总公司', '0', 1, 'D000001', NULL, '小李', '13888888888', '2019-11-07 22:43:33', NULL, 1);
 
 INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
-
+INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1282504369620430849', 'content_type', '文章类型', '2020-07-13 10:37:24');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849', '2020-07-13 10:37:49');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
 
 INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
 

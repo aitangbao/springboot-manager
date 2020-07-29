@@ -297,8 +297,13 @@ INSERT INTO `sys_user_role` VALUES ('ea228f70b42849dfffeffdcad04c3a45', 'ee477ba
 INSERT INTO `sys_user_role` VALUES ('f8ad372b79490bd1ad99e7ac77409647', '1dfaafa7-fddf-46f2-b3d8-11bfe9ac7230', '11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9', '2020-03-19 02:39:01');
 INSERT INTO `sys_user_role` VALUES ('fd1512dc-bf59-45b2-aa14-93da48ff0e8c', 'd860412c-9a4b-404b-8b71-ae8e3f4c27b7', 'de54c167-e733-4b5b-83dd-ce10edd078f5', '2019-11-19 10:35:14');
 INSERT INTO `sys_dict`(`id`, `name`, `remark`, `create_time`) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
+INSERT INTO `sys_dict`(`id`, `name`, `remark`, `create_time`) VALUES ('1282504369620430849', 'content_type', '文章类型略略略', '2020-07-13 10:37:24');
 INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
 INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
+INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849', '2020-07-13 10:37:49');
+INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
+INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
+
 INSERT INTO `sys_job` VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
 
 -- 2020.5.27添加文章管理 begin
