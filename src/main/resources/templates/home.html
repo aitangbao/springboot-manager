@@ -100,7 +100,10 @@
         var getChild = function (item, ulHtml) {
             ulHtml += '<dl class="layui-nav-child">';
             $.each(item, function (index, child) {
-                if (child.children != null && child.children.length > 0) {
+                if (child.children != null && child.children.length > 0 && child.type == 1) {
+                    ulHtml += '<dd><a>' + child.title + '</a>';
+                    ulHtml += getChild(child.children, "");
+                } else if (child.children != null && child.children.length > 0 && child.type != 1) {
                     ulHtml += '<a>' + child.title + '</a>';
                     ulHtml += getChild(child.children, "");
                 } else {
@@ -110,6 +113,9 @@
                         ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                     }
                     ulHtml += '<cite>' + child.title + '</cite></a></dd>';
+                }
+                if (child.children != null && child.children.length > 0 && child.type == 1) {
+                    ulHtml += '</dd>';
                 }
 
             });
@@ -139,7 +145,10 @@
                         if (item.children != null && item.children.length > 0) {
                             ulHtml += '<dl class="layui-nav-child">';
                             $.each(item.children, function (index, child) {
-                                if (child.children != null && child.children.length > 0) {
+                                if (child.children != null && child.children.length > 0 && child.type == 1) {
+                                    ulHtml += '<dd><a>' + child.title + '</a>';
+                                    ulHtml += getChild(child.children, "");
+                                } else if (child.children != null && child.children.length > 0 && child.type != 1) {
                                     ulHtml += '<a>' + child.title + '</a>';
                                     ulHtml += getChild(child.children, "");
                                 } else {
@@ -152,6 +161,10 @@
                                         ulHtml += '<i class="layui-icon '+child.icon+'"></i>';
                                     }
                                     ulHtml += '<cite> ' + child.title + '</cite></a></dd>';
+                                }
+
+                                if (child.children != null && child.children.length > 0 && child.type == 1) {
+                                    ulHtml += '</dd>';
                                 }
 
                             });
