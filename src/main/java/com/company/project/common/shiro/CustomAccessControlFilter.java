@@ -1,9 +1,9 @@
 package com.company.project.common.shiro;
 
 import com.alibaba.fastjson.JSON;
-import com.company.project.common.utils.Constant;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.Constant;
 import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.util.StringUtils;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;

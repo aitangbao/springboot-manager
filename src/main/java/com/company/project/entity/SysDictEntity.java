@@ -1,13 +1,15 @@
 package com.company.project.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.company.project.vo.req.PageReqVO;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 字典管理

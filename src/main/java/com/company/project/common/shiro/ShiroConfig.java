@@ -2,13 +2,13 @@ package com.company.project.common.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.company.project.common.config.FileUploadProperties;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.shiro.mgt.SecurityManager;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;

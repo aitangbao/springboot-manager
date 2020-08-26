@@ -1,8 +1,7 @@
 package com.company.project.mapper;
 
-import com.company.project.entity.SysFilesEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.company.project.entity.SysFilesEntity;
 
 /**
  * 文件上传 Mapper

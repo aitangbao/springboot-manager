@@ -5,16 +5,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.company.project.common.exception.BusinessException;
+import com.company.project.common.exception.code.BaseResponseCode;
+import com.company.project.common.utils.PasswordUtils;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysRole;
 import com.company.project.entity.SysUser;
-import com.company.project.common.exception.BusinessException;
-import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.mapper.SysUserMapper;
 import com.company.project.service.*;
-import com.company.project.vo.req.*;
-import com.company.project.common.utils.PasswordUtils;
+import com.company.project.vo.req.LoginReqVO;
+import com.company.project.vo.req.RegisterReqVO;
+import com.company.project.vo.req.UpdatePasswordReqVO;
+import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 用户 服务类

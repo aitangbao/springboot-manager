@@ -4,21 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.company.project.common.utils.DataResult;
+import com.company.project.entity.SysDictDetailEntity;
+import com.company.project.service.SysDictDetailService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
-import java.util.List;
-
-import com.company.project.common.utils.DataResult;
-
-import com.company.project.entity.SysDictDetailEntity;
-import com.company.project.service.SysDictDetailService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**

@@ -3,14 +3,13 @@ package com.company.project.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.company.project.entity.SysDictDetailEntity;
-import com.company.project.mapper.SysDictDetailMapper;
-import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.company.project.mapper.SysDictMapper;
+import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.entity.SysDictEntity;
+import com.company.project.mapper.SysDictDetailMapper;
+import com.company.project.mapper.SysDictMapper;
 import com.company.project.service.SysDictService;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
