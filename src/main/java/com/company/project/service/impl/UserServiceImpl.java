@@ -143,15 +143,14 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             httpSessionService.abortUserById(vo.getId());
         }
 
-        BeanUtils.copyProperties(vo, sysUser);
         if (!StringUtils.isEmpty(vo.getPassword())) {
             String newPassword = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
-            sysUser.setPassword(newPassword);
+            vo.setPassword(newPassword);
         } else {
-            sysUser.setPassword(null);
+            vo.setPassword(null);
         }
-        sysUser.setUpdateId(operationId);
-        sysUserMapper.updateById(sysUser);
+        vo.setUpdateId(operationId);
+        sysUserMapper.updateById(vo);
 
     }
 
@@ -159,21 +158,19 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     public void updateUserInfoMy(SysUser vo, String operationId) {
 
 
-        SysUser sysUser = sysUserMapper.selectById(vo.getId());
-        if (null == sysUser) {
+        SysUser user = sysUserMapper.selectById(vo.getId());
+        if (null == user) {
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-
-        BeanUtils.copyProperties(vo, sysUser);
         if (!StringUtils.isEmpty(vo.getPassword())) {
-            String newPassword = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
-            sysUser.setPassword(newPassword);
+            String newPassword = PasswordUtils.encode(vo.getPassword(), user.getSalt());
+            vo.setPassword(newPassword);
         } else {
-            sysUser.setPassword(null);
+            vo.setPassword(null);
         }
-        sysUser.setUpdateId(operationId);
-        sysUserMapper.updateById(sysUser);
+        vo.setUpdateId(operationId);
+        sysUserMapper.updateById(vo);
 
     }
 
@@ -222,16 +219,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (sysUserOne != null) {
             throw new BusinessException("用户已存在，请勿重复添加！");
         }
-
         vo.setSalt(PasswordUtils.getSalt());
         String encode = PasswordUtils.encode(vo.getPassword(), vo.getSalt());
         vo.setPassword(encode);
         vo.setStatus(1);
         vo.setCreateWhere(1);
-        int i = sysUserMapper.insert(vo);
-        if (i != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysUserMapper.insert(vo);
         if (null != vo.getRoleIds() && !vo.getRoleIds().isEmpty()) {
             UserRoleOperationReqVO reqVO = new UserRoleOperationReqVO();
             reqVO.setUserId(vo.getId());
