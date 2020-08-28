@@ -305,6 +305,8 @@ INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create
 INSERT INTO `sys_dict_detail`(`id`, `label`, `value`, `sort`, `dict_id`, `create_time`) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
 
 INSERT INTO `sys_job` VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
+INSERT INTO `sys_job` VALUES ('1298909572007137282', 'systemTask', '', '0 */2 * * * ?', 0, '服务器系统信息推送定时任务', '2020-08-27 17:05:49');
+
 
 -- 2020.5.27添加文章管理 begin
 INSERT INTO `sys_permission` VALUES ('8cbcf9939f2f11ea9b7bb4a9fc2c4442', '文章管理', NULL, NULL, '/index/sysContent', '_self', 'e549c4b8-72ca-4ba3-91a8-9ffa1daf77cf', 10, 2, 1, NULL, NULL, 1);

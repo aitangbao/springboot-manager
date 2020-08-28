@@ -42,6 +42,19 @@ public class JvmInfo {
      */
     private String home;
 
+    /*已用内存*/
+    private double used;
+
+    /*Jvm名称*/
+    private String name;
+
+    /*启动时间*/
+    private String startTime;
+
+    /*运行时长*/
+    private String runTime;
+
+
     public double getTotal() {
         return NumberUtil.div(total, (1024 * 1024), 2);
     }
