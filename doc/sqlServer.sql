@@ -184,6 +184,7 @@ INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
 
 INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
+INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1298909572007137282', 'systemTask', '', '0 */2 * * * ?', 0, '服务器系统信息推送定时任务', '2020-08-27 17:05:49');
 
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('010bcf8b-3172-4331-9941-25788ca8cbb0', '删除', 'sysGenerator:delete', NULL, 'sysGenerator/delete', NULL, '43d1bbf7-fc4a-4a10-9ad1-205b16c7c05f', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('0d99b687-3f46-4632-9d56-8dd5e476dae7', 'SQL 监控', '', '', '/druid/sql.html', '_self', '65bdb02f47b94e71c2a2b9e459bde909', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
