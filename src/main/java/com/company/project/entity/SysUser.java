@@ -3,7 +3,6 @@ package com.company.project.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.company.project.vo.req.PageReqVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,7 +55,6 @@ public class SysUser extends PageReqVO implements Serializable {
 
     private Integer sex;
 
-    @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
