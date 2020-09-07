@@ -32,7 +32,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## 开发建议
 - Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
-- 如果表有是否删除字段，需要在Model注解@TableLogic 默认1未删 0删除， 或@TableLogic(value="逻辑未删除值",delval="逻辑删除值")   
+- 如果表需要逻辑删除字段，请统一用deleted字段: 1未删 0已删
 - 数据库建表时主键请统一格式: `id` varchar(50) 类型; 列名请勿使用mysql关键字
 - 建议业务失败直接使用throw new BusinessException("ErrorMessage")抛出，由统一异常处理器来封装业务失败的响应结果，会直接被封装为{"code":500002,"message":"ErrorMessage"}返回，尽情抛出；
 - token支持header跟query传参形式，如:
