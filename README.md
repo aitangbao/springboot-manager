@@ -21,7 +21,8 @@
 
 ## 代码仓库
 Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
-GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager) 
+GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager)  
+如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager) 
 
 ## 开发文档&项目演示
 - 开发文档：[http://doc.aitangbao.com.cn](http://doc.aitangbao.com.cn) 
