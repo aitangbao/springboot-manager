@@ -325,4 +325,4 @@ INSERT INTO `sys_dict` VALUES (1, 'sex', '性别', '2020-04-30 17:24:09');
 INSERT INTO `sys_dict_detail` VALUES (1, '男', '1', 1, 1, '2020-04-30 17:24:19');
 INSERT INTO `sys_dict_detail` VALUES (2, '女', '2', 2, 1, '2020-04-30 17:24:25');
 INSERT INTO `sys_job` VALUES (1, 'testTask', '1', '*/5 * * * * ?', 1, '1', '2020-04-22 16:58:35');
-INSERT INTO `sys_job` VALUES (1, 'systemTask', '', '*/5 * * * * ?', 1, '服务器系统信息推送定时任务', '2020-08-27 17:05:49');
+INSERT INTO `sys_job` VALUES (2, 'systemTask', '', '*/5 * * * * ?', 1, '服务器系统信息推送定时任务', '2020-08-27 17:05:49');
