@@ -118,7 +118,12 @@ public class GenUtils {
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
-        map.put("identity",UUID.randomUUID().toString().replace("-",""));
+        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
+        map.put("identity",idWorker.nextId());
+        map.put("addId",idWorker.nextId());
+        map.put("updateId",idWorker.nextId());
+        map.put("deleteId",idWorker.nextId());
+        map.put("selectId",idWorker.nextId());
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
