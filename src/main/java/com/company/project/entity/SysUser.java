@@ -33,9 +33,14 @@ public class SysUser extends PageReqVO implements Serializable {
     @NotBlank(message = "密码不能为空")
     private String password;
 
+    @TableField(exist = false)
+    private String oldPwd;
+
+    @TableField(exist = false)
+    private String newPwd;
+
     private String phone;
 
-    @NotBlank(message = "所属机构不能为空")
     private String deptId;
 
     @TableField(exist = false)
@@ -78,4 +83,7 @@ public class SysUser extends PageReqVO implements Serializable {
 
     @TableField(exist = false)
     private List<String> roleIds;
+
+    @TableField(exist = false)
+    private String Captcha;
 }

@@ -11,9 +11,6 @@ import com.company.project.entity.SysUserRole;
 import com.company.project.service.HttpSessionService;
 import com.company.project.service.UserRoleService;
 import com.company.project.service.UserService;
-import com.company.project.vo.req.LoginReqVO;
-import com.company.project.vo.req.RegisterReqVO;
-import com.company.project.vo.req.UpdatePasswordReqVO;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.google.code.kaptcha.Constants;
 import io.swagger.annotations.Api;
@@ -50,7 +47,7 @@ public class UserController {
 
     @PostMapping(value = "/user/login")
     @ApiOperation(value = "用户登录接口")
-    public DataResult login(@RequestBody @Valid LoginReqVO vo, HttpServletRequest request) {
+    public DataResult login(@RequestBody @Valid SysUser vo, HttpServletRequest request) {
         //校验图像验证码
         validImageCode(vo.getCaptcha(), request);
         return DataResult.success(userService.login(vo));
@@ -58,10 +55,9 @@ public class UserController {
 
     @PostMapping("/user/register")
     @ApiOperation(value = "用户注册接口")
-    public DataResult register(@RequestBody @Valid RegisterReqVO vo) {
-        DataResult result = DataResult.success();
-        result.setData(userService.register(vo));
-        return result;
+    public DataResult register(@RequestBody @Valid SysUser vo) {
+       userService.register(vo);
+        return DataResult.success();
     }
 
     @GetMapping("/user/unLogin")
@@ -137,9 +133,13 @@ public class UserController {
     @PutMapping("/user/pwd")
     @ApiOperation(value = "修改密码接口")
     @LogAnnotation(title = "用户管理", action = "更新密码")
-    public DataResult updatePwd(@RequestBody UpdatePasswordReqVO vo) {
+    public DataResult updatePwd(@RequestBody SysUser vo) {
+        if (StringUtils.isEmpty(vo.getOldPwd()) || StringUtils.isEmpty(vo.getNewPwd())) {
+            return DataResult.fail("旧密码与新密码不能为空");
+        }
         String userId = httpSessionService.getCurrentUserId();
-        userService.updatePwd(vo, userId);
+        vo.setId(userId);
+        userService.updatePwd(vo);
         return DataResult.success();
     }
 

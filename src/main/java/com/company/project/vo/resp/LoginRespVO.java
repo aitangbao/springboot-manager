@@ -16,8 +16,6 @@ import java.util.List;
 public class LoginRespVO {
     @ApiModelProperty(value = "token")
     private String accessToken;
-    @ApiModelProperty(value = "刷新token")
-    private String refreshToken;
     @ApiModelProperty(value = "用户名")
     private String username;
     @ApiModelProperty(value = "用户id")

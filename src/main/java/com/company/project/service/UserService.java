@@ -3,9 +3,6 @@ package com.company.project.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.company.project.entity.SysUser;
-import com.company.project.vo.req.LoginReqVO;
-import com.company.project.vo.req.RegisterReqVO;
-import com.company.project.vo.req.UpdatePasswordReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 
@@ -20,9 +17,9 @@ import java.util.List;
  */
 public interface UserService extends IService<SysUser> {
 
-    String register(RegisterReqVO vo);
+    void register(SysUser vo);
 
-    LoginRespVO login(LoginReqVO vo);
+    LoginRespVO login(SysUser vo);
 
     void updateUserInfo(SysUser vo, String operationId);
 
@@ -32,7 +29,7 @@ public interface UserService extends IService<SysUser> {
 
     void logout();
 
-    void updatePwd(UpdatePasswordReqVO vo,String userId);
+    void updatePwd(SysUser vo);
 
     List<SysUser> getUserListByDeptIds(List<Object> deptIds);
 

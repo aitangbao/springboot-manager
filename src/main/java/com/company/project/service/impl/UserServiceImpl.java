@@ -14,9 +14,6 @@ import com.company.project.entity.SysUser;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.mapper.SysUserMapper;
 import com.company.project.service.*;
-import com.company.project.vo.req.LoginReqVO;
-import com.company.project.vo.req.RegisterReqVO;
-import com.company.project.vo.req.UpdatePasswordReqVO;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
@@ -62,27 +59,19 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     private String env;
 
     @Override
-    public String register(RegisterReqVO vo) {
-
-        SysUser sysUserOne = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
+    public void register(SysUser sysUser) {
+        SysUser sysUserOne = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, sysUser.getUsername()));
         if (sysUserOne != null) {
             throw new BusinessException("用户名已存在！");
         }
-
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(vo, sysUser);
         sysUser.setSalt(PasswordUtils.getSalt());
-        String encode = PasswordUtils.encode(vo.getPassword(), sysUser.getSalt());
+        String encode = PasswordUtils.encode(sysUser.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);
-        int i = sysUserMapper.insert(sysUser);
-        if (i != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
-        return sysUser.getId();
+        sysUserMapper.insert(sysUser);
     }
 
     @Override
-    public LoginRespVO login(LoginReqVO vo) {
+    public LoginRespVO login(SysUser vo) {
         SysUser sysUser = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, vo.getUsername()));
         if (null == sysUser) {
             throw new BusinessException(BaseResponseCode.NOT_ACCOUNT);
@@ -241,9 +230,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public void updatePwd(UpdatePasswordReqVO vo, String userId) {
+    public void updatePwd(SysUser vo) {
 
-        SysUser sysUser = sysUserMapper.selectById(userId);
+        SysUser sysUser = sysUserMapper.selectById(vo.getId());
         if (sysUser == null) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
