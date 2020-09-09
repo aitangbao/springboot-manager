@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户角色 服务类
@@ -51,7 +52,8 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     }
 
     @Override
-    public List getUserIdsByRoleId(String roleId) {
-        return sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
+    public List<String> getUserIdsByRoleId(String roleId) {
+        List<Object> list = sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
+        return list.stream().map(Object::toString).collect(Collectors.toList());
     }
 }
