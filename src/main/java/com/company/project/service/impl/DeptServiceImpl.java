@@ -203,6 +203,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
             }
         }
         str.append(oriStr);
-        return Constant.DEPT_TYPE + str.toString();
+        return "D" + str.toString();
     }
 }

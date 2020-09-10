@@ -61,7 +61,7 @@ public class ScheduleUtils {
             scheduler.scheduleJob(jobDetail, trigger);
             
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if(Constant.SCHEDULER_STATUS_PAUSE.equals(scheduleJob.getStatus())){
             	pauseJob(scheduler, scheduleJob.getId());
             }
         } catch (SchedulerException e) {
@@ -91,7 +91,7 @@ public class ScheduleUtils {
             scheduler.rescheduleJob(triggerKey, trigger);
             
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if(Constant.SCHEDULER_STATUS_PAUSE.equals(scheduleJob.getStatus())){
             	pauseJob(scheduler, scheduleJob.getId());
             }
             
