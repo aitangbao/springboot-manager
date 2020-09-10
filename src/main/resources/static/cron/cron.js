@@ -169,7 +169,7 @@ layui.define(["form"], function (exports) {
         ) {
           return; // 点击的是当前绑定元素或cron容器内的元素则不关闭
         }
-        // that.remove();
+        that.remove();
       })
       .on("keydown", function (e) {
         if (e.keyCode === 13) {
