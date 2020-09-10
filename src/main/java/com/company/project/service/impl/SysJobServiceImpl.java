@@ -48,7 +48,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
 
     @Override
     public void saveJob(SysJobEntity sysJob) {
-        sysJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
+        sysJob.setStatus(Constant.SCHEDULER_STATUS_NORMAL);
         this.save(sysJob);
 
         ScheduleUtils.createScheduleJob(scheduler, sysJob);
@@ -89,7 +89,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
             ScheduleUtils.pauseJob(scheduler, jobId);
         }
 
-        updateBatch(ids, Constant.ScheduleStatus.PAUSE.getValue());
+        updateBatch(ids, Constant.SCHEDULER_STATUS_PAUSE);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
             ScheduleUtils.resumeJob(scheduler, jobId);
         }
 
-        updateBatch(ids, Constant.ScheduleStatus.NORMAL.getValue());
+        updateBatch(ids, Constant.SCHEDULER_STATUS_NORMAL);
     }
 
     @Override
