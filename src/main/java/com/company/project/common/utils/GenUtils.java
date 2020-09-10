@@ -36,9 +36,7 @@ public class GenUtils {
         templates.add("template/Service.java.vm");
         templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
-        templates.add("template/menu.mysql.sql.vm");
-        templates.add("template/menu.oracle.sql.vm");
-        templates.add("template/menu.sqlServer.sql.vm");
+        templates.add("template/menu.sql.vm");
         templates.add("template/list.html.vm");
 
         return templates;
@@ -220,16 +218,8 @@ public class GenUtils {
             return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
         }
 
-        if (template.contains("menu.mysql.sql.vm")) {
-            return className.toLowerCase() + "_menu.mysql.sql";
-        }
-
-        if (template.contains("menu.oracle.sql.vm")) {
-            return className.toLowerCase() + "_menu.oracle.sql";
-        }
-
-        if (template.contains("menu.sqlServer.sql.vm")) {
-            return className.toLowerCase() + "_menu.sqlServer.sql";
+        if (template.contains("menu.sql.vm")) {
+            return className.toLowerCase() + "_menu.sql";
         }
 
         if (template.contains("list.html.vm")) {
