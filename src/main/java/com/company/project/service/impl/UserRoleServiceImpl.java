@@ -52,8 +52,7 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     }
 
     @Override
-    public List<String> getUserIdsByRoleId(String roleId) {
-        List<Object> list = sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
-        return list.stream().map(Object::toString).collect(Collectors.toList());
+    public List getUserIdsByRoleId(String roleId) {
+        return sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
     }
 }
