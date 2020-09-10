@@ -32,8 +32,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## 开发建议
 - Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
-- 如果表需要逻辑删除字段，请统一用deleted字段: 1未删 0已删
-- 数据库建表时主键请统一格式: `id` varchar(50) 类型; 列名请勿使用mysql关键字
 - 建议业务失败直接使用throw new BusinessException("ErrorMessage")抛出，由统一异常处理器来封装业务失败的响应结果，会直接被封装为{"code":500002,"message":"ErrorMessage"}返回，尽情抛出；
 - token支持header跟query传参形式，如:
     - ajax中设置header:```beforeSend: function(request) {request.setRequestHeader("authorization", "有效的token");}```
@@ -50,11 +48,12 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
 - 代码生成使用  
-    1. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
-    2. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
-    3. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
-    4. 数据库执行sql，生成菜单
-	5. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
+    1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用关键字
+    2. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
+    3. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
+    4. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
+    5. 数据库执行sql，生成菜单
+	6. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
 	
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
@@ -88,7 +87,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	- 定时任务
 	- 日志管理
 - 其他
-	- 系统信息
 	- 表单构建
 	- SQL监控
 	- 接口管理
@@ -114,8 +112,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ![image-20200430172452726](https://images.gitee.com/uploads/images/2020/0521/110630_1eae800b_997722.png)
 
 ![9](https://images.gitee.com/uploads/images/2020/0521/110630_ab5c75a2_997722.png)
-
-![12](https://images.gitee.com/uploads/images/2020/0521/110630_8e6fe6f2_997722.png)
 
 ![13](https://images.gitee.com/uploads/images/2020/0521/110630_bcf841b9_997722.png)
 
