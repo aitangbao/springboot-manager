@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 部门管理
@@ -33,7 +34,8 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "新增组织")
     @RequiresPermissions("sys:dept:add")
     public DataResult addDept(@RequestBody @Valid SysDept vo) {
-        return DataResult.success(deptService.addDept(vo));
+        deptService.addDept(vo);
+        return DataResult.success();
     }
 
     @DeleteMapping("/dept/{id}")
@@ -78,6 +80,14 @@ public class DeptController {
     @LogAnnotation(title = "机构管理", action = "获取所有组织机构")
     @RequiresPermissions("sys:dept:list")
     public DataResult getDeptAll() {
-        return DataResult.success(deptService.selectAll());    }
+        List<SysDept> deptList = deptService.list();
+        deptList.parallelStream().forEach(entity -> {
+            SysDept parentDept = deptService.getById(entity.getPid());
+            if (parentDept != null) {
+                entity.setPidName(parentDept.getName());
+            }
+        });
+        return DataResult.success(deptList);
+    }
 
 }

@@ -16,18 +16,50 @@ import java.util.Set;
  */
 public interface PermissionService extends IService<SysPermission> {
 
+    /**
+     * 根据userId获取权限
+     * @param userId userId
+     * @return 权限
+     */
     List<SysPermission> getPermission(String userId);
 
+    /**
+     * 删除权限
+     * @param permissionId 权限id
+     */
     void deleted(String permissionId);
 
+    /**
+     * 获取所有
+     * @return List
+     */
     List<SysPermission> selectAll();
 
+    /**
+     * 根据userId获取权限标志
+     * @param userId userId
+     * @return Set
+     */
     Set<String> getPermissionsByUserId(String userId);
 
+    /**
+     * 根据userId获取权限树
+     * @param userId
+     * @return List
+     */
     List<PermissionRespNode> permissionTreeList(String userId);
 
+    /**
+     * 根据权限树
+     * @return List
+     */
     List<PermissionRespNode> selectAllByTree();
 
+    /**
+     * 根据目录树
+     * @param permissionId permissionId
+     * @return List
+     */
     List<PermissionRespNode> selectAllMenuByTree(String permissionId);
 
 }

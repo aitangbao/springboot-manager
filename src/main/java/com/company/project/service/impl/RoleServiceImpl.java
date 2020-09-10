@@ -46,7 +46,7 @@ public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implem
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public SysRole addRole(SysRole vo) {
+    public void addRole(SysRole vo) {
 
         vo.setStatus(1);
         sysRoleMapper.insert(vo);
@@ -56,8 +56,6 @@ public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implem
             reqVO.setPermissionIds(vo.getPermissions());
             rolePermissionService.addRolePermission(reqVO);
         }
-
-        return vo;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -140,10 +138,5 @@ public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implem
             return null;
         }
         return sysRoles.stream().map(SysRole::getName).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SysRole> selectAllRoles() {
-        return sysRoleMapper.selectList(Wrappers.emptyWrapper());
     }
 }

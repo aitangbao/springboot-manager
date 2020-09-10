@@ -14,6 +14,12 @@ import com.company.project.entity.SysDictDetailEntity;
  */
 public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 
+    /**
+     * 分页
+     * @param page page
+     * @param dictId dictId
+     * @return IPage
+     */
     IPage<SysDictDetailEntity> listByPage(Page<SysDictDetailEntity> page, String dictId);
 }
 

@@ -13,8 +13,18 @@ import com.company.project.entity.SysGenerator;
  */
 public interface ISysGeneratorService {
 
-
+    /**
+     * 获取所有表
+     * @param page page
+     * @param vo vo
+     * @return IPage
+     */
     IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, SysGenerator vo);
 
-    byte[] generatorCode(String[] split);
+    /**
+     * 生成代码
+     * @param tables tables
+     * @return byte[]
+     */
+    byte[] generatorCode(String[] tables);
 }

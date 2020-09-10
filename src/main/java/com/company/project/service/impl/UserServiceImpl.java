@@ -18,8 +18,6 @@ import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 用户 服务类
@@ -91,28 +88,18 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             httpSessionService.abortUserById(sysUser.getId());
         }
 
-        String token = httpSessionService.createTokenAndUser(sysUser, getRolesByUserId(sysUser.getId()), getPermissionsByUserId(sysUser.getId()));
+        String token = httpSessionService.createTokenAndUser(sysUser, roleService.getRoleNames(sysUser.getId()), permissionService.getPermissionsByUserId(sysUser.getId()));
         respVO.setAccessToken(token);
 
         return respVO;
     }
 
-    private List<String> getRolesByUserId(String userId) {
-        return roleService.getRoleNames(userId);
-    }
-
-    private Set<String> getPermissionsByUserId(String userId) {
-        return permissionService.getPermissionsByUserId(userId);
-    }
-
-
     @Override
-    public void updateUserInfo(SysUser vo, String operationId) {
+    public void updateUserInfo(SysUser vo) {
 
 
         SysUser sysUser = sysUserMapper.selectById(vo.getId());
         if (null == sysUser) {
-            log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
 
@@ -138,18 +125,17 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } else {
             vo.setPassword(null);
         }
-        vo.setUpdateId(operationId);
+        vo.setUpdateId(httpSessionService.getCurrentUserId());
         sysUserMapper.updateById(vo);
 
     }
 
     @Override
-    public void updateUserInfoMy(SysUser vo, String operationId) {
+    public void updateUserInfoMy(SysUser vo) {
 
 
-        SysUser user = sysUserMapper.selectById(vo.getId());
+        SysUser user = sysUserMapper.selectById(httpSessionService.getCurrentUserId());
         if (null == user) {
-            log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
         if (!StringUtils.isEmpty(vo.getPassword())) {
@@ -158,7 +144,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } else {
             vo.setPassword(null);
         }
-        vo.setUpdateId(operationId);
+        vo.setUpdateId(httpSessionService.getCurrentUserId());
         sysUserMapper.updateById(vo);
 
     }
@@ -223,13 +209,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public void logout() {
-        httpSessionService.abortUserByToken();
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-    }
-
-    @Override
     public void updatePwd(SysUser vo) {
 
         SysUser sysUser = sysUserMapper.selectById(vo.getId());
@@ -247,23 +226,15 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             throw new BusinessException("新密码不能与旧密码相同");
         }
         sysUser.setPassword(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()));
-        int i = sysUserMapper.updateById(sysUser);
-        if (i != 1) {
-            throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
-        }
+        sysUserMapper.updateById(sysUser);
         httpSessionService.abortAllUserByToken();
 
     }
 
     @Override
-    public List<SysUser> getUserListByDeptIds(List<Object> deptIds) {
-        return sysUserMapper.selectList(Wrappers.<SysUser>lambdaQuery().in(SysUser::getDeptId, deptIds));
-    }
-
-    @Override
     public UserOwnRoleRespVO getUserOwnRole(String userId) {
         List<String> roleIdsByUserId = userRoleService.getRoleIdsByUserId(userId);
-        List<SysRole> list = roleService.selectAllRoles();
+        List<SysRole> list = roleService.list();
         UserOwnRoleRespVO vo = new UserOwnRoleRespVO();
         vo.setAllRole(list);
         vo.setOwnRoles(roleIdsByUserId);

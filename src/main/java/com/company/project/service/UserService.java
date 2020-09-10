@@ -6,8 +6,6 @@ import com.company.project.entity.SysUser;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 
-import java.util.List;
-
 /**
  * 用户 服务类
  *
@@ -17,23 +15,54 @@ import java.util.List;
  */
 public interface UserService extends IService<SysUser> {
 
+    /**
+     * 注册
+     * @param vo vo
+     */
     void register(SysUser vo);
 
+    /**
+     * 登陆
+     * @param vo vo
+     * @return LoginRespVO
+     */
     LoginRespVO login(SysUser vo);
 
-    void updateUserInfo(SysUser vo, String operationId);
+    /**
+     * 更新用户信息
+     * @param vo vo
+     */
+    void updateUserInfo(SysUser vo);
 
+    /**
+     * 分页
+     * @param vo vo
+     * @return IPage
+     */
     IPage<SysUser> pageInfo(SysUser vo);
 
+    /**
+     * 添加用户
+     * @param vo vo
+     */
     void addUser(SysUser vo);
 
-    void logout();
-
+    /**
+     * 修改密码
+     * @param vo vo
+     */
     void updatePwd(SysUser vo);
 
-    List<SysUser> getUserListByDeptIds(List<Object> deptIds);
-
+    /**
+     * 根据userid获取绑定角色
+     * @param userId userId
+     * @return UserOwnRoleRespVO
+     */
     UserOwnRoleRespVO getUserOwnRole(String userId);
 
-    void updateUserInfoMy(SysUser vo, String userId);
+    /**
+     * 修改自己信息
+     * @param vo vo
+     */
+    void updateUserInfoMy(SysUser vo);
 }

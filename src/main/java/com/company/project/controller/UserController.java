@@ -17,7 +17,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,8 +76,8 @@ public class UserController {
         if (StringUtils.isEmpty(vo.getId())) {
             return DataResult.fail("id不能为空");
         }
-        String userId = httpSessionService.getCurrentUserId();
-        userService.updateUserInfo(vo, userId);
+
+        userService.updateUserInfo(vo);
         return DataResult.success();
     }
 
@@ -83,9 +85,7 @@ public class UserController {
     @ApiOperation(value = "更新用户信息接口")
     @LogAnnotation(title = "用户管理", action = "更新用户信息")
     public DataResult updateUserInfoById(@RequestBody SysUser vo) {
-        String userId = httpSessionService.getCurrentUserId();
-        vo.setId(userId);
-        userService.updateUserInfoMy(vo, userId);
+        userService.updateUserInfoMy(vo);
         return DataResult.success();
     }
 
@@ -126,7 +126,9 @@ public class UserController {
     @ApiOperation(value = "退出接口")
     @LogAnnotation(title = "用户管理", action = "退出")
     public DataResult logout() {
-        userService.logout();
+        httpSessionService.abortUserByToken();
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return DataResult.success();
     }
 

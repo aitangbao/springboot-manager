@@ -35,7 +35,8 @@ public class RoleController {
     @LogAnnotation(title = "角色管理", action = "新增角色")
     @RequiresPermissions("sys:role:add")
     public DataResult addRole(@RequestBody @Valid SysRole vo) {
-        return DataResult.success(roleService.addRole(vo));
+        roleService.addRole(vo);
+        return DataResult.success();
     }
 
     @DeleteMapping("/role/{id}")

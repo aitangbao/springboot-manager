@@ -209,10 +209,10 @@ public class HttpSessionService {
      * @param roleId roleId
      */
     public void refreshRolePermission(String roleId) {
-        List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
+        List userIds = userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));;
         if (!userIds.isEmpty()) {
-            for (String userId : userIds) {
-                redisService.setAndExpire(redisPermissionRefreshKey + userId, userId, redisPermissionRefreshExpire);
+            for (Object userId : userIds) {
+                redisService.setAndExpire(redisPermissionRefreshKey + userId, String.valueOf(userId), redisPermissionRefreshExpire);
             }
 
         }
