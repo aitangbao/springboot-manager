@@ -220,7 +220,6 @@ INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, t
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('34', '修改', 'sysContent:update', NULL, 'sysContent/update', NULL, '31', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('35', '删除', 'sysContent:delete', NULL, 'sysContent/delete', NULL, '31', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('36', '更新', 'sys:role:update', NULL, '/sys/role', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('37', '系统信息', '', '', '/index/systemInfo', '_self', '21', 1, 2, 1, '2020-05-26 14:21:47', '2020-05-26 14:23:01', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('38', '更新', 'sys:dept:update', NULL, '/sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('39', '详情', 'sys:role:detail', NULL, '/sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('4', '添加', 'sysGenerator:add', NULL, 'sysGenerator/add', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
@@ -284,7 +283,6 @@ INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES 
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('34', '1', '34', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('35', '1', '35', '2020-05-26 17:04:21');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('36', '1', '36', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('37', '1', '37', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('38', '1', '38', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('39', '1', '39', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('4', '1', '4', '2020-04-22 15:48:47');
@@ -327,4 +325,3 @@ INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
 INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
-INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1298909572007137282', 'systemTask', '', '0 */2 * * * ?', 0, '服务器系统信息推送定时任务', '2020-08-27 17:05:49');

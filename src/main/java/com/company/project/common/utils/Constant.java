@@ -25,8 +25,6 @@ public class Constant {
      */
     public static final String ACCESS_TOKEN = "authorization";
 
-    public static final String PUSH_SERVER = "/topic/system";
-
     /**
      * 定时任务状态
      */
