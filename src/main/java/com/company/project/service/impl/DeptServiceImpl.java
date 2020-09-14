@@ -44,10 +44,13 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         String relationCode;
         String deptCode = this.getNewDeptCode();
         SysDept parent = sysDeptMapper.selectById(vo.getPid());
-        if (parent == null) {
+        if ("0".equals(vo.getPid())) {
+            relationCode = deptCode;
+        } else if (null == parent) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
+        } else {
+            relationCode = parent.getRelationCode() + deptCode;
         }
-        relationCode = "0".equals(parent.getRelationCode()) ? deptCode : parent.getRelationCode() + deptCode;
         vo.setDeptNo(deptCode);
         vo.setRelationCode(relationCode);
         vo.setStatus(1);
