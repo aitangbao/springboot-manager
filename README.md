@@ -48,7 +48,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
 - 代码生成使用  
-    1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用关键字
+    1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用数据库关键字
     2. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
     3. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
     4. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
