@@ -3,7 +3,6 @@ package com.company.project.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.company.project.vo.req.PageReqVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +21,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysRole extends PageReqVO implements Serializable {
+public class SysRole extends BaseEntity implements Serializable {
     @TableId
     private String id;
 
