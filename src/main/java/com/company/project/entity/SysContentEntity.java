@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 字典明细
+ * 内容管理
  *
  * @author wenbin
  * @version V1.0
@@ -19,50 +19,39 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_dict_detail")
-public class SysDictDetailEntity extends BaseEntity implements Serializable {
+@TableName("sys_content")
+public class SysContentEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键
+	 * 主键id
 	 */
 	@TableId("id")
 	private String id;
 
 	/**
-	 * 字典标签
+	 * 主题
 	 */
-	@TableField("label")
-	private String label;
+	@TableField("title")
+	private String title;
 
 	/**
-	 * 字典值
+	 * 内容
 	 */
-	@TableField("value")
-	private String value;
+	@TableField("content")
+	private String content;
 
 	/**
-	 * 排序
+	 * 类型（数据字典）
 	 */
-	@TableField("sort")
-	private Integer sort;
+	@TableField("type")
+	private String type;
 
 	/**
-	 * 字典id
-	 */
-	@TableField("dict_id")
-	private String dictId;
-
-	/**
-	 * 创建日期
+	 * 创建时间
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
 
-	/**
-	 * 字典name
-	 */
-	@TableField(exist = false)
-	private String dictName;
 
 }

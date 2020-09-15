@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 字典明细
+ * 文件上传
  *
  * @author wenbin
  * @version V1.0
@@ -19,8 +19,8 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_dict_detail")
-public class SysDictDetailEntity extends BaseEntity implements Serializable {
+@TableName("sys_files")
+public class SysFilesEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -30,39 +30,22 @@ public class SysDictDetailEntity extends BaseEntity implements Serializable {
 	private String id;
 
 	/**
-	 * 字典标签
+	 * URL地址
 	 */
-	@TableField("label")
-	private String label;
+	@TableField("url")
+	private String url;
 
 	/**
-	 * 字典值
+	 * 创建时间
 	 */
-	@TableField("value")
-	private String value;
+	@TableField(value = "create_date", fill = FieldFill.INSERT)
+	private Date createDate;
 
-	/**
-	 * 排序
-	 */
-	@TableField("sort")
-	private Integer sort;
+	@TableField("file_name")
+	private String fileName;
 
-	/**
-	 * 字典id
-	 */
-	@TableField("dict_id")
-	private String dictId;
+	@TableField("file_path")
+	private String filePath;
 
-	/**
-	 * 创建日期
-	 */
-	@TableField(value = "create_time", fill = FieldFill.INSERT)
-	private Date createTime;
-
-	/**
-	 * 字典name
-	 */
-	@TableField(exist = false)
-	private String dictName;
 
 }

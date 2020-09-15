@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 字典管理
+ * 定时任务
  *
  * @author wenbin
  * @version V1.0
@@ -19,21 +19,42 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_dict")
-public class SysDictEntity extends BaseEntity implements Serializable {
+@TableName("sys_job")
+public class SysJobEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	/**
-	 * 主键
+	 * 任务调度参数key
+	 */
+	public static final String JOB_PARAM_KEY = "JOB_PARAM_KEY";
+	/**
+	 * 任务id
 	 */
 	@TableId("id")
 	private String id;
 
 	/**
-	 * 字典名称
+	 * spring bean名称
 	 */
-	@TableField("name")
-	private String name;
+	@TableField("bean_name")
+	private String beanName;
+
+	/**
+	 * 参数
+	 */
+	@TableField("params")
+	private String params;
+
+	/**
+	 * cron表达式
+	 */
+	@TableField("cron_expression")
+	private String cronExpression;
+
+	/**
+	 * 任务状态  0：正常  1：暂停
+	 */
+	@TableField("status")
+	private Integer status;
 
 	/**
 	 * 备注
@@ -46,7 +67,6 @@ public class SysDictEntity extends BaseEntity implements Serializable {
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
-
 
 
 }

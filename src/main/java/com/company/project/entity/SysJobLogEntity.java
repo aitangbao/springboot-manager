@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 字典管理
+ * 定时任务日志
  *
  * @author wenbin
  * @version V1.0
@@ -19,34 +19,57 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("sys_dict")
-public class SysDictEntity extends BaseEntity implements Serializable {
+@TableName("sys_job_log")
+public class SysJobLogEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键
+	 * 任务日志id
 	 */
 	@TableId("id")
 	private String id;
 
 	/**
-	 * 字典名称
+	 * 任务id
 	 */
-	@TableField("name")
-	private String name;
+	@TableField("job_id")
+	private String jobId;
 
 	/**
-	 * 备注
+	 * spring bean名称
 	 */
-	@TableField("remark")
-	private String remark;
+	@TableField("bean_name")
+	private String beanName;
+
+	/**
+	 * 参数
+	 */
+	@TableField("params")
+	private String params;
+
+	/**
+	 * 任务状态    0：成功    1：失败
+	 */
+	@TableField("status")
+	private Integer status;
+
+	/**
+	 * 失败信息
+	 */
+	@TableField("error")
+	private String error;
+
+	/**
+	 * 耗时(单位：毫秒)
+	 */
+	@TableField("times")
+	private Integer times;
 
 	/**
 	 * 创建时间
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
-
 
 
 }

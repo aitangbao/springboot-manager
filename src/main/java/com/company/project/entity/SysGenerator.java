@@ -1,6 +1,5 @@
 package com.company.project.entity;
 
-import com.company.project.vo.req.PageReqVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,7 +17,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SysGenerator extends PageReqVO implements Serializable {
+public class SysGenerator extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -22,7 +22,7 @@
 ## 代码仓库
 Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
 GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager)  
-如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager-simple](https://gitee.com/zwens/springboot-manager-simple) 
+如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager/tree/simple/](https://gitee.com/zwens/springboot-manager/tree/simple/) 
 
 ## 开发文档&项目演示
 - 开发文档：[http://doc.aitangbao.com.cn](http://doc.aitangbao.com.cn) 
@@ -48,7 +48,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
 - 代码生成使用  
-    1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用关键字
+    1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用数据库关键字
     2. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
     3. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
     4. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
@@ -119,11 +119,10 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！
-
 ![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
 
 ### 交流群
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com  
 >
 > 加群二维码仅工作日开放， 周末不开放， 如果着急，请使用其他方式联系作者
-<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200907150457.jpg" alt="" style="zoom:25%;" /> 
+<img width="300px" height="400px" src="http://tuchuang.aitangbao.com.cn/20200914104109.jpg" alt="" style="zoom:25%;" /> 
