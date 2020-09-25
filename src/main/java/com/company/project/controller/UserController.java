@@ -3,7 +3,6 @@ package com.company.project.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysUser;
@@ -12,7 +11,7 @@ import com.company.project.service.HttpSessionService;
 import com.company.project.service.UserRoleService;
 import com.company.project.service.UserService;
 import com.company.project.vo.req.UserRoleOperationReqVO;
-import com.google.code.kaptcha.Constants;
+import com.wf.captcha.utils.CaptchaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,8 +49,12 @@ public class UserController {
     @PostMapping(value = "/user/login")
     @ApiOperation(value = "用户登录接口")
     public DataResult login(@RequestBody @Valid SysUser vo, HttpServletRequest request) {
-        //校验图像验证码
-        validImageCode(vo.getCaptcha(), request);
+        //判断验证码
+        if (!CaptchaUtil.ver(vo.getCaptcha(), request)) {
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            return DataResult.fail("验证码错误！");
+        }
         return DataResult.success(userService.login(vo));
     }
 
@@ -186,18 +189,4 @@ public class UserController {
         httpSessionService.refreshUerId(userId);
         return  DataResult.success();
     }
-
-    /**
-     * 校验图像验证码
-     * @param imageCode 验证码
-     * @param request request
-     */
-    private void validImageCode(String imageCode, HttpServletRequest request) {
-        String captchaId = (String)
-                request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        if (!captchaId.equals(imageCode)) {
-            throw new BusinessException("验证码输入有误");
-        }
-    }
-
 }
