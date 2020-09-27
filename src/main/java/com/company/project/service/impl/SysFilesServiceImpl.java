@@ -1,6 +1,5 @@
 package com.company.project.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.config.FileUploadProperties;
 import com.company.project.common.exception.BusinessException;
@@ -73,8 +72,9 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
         List<SysFilesEntity> list = this.listByIds(ids);
         list.forEach(entity -> {
             //如果之前的文件存在，删除
-            if (FileUtil.exist(entity.getFilePath())) {
-                FileUtil.del(entity.getFilePath());
+            File file = new File(entity.getFilePath());
+            if (file.exists()) {
+                file.delete();
             }
         });
         this.removeByIds(ids);
