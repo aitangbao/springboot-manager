@@ -164,6 +164,7 @@ COMMENT ON TABLE "sys_job_log" IS '定时任务日志';
   type NUMBER(10, 0),
   content VARCHAR2(4000) ,
   create_time varchar2(20) ,
+  create_id varchar2(50) ,
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_content" IS '文章管理';

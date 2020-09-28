@@ -157,6 +157,7 @@ CREATE TABLE sys_job_log  (
   type int,
   content varchar(4000) ,
   create_time datetime ,
+  create_id varchar(50) ,
   PRIMARY KEY (id)
 );
 
