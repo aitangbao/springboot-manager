@@ -269,6 +269,9 @@
                 if (!CoreUtil.isEmpty(res.data.dataScope)) {
                     $("#dataScopeS").find('option[value="'+res.data.dataScope+'"]').prop('selected',true);
                     $("#dataScope").val(res.data.dataScope)
+                    if (res.data.dataScope == "2") {
+                        $("#choose-dept").show();
+                    }
                 } else {
                     $("#dataScopeS option:first").prop("selected", 'selected');
                 }
