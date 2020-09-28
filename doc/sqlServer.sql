@@ -58,8 +58,19 @@ CREATE TABLE sys_role (
   create_time datetime,
   update_time datetime,
   deleted int,
+  data_scope int,
   PRIMARY KEY (id)
 );
+
+-- 角色部门关联表
+CREATE TABLE sys_role_dept (
+  id varchar(64) ,
+  role_id varchar(64),
+  dept_id varchar(64),
+  create_time datetime,
+  PRIMARY KEY (id)
+);
+
 
 
 -- 角色权限关联表

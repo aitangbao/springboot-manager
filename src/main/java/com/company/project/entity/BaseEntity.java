@@ -27,5 +27,5 @@ public class BaseEntity {
      * 数据权限：用户id
      */
     @TableField(exist = false)
-    private List<String> userIds;
+    private List<String> createIds;
 }

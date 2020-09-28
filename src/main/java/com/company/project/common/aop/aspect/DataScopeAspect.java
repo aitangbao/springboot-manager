@@ -79,11 +79,15 @@ public class DataScopeAspect {
         if (CollectionUtils.isEmpty(sysRoles) || sysRoles.size() == 0) {
             return;
         }
-        List<String> userIds = this.getUserIdsByRoles(sysRoles, id);
+        List<SysRole> list = sysRoles.parallelStream().filter(one -> null != one.getDataScope()).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(list) || list.size() == 0) {
+            return;
+        }
+        List<String> userIds = this.getUserIdsByRoles(list, id);
         Object params = joinPoint.getArgs()[0];
         if (params instanceof BaseEntity) {
             BaseEntity baseEntity = (BaseEntity) params;
-            baseEntity.setUserIds(userIds);
+            baseEntity.setCreateIds(userIds);
         }
 
     }
@@ -97,11 +101,7 @@ public class DataScopeAspect {
         //是否拥有查看所有数据标志
         AtomicReference<Boolean> isAll = new AtomicReference<>(false);
         //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
-        Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().filter(one -> null != one.getDataScope()).collect(Collectors.groupingBy(SysRole::getDataScope));
-        if (CollectionUtils.isEmpty(dataScopeMap) || dataScopeMap.size() == 0) {
-            List userIdAll = userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId));
-            return userIdAll;
-        }
+        Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().collect(Collectors.groupingBy(SysRole::getDataScope));
         dataScopeMap.forEach((k, v) -> {
             if (DATA_SCOPE_ALL.equals(k)) {
                 //全部
@@ -111,7 +111,6 @@ public class DataScopeAspect {
                 //自定义
                 deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, dataScopeMap.get(k))));
             } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k) && !isAll.get()) {
-                System.out.println(sessionService.getCurrentDeptNo());
                 if (StringUtils.isNotBlank(sessionService.getCurrentDeptNo())) {
                     //本部门及以下
                     List deptIds = deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, sessionService.getCurrentDeptNo()));
@@ -128,9 +127,6 @@ public class DataScopeAspect {
             } else if (DATA_SCOPE_DEPT_SELF.equals(k) && !isAll.get()) {
                 //自己
                 userIdList.add(userId);
-                System.out.println("-------------------------");
-                System.out.println(userIdList);
-                System.out.println("-------------------------");
             }
         });
         if (!CollectionUtils.isEmpty(deptlist)) {

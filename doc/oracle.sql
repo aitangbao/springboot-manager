@@ -59,6 +59,7 @@ CREATE TABLE sys_role (
   create_time varchar2(20),
   update_time varchar2(20),
   deleted NUMBER(10, 0),
+  data_scope NUMBER(10, 0),
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_role" IS '角色';
@@ -72,6 +73,16 @@ CREATE TABLE sys_role_permission (
   PRIMARY KEY (id)
 );
 COMMENT ON TABLE "sys_role_permission" IS '角色权限关联表';
+
+-- 角色部门关联表
+CREATE TABLE sys_role_dept (
+  id varchar2(64) ,
+  role_id varchar2(64),
+  dept_id varchar2(64),
+  create_time varchar2(20),
+  PRIMARY KEY (id)
+);
+COMMENT ON TABLE "sys_role_permission" IS '角色部门关联表';
 
 
 -- 用户

@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,9 +71,10 @@ public class SysContentController {
         if (!StringUtils.isEmpty(sysContent.getTitle())) {
             queryWrapper.like(SysContentEntity::getTitle, sysContent.getTitle());
         }
-
         //数据权限示例， 需手动添加此条件 begin
-        queryWrapper.in(SysContentEntity::getCreateId, sysContent.getUserIds());
+        if (!CollectionUtils.isEmpty(sysContent.getCreateIds())) {
+            queryWrapper.in(SysContentEntity::getCreateId, sysContent.getCreateId());
+        }
         //数据权限示例， 需手动添加此条件 end
 
         IPage<SysContentEntity> iPage = sysContentService.page(page, queryWrapper);
