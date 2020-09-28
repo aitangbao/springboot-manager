@@ -32,6 +32,8 @@ public class SysRole extends BaseEntity implements Serializable {
 
     private Integer status;
 
+    private Integer dataScope;
+
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
