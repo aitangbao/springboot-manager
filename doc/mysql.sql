@@ -60,7 +60,7 @@ CREATE TABLE `sys_role` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
-  `data_scope` int COMMENT '数据范围（1：自定数据权限 2：本部门及以下数据权限）',
+  `data_scope` int COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色';
 

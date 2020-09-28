@@ -55,6 +55,12 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
     5. 数据库执行sql，生成菜单
 	6. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
 	
+- 数据权限配置及使用 示例：文章管理列表
+    1. 数据权限控制的表， 需要有创建人字段
+    2. 配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
+    3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
+    4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
+	
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
 * 前端框架: [Layui](https://www.layui.com/)
