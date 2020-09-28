@@ -48,6 +48,12 @@ public class SysContentEntity extends BaseEntity implements Serializable {
 	private String type;
 
 	/**
+	 * 创建人
+	 */
+	@TableField(value = "create_id", fill = FieldFill.INSERT)
+	private String createId;
+
+	/**
 	 * 创建时间
 	 */
 	@TableField(value = "create_time", fill = FieldFill.INSERT)

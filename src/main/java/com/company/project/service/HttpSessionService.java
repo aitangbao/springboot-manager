@@ -59,6 +59,8 @@ public class HttpSessionService {
         sessionInfo.put(Constant.USERNAME_KEY, user.getUsername());
         sessionInfo.put(Constant.ROLES_KEY, roles);
         sessionInfo.put(Constant.PERMISSIONS_KEY, permissions);
+        sessionInfo.put(Constant.DEPT_ID, user.getDeptId());
+        sessionInfo.put(Constant.DEPT_NO, user.getDeptNo());
         String key = userTokenPrefix + token;
         //设置该用户已登录的token
         redisService.setAndExpire(key, sessionInfo.toJSONString(), exire);
@@ -136,6 +138,32 @@ public class HttpSessionService {
     public String getCurrentUserId() {
         if (getCurrentSession() != null) {
             return getCurrentSession().getString(Constant.USERID_KEY);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取当前session信息 DEPT_NO
+     *
+     * @return DEPT_NO
+     */
+    public String getCurrentDeptNo() {
+        if (getCurrentSession() != null) {
+            return getCurrentSession().getString(Constant.DEPT_NO);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取当前session信息 DEPT_ID
+     *
+     * @return DEPT_ID
+     */
+    public String getCurrentDeptId() {
+        if (getCurrentSession() != null) {
+            return getCurrentSession().getString(Constant.DEPT_ID);
         } else {
             return null;
         }

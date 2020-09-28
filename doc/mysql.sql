@@ -173,6 +173,7 @@ CREATE TABLE `sys_content`  (
   `type` int(11)  DEFAULT NULL COMMENT '文章类型',
   `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_id` varchar(50) NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章管理' ROW_FORMAT = Compact;
 

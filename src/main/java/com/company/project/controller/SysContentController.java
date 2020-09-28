@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.company.project.common.aop.annotation.DataScope;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysContentEntity;
 import com.company.project.service.SysContentService;
@@ -61,6 +62,7 @@ public class SysContentController {
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @RequiresPermissions("sysContent:list")
+    @DataScope
     public DataResult findListByPage(@RequestBody SysContentEntity sysContent) {
         Page page = new Page(sysContent.getPage(), sysContent.getLimit());
         LambdaQueryWrapper<SysContentEntity> queryWrapper = Wrappers.lambdaQuery();
@@ -68,6 +70,11 @@ public class SysContentController {
         if (!StringUtils.isEmpty(sysContent.getTitle())) {
             queryWrapper.like(SysContentEntity::getTitle, sysContent.getTitle());
         }
+
+        //数据权限示例， 需手动添加此条件 begin
+        queryWrapper.in(SysContentEntity::getCreateId, sysContent.getUserIds());
+        //数据权限示例， 需手动添加此条件 end
+
         IPage<SysContentEntity> iPage = sysContentService.page(page, queryWrapper);
         return DataResult.success(iPage);
     }

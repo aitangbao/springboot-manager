@@ -17,6 +17,8 @@ public class Constant {
     public static final String USERID_KEY = "userid-key";
     public static final String USERNAME_KEY = "username-key";
     public static final String ROLES_KEY = "roles-key";
+    public static final String DEPT_ID = "deptid-key";
+    public static final String DEPT_NO = "deptno-key";
 
     /**
      * 未删除值
@@ -34,5 +36,6 @@ public class Constant {
      */
     public static final Integer SCHEDULER_STATUS_NORMAL = 0;
     public static final Integer SCHEDULER_STATUS_PAUSE = 1;
+
 
 }

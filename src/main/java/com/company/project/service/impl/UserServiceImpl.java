@@ -18,10 +18,10 @@ import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -87,7 +87,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!allowMultipleLogin) {
             httpSessionService.abortUserById(sysUser.getId());
         }
-
+        if (StringUtils.isNotBlank(sysUser.getDeptId())) {
+            SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());
+            if (sysDept != null) {
+                sysUser.setDeptNo(sysDept.getDeptNo());
+            }
+        }
         String token = httpSessionService.createTokenAndUser(sysUser, roleService.getRoleNames(sysUser.getId()), permissionService.getPermissionsByUserId(sysUser.getId()));
         respVO.setAccessToken(token);
 
@@ -165,7 +170,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!StringUtils.isEmpty(vo.getNickName())) {
             queryWrapper.like(SysUser::getNickName, vo.getNickName());
         }
-        if (!StringUtils.isEmpty(vo.getStatus())) {
+        if (!StringUtils.isEmpty(String.valueOf(vo.getStatus()))) {
             queryWrapper.eq(SysUser::getStatus, vo.getStatus());
         }
         if (!StringUtils.isEmpty(vo.getDeptNo())) {

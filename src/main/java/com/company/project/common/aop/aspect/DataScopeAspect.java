@@ -1,26 +1,29 @@
 package com.company.project.common.aop.aspect;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.*;
 import com.company.project.service.*;
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- * 1、首先配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
- * 2、加个注解，用来查询当前等路人的多个角色， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id
- * 3、在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
+ * 1、需要数据权限控制的列表， 需要有创建人字段， 示例：文章管理
+ * 2、配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
+ * 3、加个注解，用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id
+ * 4、在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
  *
  * @author wenbin
  */
@@ -38,13 +41,28 @@ public class DataScopeAspect {
     DeptService deptService;
     @Resource
     UserService userService;
-    //自定数据权限
-    public static final Integer DATA_SCOPE_CUSTOM = 1;
-    //部门及以下数据权限
-    public static final Integer DATA_SCOPE_DEPT_AND_CHILD = 2;
+    /**
+     * 所有
+     */
+    public static final Integer DATA_SCOPE_ALL = 1;
+    /**
+     * 自定义
+     */
+    public static final Integer DATA_SCOPE_CUSTOM = 2;
+    /**
+     * 部门及以下数据权限
+     */
+    public static final Integer DATA_SCOPE_DEPT_AND_CHILD = 3;
+    /**
+     * 仅本部门
+     */
+    public static final Integer DATA_SCOPE_DEPT = 4;
+    /**
+     * 自己
+     */
+    public static final Integer DATA_SCOPE_DEPT_SELF = 4;
 
-    // 配置织入点
-    @Pointcut("@annotation(com.company.project.common.aop.annotation.DataScopeAnnotation)")
+    @Pointcut("@annotation(com.company.project.common.aop.annotation.DataScope)")
     public void dataScopePointCut() {
     }
 
@@ -61,10 +79,7 @@ public class DataScopeAspect {
         if (CollectionUtils.isEmpty(sysRoles) || sysRoles.size() == 0) {
             return;
         }
-        List<String> userIds = this.getUserIdsByRoles(sysRoles);
-        if (userIds == null) {
-            return;
-        }
+        List<String> userIds = this.getUserIdsByRoles(sysRoles, id);
         Object params = joinPoint.getArgs()[0];
         if (params instanceof BaseEntity) {
             BaseEntity baseEntity = (BaseEntity) params;
@@ -74,26 +89,57 @@ public class DataScopeAspect {
     }
 
     //获取最终的用户id
-    private List<String> getUserIdsByRoles(List<SysRole> sysRoles) {
+    private List<String> getUserIdsByRoles(List<SysRole> sysRoles, String userId) {
         //部门id
-        List<Object> list = new ArrayList<Object>();
-        //如果角色范围是自定义数据权限， 应该直接就是角色直接绑定的部门
-        List<String> sysRoleIds1 = sysRoles.parallelStream().filter(one -> DATA_SCOPE_CUSTOM.equals(one.getDataScope())).map(SysRole::getId).collect(Collectors.toList());
-        //获取角色绑定的权限部门
-        if (!CollectionUtils.isEmpty(sysRoleIds1) && sysRoleIds1.size() > 0) {
-            list.add(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, sysRoleIds1)));
+        LinkedList<Object> deptlist = new LinkedList<>();
+        //返回的用户ids
+        LinkedList<Object> userIdList = new LinkedList<>();
+        //是否拥有查看所有数据标志
+        AtomicReference<Boolean> isAll = new AtomicReference<>(false);
+        //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
+        Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().filter(one -> null != one.getDataScope()).collect(Collectors.groupingBy(SysRole::getDataScope));
+        if (CollectionUtils.isEmpty(dataScopeMap) || dataScopeMap.size() == 0) {
+            List userIdAll = userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId));
+            return userIdAll;
         }
-        //如果角色范围是部门及以下数据权限数据权限
-        List<String> sysRoleIds2 = sysRoles.parallelStream().filter(one -> DATA_SCOPE_DEPT_AND_CHILD.equals(one.getDataScope())).map(SysRole::getId).collect(Collectors.toList());
-        //获取角色绑定的权限部门
-        if (!CollectionUtils.isEmpty(sysRoleIds2) && sysRoleIds2.size() > 0) {
-            List deptIds = sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, sysRoleIds2));
-            List<SysDept> deptList = deptService.listByIds(deptIds);
-            deptList.parallelStream().forEach(one -> {
-                list.add(deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, one.getDeptNo())));
-            });
+        dataScopeMap.forEach((k, v) -> {
+            if (DATA_SCOPE_ALL.equals(k)) {
+                //全部
+                isAll.set(true);
+                userIdList.addAll(userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId)));
+            } else if (DATA_SCOPE_CUSTOM.equals(k) && !isAll.get()) {
+                //自定义
+                deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, dataScopeMap.get(k))));
+            } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k) && !isAll.get()) {
+                System.out.println(sessionService.getCurrentDeptNo());
+                if (StringUtils.isNotBlank(sessionService.getCurrentDeptNo())) {
+                    //本部门及以下
+                    List deptIds = deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, sessionService.getCurrentDeptNo()));
+                    List<SysDept> deptList = deptService.listByIds(deptIds);
+                    deptList.parallelStream().forEach(one -> {
+                        deptlist.addAll(deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, one.getDeptNo())));
+                    });
+                }
+            } else if (DATA_SCOPE_DEPT.equals(k) && !isAll.get()) {
+                if (StringUtils.isNotBlank(sessionService.getCurrentDeptId())) {
+                    //本部门
+                    deptlist.add(sessionService.getCurrentDeptId());
+                }
+            } else if (DATA_SCOPE_DEPT_SELF.equals(k) && !isAll.get()) {
+                //自己
+                userIdList.add(userId);
+                System.out.println("-------------------------");
+                System.out.println(userIdList);
+                System.out.println("-------------------------");
+            }
+        });
+        if (!CollectionUtils.isEmpty(deptlist)) {
+            userIdList.addAll(userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId).in(SysUser::getDeptId, deptlist)));
         }
-        Optional<List<Object>> userIdsOption = Optional.ofNullable(list).map(deptIds -> userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId).in(SysUser::getDeptId, deptIds)));
-        return userIdsOption.map(objects -> objects.parallelStream().map(Object::toString).collect(Collectors.toList())).orElse(null);
+        //如果配置了角色数据范围， 最终没有查到userId， 那么返回无数据
+        if (CollectionUtils.isEmpty(userIdList)) {
+            throw new BusinessException("无数据");
+        }
+        return userIdList.parallelStream().map(Object::toString).collect(Collectors.toList());
     }
 }
