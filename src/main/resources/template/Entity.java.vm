@@ -9,6 +9,7 @@ import com.company.project.entity.BaseEntity;
 #if(${hasBigDecimal})
 #end
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
