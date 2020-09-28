@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.entity.SysRole;
+import com.company.project.entity.SysRoleDeptEntity;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.entity.SysUserRole;
 import com.company.project.mapper.SysRoleMapper;
 import com.company.project.service.*;
 import com.company.project.vo.req.RolePermissionOperationReqVO;
+import com.company.project.vo.resp.DeptRespNodeVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements RoleService {
     @Resource
     private SysRoleMapper sysRoleMapper;
     @Resource
@@ -43,6 +45,10 @@ public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implem
     private PermissionService permissionService;
     @Resource
     private HttpSessionService httpSessionService;
+    @Resource
+    private DeptService deptService;
+    @Resource
+    private SysRoleDeptService sysRoleDeptService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -92,11 +98,27 @@ public class RoleServiceImpl  extends ServiceImpl<SysRoleMapper, SysRole> implem
                 new HashSet<>(rolePermissionService.listObjs(queryWrapper));
         setChecked(permissionRespNodes, checkList);
         sysRole.setPermissionRespNodes(permissionRespNodes);
+
+        LambdaQueryWrapper<SysRoleDeptEntity> queryWrapperDept = Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).eq(SysRoleDeptEntity::getRoleId, sysRole.getId());
+        List<DeptRespNodeVO> deptRespNodes = deptService.deptTreeList(null);
+        Set<Object> checkDeptList =
+                new HashSet<>(sysRoleDeptService.listObjs(queryWrapperDept));
+        setCheckedDept(deptRespNodes, checkDeptList);
+        sysRole.setDeptRespNodes(deptRespNodes);
         return sysRole;
     }
 
+    private void setCheckedDept(List<DeptRespNodeVO> deptRespNodes, Set<Object> checkDeptList) {
+        for (DeptRespNodeVO node : deptRespNodes) {
+            if (checkDeptList.contains(node.getId())
+                    && (node.getChildren() == null || node.getChildren().isEmpty())) {
+                node.setChecked(true);
+            }
+            setCheckedDept((List<DeptRespNodeVO>) node.getChildren(), checkDeptList);
+        }
+    }
 
-    @SuppressWarnings("unchecked")
+
     private void setChecked(List<PermissionRespNode> list, Set<Object> checkList) {
         for (PermissionRespNode node : list) {
             if (checkList.contains(node.getId())

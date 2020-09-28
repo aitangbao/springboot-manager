@@ -33,8 +33,10 @@ public class DeptRespNodeVO {
     private String relationCode;
 
     @ApiModelProperty(value = "是否展开 默认不展开(false)")
-    private boolean spread;
+    private boolean spread = true;
 
+    @ApiModelProperty(value = "是否选中")
+    private boolean checked = false;
 
     @ApiModelProperty(value = "子集")
     private List<?> children;

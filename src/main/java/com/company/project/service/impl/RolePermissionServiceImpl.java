@@ -22,7 +22,6 @@ import java.util.List;
 public class RolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements RolePermissionService {
     @Override
     public void addRolePermission(RolePermissionOperationReqVO vo) {
-
         List<SysRolePermission> list = new ArrayList<>();
         for (String permissionId : vo.getPermissionIds()) {
             SysRolePermission sysRolePermission = new SysRolePermission();

@@ -1,15 +1,13 @@
 package com.company.project.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.company.project.entity.BaseEntity;
-
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * 角色部门
@@ -44,7 +42,7 @@ public class SysRoleDeptEntity extends BaseEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	@TableField("create_time")
+	@TableField(value = "create_time", fill = FieldFill.INSERT)
 	private Date createTime;
 
 

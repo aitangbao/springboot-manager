@@ -3,9 +3,11 @@ package com.company.project.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.company.project.vo.resp.DeptRespNodeVO;
 import com.company.project.vo.resp.PermissionRespNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class SysRole extends BaseEntity implements Serializable {
     @TableId
     private String id;
@@ -45,6 +48,8 @@ public class SysRole extends BaseEntity implements Serializable {
 
     @TableField(exist = false)
     private List<PermissionRespNode> permissionRespNodes;
+    @TableField(exist = false)
+    private List<DeptRespNodeVO> deptRespNodes;
 
     @TableField(exist = false)
     private String startTime;
@@ -54,5 +59,8 @@ public class SysRole extends BaseEntity implements Serializable {
 
     @TableField(exist = false)
     private List<String> permissions;
+
+    @TableField(exist = false)
+    private List<String> depts;
 
 }
