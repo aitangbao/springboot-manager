@@ -94,6 +94,7 @@ public class DataScopeAspect {
 
     //获取最终的用户id
     private List<String> getUserIdsByRoles(List<SysRole> sysRoles, String userId) {
+        SysUser sysUser = userService.getById(userId);
         //部门id
         LinkedList<Object> deptlist = new LinkedList<>();
         //返回的用户ids
@@ -112,7 +113,8 @@ public class DataScopeAspect {
                 List<String> list = dataScopeMap.get(k).parallelStream().map(SysRole::getId).collect(Collectors.toList());
                 deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, list)));
             } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k) && !isAll.get()) {
-                if (StringUtils.isNotBlank(sessionService.getCurrentDeptNo())) {
+                SysDept sysDept = deptService.getById(sysUser.getDeptId());
+                if (StringUtils.isNotBlank(sysDept.getDeptNo())) {
                     //本部门及以下
                     List deptIds = deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, sessionService.getCurrentDeptNo()));
                     List<SysDept> deptList = deptService.listByIds(deptIds);
