@@ -73,7 +73,7 @@ public class SysContentController {
         }
         //数据权限示例， 需手动添加此条件 begin
         if (!CollectionUtils.isEmpty(sysContent.getCreateIds())) {
-            queryWrapper.in(SysContentEntity::getCreateId, sysContent.getCreateId());
+            queryWrapper.in(SysContentEntity::getCreateId, sysContent.getCreateIds());
         }
         //数据权限示例， 需手动添加此条件 end
 

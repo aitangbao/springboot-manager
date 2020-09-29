@@ -109,7 +109,8 @@ public class DataScopeAspect {
                 userIdList.addAll(userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId)));
             } else if (DATA_SCOPE_CUSTOM.equals(k) && !isAll.get()) {
                 //自定义
-                deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, dataScopeMap.get(k))));
+                List<String> list = dataScopeMap.get(k).parallelStream().map(SysRole::getId).collect(Collectors.toList());
+                deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, list)));
             } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k) && !isAll.get()) {
                 if (StringUtils.isNotBlank(sessionService.getCurrentDeptNo())) {
                     //本部门及以下

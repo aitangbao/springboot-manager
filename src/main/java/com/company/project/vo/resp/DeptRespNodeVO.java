@@ -41,6 +41,8 @@ public class DeptRespNodeVO {
     @ApiModelProperty(value = "是否选中")
     private boolean checked = false;
 
+    private boolean disabled = false;
+
     @ApiModelProperty(value = "子集")
     private List<?> children;
 

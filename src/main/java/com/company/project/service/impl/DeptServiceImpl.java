@@ -130,6 +130,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         respNodeVO.setTitle("默认顶级部门");
         respNodeVO.setId("0");
         respNodeVO.setSpread(true);
+        respNodeVO.setDisabled(true);
         respNodeVO.setChildren(getTree(list));
         List<DeptRespNodeVO> result = new ArrayList<>();
         result.add(respNodeVO);

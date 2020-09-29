@@ -170,7 +170,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         if (!StringUtils.isEmpty(vo.getNickName())) {
             queryWrapper.like(SysUser::getNickName, vo.getNickName());
         }
-        if (!StringUtils.isEmpty(String.valueOf(vo.getStatus()))) {
+        if (null != vo.getStatus()) {
             queryWrapper.eq(SysUser::getStatus, vo.getStatus());
         }
         if (!StringUtils.isEmpty(vo.getDeptNo())) {
