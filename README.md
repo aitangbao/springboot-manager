@@ -1,7 +1,7 @@
 # springboot-manager
 
 ## 介绍
-基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统
+基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统  
 支持菜单权限与数据权限    
 数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
@@ -99,8 +99,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	- 接口管理
 	
 ## **效果图**
-
-![](http://tuchuang.aitangbao.com.cn/20200927104306.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/140822_cac6d5f5_997722.jpeg "微信图片_20200927094921.jpg")
 
 ![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
 
