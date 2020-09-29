@@ -99,8 +99,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	- 接口管理
 	
 ## **效果图**
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/140822_cac6d5f5_997722.jpeg "微信图片_20200927094921.jpg")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/140857_b71e7707_997722.png "home.png")
 ![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
 
 ![3](https://images.gitee.com/uploads/images/2020/0521/110629_59b62d18_997722.png)
