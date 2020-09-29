@@ -23,6 +23,9 @@ public class DeptRespNodeVO {
     @ApiModelProperty(value = "组织名称")
     private String title;
 
+    @ApiModelProperty(value = "组织名称")
+    private String label;
+
     @ApiModelProperty(value = "组织父级id")
     private String pid;
 
@@ -40,4 +43,9 @@ public class DeptRespNodeVO {
 
     @ApiModelProperty(value = "子集")
     private List<?> children;
+
+    public String getLabel() {
+        return title;
+    }
+
 }

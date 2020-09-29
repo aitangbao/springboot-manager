@@ -38,7 +38,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">请选择权限</label>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item" >
                 <div class="layui-tree">
                     <div id="permissionTree"></div>
                 </div>
@@ -72,10 +72,7 @@
                 </div>
             </div>
             <div id="choose-dept" hidden>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">请选择部门</label>
-                </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="margin-left: 40px;">
                     <div class="layui-tree">
                         <div id="deptTree"></div>
                     </div>
@@ -141,8 +138,12 @@
     var tree = layui.tree;
     var startTime = null;
     var endTime = null;
-    layui.use(['table', 'laypage', 'layer', 'laydate', 'tree'], function () {
-
+    layui.config({
+        base: '/'
+    }).extend({
+        eleTree: 'layui-ext/eleTree/eleTree'
+    }).use(['table', 'laypage', 'layer', 'laydate', 'tree', 'eleTree'], function () {
+        var eleTree = layui.eleTree;
         tableIns1 = table.render({
             elem: '#role_table'
             , contentType: 'application/json'
@@ -267,7 +268,7 @@
                 }
                 $(".operation_role_dataScope input[name=roleId]").val(res.data.id);
                 if (!CoreUtil.isEmpty(res.data.dataScope)) {
-                    $("#dataScopeS").find('option[value="'+res.data.dataScope+'"]').prop('selected',true);
+                    $("#dataScopeS").find('option[value="' + res.data.dataScope + '"]').prop('selected', true);
                     $("#dataScope").val(res.data.dataScope)
                     if (res.data.dataScope == "2") {
                         $("#choose-dept").show();
@@ -300,15 +301,19 @@
                 }
             });
         };
+        var el;
         var loadDeptTree = function (data) {
-            tree.render({
-                elem: '#deptTree'
-                , data: data
-                , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
-                , showCheckbox: true  //是否显示复选框
-                , id: 'deptIds'
-                , accordion: false
-            });
+            $("#deptTree").html("");
+            el = eleTree({
+                el: '#deptTree',
+                data: data,
+                highlightCurrent: true,
+                showCheckbox: true,
+                isDefaultChangePstatus: true,
+                checkStrictly: true,
+                draggable: true,
+                defaultExpandAll: true
+            })
         };
         form.on('switch(switch)', function () {
             $(".operation_role input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
@@ -364,16 +369,23 @@
 
         //监听提交
         form.on('submit(submit_datascope)', function (data) {
+
             if (CoreUtil.isEmpty($("#dataScope").val())) {
                 layer.msg("请选择数据范围");
                 return false;
             }
             var deptIds = [];
-            var brchArrays = tree.getChecked('deptIds');
+            var brchArrays = el.getChecked();
+            if (brchArrays == undefined || brchArrays == null || !brchArrays instanceof Object) {
+                return false;
+            }
+            for (var i = 0; i < brchArrays.length; i++) {
+                deptIds.push(brchArrays[i].id);
+            }
             var params = {
                 id: $(".operation_role_dataScope input[name=roleId]").val(),
                 dataScope: $("#dataScope").val(),
-                depts: getDeptIds(brchArrays, deptIds)
+                depts: deptIds
             }
             CoreUtil.sendPost("/sys/role/bindDept", params, function (res) {
                 //显示表格

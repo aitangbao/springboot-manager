@@ -97,6 +97,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/layui/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/treetable-lay/**", "anon");
+        filterChainDefinitionMap.put("/layui-ext/**", "anon");
         filterChainDefinitionMap.put("/cron/**", "anon");
         filterChainDefinitionMap.put("/**", "token,authc");
         shiroFilterFactoryBean.setLoginUrl("/index/login");
