@@ -1,7 +1,8 @@
 # springboot-manager
 
 ## 介绍
-基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统    
+基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统
+支持菜单权限与数据权限    
 数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
@@ -9,7 +10,7 @@
 
 ## 特征
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
-- 采用RBAC的权限控制
+- 采用RBAC的权限控制，支持数据权限（用法见下）
 - 统一响应结果封装及生成工具
 - 统一异常处理
 - Shiro + Redis 实现 Token 角色权限认证
