@@ -70,7 +70,7 @@ public class RoleController {
     @PostMapping("/role/bindDept")
     @ApiOperation(value = "绑定角色部门接口")
     @LogAnnotation(title = "角色管理", action = "绑定角色部门信息")
-    @RequiresPermissions("sys:role:update")
+    @RequiresPermissions("sys:role:bindDept")
     public DataResult bindDept(@RequestBody SysRole vo) {
         if (StringUtils.isEmpty(vo.getId())) {
             return DataResult.fail("id不能为空");

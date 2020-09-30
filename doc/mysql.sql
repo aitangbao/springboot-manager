@@ -1,133 +1,133 @@
 -- 部门
-DROP TABLE IF EXISTS `sys_dept`;
-CREATE TABLE `sys_dept` (
-  `id` varchar(64) NOT NULL COMMENT '主键',
-  `dept_no` varchar(18) DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
-  `name` varchar(300) DEFAULT NULL COMMENT '部门名称',
-  `pid` varchar(64) NOT NULL COMMENT '父级id',
-  `status` tinyint(4) COMMENT '状态(1:正常；0:弃用)',
-  `relation_code` varchar(3000) DEFAULT NULL COMMENT '为了维护更深层级关系',
-  `dept_manager_id` varchar(64) DEFAULT NULL COMMENT '部门经理user_id',
-  `manager_name` varchar(255) DEFAULT NULL COMMENT '部门经理名称',
-  `phone` varchar(20) DEFAULT NULL COMMENT '部门经理联系电话',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_dept;
+CREATE TABLE sys_dept (
+  id varchar(64) NOT NULL COMMENT '主键',
+  dept_no varchar(18) DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
+  name varchar(300) DEFAULT NULL COMMENT '部门名称',
+  pid varchar(64) NOT NULL COMMENT '父级id',
+  status tinyint(4) COMMENT '状态(1:正常；0:弃用)',
+  relation_code varchar(3000) DEFAULT NULL COMMENT '为了维护更深层级关系',
+  dept_manager_id varchar(64) DEFAULT NULL COMMENT '部门经理user_id',
+  manager_name varchar(255) DEFAULT NULL COMMENT '部门经理名称',
+  phone varchar(20) DEFAULT NULL COMMENT '部门经理联系电话',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  update_time datetime DEFAULT NULL COMMENT '更新时间',
+  deleted tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统部门';
 
 -- 系统日志
-DROP TABLE IF EXISTS `sys_log`;
-CREATE TABLE `sys_log` (
-  `id` varchar(64) NOT NULL,
-  `user_id` varchar(64) DEFAULT NULL COMMENT '用户id',
-  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
-  `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
-  `time` int(11) DEFAULT NULL COMMENT '响应时间',
-  `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
-  `params` varchar(5000) DEFAULT NULL COMMENT '请求参数',
-  `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_log;
+CREATE TABLE sys_log (
+  id varchar(64) NOT NULL,
+  user_id varchar(64) DEFAULT NULL COMMENT '用户id',
+  username varchar(50) DEFAULT NULL COMMENT '用户名',
+  operation varchar(50) DEFAULT NULL COMMENT '用户操作',
+  time int(11) DEFAULT NULL COMMENT '响应时间',
+  method varchar(200) DEFAULT NULL COMMENT '请求方法',
+  params varchar(5000) DEFAULT NULL COMMENT '请求参数',
+  ip varchar(64) DEFAULT NULL COMMENT 'IP地址',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统日志';
 
 -- 菜单权限
-DROP TABLE IF EXISTS `sys_permission`;
-CREATE TABLE `sys_permission`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `name` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
-  `perms` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
-  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
-  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
-  `target` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
-  `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
-  `order_num` int(11) NULL COMMENT '排序',
-  `type` tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
-  `status` tinyint(4) NULL COMMENT '状态1:正常 0：禁用',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) NULL  COMMENT '是否删除(1未删除；0已删除)',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_permission;
+CREATE TABLE sys_permission  (
+  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  name varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
+  perms varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
+  icon varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  url varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
+  target varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
+  pid varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
+  order_num int(11) NULL COMMENT '排序',
+  type tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
+  status tinyint(4) NULL COMMENT '状态1:正常 0：禁用',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  update_time datetime NULL DEFAULT NULL COMMENT '更新时间',
+  deleted tinyint(4) NULL  COMMENT '是否删除(1未删除；0已删除)',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = Compact;
 
 -- 角色
-DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role` (
-  `id` varchar(64) NOT NULL COMMENT '主键',
-  `name` varchar(255) DEFAULT NULL COMMENT '角色名称',
-  `description` varchar(300) DEFAULT NULL,
-  `status` tinyint(4) COMMENT '状态(1:正常0:弃用)',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
-  `data_scope` int COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_role;
+CREATE TABLE sys_role (
+  id varchar(64) NOT NULL COMMENT '主键',
+  name varchar(255) DEFAULT NULL COMMENT '角色名称',
+  description varchar(300) DEFAULT NULL,
+  status tinyint(4) COMMENT '状态(1:正常0:弃用)',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  update_time datetime DEFAULT NULL COMMENT '更新时间',
+  deleted tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
+  data_scope int COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色';
 
 -- 角色部门
-DROP TABLE IF EXISTS `sys_role_dept`;
-CREATE TABLE `sys_role_dept`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
-  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_role_dept;
+CREATE TABLE sys_role_dept  (
+  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  role_id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  dept_id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门' ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- 角色权限关联
-DROP TABLE IF EXISTS `sys_role_permission`;
-CREATE TABLE `sys_role_permission` (
-  `id` varchar(64) NOT NULL COMMENT '主键',
-  `role_id` varchar(64) DEFAULT NULL COMMENT '角色id',
-  `permission_id` varchar(64) DEFAULT NULL COMMENT '菜单权限id',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_role_permission;
+CREATE TABLE sys_role_permission (
+  id varchar(64) NOT NULL COMMENT '主键',
+  role_id varchar(64) DEFAULT NULL COMMENT '角色id',
+  permission_id varchar(64) DEFAULT NULL COMMENT '菜单权限id',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 用户表
-DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user` (
-  `id` varchar(64) NOT NULL COMMENT '用户id',
-  `username` varchar(50) NOT NULL COMMENT '账户名称',
-  `salt` varchar(20) DEFAULT NULL COMMENT '加密盐值',
-  `password` varchar(200) NOT NULL COMMENT '用户密码密文',
-  `phone` varchar(20) DEFAULT NULL COMMENT '手机号码',
-  `dept_id` varchar(64) DEFAULT NULL COMMENT '部门id',
-  `real_name` varchar(60) DEFAULT NULL COMMENT '真实名称',
-  `nick_name` varchar(60) DEFAULT NULL COMMENT '昵称',
-  `email` varchar(50) DEFAULT NULL COMMENT '邮箱(唯一)',
-  `status` tinyint(4) COMMENT '账户状态(1.正常 2.锁定 )',
-  `sex` tinyint(4) COMMENT '性别(1.男 2.女)',
-  `deleted` tinyint(4)  COMMENT '是否删除(1未删除；0已删除)',
-  `create_id` varchar(64) DEFAULT NULL COMMENT '创建人',
-  `update_id` varchar(64) DEFAULT NULL COMMENT '更新人',
-  `create_where` tinyint(4) COMMENT '创建来源(1.web 2.android 3.ios )',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_user;
+CREATE TABLE sys_user (
+  id varchar(64) NOT NULL COMMENT '用户id',
+  username varchar(50) NOT NULL COMMENT '账户名称',
+  salt varchar(20) DEFAULT NULL COMMENT '加密盐值',
+  password varchar(200) NOT NULL COMMENT '用户密码密文',
+  phone varchar(20) DEFAULT NULL COMMENT '手机号码',
+  dept_id varchar(64) DEFAULT NULL COMMENT '部门id',
+  real_name varchar(60) DEFAULT NULL COMMENT '真实名称',
+  nick_name varchar(60) DEFAULT NULL COMMENT '昵称',
+  email varchar(50) DEFAULT NULL COMMENT '邮箱(唯一)',
+  status tinyint(4) COMMENT '账户状态(1.正常 2.锁定 )',
+  sex tinyint(4) COMMENT '性别(1.男 2.女)',
+  deleted tinyint(4)  COMMENT '是否删除(1未删除；0已删除)',
+  create_id varchar(64) DEFAULT NULL COMMENT '创建人',
+  update_id varchar(64) DEFAULT NULL COMMENT '更新人',
+  create_where tinyint(4) COMMENT '创建来源(1.web 2.android 3.ios )',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  update_time datetime DEFAULT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- 用户角色关联表
-DROP TABLE IF EXISTS `sys_user_role`;
-CREATE TABLE `sys_user_role` (
-  `id` varchar(64) NOT NULL COMMENT '用户id',
-  `user_id` varchar(64) DEFAULT NULL,
-  `role_id` varchar(64) DEFAULT NULL COMMENT '角色id',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS sys_user_role;
+CREATE TABLE sys_user_role (
+  id varchar(64) NOT NULL COMMENT '用户id',
+  user_id varchar(64) DEFAULT NULL,
+  role_id varchar(64) DEFAULT NULL COMMENT '角色id',
+  create_time datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户角色';
 
 -- 数据字典表
-DROP TABLE IF EXISTS `sys_dict`;
-CREATE TABLE `sys_dict`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_dict;
+CREATE TABLE sys_dict  (
+  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
+  remark varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -135,71 +135,71 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- 数据字典详情
-DROP TABLE IF EXISTS `sys_dict_detail`;
-CREATE TABLE `sys_dict_detail`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
-  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
-  `sort` smallint(6) NULL DEFAULT NULL COMMENT '排序',
-  `dict_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_dict_detail;
+CREATE TABLE sys_dict_detail  (
+  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  label varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
+  value varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
+  sort smallint(6) NULL DEFAULT NULL COMMENT '排序',
+  dict_id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典详情' ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 定时任务
-DROP TABLE IF EXISTS `sys_job`;
-CREATE TABLE `sys_job`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
-  `cron_expression` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
-  `status` tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_job;
+CREATE TABLE sys_job  (
+  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  bean_name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  params varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  cron_expression varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  status tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
+  remark varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = Compact;
 
 
 
 
 -- 定时任务日志
-DROP TABLE IF EXISTS `sys_job_log`;
-CREATE TABLE `sys_job_log`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
-  `job_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
-  `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
-  `error` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
-  `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `job_id`(`job_id`) USING BTREE
+DROP TABLE IF EXISTS sys_job_log;
+CREATE TABLE sys_job_log  (
+  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
+  job_id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  bean_name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  params varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  status tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
+  error varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
+  times int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (id) USING BTREE,
+  INDEX job_id(job_id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Compact;
 
 -- 2020.5.27添加文章管理
-DROP TABLE IF EXISTS `sys_content`;
-CREATE TABLE `sys_content`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
-  `type` int(11)  DEFAULT NULL COMMENT '文章类型',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `create_id` varchar(50) NULL DEFAULT NULL COMMENT '创建人',
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_content;
+CREATE TABLE sys_content  (
+  id varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
+  title varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
+  type int(11)  DEFAULT NULL COMMENT '文章类型',
+  content longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
+  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
+  create_id varchar(50) NULL DEFAULT NULL COMMENT '创建人',
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章管理' ROW_FORMAT = Compact;
 
 -- 2020.6.15添加文件管理
-DROP TABLE IF EXISTS `sys_files`;
-CREATE TABLE `sys_files`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+DROP TABLE IF EXISTS sys_files;
+CREATE TABLE sys_files  (
+  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  url varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
+  create_date datetime NULL DEFAULT NULL COMMENT '创建时间',
+  file_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
+  file_path varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (id) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件上传' ROW_FORMAT = Compact;
 
 
@@ -267,6 +267,7 @@ INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, t
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('7', '列表', 'sys:log:list', NULL, '/sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('8', '日志管理', NULL, NULL, '/index/logs', '_self', '54', 97, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('9', '新增', 'sys:dept:add', NULL, '/sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('1311115974068449281', '数据权限', 'sys:role:bindDept', '', '/sys/role/bindDept', '_self', '53', 5, 3, 1, '2020-09-30 09:29:42', NULL, 1);
 INSERT INTO sys_role(id, name, description, status, create_time, update_time, deleted) VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2020-03-19 13:29:51', 1);
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1', '1', '1', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('10', '1', '10', '2020-04-22 15:48:47');
@@ -330,6 +331,8 @@ INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES 
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('7', '1', '7', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('8', '1', '8', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('9', '1', '9', '2020-04-22 15:48:47');
+INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1311116066716430339', '1', '1311115974068449281', '2020-09-30 09:30:04');
+
 INSERT INTO sys_user(id, username, salt, password, phone, dept_id, real_name, nick_name, email, status, sex, deleted, create_id, update_id, create_where, create_time, update_time) VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75ab87616b62d0b9432569d0', '13888888888', '1', '爱糖宝', '爱糖宝', 'xxxxxx@163.com', 1, 2, 1, '1', '1', 3, '2019-09-22 19:38:05', '2020-03-18 09:15:22');
 INSERT INTO sys_user_role(id, user_id, role_id, create_time) VALUES ('1', '1', '1', '2020-03-19 02:23:13');
 INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');

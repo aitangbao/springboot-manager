@@ -248,6 +248,7 @@ INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, t
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('7', '列表', 'sys:log:list', NULL, '/sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('8', '日志管理', NULL, NULL, '/index/logs', '_self', '54', 97, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('9', '新增', 'sys:dept:add', NULL, '/sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO sys_permission(id, name, perms, icon, url, target, pid, order_num, type, status, create_time, update_time, deleted) VALUES ('1311115974068449281', '数据权限', 'sys:role:bindDept', '', '/sys/role/bindDept', '_self', '53', 5, 3, 1, '2020-09-30 09:29:42', NULL, 1);
 INSERT INTO sys_role(id, name, description, status, create_time, update_time, deleted) VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2020-03-19 13:29:51', 1);
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1', '1', '1', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('10', '1', '10', '2020-04-22 15:48:47');
@@ -311,6 +312,7 @@ INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES 
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('7', '1', '7', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('8', '1', '8', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('9', '1', '9', '2020-04-22 15:48:47');
+INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1311116066716430339', '1', '1311115974068449281', '2020-09-30 09:30:04');
 INSERT INTO sys_user(id, username, salt, password, phone, dept_id, real_name, nick_name, email, status, sex, deleted, create_id, update_id, create_where, create_time, update_time) VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75ab87616b62d0b9432569d0', '13888888888', '1', '爱糖宝', '爱糖宝', 'xxxxxx@163.com', 1, 2, 1, '1', '1', 3, '2019-09-22 19:38:05', '2020-03-18 09:15:22');
 INSERT INTO sys_user_role(id, user_id, role_id, create_time) VALUES ('1', '1', '1', '2020-03-19 02:23:13');
 INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
