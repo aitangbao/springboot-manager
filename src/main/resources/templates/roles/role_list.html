@@ -139,9 +139,9 @@
     var startTime = null;
     var endTime = null;
     layui.config({
-        base: '/'
+        base: '/layui-ext/'
     }).extend({
-        eleTree: 'layui-ext/eleTree/eleTree'
+        eleTree: 'eleTree/eleTree'
     }).use(['table', 'laypage', 'layer', 'laydate', 'tree', 'eleTree'], function () {
         var eleTree = layui.eleTree;
         tableIns1 = table.render({
