@@ -110,8 +110,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
 
     private void setCheckedDept(List<DeptRespNodeVO> deptRespNodes, Set<Object> checkDeptList) {
         for (DeptRespNodeVO node : deptRespNodes) {
-            if (checkDeptList.contains(node.getId())
-                    && (node.getChildren() == null || node.getChildren().isEmpty())) {
+            if (checkDeptList.contains(node.getId())) {
                 node.setChecked(true);
             }
             setCheckedDept((List<DeptRespNodeVO>) node.getChildren(), checkDeptList);
