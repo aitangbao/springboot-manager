@@ -57,7 +57,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	6. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
 	
 - 数据权限配置及使用 示例：文章管理列表
-    1. 数据权限控制的表， 需要有创建人字段
+    1. 需要数据权限所控制的表（如sys_content）， 需要有创建人字段
     2. 配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
     3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
     4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
@@ -130,4 +130,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 > 群二维码每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com  
 >
 > 加群二维码仅工作日开放， 周末不开放， 如果着急，请使用其他方式联系作者
-<img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2020/0927/095257_875db6fc_997722.jpeg" alt="" style="zoom:25%;" /> 
+<img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2020/0930/100736_1bf698f0_997722.jpeg" alt="" style="zoom:25%;" /> 
