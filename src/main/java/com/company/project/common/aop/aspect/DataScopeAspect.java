@@ -60,7 +60,7 @@ public class DataScopeAspect {
     /**
      * 自己
      */
-    public static final Integer DATA_SCOPE_DEPT_SELF = 4;
+    public static final Integer DATA_SCOPE_DEPT_SELF = 5;
 
     @Pointcut("@annotation(com.company.project.common.aop.annotation.DataScope)")
     public void dataScopePointCut() {
