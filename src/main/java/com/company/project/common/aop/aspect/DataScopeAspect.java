@@ -16,7 +16,6 @@ import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +97,14 @@ public class DataScopeAspect {
 
     }
 
-    //获取最终的用户id
+    /**
+     * 获取最终的用户id
+     *
+     * @param sysRoles 角色
+     * @param userId   当前用户id
+     * @return 用户id集合
+     */
+    @SuppressWarnings(value = {"unchecked", "rawtypes"})
     private List<String> getUserIdsByRoles(List<SysRole> sysRoles, String userId) {
         SysUser sysUser = userService.getById(userId);
         //部门id
@@ -119,9 +125,7 @@ public class DataScopeAspect {
                 if (StringUtils.isNotBlank(sysDept.getDeptNo())) {
                     List deptIds = deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, sysDept.getDeptNo()));
                     List<SysDept> deptList = deptService.listByIds(deptIds);
-                    deptList.parallelStream().forEach(one -> {
-                        deptlist.addAll(deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, one.getDeptNo())));
-                    });
+                    deptList.parallelStream().forEach(one -> deptlist.addAll(deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, one.getDeptNo()))));
                 }
             } else if (DATA_SCOPE_DEPT.equals(k)) {
                 //本部门

@@ -73,7 +73,7 @@ public class RestExceptionHandler {
         log.error("methodArgumentNotValidExceptionHandler bindingResult.allErrors():{},exception:{}", exception, exception);
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
         StringBuilder builder = new StringBuilder();
-        for (ConstraintViolation violation : violations) {
+        for (ConstraintViolation<?> violation : violations) {
             builder.append(violation.getMessage());
             break;
         }
