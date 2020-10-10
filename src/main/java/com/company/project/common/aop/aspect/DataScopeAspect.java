@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 概念：最终控制列表中显示哪些 部门/人 创建的数据
  * 1、需要数据权限控制的列表， 需要有创建人字段， 示例：文章管理
  * 2、配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
  * 3、加个注解，用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id
@@ -111,9 +112,9 @@ public class DataScopeAspect {
         SysUser sysUser = userService.getById(userId);
         //本部门
         SysDept sysDept = deptService.getById(sysUser.getDeptId());
-        //部门id
+        //部门ids， 定义哪些部门最终拥有权限查看
         LinkedList<Object> deptList = new LinkedList<>();
-        //返回的用户ids
+        //用户ids，定义列表中哪些人创建的可查看
         LinkedList<Object> userIdList = new LinkedList<>();
         //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
         Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().collect(Collectors.groupingBy(SysRole::getDataScope));
@@ -128,8 +129,7 @@ public class DataScopeAspect {
                 if (sysDept != null && StringUtils.isNotBlank(sysDept.getDeptNo())) {
                     //获取本部门以下所有关联的部门
                     QueryWrapper queryWrapper = Wrappers.query().select("id").like("relation_code", sysDept.getDeptNo());
-                    List deptIds = deptService.listObjs(queryWrapper);
-                    deptList.addAll(deptIds);
+                    deptList.addAll(deptService.listObjs(queryWrapper));
                 }
             } else if (DATA_SCOPE_DEPT.equals(k)) {
                 //本部门
