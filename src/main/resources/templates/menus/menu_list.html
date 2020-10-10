@@ -115,7 +115,7 @@
         base: '/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable',
-        iconPicker: 'js/iconPicker'
+        iconPicker: 'icon/iconPicker'
     }).use(['treetable', 'table', 'tree',"iconPicker"], function () {
         var reloadTreeTable = function () {
             CoreUtil.sendGet("/sys/permissions", null, function (res) {
