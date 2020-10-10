@@ -360,11 +360,13 @@
         $("#btn_cancel").click(function () {
             $(".table_div").show();
             $(".operation").hide();
+            $(".layui-cron").hide()
             return false;
         });
 
         //监听保存
         form.on('submit(submit)', function (data) {
+            $(".layui-cron").hide()
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost("/sysJob/add", data.field, function (res) {
                     $(".table_div").show();
