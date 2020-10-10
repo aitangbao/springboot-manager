@@ -17,11 +17,20 @@
     <properties>
         <java.version>1.8</java.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
+        <mybatis-plus-dynamic.version>2.5.5</mybatis-plus-dynamic.version>
+        <ojdbc6.version>12.1.0.1-atlassian-hosted</ojdbc6.version>
+        <sqlserver.version>4.0</sqlserver.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.configuration.version>1.10</commons.configuration.version>
         <velocity.version>1.7</velocity.version>
         <quartz.version>2.3.2</quartz.version>
+        <shiro.version>1.4.0</shiro.version>
+        <druid.version>1.1.10</druid.version>
+        <fastjson.version>1.2.74</fastjson.version>
+        <thymeleaf-shiro.version>2.0.0</thymeleaf-shiro.version>
+        <knife4j.version>2.0.2</knife4j.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
 
     <dependencies>
@@ -45,7 +54,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.10</version>
+            <version>${druid.version}</version>
         </dependency>
         <!--redis 依赖-->
         <dependency>
@@ -57,7 +66,7 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro.version}</version>
         </dependency>
         <!--lombok-->
         <dependency>
@@ -68,7 +77,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.49</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!--thymeleaf默认使用html5规则标签必须闭合等 使用次此包正常解析-->
@@ -79,13 +88,13 @@
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>
             <artifactId>thymeleaf-extras-shiro</artifactId>
-            <version>2.0.0</version>
+            <version>${thymeleaf-shiro.version}</version>
         </dependency>
         <!--数据库持久化 及 插件依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>2.5.5</version>
+            <version>${mybatis-plus-dynamic.version}</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -105,18 +114,18 @@
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
-            <version>12.1.0.1-atlassian-hosted</version>
+            <version>${ojdbc6.version}</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>sqljdbc4</artifactId>
-            <version>4.0</version>
+            <version>${sqlserver.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>2.0.2</version>
+            <version>${knife4j.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -156,7 +165,7 @@
         <dependency>
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
-            <version>1.6.2</version>
+            <version>${easy-captcha.version}</version>
         </dependency>
     </dependencies>
 
