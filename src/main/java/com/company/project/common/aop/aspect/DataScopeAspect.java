@@ -1,5 +1,6 @@
 package com.company.project.common.aop.aspect;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.*;
@@ -106,40 +107,43 @@ public class DataScopeAspect {
      */
     @SuppressWarnings(value = {"unchecked", "rawtypes"})
     private List<String> getUserIdsByRoles(List<SysRole> sysRoles, String userId) {
+        //本人
         SysUser sysUser = userService.getById(userId);
+        //本部门
+        SysDept sysDept = deptService.getById(sysUser.getDeptId());
         //部门id
-        LinkedList<Object> deptlist = new LinkedList<>();
+        LinkedList<Object> deptList = new LinkedList<>();
         //返回的用户ids
         LinkedList<Object> userIdList = new LinkedList<>();
         //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
         Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().collect(Collectors.groupingBy(SysRole::getDataScope));
         dataScopeMap.forEach((k, v) -> {
-
             if (DATA_SCOPE_CUSTOM.equals(k)) {
                 //自定义
-                List<String> list = dataScopeMap.get(k).parallelStream().map(SysRole::getId).collect(Collectors.toList());
-                deptlist.addAll(sysRoleDeptService.listObjs(Wrappers.<SysRoleDeptEntity>lambdaQuery().select(SysRoleDeptEntity::getDeptId).in(SysRoleDeptEntity::getRoleId, list)));
+                //根据角色id，获取所有自定义关联的部门id
+                QueryWrapper queryWrapper = Wrappers.query().select("dept_id").in("role_id", v.parallelStream().map(SysRole::getId).collect(Collectors.toList()));
+                deptList.addAll(sysRoleDeptService.listObjs(queryWrapper));
             } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k)) {
                 //本部门及以下
-                SysDept sysDept = deptService.getById(sysUser.getDeptId());
-                if (StringUtils.isNotBlank(sysDept.getDeptNo())) {
-                    List deptIds = deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, sysDept.getDeptNo()));
-                    List<SysDept> deptList = deptService.listByIds(deptIds);
-                    deptList.parallelStream().forEach(one -> deptlist.addAll(deptService.listObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).like(SysDept::getRelationCode, one.getDeptNo()))));
+                if (sysDept != null && StringUtils.isNotBlank(sysDept.getDeptNo())) {
+                    //获取本部门以下所有关联的部门
+                    QueryWrapper queryWrapper = Wrappers.query().select("id").like("relation_code", sysDept.getDeptNo());
+                    List deptIds = deptService.listObjs(queryWrapper);
+                    deptList.addAll(deptIds);
                 }
             } else if (DATA_SCOPE_DEPT.equals(k)) {
                 //本部门
-                SysDept sysDept = deptService.getById(sysUser.getDeptId());
-                if (StringUtils.isNotBlank(sysDept.getId())) {
-                    deptlist.add(sysDept.getId());
+                if (sysDept != null && StringUtils.isNotBlank(sysDept.getId())) {
+                    deptList.add(sysDept.getId());
                 }
             } else if (DATA_SCOPE_DEPT_SELF.equals(k)) {
                 //自己
                 userIdList.add(userId);
             }
         });
-        if (!CollectionUtils.isEmpty(deptlist)) {
-            userIdList.addAll(userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId).in(SysUser::getDeptId, deptlist)));
+        if (!CollectionUtils.isEmpty(deptList)) {
+            QueryWrapper queryWrapper = Wrappers.query().select("id").in("dept_id", deptList);
+            userIdList.addAll(userService.listObjs(queryWrapper));
         }
         //如果配置了角色数据范围， 最终没有查到userId， 那么返回无数据
         if (CollectionUtils.isEmpty(userIdList)) {
