@@ -3,6 +3,7 @@ package com.company.project.common.aop.aspect;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.exception.BusinessException;
+import com.company.project.common.utils.Constant;
 import com.company.project.entity.*;
 import com.company.project.service.*;
 import org.apache.commons.lang.StringUtils;
@@ -42,26 +43,7 @@ public class DataScopeAspect {
     DeptService deptService;
     @Resource
     UserService userService;
-    /**
-     * 所有
-     */
-    public static final Integer DATA_SCOPE_ALL = 1;
-    /**
-     * 自定义
-     */
-    public static final Integer DATA_SCOPE_CUSTOM = 2;
-    /**
-     * 部门及以下数据权限
-     */
-    public static final Integer DATA_SCOPE_DEPT_AND_CHILD = 3;
-    /**
-     * 仅本部门
-     */
-    public static final Integer DATA_SCOPE_DEPT = 4;
-    /**
-     * 自己
-     */
-    public static final Integer DATA_SCOPE_DEPT_SELF = 5;
+
 
     @Pointcut("@annotation(com.company.project.common.aop.annotation.DataScope)")
     public void dataScopePointCut() {
@@ -86,7 +68,7 @@ public class DataScopeAspect {
             return;
         }
         //如果存在某角色配置了全部范围， 那么不限制
-        if (list.stream().anyMatch(sysRole -> DATA_SCOPE_ALL.equals(sysRole.getDataScope()))) {
+        if (list.stream().anyMatch(sysRole -> Constant.DATA_SCOPE_ALL.equals(sysRole.getDataScope()))) {
             return;
         }
         //获取绑定的人
@@ -106,7 +88,6 @@ public class DataScopeAspect {
      * @param userId   当前用户id
      * @return 用户id集合
      */
-    @SuppressWarnings(value = {"unchecked", "rawtypes"})
     private List<String> getUserIdsByRoles(List<SysRole> sysRoles, String userId) {
         //本人
         SysUser sysUser = userService.getById(userId);
@@ -119,30 +100,30 @@ public class DataScopeAspect {
         //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
         Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().collect(Collectors.groupingBy(SysRole::getDataScope));
         dataScopeMap.forEach((k, v) -> {
-            if (DATA_SCOPE_CUSTOM.equals(k)) {
+            if (Constant.DATA_SCOPE_CUSTOM.equals(k)) {
                 //自定义
                 //根据角色id，获取所有自定义关联的部门id
-                QueryWrapper queryWrapper = Wrappers.query().select("dept_id").in("role_id", v.parallelStream().map(SysRole::getId).collect(Collectors.toList()));
+                QueryWrapper<SysRoleDeptEntity> queryWrapper = Wrappers.<SysRoleDeptEntity>query().select("dept_id").in("role_id", v.parallelStream().map(SysRole::getId).collect(Collectors.toList()));
                 deptList.addAll(sysRoleDeptService.listObjs(queryWrapper));
-            } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(k)) {
+            } else if (Constant.DATA_SCOPE_DEPT_AND_CHILD.equals(k)) {
                 //本部门及以下
                 if (sysDept != null && StringUtils.isNotBlank(sysDept.getDeptNo())) {
                     //获取本部门以下所有关联的部门
-                    QueryWrapper queryWrapper = Wrappers.query().select("id").like("relation_code", sysDept.getDeptNo());
+                    QueryWrapper<SysDept> queryWrapper = Wrappers.<SysDept>query().select("id").like("relation_code", sysDept.getDeptNo());
                     deptList.addAll(deptService.listObjs(queryWrapper));
                 }
-            } else if (DATA_SCOPE_DEPT.equals(k)) {
+            } else if (Constant.DATA_SCOPE_DEPT.equals(k)) {
                 //本部门
                 if (sysDept != null && StringUtils.isNotBlank(sysDept.getId())) {
                     deptList.add(sysDept.getId());
                 }
-            } else if (DATA_SCOPE_DEPT_SELF.equals(k)) {
+            } else if (Constant.DATA_SCOPE_DEPT_SELF.equals(k)) {
                 //自己
                 userIdList.add(userId);
             }
         });
         if (!CollectionUtils.isEmpty(deptList)) {
-            QueryWrapper queryWrapper = Wrappers.query().select("id").in("dept_id", deptList);
+            QueryWrapper<SysUser> queryWrapper = Wrappers.<SysUser>query().select("id").in("dept_id", deptList);
             userIdList.addAll(userService.listObjs(queryWrapper));
         }
         //如果配置了角色数据范围， 最终没有查到userId， 那么返回无数据
