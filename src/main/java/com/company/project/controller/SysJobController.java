@@ -156,7 +156,7 @@ public class SysJobController {
 
     @ApiOperation(value = "获取运行时间")
     @LogAnnotation(title = "获取运行时间")
-    @GetMapping("/getRecentTriggerTime")
+    @PostMapping("/getRecentTriggerTime")
     @RequiresPermissions("sysJob:add")
     public DataResult getRecentTriggerTime(String cron) {
         List<String> list = new ArrayList<>();
@@ -175,5 +175,6 @@ public class SysJobController {
         }
         return DataResult.success(list);
     }
+
 
 }

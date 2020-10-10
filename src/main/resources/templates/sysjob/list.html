@@ -113,7 +113,7 @@
         cron.render({
             elem: "#cronStr", // 绑定元素
             url:
-                "https://www.fastmock.site/mock/58329c0ee61b03d6ce3ba0c1e2f13691/world/cron", // 获取最近运行时间的接口
+                "/sysJob/getRecentTriggerTime?authorization=" + tokenQuery, // 获取最近运行时间的接口
             // value: $("#cron").val(), // 默认值
             done: function (cronStr) {
                 console.log(cronStr);
