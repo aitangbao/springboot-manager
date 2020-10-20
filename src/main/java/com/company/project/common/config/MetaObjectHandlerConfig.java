@@ -37,7 +37,14 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
             //创建时间默认当前时间
             setFieldValByName("createDate", currentDate, metaObject);
         }
-
+        if (setterNameSet.contains("updateTime")) {
+            //创建时间默认当前时间
+            setFieldValByName("updateTime", currentDate, metaObject);
+        }
+        if (setterNameSet.contains("updateDate")) {
+            //创建时间默认当前时间
+            setFieldValByName("updateDate", currentDate, metaObject);
+        }
 
     }
 
