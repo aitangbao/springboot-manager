@@ -36,7 +36,8 @@ public interface DeptService extends IService<SysDept> {
     /**
      * 部门树形列表
      * @param deptId deptId
+     * @param disabled 最顶级是否可用
      * @return 树形列表
      */
-    List<DeptRespNodeVO> deptTreeList(String deptId);
+    List<DeptRespNodeVO> deptTreeList(String deptId, Boolean disabled);
 }

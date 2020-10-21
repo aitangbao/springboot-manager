@@ -112,7 +112,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     }
 
     @Override
-    public List<DeptRespNodeVO> deptTreeList(String deptId) {
+    public List<DeptRespNodeVO> deptTreeList(String deptId, Boolean disabled) {
         List<SysDept> list;
         if (StringUtils.isEmpty(deptId)) {
             list = sysDeptMapper.selectList(Wrappers.emptyWrapper());
@@ -130,7 +130,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         respNodeVO.setTitle("默认顶级部门");
         respNodeVO.setId("0");
         respNodeVO.setSpread(true);
-        respNodeVO.setDisabled(true);
+        respNodeVO.setDisabled(disabled);
         respNodeVO.setChildren(getTree(list));
         List<DeptRespNodeVO> result = new ArrayList<>();
         result.add(respNodeVO);
