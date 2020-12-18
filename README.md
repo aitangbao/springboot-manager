@@ -31,6 +31,55 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 账号密码：guest/123456
 - 带宽1m 不太给力 请见谅 :joy:
 
+## 代码结构
+```
+├─main
+│  ├─java
+│  │  └─com
+│  │      └─company
+│  │          └─project
+│  │              ├─CompanyProjectApplication.java 项目启动类
+│  │              ├─common      公共资源，如注解、切面、定时、全局异常处理、shiro集成、通用工具类等
+│  │              ├─controller  Controler层
+│  │              ├─entity      实体类
+│  │              ├─mapper      DAO层
+│  │              ├─service     Service层
+│  │              │  └─impl     Service层实现
+│  └─resources
+│      ├── application-dev.yml  开发环境配置文件
+│      ├── application-test.yml 测试环境配置文件
+│      ├── application-prod.yml 生产环境配置文件
+│      ├── application.yml      通用配置文件
+│      ├── logback-spring.xml   日志配置文件
+│      ├─mapper                 Mybatis XML文件
+│      ├─static                 静态文件
+│      │  ├─css                 通用css文件
+│      │  ├─images              静态图片
+│      │  ├─js                  通用js文件
+│      │  ├─layui               layui库
+│      │  └─layui-ext           layui插件库
+│      ├─template               代码生成模版
+│      └─templates              项目页面目录
+│          ├─depts              部门管理
+│          ├─error              错误页面
+│          ├─generator          代码生成管理
+│          ├─logs               日志管理
+│          ├─menus              菜单管理
+│          ├─roles              角色管理
+│          ├─syscontent         内容管理
+│          ├─sysdict            字典管理
+│          ├─sysfiles           文件管理
+│          ├─sysjob             定时任务管理
+│          ├─sysjoblog          定时任务日志管理
+│          └─users              用户管理
+└─test
+    └─java
+        └─com
+            └─company
+                └─project
+                    ├── CompanyFrameApplicationTests.java 单元测试
+```
+
 ## 开发建议
 - Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
 - 建议业务失败直接使用throw new BusinessException("ErrorMessage")抛出，由统一异常处理器来封装业务失败的响应结果，会直接被封装为{"code":500002,"message":"ErrorMessage"}返回，尽情抛出；
@@ -62,52 +111,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
     3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
     4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
 	
-## 代码结构
-├─main
-│  ├─java
-│  │  └─com
-│  │      └─company
-│  │          └─project
-│  │              ├─CompanyProjectApplication.java 项目启动类
-│  │              ├─common				公共资源，如注解、切面、定时、全局异常处理、shiro集成、通用工具类等
-│  │              ├─controller  			Controler层
-│  │              ├─entity					 实体类
-│  │              ├─mapper				 DAO层
-│  │              ├─service				   Service层
-│  │              │  └─impl				   Service层实现
-│  └─resources
-│      ├── application-dev.yml  	开发环境配置文件
-│      ├── application-test.yml 	 测试环境配置文件
-│      ├── application-prod.yml    生产环境配置文件
-│      ├── application.yml      		通用配置文件
-│      ├── logback-spring.xml       日志配置文件
-│      ├─mapper                 			 Mybatis XML文件
-│      ├─static                 				  静态文件
-│      │  ├─css                 				  通用css文件
-│      │  ├─images              			 静态图片
-│      │  ├─js                  				   通用js文件
-│      │  ├─layui               				 layui库
-│      │  └─layui-ext          			   layui插件库
-│      ├─template              			  代码生成模版
-│      └─templates              		    项目页面目录
-│          ├─depts              			    部门管理
-│          ├─error              				 错误页面
-│          ├─generator         		     代码生成管理
-│          ├─logs              				  日志管理
-│          ├─menus           			    菜单管理
-│          ├─roles         			          角色管理
-│          ├─syscontent     		       内容管理
-│          ├─sysdict      			         字典管理
-│          ├─sysfiles      			        文件管理
-│          ├─sysjob          			      定时任务管理
-│          ├─sysjoblog   		           定时任务日志管理
-│          └─users         			        用户管理
-└─test
-    └─java
-        └─com
-            └─company
-                └─project
-                    ├── CompanyFrameApplicationTests.java 单元测试
+
 
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
