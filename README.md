@@ -62,6 +62,53 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
     3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
     4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
 	
+## 代码结构
+├─main
+│  ├─java
+│  │  └─com
+│  │      └─company
+│  │          └─project
+│  │              ├─CompanyProjectApplication.java 项目启动类
+│  │              ├─common				公共资源，如注解、切面、定时、全局异常处理、shiro集成、通用工具类等
+│  │              ├─controller  			Controler层
+│  │              ├─entity					 实体类
+│  │              ├─mapper				 DAO层
+│  │              ├─service				   Service层
+│  │              │  └─impl				   Service层实现
+│  └─resources
+│      ├── application-dev.yml  	开发环境配置文件
+│      ├── application-test.yml 	 测试环境配置文件
+│      ├── application-prod.yml    生产环境配置文件
+│      ├── application.yml      		通用配置文件
+│      ├── logback-spring.xml       日志配置文件
+│      ├─mapper                 			 Mybatis XML文件
+│      ├─static                 				  静态文件
+│      │  ├─css                 				  通用css文件
+│      │  ├─images              			 静态图片
+│      │  ├─js                  				   通用js文件
+│      │  ├─layui               				 layui库
+│      │  └─layui-ext          			   layui插件库
+│      ├─template              			  代码生成模版
+│      └─templates              		    项目页面目录
+│          ├─depts              			    部门管理
+│          ├─error              				 错误页面
+│          ├─generator         		     代码生成管理
+│          ├─logs              				  日志管理
+│          ├─menus           			    菜单管理
+│          ├─roles         			          角色管理
+│          ├─syscontent     		       内容管理
+│          ├─sysdict      			         字典管理
+│          ├─sysfiles      			        文件管理
+│          ├─sysjob          			      定时任务管理
+│          ├─sysjoblog   		           定时任务日志管理
+│          └─users         			        用户管理
+└─test
+    └─java
+        └─com
+            └─company
+                └─project
+                    ├── CompanyFrameApplicationTests.java 单元测试
+
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
 * 前端框架: [Layui](https://www.layui.com/)
@@ -79,48 +126,10 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 2. 新建 feature_xxx 分支
 3. 提交代码
 4. 提交 Pull Request
-
-## 菜单
-- 组织管理
-	- 菜单权限管理
-	- 角色管理
-	- 用户管理
-	- 部门管理
-- 系统管理
-	- 代码生成
-	- 文件管理
-	- 文章管理
-	- 字典管理
-	- 定时任务
-	- 日志管理
-- 其他
-	- 表单构建
-	- SQL监控
-	- 接口管理
 	
 ## **效果图**
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/142027_57d18746_997722.png "home1.png")
 ![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
-
-
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/141804_f9c05c92_997722.png "r1.png")
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/141813_6f30bb41_997722.png "r2.png")
-![4](https://images.gitee.com/uploads/images/2020/0521/110629_4f2a354d_997722.png)
-![5](https://images.gitee.com/uploads/images/2020/0521/110630_a38ee132_997722.png)
-
-![7](https://images.gitee.com/uploads/images/2020/0521/110629_edd63da6_997722.png)
-
-![](http://tuchuang.aitangbao.com.cn/20200527110224.png)
-
-![](http://tuchuang.aitangbao.com.cn/20200703175432.png)
-
-![image-20200430172452726](https://images.gitee.com/uploads/images/2020/0521/110630_1eae800b_997722.png)
-
-![9](https://images.gitee.com/uploads/images/2020/0521/110630_ab5c75a2_997722.png)
-
-![13](https://images.gitee.com/uploads/images/2020/0521/110630_bcf841b9_997722.png)
-
-![16](https://images.gitee.com/uploads/images/2020/0521/110630_4f083ac7_997722.png)
 
 ### 其他
 > 如果您手头有多余的项目，想找人接私活，那么请一定联系我， 靠谱！
