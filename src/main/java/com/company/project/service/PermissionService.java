@@ -18,6 +18,7 @@ public interface PermissionService extends IService<SysPermission> {
 
     /**
      * 根据userId获取权限
+     *
      * @param userId userId
      * @return 权限
      */
@@ -25,18 +26,21 @@ public interface PermissionService extends IService<SysPermission> {
 
     /**
      * 删除权限
+     *
      * @param permissionId 权限id
      */
     void deleted(String permissionId);
 
     /**
      * 获取所有
+     *
      * @return List
      */
     List<SysPermission> selectAll();
 
     /**
      * 根据userId获取权限标志
+     *
      * @param userId userId
      * @return Set
      */
@@ -44,6 +48,7 @@ public interface PermissionService extends IService<SysPermission> {
 
     /**
      * 根据userId获取权限树
+     *
      * @param userId
      * @return List
      */
@@ -51,15 +56,32 @@ public interface PermissionService extends IService<SysPermission> {
 
     /**
      * 根据权限树
+     *
      * @return List
      */
     List<PermissionRespNode> selectAllByTree();
 
     /**
      * 根据目录树
+     *
      * @param permissionId permissionId
      * @return List
      */
     List<PermissionRespNode> selectAllMenuByTree(String permissionId);
 
+
+    /**
+     * 根据权限id获取绑定的userId
+     *
+     * @param permissionId permissionId
+     * @return List
+     */
+    List<String> getUserIdsById(String permissionId);
+
+    /**
+     * 更新
+     *
+     * @param vo vo
+     */
+    void updatePermission(SysPermission vo);
 }

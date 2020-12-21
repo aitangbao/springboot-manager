@@ -15,7 +15,7 @@ import java.net.InetAddress;
 @Slf4j
 public class CompanyProjectApplication {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext application = SpringApplication.run(CompanyProjectApplication.class, args);
 
         Environment env = application.getEnvironment();

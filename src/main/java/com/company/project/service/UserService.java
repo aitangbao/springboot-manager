@@ -17,12 +17,14 @@ public interface UserService extends IService<SysUser> {
 
     /**
      * 注册
+     *
      * @param vo vo
      */
     void register(SysUser vo);
 
     /**
      * 登陆
+     *
      * @param vo vo
      * @return LoginRespVO
      */
@@ -30,12 +32,14 @@ public interface UserService extends IService<SysUser> {
 
     /**
      * 更新用户信息
+     *
      * @param vo vo
      */
     void updateUserInfo(SysUser vo);
 
     /**
      * 分页
+     *
      * @param vo vo
      * @return IPage
      */
@@ -43,18 +47,21 @@ public interface UserService extends IService<SysUser> {
 
     /**
      * 添加用户
+     *
      * @param vo vo
      */
     void addUser(SysUser vo);
 
     /**
      * 修改密码
+     *
      * @param vo vo
      */
     void updatePwd(SysUser vo);
 
     /**
      * 根据userid获取绑定角色
+     *
      * @param userId userId
      * @return UserOwnRoleRespVO
      */
@@ -62,6 +69,7 @@ public interface UserService extends IService<SysUser> {
 
     /**
      * 修改自己信息
+     *
      * @param vo vo
      */
     void updateUserInfoMy(SysUser vo);

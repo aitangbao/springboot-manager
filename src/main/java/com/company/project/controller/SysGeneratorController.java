@@ -2,7 +2,6 @@ package com.company.project.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysGenerator;
 import com.company.project.service.ISysGeneratorService;

@@ -15,11 +15,11 @@ import java.util.List;
  */
 @Data
 public class BaseEntity {
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     @TableField(exist = false)
     private int page = 1;
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     @TableField(exist = false)
     private int limit = 10;
 

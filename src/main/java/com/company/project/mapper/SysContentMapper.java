@@ -11,5 +11,5 @@ import com.company.project.entity.SysContentEntity;
  * @date 2020年3月18日
  */
 public interface SysContentMapper extends BaseMapper<SysContentEntity> {
-	
+
 }

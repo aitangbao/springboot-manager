@@ -23,8 +23,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 授权
@@ -70,35 +68,12 @@ public class CustomRealm extends AuthorizingRealm {
             throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
         }
 
-        String userId = redisSession.getString(Constant.USERID_KEY);
-        //如果修改了角色/权限， 那么刷新权限
-        if (redisService.exists(redisPermissionRefreshKey + userId)) {
-
-            List<String> roleNames = getRolesByUserId(userId);
-            if (roleNames != null && !roleNames.isEmpty()) {
-                redisSession.put(Constant.ROLES_KEY, roleNames);
-                authorizationInfo.addRoles(roleNames);
-            }
-            Set<String> permissions = getPermissionsByUserId(userId);
-            authorizationInfo.setStringPermissions(permissions);
-            redisSession.put(Constant.PERMISSIONS_KEY, permissions);
-
-            String redisTokenKey = userTokenPrefix + principalCollection.getPrimaryPrincipal();
-            Long redisTokenKeyExpire = redisService.getExpire(redisTokenKey);
-            //刷新token绑定的角色权限
-            redisService.setAndExpire(redisTokenKey, redisSession.toJSONString(), redisTokenKeyExpire);
-            //刷新后删除权限刷新标志
-            redisService.del(redisPermissionRefreshKey + userId);
-        } else {
-            if (redisSession.get(Constant.ROLES_KEY) != null) {
-                authorizationInfo.addRoles((Collection<String>) redisSession.get(Constant.ROLES_KEY));
-            }
-            if (redisSession.get(Constant.PERMISSIONS_KEY) != null) {
-                authorizationInfo.addStringPermissions((Collection<String>) redisSession.get(Constant.PERMISSIONS_KEY));
-            }
+        if (redisSession.get(Constant.ROLES_KEY) != null) {
+            authorizationInfo.addRoles((Collection<String>) redisSession.get(Constant.ROLES_KEY));
         }
-
-
+        if (redisSession.get(Constant.PERMISSIONS_KEY) != null) {
+            authorizationInfo.addStringPermissions((Collection<String>) redisSession.get(Constant.PERMISSIONS_KEY));
+        }
         return authorizationInfo;
     }
 
@@ -109,13 +84,5 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getPrincipal(), getName());
-    }
-
-    private List<String> getRolesByUserId(String userId) {
-        return roleService.getRoleNames(userId);
-    }
-
-    private Set<String> getPermissionsByUserId(String userId) {
-        return permissionService.getPermissionsByUserId(userId);
     }
 }

@@ -11,5 +11,5 @@ import com.company.project.entity.SysJobLogEntity;
  * @date 2020年3月18日
  */
 public interface SysJobLogMapper extends BaseMapper<SysJobLogEntity> {
-	
+
 }

@@ -37,16 +37,16 @@ public class SysLogController {
     public DataResult pageInfo(@RequestBody SysLog vo) {
         Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysLog> queryWrapper = Wrappers.lambdaQuery();
-        if (!StringUtils.isEmpty(vo.getUsername()) ) {
+        if (!StringUtils.isEmpty(vo.getUsername())) {
             queryWrapper.like(SysLog::getUsername, vo.getUsername());
         }
-        if (!StringUtils.isEmpty(vo.getOperation()) ) {
+        if (!StringUtils.isEmpty(vo.getOperation())) {
             queryWrapper.like(SysLog::getOperation, vo.getOperation());
         }
-        if (!StringUtils.isEmpty(vo.getStartTime()) ) {
+        if (!StringUtils.isEmpty(vo.getStartTime())) {
             queryWrapper.gt(SysLog::getCreateTime, vo.getStartTime());
         }
-        if (!StringUtils.isEmpty(vo.getEndTime()) ) {
+        if (!StringUtils.isEmpty(vo.getEndTime())) {
             queryWrapper.lt(SysLog::getCreateTime, vo.getEndTime());
         }
         queryWrapper.orderByDesc(SysLog::getCreateTime);

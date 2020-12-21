@@ -67,7 +67,7 @@ public class PermissionController {
         if (sysPermission.getType().equals(vo.getType()) || !sysPermission.getPid().equals(vo.getPid())) {
             verifyFormPid(vo);
         }
-        permissionService.updateById(vo);
+        permissionService.updatePermission(vo);
         return DataResult.success();
     }
 

@@ -30,12 +30,12 @@ public class ShiroConfig {
     private FileUploadProperties fileUploadProperties;
 
     @Bean(name = "shiroDialect")
-    public ShiroDialect shiroDialect(){
+    public ShiroDialect shiroDialect() {
         return new ShiroDialect();
     }
 
     @Bean
-    public CustomHashedCredentialsMatcher customHashedCredentialsMatcher(){
+    public CustomHashedCredentialsMatcher customHashedCredentialsMatcher() {
         return new CustomHashedCredentialsMatcher();
     }
 
@@ -57,7 +57,6 @@ public class ShiroConfig {
         securityManager.setRealm(customRealm());
         return securityManager;
     }
-
 
 
     @Bean

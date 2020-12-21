@@ -15,6 +15,7 @@ public interface RolePermissionService extends IService<SysRolePermission> {
 
     /**
      * 角色绑定权限
+     *
      * @param vo vo
      */
     void addRolePermission(RolePermissionOperationReqVO vo);

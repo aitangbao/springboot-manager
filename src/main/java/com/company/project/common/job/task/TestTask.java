@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("testTask")
 public class TestTask {
-	private Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
 	public void run(String params){
 		logger.debug("TestTask定时任务正在执行，参数为：{}", params);

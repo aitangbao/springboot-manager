@@ -13,7 +13,7 @@ import lombok.Data;
  * @date 2020年3月18日
  */
 @Data
-public class DataResult{
+public class DataResult {
 
     /**
      * 请求响应code，0为成功 其他为失败
@@ -33,7 +33,7 @@ public class DataResult{
     public DataResult(int code, Object data) {
         this.code = code;
         this.data = data;
-        this.msg=null;
+        this.msg = null;
     }
 
     public DataResult(int code, String msg, Object data) {
@@ -45,20 +45,20 @@ public class DataResult{
     public DataResult(int code, String msg) {
         this.code = code;
         this.msg = msg;
-        this.data=null;
+        this.data = null;
     }
 
 
     public DataResult() {
-        this.code=BaseResponseCode.SUCCESS.getCode();
-        this.msg=BaseResponseCode.SUCCESS.getMsg();
-        this.data=null;
+        this.code = BaseResponseCode.SUCCESS.getCode();
+        this.msg = BaseResponseCode.SUCCESS.getMsg();
+        this.data = null;
     }
 
     public DataResult(Object data) {
         this.data = data;
-        this.code=BaseResponseCode.SUCCESS.getCode();
-        this.msg=BaseResponseCode.SUCCESS.getMsg();
+        this.code = BaseResponseCode.SUCCESS.getCode();
+        this.msg = BaseResponseCode.SUCCESS.getMsg();
     }
 
     public DataResult(ResponseCodeInterface responseCodeInterface) {
@@ -72,35 +72,39 @@ public class DataResult{
         this.code = responseCodeInterface.getCode();
         this.msg = responseCodeInterface.getMsg();
     }
+
     /**
      * 操作成功 data为null
      */
-    public static DataResult success(){
+    public static DataResult success() {
         return new DataResult();
     }
+
     /**
      * 操作成功 data 不为null
      */
-    public static DataResult success(Object data){
+    public static DataResult success(Object data) {
         return new DataResult(data);
     }
 
     /**
      * 操作失败 data 不为null
      */
-    public static DataResult fail(String msg){
-        return new DataResult(BaseResponseCode.OPERATION_ERRO.getCode(),msg);
+    public static DataResult fail(String msg) {
+        return new DataResult(BaseResponseCode.OPERATION_ERRO.getCode(), msg);
     }
+
     /**
-     *  自定义返回  data为null
+     * 自定义返回  data为null
      */
-    public static DataResult getResult(int code,String msg){
-        return new DataResult(code,msg);
+    public static DataResult getResult(int code, String msg) {
+        return new DataResult(code, msg);
     }
+
     /**
      * 自定义返回 入参一般是异常code枚举 data为空
      */
-    public static DataResult getResult(BaseResponseCode responseCode){
+    public static DataResult getResult(BaseResponseCode responseCode) {
         return new DataResult(responseCode);
     }
 

@@ -21,55 +21,55 @@ import java.util.Date;
 @Data
 @TableName("sys_job_log")
 public class SysJobLogEntity extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 任务日志id
-	 */
-	@TableId("id")
-	private String id;
+    /**
+     * 任务日志id
+     */
+    @TableId("id")
+    private String id;
 
-	/**
-	 * 任务id
-	 */
-	@TableField("job_id")
-	private String jobId;
+    /**
+     * 任务id
+     */
+    @TableField("job_id")
+    private String jobId;
 
-	/**
-	 * spring bean名称
-	 */
-	@TableField("bean_name")
-	private String beanName;
+    /**
+     * spring bean名称
+     */
+    @TableField("bean_name")
+    private String beanName;
 
-	/**
-	 * 参数
-	 */
-	@TableField("params")
-	private String params;
+    /**
+     * 参数
+     */
+    @TableField("params")
+    private String params;
 
-	/**
-	 * 任务状态    0：成功    1：失败
-	 */
-	@TableField("status")
-	private Integer status;
+    /**
+     * 任务状态    0：成功    1：失败
+     */
+    @TableField("status")
+    private Integer status;
 
-	/**
-	 * 失败信息
-	 */
-	@TableField("error")
-	private String error;
+    /**
+     * 失败信息
+     */
+    @TableField("error")
+    private String error;
 
-	/**
-	 * 耗时(单位：毫秒)
-	 */
-	@TableField("times")
-	private Integer times;
+    /**
+     * 耗时(单位：毫秒)
+     */
+    @TableField("times")
+    private Integer times;
 
-	/**
-	 * 创建时间
-	 */
-	@TableField(value = "create_time", fill = FieldFill.INSERT)
-	private Date createTime;
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Date createTime;
 
 
 }

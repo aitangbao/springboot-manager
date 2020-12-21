@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
-import com.company.project.common.utils.Constant;
 import com.company.project.entity.SysDept;
 import com.company.project.entity.SysUser;
 import com.company.project.mapper.SysDeptMapper;

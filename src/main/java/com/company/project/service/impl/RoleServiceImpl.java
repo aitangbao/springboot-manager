@@ -131,14 +131,18 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deletedRole(String id) {
+        //获取关联userId
+        List<String> userIds = userRoleService.getUserIdsByRoleId(id);
         //删除角色
         sysRoleMapper.deleteById(id);
         //删除角色权限关联
         rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getRoleId, id));
         //删除角色用户关联
         userRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getRoleId, id));
-        // 刷新权限
-        httpSessionService.refreshRolePermission(id);
+        if (!userIds.isEmpty()) {
+            // 刷新权限
+            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
+        }
     }
 
     @Override

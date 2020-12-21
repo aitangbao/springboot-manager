@@ -11,5 +11,5 @@ import com.company.project.entity.SysFilesEntity;
  * @date 2020年3月18日
  */
 public interface SysFilesMapper extends BaseMapper<SysFilesEntity> {
-	
+
 }

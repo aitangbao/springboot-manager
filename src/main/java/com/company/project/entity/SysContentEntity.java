@@ -21,43 +21,43 @@ import java.util.Date;
 @Data
 @TableName("sys_content")
 public class SysContentEntity extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 主键id
-	 */
-	@TableId("id")
-	private String id;
+    /**
+     * 主键id
+     */
+    @TableId("id")
+    private String id;
 
-	/**
-	 * 主题
-	 */
-	@TableField("title")
-	private String title;
+    /**
+     * 主题
+     */
+    @TableField("title")
+    private String title;
 
-	/**
-	 * 内容
-	 */
-	@TableField("content")
-	private String content;
+    /**
+     * 内容
+     */
+    @TableField("content")
+    private String content;
 
-	/**
-	 * 类型（数据字典）
-	 */
-	@TableField("type")
-	private String type;
+    /**
+     * 类型（数据字典）
+     */
+    @TableField("type")
+    private String type;
 
-	/**
-	 * 创建人
-	 */
-	@TableField(value = "create_id", fill = FieldFill.INSERT)
-	private String createId;
+    /**
+     * 创建人
+     */
+    @TableField(value = "create_id", fill = FieldFill.INSERT)
+    private String createId;
 
-	/**
-	 * 创建时间
-	 */
-	@TableField(value = "create_time", fill = FieldFill.INSERT)
-	private Date createTime;
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Date createTime;
 
 
 }

@@ -24,7 +24,7 @@ import java.util.zip.ZipOutputStream;
  */
 @Service
 @Slf4j
-public class SysGeneratorServiceImpl  implements ISysGeneratorService{
+public class SysGeneratorServiceImpl implements ISysGeneratorService {
     private final GeneratorMapper generatorMapper;
 
     public SysGeneratorServiceImpl(GeneratorMapper generatorMapper) {
@@ -41,7 +41,7 @@ public class SysGeneratorServiceImpl  implements ISysGeneratorService{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
-        for(String tableName : tableNames){
+        for (String tableName : tableNames) {
             //查询表信息
             Map<String, String> table = queryTable(tableName);
             //查询列信息
@@ -60,7 +60,6 @@ public class SysGeneratorServiceImpl  implements ISysGeneratorService{
     public List<Map<String, String>> queryColumns(String tableName) {
         return generatorMapper.queryColumns(tableName);
     }
-
 
 
 }

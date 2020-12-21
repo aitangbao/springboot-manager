@@ -4,11 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.utils.Constant;
-import com.company.project.entity.SysRolePermission;
 import com.company.project.entity.SysUser;
-import com.company.project.entity.SysUserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -184,6 +181,9 @@ public class HttpSessionService {
      * @param userId userId
      */
     public void refreshUerId(String userId) {
+//        redisService.delKeys(userTokenPrefix + "*#" + userId);
+
+
         Set<String> keys = redisService.keys("#" + userId);
         //如果修改了角色/权限， 那么刷新权限
         for (String key : keys) {
@@ -195,7 +195,6 @@ public class HttpSessionService {
             }
             Set<String> permissions = getPermissionsByUserId(userId);
             redisSession.put(Constant.PERMISSIONS_KEY, permissions);
-
             Long redisTokenKeyExpire = redisService.getExpire(key);
             //刷新token绑定的角色权限
             redisService.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
@@ -209,12 +208,9 @@ public class HttpSessionService {
      * @param roleId roleId
      */
     public void refreshRolePermission(String roleId) {
-        List userIds = userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));;
+        List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
         if (!userIds.isEmpty()) {
-            for (Object userId : userIds) {
-                redisService.setAndExpire(redisPermissionRefreshKey + userId, String.valueOf(userId), redisPermissionRefreshExpire);
-            }
-
+            userIds.parallelStream().forEach(this::refreshUerId);
         }
     }
 
@@ -224,16 +220,9 @@ public class HttpSessionService {
      * @param permissionId permissionId
      */
     public void refreshPermission(String permissionId) {
-        //根据权限id，获取所有角色id
-        List<Object> roleIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, permissionId));
-        if (!roleIds.isEmpty()) {
-            //根据角色id， 获取关联用户
-            List<Object> userIds = userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds));
-            if (!userIds.isEmpty()) {
-                //删除用户redis
-                userIds.parallelStream().forEach(userId ->
-                        redisService.setAndExpire(redisPermissionRefreshKey + userId, userId.toString(), redisPermissionRefreshExpire));
-            }
+        List<String> userIds = permissionService.getUserIdsById(permissionId);
+        if (!userIds.isEmpty()) {
+            userIds.parallelStream().forEach(this::refreshUerId);
         }
     }
 

@@ -24,96 +24,96 @@ public class IndexController {
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
-            return "redirect:/index/home" ;
+            return "redirect:/index/home";
         }
-        return "login" ;
+        return "login";
     }
 
     @GetMapping("/home")
     public String home() {
-        return "home" ;
+        return "home";
     }
 
     @GetMapping("/users/password")
     public String updatePassword() {
-        return "users/update_password" ;
+        return "users/update_password";
     }
 
     @GetMapping("/users/info")
     public String userDetail(Model model) {
         model.addAttribute("flagType", "edit");
-        return "users/user_edit" ;
+        return "users/user_edit";
     }
 
     @GetMapping("/menus")
     public String menusList() {
 
-        return "menus/menu_list" ;
+        return "menus/menu_list";
     }
 
     @GetMapping("/roles")
     public String roleList() {
-        return "roles/role_list" ;
+        return "roles/role_list";
     }
 
     @GetMapping("/users")
     public String userList() {
-        return "users/user_list" ;
+        return "users/user_list";
     }
 
     @GetMapping("/logs")
     public String logList() {
-        return "logs/log_list" ;
+        return "logs/log_list";
     }
 
     @GetMapping("/depts")
     public String deptList() {
-        return "depts/dept_list" ;
+        return "depts/dept_list";
     }
 
     @GetMapping("/403")
     public String error403() {
-        return "error/403" ;
+        return "error/403";
     }
 
     @GetMapping("/404")
     public String error404() {
-        return "error/404" ;
+        return "error/404";
     }
 
     @GetMapping("/500")
     public String error405() {
-        return "error/500" ;
+        return "error/500";
     }
 
     @GetMapping("/main")
     public String indexHome() {
-        return "main" ;
+        return "main";
     }
 
     @GetMapping("/about")
     public String about() {
-        return "about" ;
+        return "about";
     }
 
     @GetMapping("/build")
     public String build() {
-        return "build" ;
+        return "build";
     }
 
     @GetMapping("/sysContent")
     public String sysContent() {
-        return "syscontent/list" ;
+        return "syscontent/list";
     }
 
     @GetMapping("/sysDict")
     public String sysDict() {
-        return "sysdict/list" ;
+        return "sysdict/list";
     }
 
     @GetMapping("/sysGenerator")
     public String sysGenerator() {
-        return "generator/list" ;
+        return "generator/list";
     }
 
     @GetMapping("/sysJob")

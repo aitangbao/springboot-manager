@@ -40,7 +40,7 @@ public class FileUploadProperties {
             this.accessUrl = null;
         }
         this.accessUrl = url.substring(url.lastIndexOf("/")) + "/**";
-        System.out.println("accessUrl="+accessUrl);
+        System.out.println("accessUrl=" + accessUrl);
     }
 
     public String getAccessUrl() {

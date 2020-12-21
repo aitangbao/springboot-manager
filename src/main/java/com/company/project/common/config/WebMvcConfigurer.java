@@ -32,7 +32,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
     private FileUploadProperties fileUploadProperties;
 
     /**
-     *  使用阿里 FastJson 作为JSON MessageConverter
+     * 使用阿里 FastJson 作为JSON MessageConverter
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

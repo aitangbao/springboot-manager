@@ -61,7 +61,7 @@ public class UserController {
     @PostMapping("/user/register")
     @ApiOperation(value = "用户注册接口")
     public DataResult register(@RequestBody @Valid SysUser vo) {
-       userService.register(vo);
+        userService.register(vo);
         return DataResult.success();
     }
 
@@ -186,7 +186,8 @@ public class UserController {
             reqVO.setRoleIds(roleIds);
             userRoleService.addUserRoleInfo(reqVO);
         }
+        //刷新权限
         httpSessionService.refreshUerId(userId);
-        return  DataResult.success();
+        return DataResult.success();
     }
 }

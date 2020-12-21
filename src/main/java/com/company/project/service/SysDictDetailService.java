@@ -16,7 +16,8 @@ public interface SysDictDetailService extends IService<SysDictDetailEntity> {
 
     /**
      * 分页
-     * @param page page
+     *
+     * @param page   page
      * @param dictId dictId
      * @return IPage
      */

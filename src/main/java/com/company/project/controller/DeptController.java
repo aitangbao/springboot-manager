@@ -70,7 +70,7 @@ public class DeptController {
     @GetMapping("/dept/tree")
     @ApiOperation(value = "树型组织列表接口")
     @LogAnnotation(title = "机构管理", action = "树型组织列表")
-    @RequiresPermissions(value = {"sys:user:list","sys:user:update", "sys:user:add", "sys:dept:add", "sys:dept:update"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:user:list", "sys:user:update", "sys:user:add", "sys:dept:add", "sys:dept:update"}, logical = Logical.OR)
     public DataResult getTree(@RequestParam(required = false) String deptId) {
         return DataResult.success(deptService.deptTreeList(deptId, false));
     }

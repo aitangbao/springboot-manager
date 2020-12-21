@@ -15,14 +15,16 @@ public interface ISysGeneratorService {
 
     /**
      * 获取所有表
+     *
      * @param page page
-     * @param vo vo
+     * @param vo   vo
      * @return IPage
      */
     IPage<SysGenerator> selectAllTables(Page<SysGenerator> page, SysGenerator vo);
 
     /**
      * 生成代码
+     *
      * @param tables tables
      * @return byte[]
      */

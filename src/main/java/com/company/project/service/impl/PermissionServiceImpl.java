@@ -7,6 +7,7 @@ import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.entity.SysPermission;
 import com.company.project.entity.SysRolePermission;
+import com.company.project.entity.SysUserRole;
 import com.company.project.mapper.SysPermissionMapper;
 import com.company.project.service.HttpSessionService;
 import com.company.project.service.PermissionService;
@@ -40,7 +41,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Resource
     private RolePermissionService rolePermissionService;
     @Resource
-    private  SysPermissionMapper sysPermissionMapper;
+    private SysPermissionMapper sysPermissionMapper;
     @Resource
     private HttpSessionService httpSessionService;
 
@@ -73,6 +74,8 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleted(String permissionId) {
+        //获取关联userId
+        List<String> userIds = getUserIdsById(permissionId);
         SysPermission sysPermission = sysPermissionMapper.selectById(permissionId);
         if (null == sysPermission) {
             log.error("传入 的 id:{}不合法", permissionId);
@@ -86,10 +89,19 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         sysPermissionMapper.deleteById(permissionId);
         //删除和角色关联
         rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, permissionId));
-        //刷新权限
-        httpSessionService.refreshPermission(permissionId);
+
+        if (!userIds.isEmpty()) {
+            //刷新权限
+            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
+        }
+
     }
 
+    @Override
+    public void updatePermission(SysPermission vo) {
+        sysPermissionMapper.updateById(vo);
+        httpSessionService.refreshPermission(vo.getId());
+    }
 
     /**
      * 获取所有菜单权限
@@ -239,4 +251,18 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         result.add(respNode);
         return result;
     }
+
+    @Override
+    public List getUserIdsById(String id) {
+        //根据权限id，获取所有角色id
+        //根据权限id，获取所有角色id
+        List<Object> roleIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, id));
+        if (!roleIds.isEmpty()) {
+            //根据角色id， 获取关联用户
+            return userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds));
+        }
+        return null;
+    }
+
+
 }

@@ -56,5 +56,5 @@ public class SysPermission implements Serializable {
 
     @TableField(exist = false)
     private String pidName;
-    
+
 }

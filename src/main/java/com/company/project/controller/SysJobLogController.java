@@ -34,7 +34,7 @@ public class SysJobLogController {
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @RequiresPermissions("sysJob:list")
-    public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog){
+    public DataResult findListByPage(@RequestBody SysJobLogEntity sysJobLog) {
         Page page = new Page(sysJobLog.getPage(), sysJobLog.getLimit());
         LambdaQueryWrapper<SysJobLogEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例

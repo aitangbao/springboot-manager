@@ -21,31 +21,31 @@ import java.util.Date;
 @Data
 @TableName("sys_files")
 public class SysFilesEntity extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 主键
-	 */
-	@TableId("id")
-	private String id;
+    /**
+     * 主键
+     */
+    @TableId("id")
+    private String id;
 
-	/**
-	 * URL地址
-	 */
-	@TableField("url")
-	private String url;
+    /**
+     * URL地址
+     */
+    @TableField("url")
+    private String url;
 
-	/**
-	 * 创建时间
-	 */
-	@TableField(value = "create_date", fill = FieldFill.INSERT)
-	private Date createDate;
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_date", fill = FieldFill.INSERT)
+    private Date createDate;
 
-	@TableField("file_name")
-	private String fileName;
+    @TableField("file_name")
+    private String fileName;
 
-	@TableField("file_path")
-	private String filePath;
+    @TableField("file_path")
+    private String filePath;
 
 
 }

@@ -38,12 +38,13 @@ public class SysLogAspect {
     @Lazy
     @Resource
     private HttpSessionService httpSessionService;
+
     /**
      * 此处的切点是注解的方式
      * 只要出现 @LogAnnotation注解都会进入
      */
     @Pointcut("@annotation(com.company.project.common.aop.annotation.LogAnnotation)")
-    public void logPointCut(){
+    public void logPointCut() {
 
     }
 
@@ -67,6 +68,7 @@ public class SysLogAspect {
 
         return result;
     }
+
     /**
      * 把日志保存
      */
@@ -75,23 +77,23 @@ public class SysLogAspect {
         Method method = signature.getMethod();
 
         SysLog sysLog = new SysLog();
-         LogAnnotation logAnnotation = method.getAnnotation(LogAnnotation.class);
-        if(logAnnotation != null){
+        LogAnnotation logAnnotation = method.getAnnotation(LogAnnotation.class);
+        if (logAnnotation != null) {
             //注解上的描述
-            sysLog.setOperation(logAnnotation.title()+"-"+logAnnotation.action());
+            sysLog.setOperation(logAnnotation.title() + "-" + logAnnotation.action());
         }
 
         //请求的方法名
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
         sysLog.setMethod(className + "." + methodName + "()");
-        log.info("请求{}.{}耗时{}毫秒",className,methodName,time);
+        log.info("请求{}.{}耗时{}毫秒", className, methodName, time);
         try {
             //请求的参数
             Object[] args = joinPoint.getArgs();
-            String params=null;
-            if(args.length!=0){
-                params=JSON.toJSONString(args);
+            String params = null;
+            if (args.length != 0) {
+                params = JSON.toJSONString(args);
             }
 
             sysLog.setParams(params);
@@ -102,10 +104,10 @@ public class SysLogAspect {
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         //设置IP地址
         sysLog.setIp(IPUtils.getIpAddr(request));
-        log.info("Ip{}，接口地址{}，请求方式{}，入参：{}",sysLog.getIp(),request.getRequestURL(),request.getMethod(),sysLog.getParams());
+        log.info("Ip{}，接口地址{}，请求方式{}，入参：{}", sysLog.getIp(), request.getRequestURL(), request.getMethod(), sysLog.getParams());
         //用户名
-        String userId= httpSessionService.getCurrentUserId();
-        String username=httpSessionService.getCurrentUsername();
+        String userId = httpSessionService.getCurrentUserId();
+        String username = httpSessionService.getCurrentUsername();
         sysLog.setUsername(username);
         sysLog.setUserId(userId);
         sysLog.setTime((int) time);

@@ -35,7 +35,6 @@ public class SysContentController {
     private SysContentService sysContentService;
 
 
-
     @ApiOperation(value = "新增")
     @PostMapping("/add")
     @RequiresPermissions("sysContent:add")

@@ -43,7 +43,7 @@ public class PermissionRespNode {
     private Integer orderNum;
 
     @ApiModelProperty(value = "是否展开 默认不展开(false)")
-    private boolean spread=true;
+    private boolean spread = true;
 
     @ApiModelProperty(value = "是否选中 默认false")
     private boolean checked;

@@ -11,5 +11,5 @@ import com.company.project.entity.SysDictEntity;
  * @date 2020年3月18日
  */
 public interface SysDictMapper extends BaseMapper<SysDictEntity> {
-	
+
 }

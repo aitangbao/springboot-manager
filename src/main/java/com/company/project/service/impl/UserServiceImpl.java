@@ -232,6 +232,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
         sysUser.setPassword(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()));
         sysUserMapper.updateById(sysUser);
+        //退出用户
         httpSessionService.abortAllUserByToken();
 
     }
