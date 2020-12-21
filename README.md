@@ -6,7 +6,8 @@
 数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
-开发最精简，可当脚手架，适合你来 DIY
+开发最精简，可当脚手架，适合你来 DIY  
+**如果喜欢，防止您迷路， 请尽快Star项目。多了您的支持，更多了一份动力！感谢~**
 
 ## 特征
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
@@ -134,9 +135,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ## **效果图**
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/142027_57d18746_997722.png "home1.png")
 ![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
-
-### 其他
-> 如果您手头有多余的项目，想找人接私活，那么请一定联系我， 靠谱！
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！
