@@ -145,6 +145,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 >
 > 加群二维码仅工作日开放， 周末不开放， 如果着急，请使用其他方式联系作者
 
-<img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2020/1221/112104_582a160e_997722.jpeg" alt="" style="zoom:25%;" /> 
+<img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2020/1228/113038_86103b06_997722.jpeg" alt="" style="zoom:25%;" /> 
 
 
