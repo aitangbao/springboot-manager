@@ -142,7 +142,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 交流群
 > 每周会定期更新，如果二维码过期请先清除浏览器缓存后，重新扫码二维码；如再不行可以私信作者，或邮箱lwb_1128@163.com  
->
+> github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看
 > 加群二维码仅工作日开放， 周末不开放， 如果着急，请使用其他方式联系作者
 
 <img width="300px" height="400px" src="https://images.gitee.com/uploads/images/2020/1228/113038_86103b06_997722.jpeg" alt="" style="zoom:25%;" /> 
