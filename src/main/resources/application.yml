@@ -35,7 +35,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath:mapper/${project.database}/**/*.xml
+  mapper-locations: classpath:mapper/${project.database}/**/*.xml,classpath:mapper/*.xml
   global-config:
     db-config:
       logic-delete-value: 0
