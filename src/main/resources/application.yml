@@ -32,11 +32,10 @@ spring:
         permissionRefresh: 604800 # 7天 7*24*3600
     allowMultipleLogin: true # 允许多处登陆
 
-
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/${project.database}/**/*.xml
   global-config:
     db-config:
       logic-delete-value: 0
