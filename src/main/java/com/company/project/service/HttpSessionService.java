@@ -209,7 +209,7 @@ public class HttpSessionService {
      */
     public void refreshRolePermission(String roleId) {
         List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
-        if (!userIds.isEmpty()) {
+        if (!CollectionUtils.isEmpty(userIds)) {
             userIds.parallelStream().forEach(this::refreshUerId);
         }
     }
@@ -221,7 +221,7 @@ public class HttpSessionService {
      */
     public void refreshPermission(String permissionId) {
         List<String> userIds = permissionService.getUserIdsById(permissionId);
-        if (!userIds.isEmpty()) {
+        if (!CollectionUtils.isEmpty(userIds)) {
             userIds.parallelStream().forEach(this::refreshUerId);
         }
     }

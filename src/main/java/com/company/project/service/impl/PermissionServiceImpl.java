@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -90,7 +91,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         //删除和角色关联
         rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, permissionId));
 
-        if (!userIds.isEmpty()) {
+        if (!CollectionUtils.isEmpty(userIds)) {
             //刷新权限
             userIds.parallelStream().forEach(httpSessionService::refreshUerId);
         }
