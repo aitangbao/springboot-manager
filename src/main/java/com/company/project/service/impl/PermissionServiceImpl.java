@@ -156,7 +156,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     private List<PermissionRespNode> getTree(List<SysPermission> all, boolean type) {
 
         List<PermissionRespNode> list = new ArrayList<>();
-        if (CollectionUtils.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(all)) {
             return list;
         }
         for (SysPermission sysPermission : all) {
