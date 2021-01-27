@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -104,7 +105,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         }
         List<Object> deptIds = sysDeptMapper.selectObjs(Wrappers.<SysDept>lambdaQuery().select(SysDept::getId).likeRight(SysDept::getRelationCode, sysDept.getRelationCode()));
         List<SysUser> list = sysUserMapper.selectList(Wrappers.<SysUser>lambdaQuery().in(SysUser::getDeptId, deptIds));
-        if (!list.isEmpty()) {
+        if (!CollectionUtils.isEmpty(list)) {
             throw new BusinessException(BaseResponseCode.NOT_PERMISSION_DELETED_DEPT);
         }
         sysDeptMapper.deleteById(id);

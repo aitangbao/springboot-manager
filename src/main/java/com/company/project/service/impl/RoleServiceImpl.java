@@ -56,7 +56,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
 
         vo.setStatus(1);
         sysRoleMapper.insert(vo);
-        if (null != vo.getPermissions() && !vo.getPermissions().isEmpty()) {
+        if (!CollectionUtils.isEmpty(vo.getPermissions())) {
             RolePermissionOperationReqVO reqVO = new RolePermissionOperationReqVO();
             reqVO.setRoleId(vo.getId());
             reqVO.setPermissionIds(vo.getPermissions());
@@ -121,7 +121,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     private void setChecked(List<PermissionRespNode> list, Set<Object> checkList) {
         for (PermissionRespNode node : list) {
             if (checkList.contains(node.getId())
-                    && (node.getChildren() == null || node.getChildren().isEmpty())) {
+                    && CollectionUtils.isEmpty(node.getChildren())) {
                 node.setChecked(true);
             }
             setChecked((List<PermissionRespNode>) node.getChildren(), checkList);
@@ -149,7 +149,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     public List<SysRole> getRoleInfoByUserId(String userId) {
 
         List<String> roleIds = userRoleService.getRoleIdsByUserId(userId);
-        if (roleIds.isEmpty()) {
+        if (CollectionUtils.isEmpty(roleIds)) {
             return null;
         }
         return sysRoleMapper.selectBatchIds(roleIds);
@@ -157,9 +157,8 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
 
     @Override
     public List<String> getRoleNames(String userId) {
-
         List<SysRole> sysRoles = getRoleInfoByUserId(userId);
-        if (null == sysRoles || sysRoles.isEmpty()) {
+        if (CollectionUtils.isEmpty(sysRoles)) {
             return null;
         }
         return sysRoles.stream().map(SysRole::getName).collect(Collectors.toList());

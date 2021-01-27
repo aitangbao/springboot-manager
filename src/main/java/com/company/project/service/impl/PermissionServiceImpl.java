@@ -55,11 +55,11 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Override
     public List<SysPermission> getPermission(String userId) {
         List<String> roleIds = userRoleService.getRoleIdsByUserId(userId);
-        if (roleIds.isEmpty()) {
+        if (CollectionUtils.isEmpty(roleIds)) {
             return null;
         }
         List<Object> permissionIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getPermissionId).in(SysRolePermission::getRoleId, roleIds));
-        if (permissionIds.isEmpty()) {
+        if (CollectionUtils.isEmpty(permissionIds)) {
             return null;
         }
 
@@ -84,7 +84,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         }
         //获取下一级
         List<SysPermission> childs = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, permissionId));
-        if (!childs.isEmpty()) {
+        if (!CollectionUtils.isEmpty(userIds)) {
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
         sysPermissionMapper.deleteById(permissionId);
@@ -110,7 +110,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Override
     public List<SysPermission> selectAll() {
         List<SysPermission> result = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().orderByAsc(SysPermission::getOrderNum));
-        if (!result.isEmpty()) {
+        if (!CollectionUtils.isEmpty(result)) {
             for (SysPermission sysPermission : result) {
                 SysPermission parent = sysPermissionMapper.selectById(sysPermission.getPid());
                 if (parent != null) {
@@ -129,7 +129,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
 
         List<SysPermission> list = getPermission(userId);
         Set<String> permissions = new HashSet<>();
-        if (null == list || list.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return null;
         }
         for (SysPermission sysPermission : list) {
@@ -156,7 +156,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     private List<PermissionRespNode> getTree(List<SysPermission> all, boolean type) {
 
         List<PermissionRespNode> list = new ArrayList<>();
-        if (all == null || all.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return list;
         }
         for (SysPermission sysPermission : all) {
@@ -234,7 +234,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     public List<PermissionRespNode> selectAllMenuByTree(String permissionId) {
 
         List<SysPermission> list = selectAll();
-        if (!list.isEmpty() && !StringUtils.isEmpty(permissionId)) {
+        if (!CollectionUtils.isEmpty(list) && !StringUtils.isEmpty(permissionId)) {
             for (SysPermission sysPermission : list) {
                 if (sysPermission.getId().equals(permissionId)) {
                     list.remove(sysPermission);
@@ -258,7 +258,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         //根据权限id，获取所有角色id
         //根据权限id，获取所有角色id
         List<Object> roleIds = rolePermissionService.listObjs(Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getRoleId).eq(SysRolePermission::getPermissionId, id));
-        if (!roleIds.isEmpty()) {
+        if (!CollectionUtils.isEmpty(roleIds)) {
             //根据角色id， 获取关联用户
             return userRoleService.listObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).in(SysUserRole::getRoleId, roleIds));
         }

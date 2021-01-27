@@ -190,7 +190,7 @@ public class HttpSessionService {
             JSONObject redisSession = JSON.parseObject(redisService.get(key));
 
             List<String> roleNames = getRolesByUserId(userId);
-            if (roleNames != null && !roleNames.isEmpty()) {
+            if (!CollectionUtils.isEmpty(roleNames)) {
                 redisSession.put(Constant.ROLES_KEY, roleNames);
             }
             Set<String> permissions = getPermissionsByUserId(userId);

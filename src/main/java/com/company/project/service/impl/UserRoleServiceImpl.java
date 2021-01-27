@@ -1,6 +1,7 @@
 package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.entity.SysUserRole;
@@ -35,7 +36,7 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addUserRoleInfo(UserRoleOperationReqVO vo) {
-        if (vo.getRoleIds() == null || vo.getRoleIds().isEmpty()) {
+        if (CollectionUtils.isEmpty(vo.getRoleIds())) {
             return;
         }
         List<SysUserRole> list = new ArrayList<>();

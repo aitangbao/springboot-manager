@@ -2,6 +2,7 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -181,7 +182,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
         queryWrapper.orderByDesc(SysUser::getCreateTime);
         IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
-        if (!iPage.getRecords().isEmpty()) {
+        if (!CollectionUtils.isEmpty(iPage.getRecords())) {
             for (SysUser sysUser : iPage.getRecords()) {
                 SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());
                 if (sysDept != null) {
@@ -205,7 +206,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         vo.setStatus(1);
         vo.setCreateWhere(1);
         sysUserMapper.insert(vo);
-        if (null != vo.getRoleIds() && !vo.getRoleIds().isEmpty()) {
+        if (!CollectionUtils.isEmpty(vo.getRoleIds())) {
             UserRoleOperationReqVO reqVO = new UserRoleOperationReqVO();
             reqVO.setUserId(vo.getId());
             reqVO.setRoleIds(vo.getRoleIds());
