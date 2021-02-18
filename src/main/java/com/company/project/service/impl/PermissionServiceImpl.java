@@ -84,7 +84,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         }
         //获取下一级
         List<SysPermission> childs = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, permissionId));
-        if (!CollectionUtils.isEmpty(userIds)) {
+        if (!CollectionUtils.isEmpty(childs)) {
             throw new BusinessException(BaseResponseCode.ROLE_PERMISSION_RELATION);
         }
         sysPermissionMapper.deleteById(permissionId);
