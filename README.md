@@ -112,7 +112,12 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
     3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
     4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
 	
+- 配置文件敏感信息加密，如数据库连接用户名与密码
 
+  1. 加密方式: [jasypt](https://github.com/ulisesbocchio/jasypt-spring-boot)
+  2. 加密版本: 2.1.2 
+  3. 备注：
+     版本不同加密算法不同、加密的密钥目前配置在配置文件是为了简单方便,实际生产采用服务器环境变量或者启动参数直接传入方式
 
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
