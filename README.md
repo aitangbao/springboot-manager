@@ -144,5 +144,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 > github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看  
 备注开源  
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0618/162418_7d50cae5_997722.png "微信截图_20210618162313.png")
-
+![输入图片说明](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220408103746.jpg)
