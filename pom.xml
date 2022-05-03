@@ -167,6 +167,12 @@
             <artifactId>easy-captcha</artifactId>
             <version>${easy-captcha.version}</version>
         </dependency>
+        <!--   jasypt加解密     -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>2.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
