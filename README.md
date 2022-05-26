@@ -133,8 +133,8 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	  
 ## **效果图**
 
-![输入图片说明](Jietu20220522-222518@2x.jpg)
-
+![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/1.png)
+![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/2.png)
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
@@ -143,4 +143,4 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ### 交流群
 > 如果大家有疑难杂症，技术交流， 可以加我拉你们进群, 务必备注: 开源
-![输入图片说明](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220408103746.jpg)
+![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/3.jpg)
