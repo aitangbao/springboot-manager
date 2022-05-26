@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>主页</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
 </head>
 <style>
     .layui-top-box {padding:40px 20px 20px 20px;color:#fff}
@@ -176,6 +176,6 @@
         </div>
     </div>
 </div>
-<script src="/layui/layui.js" charset="utf-8"></script>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
 </body>
 </html>

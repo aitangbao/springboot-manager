@@ -44,14 +44,14 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
             //创建时间默认当前时间
             setFieldValByName("createDate", currentDate, metaObject);
         }
-        if (setterNameSet.contains("createId")) {
-            //创建时间默认当前时间
-            setFieldValByName("createId", httpSessionService.getCurrentUserId(), metaObject);
-        }
-        if (setterNameSet.contains("updateId")) {
-            //创建时间默认当前时间
-            setFieldValByName("updateId", httpSessionService.getCurrentUserId(), metaObject);
-        }
+//        if (setterNameSet.contains("createId")) {
+//            //创建时间默认当前时间
+//            setFieldValByName("createId", httpSessionService.getCurrentUserId(), metaObject);
+//        }
+//        if (setterNameSet.contains("updateId")) {
+//            //创建时间默认当前时间
+//            setFieldValByName("updateId", httpSessionService.getCurrentUserId(), metaObject);
+//        }
         if (setterNameSet.contains("updateTime")) {
             //创建时间默认当前时间
             setFieldValByName("updateTime", currentDate, metaObject);

@@ -63,7 +63,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             return null;
         }
 
-        LambdaQueryWrapper<SysPermission> queryWrapper = Wrappers.<SysPermission>lambdaQuery().in(SysPermission::getId, permissionIds).orderByAsc(SysPermission::getOrderNum);
+        LambdaQueryWrapper<SysPermission> queryWrapper = Wrappers.<SysPermission>lambdaQuery().in(SysPermission::getId, permissionIds).eq(SysPermission::getStatus, 1).orderByAsc(SysPermission::getOrderNum);
         return sysPermissionMapper.selectList(queryWrapper);
     }
 

@@ -184,22 +184,22 @@ public class HttpSessionService {
 //        redisService.delKeys(userTokenPrefix + "*#" + userId);
 
 
-        Set<String> keys = redisService.keys("#" + userId);
-        //如果修改了角色/权限， 那么刷新权限
-        for (String key : keys) {
-            JSONObject redisSession = JSON.parseObject(redisService.get(key));
-
-            List<String> roleNames = getRolesByUserId(userId);
-            if (!CollectionUtils.isEmpty(roleNames)) {
-                redisSession.put(Constant.ROLES_KEY, roleNames);
-            }
-            Set<String> permissions = getPermissionsByUserId(userId);
-            redisSession.put(Constant.PERMISSIONS_KEY, permissions);
-            Long redisTokenKeyExpire = redisService.getExpire(key);
-            //刷新token绑定的角色权限
-            redisService.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
-
-        }
+//        Set<String> keys = redisService.keys("#" + userId);
+//        //如果修改了角色/权限， 那么刷新权限
+//        for (String key : keys) {
+//            JSONObject redisSession = JSON.parseObject(redisService.get(key));
+//
+//            List<String> roleNames = getRolesByUserId(userId);
+//            if (!CollectionUtils.isEmpty(roleNames)) {
+//                redisSession.put(Constant.ROLES_KEY, roleNames);
+//            }
+//            Set<String> permissions = getPermissionsByUserId(userId);
+//            redisSession.put(Constant.PERMISSIONS_KEY, permissions);
+//            Long redisTokenKeyExpire = redisService.getExpire(key);
+//            //刷新token绑定的角色权限
+//            redisService.setAndExpire(key, redisSession.toJSONString(), redisTokenKeyExpire);
+//
+//        }
     }
 
     /**
@@ -208,10 +208,10 @@ public class HttpSessionService {
      * @param roleId roleId
      */
     public void refreshRolePermission(String roleId) {
-        List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
-        if (!CollectionUtils.isEmpty(userIds)) {
-            userIds.parallelStream().forEach(this::refreshUerId);
-        }
+//        List<String> userIds = userRoleService.getUserIdsByRoleId(roleId);
+//        if (!CollectionUtils.isEmpty(userIds)) {
+//            userIds.parallelStream().forEach(this::refreshUerId);
+//        }
     }
 
     /**
@@ -220,10 +220,10 @@ public class HttpSessionService {
      * @param permissionId permissionId
      */
     public void refreshPermission(String permissionId) {
-        List<String> userIds = permissionService.getUserIdsById(permissionId);
-        if (!CollectionUtils.isEmpty(userIds)) {
-            userIds.parallelStream().forEach(this::refreshUerId);
-        }
+//        List<String> userIds = permissionService.getUserIdsById(permissionId);
+//        if (!CollectionUtils.isEmpty(userIds)) {
+//            userIds.parallelStream().forEach(this::refreshUerId);
+//        }
     }
 
 

@@ -43,6 +43,9 @@ public class SysPermission implements Serializable {
     @NotNull(message = "菜单权限类型不能为空")
     private Integer type;
 
+    /**
+     * 1正常 2禁用
+     */
     private Integer status;
 
     @TableField(fill = FieldFill.INSERT)

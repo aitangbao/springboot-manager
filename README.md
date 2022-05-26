@@ -26,8 +26,8 @@ Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwe
 GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager)  
 如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager/tree/simple/](https://gitee.com/zwens/springboot-manager/tree/simple/) 
 
+
 ## 开发文档&项目演示
-- 代码文档地址：[http://doc.aitangbao.cn](http://121.42.10.80:9000)
 - 演示地址：[http://manager.aitangbao.cn](http://121.42.10.80:8080)
 - 账号密码：guest/123456
 - 带宽1m 不太给力 请见谅 :joy:
@@ -96,7 +96,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 运行项目
    	1. 直接运行CompanyProjectApplication.java
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
-- 接口文档访问 http://localhost:8080/doc.html
 - 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
 - 代码生成使用  
     1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用数据库关键字
@@ -133,15 +132,15 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 4. 提交 Pull Request
 	  
 ## **效果图**
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0929/142027_57d18746_997722.png "home1.png")
-![2](https://images.gitee.com/uploads/images/2020/0521/110629_7526055a_997722.png)
+
+![输入图片说明](Jietu20220522-222518@2x.jpg)
+
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
 
 ![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
-### 交流群
-> github图片可能无法正常显示， 请尝试去[gitee](https://gitee.com/zwens/springboot-manager)查看  
-备注开源  
 
-![输入图片说明](https://s3.bmp.ovh/imgs/2022/04/22/c6739afbda8185d8.jpg)
+### 交流群
+> 如果大家有疑难杂症，技术交流， 可以加我拉你们进群, 务必备注: 开源
+![输入图片说明](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220408103746.jpg)

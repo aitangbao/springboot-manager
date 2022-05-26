@@ -9,49 +9,80 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>body{background-image:url("/images/bg.jpg");height:100%;width:100%}#container{height:100%;width:100%}input:-webkit-autofill{-webkit-box-shadow:inset 0 0 0 1000px#fff;background-color:transparent}.admin-login-background{width:300px;height:300px;position:absolute;left:50%;top:40%;margin-left:-150px;margin-top:-100px}.admin-header{text-align:center;margin-bottom:20px;color:#ffffff;font-weight:bold;font-size:40px}.admin-input{border-top-style:none;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;height:50px;width:300px;padding-bottom:0px}.admin-input::-webkit-input-placeholder{color:#a78369}.layui-icon-username{color:#a78369!important}.layui-icon-username:hover{color:#9dadce!important}.layui-icon-password{color:#a78369!important}.layui-icon-password:hover{color:#9dadce!important}.admin-input-username{border-top-style:solid;border-radius:10px 10px 0 0}.admin-input-verify{border-radius:0 0 10px 10px}.admin-button{margin-top:20px;font-weight:bold;font-size:18px;width:300px;height:50px;border-radius:5px;background-color:#a78369;border:1px solid#d8b29f}.admin-icon{margin-left:260px;margin-top:10px;font-size:30px}i{position:absolute}.admin-captcha{position:absolute;margin-left:205px;margin-top:-45px}</style>
+    <style>
+        html, body {width: 100%;height: 100%;overflow: hidden}
+        body {background: #1E9FFF;}
+        body:after {content:'';background-repeat:no-repeat;background-size:cover;-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px);position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;}
+        .layui-container {width: 100%;height: 100%;overflow: hidden}
+        .admin-login-background {width:360px;height:300px;position:absolute;left:50%;top:40%;margin-left:-180px;margin-top:-100px;}
+        .logo-title {text-align:center;letter-spacing:2px;padding:14px 0;}
+        .logo-title h1 {color:#1E9FFF;font-size:25px;font-weight:bold;}
+        .login-form {background-color:#fff;border:1px solid #fff;border-radius:3px;padding:14px 20px;box-shadow:0 0 8px #eeeeee;}
+        .login-form .layui-form-item {position:relative;}
+        .login-form .layui-form-item label {position:absolute;left:1px;top:1px;width:38px;line-height:36px;text-align:center;color:#d2d2d2;}
+        .login-form .layui-form-item input {padding-left:36px;}
+        .captcha {width:60%;display:inline-block;}
+        .captcha-img {display:inline-block;width:34%;float:right;}
+        .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
+    </style>
 </head>
 <body>
-<div id="container">
-    <div></div>
+<div class="layui-container">
     <div class="admin-login-background">
-        <div class="admin-header">
-            <span>后台管理系统</span>
+        <div class="layui-form login-form">
+            <form class="layui-form" action="">
+                <div class="layui-form-item logo-title">
+                    <h1>后台登录</h1>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-username" name="username" ></label>
+                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名" autocomplete="off" class="layui-input" value="admin">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-password" name="password"></label>
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="123456">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-vercode" name="captcha"></label>
+                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
+                    <div class="captcha-img">
+                        <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="40" th:src="@{/sys/getVerify}">
+                    </div>
+                </div>
+<!--                <div class="layui-form-item">
+                    <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
+                </div>-->
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
+                </div>
+            </form>
         </div>
-        <form class="layui-form" action="">
-            <div>
-                <i class="layui-icon layui-icon-username admin-icon"></i>
-                <input type="text" name="username" placeholder="请输入用户名" autocomplete="off"
-                       class="layui-input admin-input admin-input-username" value="guest">
-            </div>
-            <div>
-                <i class="layui-icon layui-icon-password admin-icon"></i>
-                <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
-                       class="layui-input admin-input" value="123456">
-            </div>
-            <div>
-                <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off"
-                       class="layui-input admin-input admin-input-verify">
-                <img class="admin-captcha" width="90" height="40" src="/sys/getVerify">
-                <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="40" src="/sys/getVerify">
-            </div>
-            <button class="layui-btn admin-button" lay-submit="" lay-filter="login">登 陆</button>
-        </form>
     </div>
 </div>
-<script src="/layui/layui.js"></script>
-
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jq-module/jquery.particleground.min.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
+</script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.jquery;
 
+        // 粒子线条背景
+        $(document).ready(function(){
+            $('.layui-container').particleground({
+                dotColor:'#7ec7fd',
+                lineColor:'#7ec7fd'
+            });
+        });
 
         // 进行登录操作
         form.on('submit(login)', function (data) {
@@ -71,7 +102,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/sys/user/login',
+                url: ctx + 'sys/user/login',
                 dataType: "JSON",
                 data: JSON.stringify(data),
                 contentType: "application/json",
@@ -82,7 +113,7 @@
                             value: res.data.accessToken
                         })
                         layer.msg('登录成功', {time: 1000}, function () {
-                            window.location = '/index/home';
+                            window.location = ctx + 'index/home';
                         });
                     } else {
                         layer.msg(res.msg);

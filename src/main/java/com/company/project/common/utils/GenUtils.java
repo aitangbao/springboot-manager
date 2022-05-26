@@ -1,5 +1,6 @@
 package com.company.project.common.utils;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.ColumnEntity;
 import com.company.project.entity.TableEntity;
@@ -116,12 +117,16 @@ public class GenUtils {
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        map.put("identity", idWorker.nextId());
-        map.put("addId", idWorker.nextId());
-        map.put("updateId", idWorker.nextId());
-        map.put("deleteId", idWorker.nextId());
-        map.put("selectId", idWorker.nextId());
+        map.put("identity", IdWorker.getId());
+        map.put("addId", IdWorker.getId());
+        map.put("updateId", IdWorker.getId());
+        map.put("deleteId", IdWorker.getId());
+        map.put("selectId", IdWorker.getId());
+        map.put("identityJoinId", IdWorker.getId());
+        map.put("addIdJoinId", IdWorker.getId());
+        map.put("updateIdJoinId", IdWorker.getId());
+        map.put("deleteIdJoinId", IdWorker.getId());
+        map.put("selectIdJoinId", IdWorker.getId());
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -153,7 +158,9 @@ public class GenUtils {
         StringBuilder sbuilder = new StringBuilder(fields[0]);
         for (int i = 1; i < fields.length; i++) {
             char[] cs = fields[i].toCharArray();
-            cs[0] -= 32;
+             if(cs[0]>='a') {
+                cs[0] -= 32;
+            }
             sbuilder.append(String.valueOf(cs));
         }
         return sbuilder.toString().substring(0, 1).toUpperCase() + sbuilder.toString().substring(1);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>后台管理系统</title>
-    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
     <style>
         .layui-tab-title .layui-this{background-color:#009688;color:#eee;}.first-tab i.layui-tab-close{display:none !important;}.layui-layout-admin .layui-header{background-color:#1aa094 !important;}.layui-layout-admin .layui-logo{background-color:#0c0c0c !important;}.layuimini-color .color-title{padding:10px 0 10px 20px;border-bottom:1px solid #d9dada;margin-bottom:8px;}.layuimini-color .color-content{padding:0 5px 0 5px;}.layuimini-color .color-content ul{list-style:none;text-align:center;}.layuimini-color .color-content ul li{position:relative;display:inline-block;vertical-align:top;width:80px;height:50px;margin:0 15px 15px 0;padding:2px 2px 4px 2px;background-color:#f2f2f2;cursor:pointer;font-size:12px;color:#666;}.layuimini-color .color-content li.layui-this:after,.layuimini-color .color-content li:hover:after{width:100%;height:100%;padding:4px;top:-5px;left:-5px;border-color:#d8d8d8;opacity:1;}.layuimini-color .color-content li:after{content:'';position:absolute;z-index:20;top:50%;left:50%;width:1px;height:0;border:1px solid #f2f2f2;transition:all .3s;-webkit-transition:all .3s;opacity:0;}
         .layuimini-tool-left {position:absolute!important;top:0;left:200px;width:60px;height:100%;line-height:60px;text-align:center;color:#ffffff!important;}
@@ -40,9 +40,9 @@
                     <div><span id="nickName">guest</span></div>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info"
+                    <dd><a id="userProper" href="javascript:;" data-id="userProper" data-title="基本资料" data-url="/index/users/info"
                            class="menuNvaBar">基本资料</a></dd>
-                    <dd><a href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password"
+                    <dd><a id="userSafe" href="javascript:;" data-id="userSafe" data-title="安全设置" data-url="/index/users/password"
                            class="menuNvaBar">更换密码</a></dd>
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
                 </dl>
@@ -84,15 +84,20 @@
     </div>
 </div>
 </body>
-<script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js"></script>
-<script src="/js/jquery.js"></script>
-<script src="/js/home.js?v=0.1"></script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/home.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
+</script>
 <script>
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
     var form = layui.form;
     var element = layui.element;
+    $("#userProper").attr("data-url", ctx + "index/users/info")
+    $("#userSafe").attr("data-url", ctx + "index/users/password")
     initBgColor();
     $(function () {
         FrameWH();
@@ -108,9 +113,9 @@
                     ulHtml += getChild(child.children, "");
                 } else {
                     if (child.target == "_blank") {
-                        ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
+                        ulHtml += '<dd><a href="' + ctx + child.url + '" target="_blank">';
                     } else {
-                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
+                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + ctx +  child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                     }
                     ulHtml += '<cite>' + child.title + '</cite></a></dd>';
                 }
@@ -122,7 +127,7 @@
             ulHtml += "</dl>"
             return ulHtml;
         };
-        CoreUtil.sendGet("/sys/home/", null, function (res) {
+        CoreUtil.sendGet(ctx + "sys/home/", null, function (res) {
             $("#deptName").html("所属部门: " + res.data.userInfo.deptName);
             $("#nickName").html(res.data.userInfo.username);
             var data = res.data.menus;
@@ -153,9 +158,9 @@
                                     ulHtml += getChild(child.children, "");
                                 } else {
                                     if (child.target == "_blank") {
-                                        ulHtml += '<dd><a href="' + child.url + '" target="_blank">';
+                                        ulHtml += '<dd><a href="' + ctx +  child.url + '" target="_blank">';
                                     } else {
-                                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
+                                        ulHtml += '<dd><a href="javascript:;" data-icon="' + child.icon + '" data-url="' + ctx + child.url + '" data-title="' + child.title + '" data-id="' + child.id + '" class="menuNvaBar">';
                                     }
                                     if (!CoreUtil.isEmpty(child.icon)) {
                                         ulHtml += '<i class="layui-icon '+child.icon+'"></i>';
@@ -226,9 +231,9 @@
             content: '确定要退出登录么？',
             yes: function (index, layero) {
                 layer.close(index); //如果设定了yes回调，需进行手工关闭
-                CoreUtil.sendGet("/sys/user/logout", null, function (res) {
+                CoreUtil.sendGet(ctx + "sys/user/logout", null, function (res) {
                     layui.data('LocalData', null);
-                    top.window.location.href = "/index/login";
+                    top.window.location.href = ctx + "index/login";
                 });
             }
         });

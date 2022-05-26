@@ -1,0 +1,9 @@
+#banner {
+    background: url("images/500.png") no-repeat;
+    background-size: 100%;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 40px;
+}

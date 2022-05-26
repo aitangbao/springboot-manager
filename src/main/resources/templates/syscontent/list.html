@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/layui/css/layui.css">
-    <link rel="stylesheet" href="/css/custom.form.css">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
 </head>
 <body>
 <div class="panel panel-default operation" hidden>
@@ -75,8 +75,11 @@
 
 </body>
 </html>
-<script src="/layui/layui.all.js"></script>
-<script src="/js/core.util.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
+</script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
 <script>
     //文章类型字典数据
     var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g,"\"");
@@ -96,7 +99,7 @@
         //图片
         layedit.set({
             uploadImage: {
-                url: '/sysFiles/upload?authorization=' + tokenQuery //接口url
+                url: ctx + 'sysFiles/upload?authorization=' + tokenQuery //接口url
                 , type: 'post' //默认post
             }
         });
@@ -108,7 +111,7 @@
             , contentType: 'application/json'
             , headers: {"authorization": token}
             , page: true //开启分页
-            , url: '/sysContent/listByPage' //数据接口
+            , url: ctx + 'sysContent/listByPage' //数据接口
             , method: 'POST'
             , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                 return {
@@ -213,7 +216,7 @@
                 content: "确定要删除么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    CoreUtil.sendDelete("/sysContent/delete", ids, function (res) {
+                    CoreUtil.sendDelete(ctx + "sysContent/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
                             search();
                         });
@@ -233,13 +236,13 @@
         form.on('submit(submit)', function (data) {
             data.field.content = layedit.getContent(editIndex);
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
-                CoreUtil.sendPost("/sysContent/add", data.field, function (res) {
+                CoreUtil.sendPost(ctx + "sysContent/add", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
                     search();
                 })
             } else {
-                CoreUtil.sendPut("/sysContent/update", data.field, function (res) {
+                CoreUtil.sendPut(ctx + "sysContent/update", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
                     search();

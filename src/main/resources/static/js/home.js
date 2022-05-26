@@ -29,7 +29,11 @@ var initBgColor = function () {
     console.log(bgcolorData)
     var styleHtml = '.layui-layout-admin .layui-header{background-color:' + bgcolorData.headerRight + '!important;}\n' +
         '.layui-header>ul>.layui-nav-item.layui-this,.layuimini-tool i:hover{background-color:' + bgcolorData.headerRightThis + '!important;}\n' +
-        '.layui-layout-admin .layui-logo {background-color:' + bgcolorData.headerLogo + '!important;}\n' +
+        '.layui-layout-admin .layui-logo {background-color:' + bgcolorData.headerLogo + '!important;color:' + bgcolorData.headerRight + '!important;}\n' +
+        '.layui-tab-title .layui-this {background-color:' + bgcolorData.headerRight + '!important;}\n' +
+        '.layui-nav-tree .layui-nav-bar {background-color:' + bgcolorData.headerRight + '!important;}\n' +
+        '.layui-btn {background-color:' + bgcolorData.headerRight + '!important;}\n' +
+        '.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {background-color:' + bgcolorData.headerRight + '!important;}\n' +
         '.layui-side.layui-bg-black,.layui-side.layui-bg-black>.layui-left-menu>ul {background-color:' + bgcolorData.menuLeft + '!important;}\n' +
         '.layui-left-menu .layui-nav .layui-nav-child a:hover:not(.layui-this) {background-color:' + bgcolorData.menuLeftHover + ';}\n' +
         '.layui-layout-admin .layui-nav-tree .layui-this, .layui-layout-admin .layui-nav-tree .layui-this>a, .layui-layout-admin .layui-nav-tree .layui-nav-child dd.layui-this, .layui-layout-admin .layui-nav-tree .layui-nav-child dd.layui-this a {\n' +
@@ -169,7 +173,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#0c0c0c',
             headerLogo: '#0c0c0c',
             menuLeft: '#23262e',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#23262e',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -189,11 +193,11 @@ var buildBgColorHtml = function () {
             menuLeftHover: '#3b3f4b',
         },
         {
-            headerRight: '#1e9fff',
+            headerRight: '#1E9FFF',
             headerRightThis: '#0069b7',
             headerLogo: '#0c0c0c',
             menuLeft: '#1f1f1f',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#1E9FFF',
             menuLeftHover: '#3b3f4b',
         },
 
@@ -202,7 +206,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#d09600',
             headerLogo: '#243346',
             menuLeft: '#2f4056',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#ffb800',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -210,7 +214,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#ae1919',
             headerLogo: '#0c0c0c',
             menuLeft: '#1f1f1f',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#e82121',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -218,7 +222,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#772c6a',
             headerLogo: '#243346',
             menuLeft: '#2f4056',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#963885',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -226,7 +230,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#0069b7',
             headerLogo: '#0069b7',
             menuLeft: '#1f1f1f',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#1e9fff',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -234,7 +238,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#d09600',
             headerLogo: '#d09600',
             menuLeft: '#2f4056',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#ffb800',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -242,7 +246,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#ae1919',
             headerLogo: '#d91f1f',
             menuLeft: '#1f1f1f',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#e82121',
             menuLeftHover: '#3b3f4b',
         },
         {
@@ -250,7 +254,7 @@ var buildBgColorHtml = function () {
             headerRightThis: '#772c6a',
             headerLogo: '#772c6a',
             menuLeft: '#2f4056',
-            menuLeftThis: '#1aa094',
+            menuLeftThis: '#963885',
             menuLeftHover: '#3b3f4b',
         }
     ];
@@ -273,7 +277,7 @@ var config = function (name) {
     var config = {
         urlHashLocation: true,   // URL地址hash定位
         urlSuffixDefault: false, // URL后缀
-        BgColorDefault: 0,       // 默认皮肤（0开始）
+        BgColorDefault: 4,       // 默认皮肤（0开始）
         checkUrlDefault: false,   // 是否判断URL有效
     };
 

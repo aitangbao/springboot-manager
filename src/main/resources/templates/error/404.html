@@ -1,20 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/404.css}"/>
     <title>Title</title>
-    <style>
-        #banner {
-            background: url("/images/404.png") no-repeat;
-            background-size: 100%;
-            overflow: hidden;
-        }
-
-        h1 {
-            font-size: 40px;
-        }
-    </style>
 </head>
 <body>
 <div class="layui-container" style="height: 500px;width: 600px;" id="banner">
