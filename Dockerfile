@@ -11,3 +11,4 @@ RUN echo 'Asia/Shanghai' >/etc/timezone
 ENTRYPOINT ["java","-jar","/manager.jar"]
 # 暴露端口
 EXPOSE 8080
+
