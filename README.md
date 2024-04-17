@@ -28,7 +28,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 
 ## 开发文档&项目演示
-- 演示地址：[http://manager.aitangbao.cn](http://121.42.10.80:8080)
+- 演示地址：[springboot-manager](http://1.94.23.145:9000)
 - 账号密码：guest/123456
 - 带宽1m 不太给力 请见谅 :joy:
 
