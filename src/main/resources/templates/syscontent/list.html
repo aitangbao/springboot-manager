@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+    <style>
+        .layui-upload-img {
+            width: 92px;
+            height: 92px;
+        }
+    </style>
 </head>
 <body>
 <div class="panel panel-default operation" hidden>
     <div class="panel-heading title"></div>
     <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
+        <form class="layui-form " action="" lay-filter="info">
             <input name="id" hidden/>
             <div class="layui-form-item">
                 <label class="layui-form-label">标题</label>
@@ -22,10 +28,19 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">类型</label>
                 <div class="layui-input-block">
-                    <select id="type" name="type" lay-filter="select-type" th:with="type=${@sysDictService.getType('content_type')}">
+                    <select id="type" name="type" lay-filter="select-type"
+                            th:with="type=${@sysDictService.getType('content_type')}">
                         <option value="0">请选择</option>
                         <option th:each="dict : ${type}" th:text="${dict.label}" th:value="${dict.value}"></option>
                     </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">关键字</label>
+                <div class="layui-input-block" th:with="type=${@sysDictService.getType('content_keyword')}">
+                    <input class="disabled" th:each="dict : ${type}" type="checkbox"
+                           th:name="'keywords[' + ${dict.value} + ']'"
+                           th:title="${dict.label}"></input>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -33,7 +48,30 @@
                 <div class="layui-input-block">
                     <textarea id="content" name=content style="display: none;"></textarea>
                 </div>
+            </div>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn disabled" id="multiImgButton"><i class="layui-icon">&#xe67c;</i>
+                    多图展示
+                </button>
+                <div class="layui-upload-list" style="width:1000px;height: 120px;border: 1px solid"
+                     id="multi-div"></div>
+            </div>
+            <div class="layui-form-item" style="margin-top:15px">
+                <div class="layui-inline">
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn disabled" id="oneImgButton"><i class="layui-icon">&#xe67c;</i>单图展示
+                        </button>
+                        <div class="layui-upload-list" style="width:100px">
+                            <img onclick="CoreUtil.showImg(this.src)" class="layui-upload-img" id="one-img">
+                            <center>
+                                <button onclick="emptyImgSrc('one-img');return false;"
+                                        class="layui-btn disabled layui-btn-danger layui-btn-xs">删除
+                                </button>
+                            </center>
+                        </div>
 
+                    </div>
+                </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
@@ -46,7 +84,7 @@
 </div>
 
 <div class="table_div">
-    <div id="searchParam" shiro:hasPermission="sysContent:list">
+    <div id="searchParam" sa:hasPermission="sysContent:list">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <input type="text" id="title" class="layui-input" autocomplete="off" placeholder="请输入标题">
@@ -62,15 +100,15 @@
 </div>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add" shiro:hasPermission="sysContent:add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysContent:delete">删除
+        <button class="layui-btn layui-btn-sm" lay-event="add" sa:hasPermission="sysContent:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" sa:hasPermission="sysContent:delete">删除
         </button>
     </div>
 </script>
 <script type="text/html" id="tool">
-    <a class="layui-btn layui-btn-xs" lay-event="preview" shiro:hasPermission="sysContent:list">预览</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysContent:update">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysContent:delete">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="preview" sa:hasPermission="sysContent:list">预览</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sysContent:update">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sysContent:delete">删除</a>
 </script>
 
 </body>
@@ -78,15 +116,11 @@
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     //文章类型字典数据
-    var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g,"\"");
-    //获取token
-    var token = CoreUtil.getData("access_token");
-    //地址栏转义token中的#号
-    var tokenQuery = token.replace("#", "%23");
+    var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g, "\"");
     var tableIns1;
     var table = layui.table;
     var form = layui.form;
@@ -94,12 +128,12 @@
     var $ = jQuery = layui.jquery;
     var laydate = layui.laydate;
     var layedit = layui.layedit;
-
-    layui.use(['table', 'layer', 'laydate', 'layedit'], function () {
+    var upload = layui.upload;
+    layui.use(['table', 'layer', 'laydate', 'layedit','upload'], function () {
         //图片
         layedit.set({
             uploadImage: {
-                url: ctx + 'sysFiles/upload?authorization=' + tokenQuery //接口url
+                url: ctx + 'sysFiles/upload' //接口url
                 , type: 'post' //默认post
             }
         });
@@ -109,7 +143,6 @@
         tableIns1 = table.render({
             elem: '#showTable'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sysContent/listByPage' //数据接口
             , method: 'POST'
@@ -126,9 +159,10 @@
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'id', title: 'id', sort: true},
                     {field: 'title', title: '标题', sort: true},
-                    {field: 'type', title: '类型', sort: true, templet: function (item) {
-                        //获取类型对应的字典label
-                        return CoreUtil.selectDictLabel(datas, item.type);
+                    {
+                        field: 'type', title: '类型', sort: true, templet: function (item) {
+                            //获取类型对应的字典label
+                            return CoreUtil.selectDictLabel(datas, item.type);
                         }
                     },
                     {field: 'content', title: '内容', sort: true},
@@ -159,12 +193,16 @@
                     $(".table_div").hide();
                     $(".operation").show();
                     $(".title").html("新增");
-                    $(".operation input[name=id]").val("");
-                    $(".operation input[name=title]").val("");
+                    form.val('info', {
+                        "id":"",
+                        "title": "",
+                        "type": "0"
+                    })
                     layedit.setContent(editIndex, "");
                     //渲染select 默认选中第一个
-                    $("#type option:first").prop("selected", 'selected');
-                    form.render();
+                    //图片
+                    emptyImgSrc("one-img");
+                    $('#multi-div').empty();
                     break;
             }
             ;
@@ -182,13 +220,23 @@
                     $(".table_div").hide();
                     $(".operation").show();
                     $(".title").html("编辑");
-                    $(".operation input[name=id]").val(data.id);
-                    $(".operation input[name=title]").val(data.title);
+                    form.val('info', {
+                        "id": data.id,
+                        "title": data.title,
+                        "type": data.type
+                    })
                     layedit.setContent(editIndex, data.content);
-                    //渲染select 默认选中
-                    if (!CoreUtil.isEmpty(data.type)) {
-                        $("#type").find('option[value="'+data.type+'"]').prop('selected',true);
-                        form.render();
+                    //复选框回显
+                    form.val('info', CoreUtil.setCheckboxValues("keywords", data.keywords));
+                    //单图回显
+                    $('#one-img').attr('src', data.oneImg);
+                    //多图回显
+                    $('#multi-div').empty();
+                    if (!CoreUtil.isEmpty(data.multipleImg)) {
+                        var arr = data.multipleImg.split(",");
+                        for (var i = 0; i < arr.length; i++) {
+                            $('#multi-div').append(buildMutiImgHtml(i, arr[i]))
+                        }
                     }
                     break;
                 case 'preview':
@@ -234,6 +282,21 @@
 
         //监听保存
         form.on('submit(submit)', function (data) {
+            //获取复选框的值
+            data.field.keywords = CoreUtil.getCheckboxValues("keywords", data.field);
+            //单图
+            data.field.oneImg = $("#one-img").attr("src");
+            //多图
+            var urlAll = "";
+            $(".multi-img").each(function (index, element) {
+                if (index === 0) {
+                    urlAll = $(this).attr("src");
+                } else {
+                    urlAll = urlAll + "," + $(this).attr("src");
+                }
+            });
+            data.field.multipleImg = urlAll;
+            //图文
             data.field.content = layedit.getContent(editIndex);
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sysContent/add", data.field, function (res) {
@@ -251,7 +314,49 @@
 
             return false;
         });
+
+
+        //多图上传
+        upload.render({
+            elem: '#multiImgButton'
+            , url: ctx + 'sysFiles/upload' //此处配置你自己的上传接口即可
+            , multiple: true
+            , acceptMime: 'image/*'
+            , done: function (res) {
+                $('#multi-div').append(buildMutiImgHtml(res.data.id, res.data.src))
+            }
+        });
+
+        //单图上传
+        upload.render({
+            elem: '#oneImgButton'
+            , url: ctx + 'sysFiles/upload' //此处配置你自己的上传接口即可
+            , multiple: false
+            , acceptMime: 'image/*'
+            , done: function (res) {
+                $('#one-img').attr('src', res.data.src); //图片链接（base64）
+            }
+        });
     });
+
+
+    //构建多图片上传html
+    function buildMutiImgHtml(id, src) {
+        return '<div id="' + id + '" style="float:left">' +
+            '<img onclick="CoreUtil.showImg(this.src)" src="' + src + '" class="layui-upload-img multi-img">' +
+            '<br><center><button class="layui-btn disabled layui-btn-danger layui-btn-xs" ' +
+            'onclick="removeImg(\'' + id + '\')">删除</button></center></div>'
+    }
+
+    //多图片上传， 删除图片
+    function removeImg(id) {
+        $("#" + id).remove();
+    }
+
+    //单图片，清空
+    function emptyImgSrc(id) {
+        $('#' + id).removeAttr("src"); //图片链接（base64）
+    }
 
 
     //执行查询

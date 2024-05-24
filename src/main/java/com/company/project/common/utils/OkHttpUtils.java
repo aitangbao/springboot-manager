@@ -36,6 +36,8 @@ public class OkHttpUtils {
                         .writeTimeout(20, TimeUnit.SECONDS)
                         .readTimeout(20, TimeUnit.SECONDS)
                         .retryOnConnectionFailure(true)
+                        .sslSocketFactory(new SSLSocketClient().getSSLSocketFactory())//配置
+                        .hostnameVerifier(new SSLSocketClient().getHostnameVerifier())//配置    //忽略验证证书
                         .build();
                 addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
             }

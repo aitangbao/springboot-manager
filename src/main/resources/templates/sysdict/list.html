@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
 </head>
 <body>
 
@@ -77,7 +77,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md6 layui-col-lg6">
             <div class="table_div">
-                <div id="searchParam" shiro:hasPermission="sysDict:list">
+                <div id="searchParam" sa:hasPermission="sysDict:list">
                     <div class="layui-form-item">
                         <div class="layui-input-inline">
                             <input type="text" id="name" class="layui-input" autocomplete="off" placeholder="请输入字典名称或描述 ">
@@ -102,24 +102,24 @@
 </div>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add" shiro:hasPermission="sysDict:add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysDict:delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add" sa:hasPermission="sysDict:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" sa:hasPermission="sysDict:delete">删除</button>
     </div>
 </script>
 <script type="text/html" id="tool">
-    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysDict:update">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysDict:delete">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sysDict:update">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sysDict:delete">删除</a>
 </script>
 
 <script type="text/html" id="toolbarDetail">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add" shiro:hasPermission="sysDict:add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sysDict:delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add" sa:hasPermission="sysDict:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" sa:hasPermission="sysDict:delete">删除</button>
     </div>
 </script>
 <script type="text/html" id="toolDetail">
-    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sysDict:update">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sysDict:delete">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sysDict:update">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sysDict:delete">删除</a>
 </script>
 
 </body>
@@ -127,13 +127,9 @@
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    //获取token
-    var token = CoreUtil.getData("access_token");
-    //地址栏转义token中的#号
-    var tokenQuery = token.replace("#", "%23");
     var tableIns1;
     var tableIns2;
     var selectDictId = null;
@@ -150,7 +146,6 @@
         tableIns1 = table.render({
             elem: '#showTable'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sysDict/listByPage' //数据接口
             , method: 'POST'
@@ -177,7 +172,6 @@
         tableIns2 = table.render({
             elem: '#showTableDetail'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sysDictDetail/listByPage' //数据接口
             , method: 'POST'

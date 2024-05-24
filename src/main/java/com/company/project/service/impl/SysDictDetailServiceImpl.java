@@ -44,7 +44,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
         wrapper.orderByAsc(SysDictDetailEntity::getSort);
         IPage<SysDictDetailEntity> result = sysDictDetailMapper.selectPage(page, wrapper);
         if (!CollectionUtils.isEmpty(result.getRecords())) {
-            result.getRecords().parallelStream().forEach(entity -> entity.setDictName(sysDictEntity.getName()));
+            result.getRecords().stream().forEach(entity -> entity.setDictName(sysDictEntity.getName()));
         }
         return result;
     }

@@ -11,6 +11,10 @@ import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
 
+/**
+ * 启动类
+ * @author wenbin
+ */
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
 @MapperScan("com.company.project.mapper")
 @Slf4j
@@ -23,14 +27,15 @@ public class CompanyProjectApplication {
         Environment env = application.getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
-                        "Login: \thttp://{}:{}/login\n\t" +
-                        "Doc: \thttp://{}:{}/doc.html\n" +
+                        "Login: \thttp://{}:{}/manager/login\n\t" +
+                        "Doc: \thttp://{}:{}/manager/doc.html\n" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
+
     }
 
 }

@@ -105,7 +105,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJobEntity> i
 
     @Override
     public void updateBatch(List<String> ids, int status) {
-        ids.parallelStream().forEach(id -> {
+        ids.stream().forEach(id -> {
             SysJobEntity sysJobEntity = new SysJobEntity();
             sysJobEntity.setId(id);
             sysJobEntity.setStatus(status);

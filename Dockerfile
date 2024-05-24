@@ -1,5 +1,5 @@
 # 基础镜像
-FROM openjdk:8-jre
+FROM registry.cn-hangzhou.aliyuncs.com/wb_public/openjdk:8-jre
 # author
 MAINTAINER manager
 # 复制jar文件到路径

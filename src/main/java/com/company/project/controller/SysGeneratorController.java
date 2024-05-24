@@ -1,7 +1,7 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysGenerator;
 import com.company.project.service.ISysGeneratorService;
@@ -9,7 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,7 +35,7 @@ public class SysGeneratorController {
      */
     @ApiOperation(value = "生成")
     @GetMapping("/gen")
-    @RequiresPermissions("sysGenerator:add")
+    @SaCheckPermission("sysGenerator:add")
     public void code(String tables, HttpServletResponse response) throws IOException {
         byte[] data = sysGeneratorService.generatorCode(tables.split(","));
 
@@ -50,10 +49,9 @@ public class SysGeneratorController {
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
-    @RequiresPermissions("sysGenerator:list")
+    @SaCheckPermission("sysGenerator:list")
     public DataResult findListByPage(@RequestBody SysGenerator vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
-        IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(page, vo);
+        IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(vo.getQueryPage(), vo);
         return DataResult.success(iPage);
     }
 }

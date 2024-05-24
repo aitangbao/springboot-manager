@@ -36,7 +36,7 @@ public interface PermissionService extends IService<SysPermission> {
      *
      * @return List
      */
-    List<SysPermission> selectAll();
+    List<SysPermission> selectAll(Integer status);
 
     /**
      * 根据userId获取权限标志
@@ -44,7 +44,7 @@ public interface PermissionService extends IService<SysPermission> {
      * @param userId userId
      * @return Set
      */
-    Set<String> getPermissionsByUserId(String userId);
+    List<String> getPermissionsByUserId(String userId);
 
     /**
      * 根据userId获取权限树
@@ -59,7 +59,7 @@ public interface PermissionService extends IService<SysPermission> {
      *
      * @return List
      */
-    List<PermissionRespNode> selectAllByTree();
+    List<PermissionRespNode> selectAllByTree(Integer status);
 
     /**
      * 根据目录树

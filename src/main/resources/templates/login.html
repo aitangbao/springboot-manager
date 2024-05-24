@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" name="captcha"></label>
-                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
+                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="">
                     <div class="captcha-img">
                         <img  onClick="this.src=this.src+'?'+Math.random();" id="img" class="admin-captcha" width="90" height="40" th:src="@{/sys/getVerify}">
                     </div>
@@ -64,9 +64,9 @@
         </div>
     </div>
 </div>
-<script th:src="@{/layui/layui.js}"></script>
-<script th:src="@{/js/jquery.js}"></script>
-<script th:src="@{/js/jq-module/jquery.particleground.min.js}"></script>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:src="@{/static/js/jquery.js}"></script>
+<script th:src="@{/static/js/jq-module/jquery.particleground.min.js}"></script>
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
@@ -108,10 +108,6 @@
                 contentType: "application/json",
                 success: function (res) {
                     if (res.code == 0) {
-                        layui.data('LocalData', {
-                            key: "access_token",
-                            value: res.data.accessToken
-                        })
                         layer.msg('登录成功', {time: 1000}, function () {
                             window.location = ctx + 'index/home';
                         });

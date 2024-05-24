@@ -9,7 +9,6 @@ import com.company.project.entity.SysPermission;
 import com.company.project.entity.SysRolePermission;
 import com.company.project.entity.SysUserRole;
 import com.company.project.mapper.SysPermissionMapper;
-import com.company.project.service.HttpSessionService;
 import com.company.project.service.PermissionService;
 import com.company.project.service.RolePermissionService;
 import com.company.project.service.UserRoleService;
@@ -43,8 +42,6 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     private RolePermissionService rolePermissionService;
     @Resource
     private SysPermissionMapper sysPermissionMapper;
-    @Resource
-    private HttpSessionService httpSessionService;
 
     /**
      * 根据用户查询拥有的权限
@@ -91,25 +88,20 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
         //删除和角色关联
         rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getPermissionId, permissionId));
 
-        if (!CollectionUtils.isEmpty(userIds)) {
-            //刷新权限
-            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
-        }
 
     }
 
     @Override
     public void updatePermission(SysPermission vo) {
         sysPermissionMapper.updateById(vo);
-        httpSessionService.refreshPermission(vo.getId());
     }
 
     /**
      * 获取所有菜单权限
      */
     @Override
-    public List<SysPermission> selectAll() {
-        List<SysPermission> result = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().orderByAsc(SysPermission::getOrderNum));
+    public List<SysPermission> selectAll(Integer status) {
+        List<SysPermission> result = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery().eq(status != null, SysPermission::getStatus, status).orderByAsc(SysPermission::getOrderNum));
         if (!CollectionUtils.isEmpty(result)) {
             for (SysPermission sysPermission : result) {
                 SysPermission parent = sysPermissionMapper.selectById(sysPermission.getPid());
@@ -125,7 +117,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      * 获取权限标识
      */
     @Override
-    public Set<String> getPermissionsByUserId(String userId) {
+    public List<String> getPermissionsByUserId(String userId) {
 
         List<SysPermission> list = getPermission(userId);
         Set<String> permissions = new HashSet<>();
@@ -138,7 +130,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
             }
 
         }
-        return permissions;
+        return new ArrayList<String>(permissions);
     }
 
     /**
@@ -216,9 +208,9 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
      * 获取所有菜单权限按钮
      */
     @Override
-    public List<PermissionRespNode> selectAllByTree() {
+    public List<PermissionRespNode> selectAllByTree(Integer status) {
 
-        List<SysPermission> list = selectAll();
+        List<SysPermission> list = selectAll(status);
         return getTree(list, false);
     }
 
@@ -233,7 +225,7 @@ public class PermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysP
     @Override
     public List<PermissionRespNode> selectAllMenuByTree(String permissionId) {
 
-        List<SysPermission> list = selectAll();
+        List<SysPermission> list = selectAll(1);
         if (!CollectionUtils.isEmpty(list) && !StringUtils.isEmpty(permissionId)) {
             for (SysPermission sysPermission : list) {
                 if (sysPermission.getId().equals(permissionId)) {

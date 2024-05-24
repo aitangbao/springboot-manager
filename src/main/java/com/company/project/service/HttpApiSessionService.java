@@ -26,7 +26,7 @@ public class HttpApiSessionService {
 
     public static final String SUBJECT = "onehee";
 
-    public static final long EXPIRE = 1000 * 60 * 60 * 24 * 30;  //过期时间，毫秒，一个月
+    public static final long EXPIRE = 1000 * 60 * 60 * 24 * 30L;  //过期时间，毫秒，一个月
 
     //秘钥
     public static final String APPSECRET = "onehee666";

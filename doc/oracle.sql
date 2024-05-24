@@ -172,6 +172,9 @@ COMMENT ON TABLE sys_job_log IS '定时任务日志';
  CREATE TABLE sys_content  (
   id varchar2(50),
   title varchar2(255),
+  one_img varchar2(255),
+  multiple_img varchar2(500),
+  keywords varchar2(255),
   type NUMBER(10, 0),
   content VARCHAR2(4000) ,
   create_time  date ,
@@ -323,11 +326,14 @@ INSERT INTO sys_role_permission(id, role_id, permission_id) VALUES ('9', '1', '9
 INSERT INTO sys_role_permission(id, role_id, permission_id) VALUES ('1311116066716430339', '1', '1311115974068449281');
 INSERT INTO sys_user(id, username, salt, password, phone, dept_id, real_name, nick_name, email, status, sex, deleted, create_id, update_id, create_where) VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75ab87616b62d0b9432569d0', '13888888888', '1', '爱糖宝', '爱糖宝', 'xxxxxx@163.com', 1, 2, 1, '1', '1', 3);
 INSERT INTO sys_user_role(id, user_id, role_id) VALUES ('1', '1', '1');
-INSERT INTO sys_dict(id, name, remark) VALUES ('1255790029680242690', 'sex', '性别');
-INSERT INTO sys_dict(id, name, remark) VALUES ('1282504369620430849', 'content_type', '文章类型略略略');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id) VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849');
+INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
+INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242691', 'content_keyword', '关键字', '2020-04-30 17:24:09');
+INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1282504369620430849', 'content_type', '文章类型略略略', '2020-07-13 10:37:24');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849', '2020-07-13 10:37:49');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842370', 'java', '1', 1, '1255790029680242691', '2020-07-14 09:15:01');
+INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842371', 'mysql', '2', 2, '1255790029680242691', '2020-07-14 09:15:01');
 INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1');

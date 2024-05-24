@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.company.project.entity.BaseEntity;
-
+import com.baomidou.mybatisplus.annotation.FieldFill;
 
 #if(${hasBigDecimal})
 #end
@@ -34,7 +34,11 @@ public class ${className}Entity extends BaseEntity implements Serializable {
 	private $column.attrType $column.attrname;
 #end
 #if($column.columnName != $pk.columnName)
+	#if($column.attrname == "deleted")
+	@TableField(value = "$column.columnName", fill = FieldFill.INSERT)
+	#else
 	@TableField("$column.columnName")
+	#end
 	private $column.attrType $column.attrname;
 #end
 

@@ -2,7 +2,7 @@ package ${package}.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -32,6 +32,18 @@ public class ${className}Controller {
     @Autowired
     private ${className}Service ${classname}Service;
 
+    @ApiOperation(value = "查询分页数据")
+    @PostMapping("${classname}/listByPage")
+    @SaCheckPermission("${classname}:list")
+    @ResponseBody
+    public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
+        LambdaQueryWrapper<${className}Entity> queryWrapper = Wrappers.lambdaQuery();
+        //查询条件示例
+        queryWrapper.eq(tbGoods.getId() != null, ${className}Entity::getId, ${classname}.getId());
+        queryWrapper.orderByDesc(${className}Entity::getId);
+        IPage<${className}Entity> iPage = ${classname}Service.page(${classname}.getQueryPage(), queryWrapper);
+        return DataResult.success(iPage);
+    }
 
     /**
     * 跳转到页面
@@ -39,46 +51,35 @@ public class ${className}Controller {
     @GetMapping("/index/${classname}")
     public String ${classname}() {
         return "${classNameLower}/list";
-        }
+    }
 
     @ApiOperation(value = "新增")
     @PostMapping("${classname}/add")
-    @RequiresPermissions("${classname}:add")
+    @SaCheckPermission("${classname}:add")
     @ResponseBody
     public DataResult add(@RequestBody ${className}Entity ${classname}){
-        ${classname}Service.save(${classname});
+            ${classname}Service.save(${classname});
         return DataResult.success();
     }
 
     @ApiOperation(value = "删除")
     @DeleteMapping("${classname}/delete")
-    @RequiresPermissions("${classname}:delete")
+    @SaCheckPermission("${classname}:delete")
     @ResponseBody
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids){
-        ${classname}Service.removeByIds(ids);
+            ${classname}Service.removeByIds(ids);
         return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
     @PutMapping("${classname}/update")
-    @RequiresPermissions("${classname}:update")
+    @SaCheckPermission("${classname}:update")
     @ResponseBody
     public DataResult update(@RequestBody ${className}Entity ${classname}){
-        ${classname}Service.updateById(${classname});
+            ${classname}Service.updateById(${classname});
         return DataResult.success();
     }
 
-    @ApiOperation(value = "查询分页数据")
-    @PostMapping("${classname}/listByPage")
-    @RequiresPermissions("${classname}:list")
-    @ResponseBody
-    public DataResult findListByPage(@RequestBody ${className}Entity ${classname}){
-        Page page = new Page(${classname}.getPage(), ${classname}.getLimit());
-        LambdaQueryWrapper<${className}Entity> queryWrapper = Wrappers.lambdaQuery();
-        //查询条件示例
-        //queryWrapper.eq(${className}Entity::getId, ${classname}.getId());
-        IPage<${className}Entity> iPage = ${classname}Service.page(page, queryWrapper);
-        return DataResult.success(iPage);
-    }
+
 
 }

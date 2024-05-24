@@ -2,7 +2,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /
+    context-path: /manager
 
 spring:
   profiles:
@@ -21,18 +21,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-  # redis token信息
-  redis:
-    key:
-      prefix:
-        userToken: "user:token:"
-        passwordError: "user:password:error:"
-        permissionRefresh: "user:token:permissionRefresh:"
-      expire:
-        userToken: 604800 # 7天 7*24*3600
-        passwordError: 3600 # 一个小时
-        permissionRefresh: 604800 # 7天 7*24*3600
-    allowMultipleLogin: true # 允许多处登陆
 
 mybatis-plus:
   configuration:
@@ -44,6 +32,24 @@ mybatis-plus:
       logic-not-delete-value: 1
       logic-delete-field: deleted
 
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: satoken
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+
 #使用代码生成模块时 指定要生成的表存在于哪种数据库，可选值有【mysql、oracle、sqlServer】
 project:
   database: mysql
+

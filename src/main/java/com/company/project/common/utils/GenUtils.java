@@ -63,6 +63,7 @@ public class GenUtils {
 
         //列信息
         List<ColumnEntity> columsList = new ArrayList<>();
+        List<ColumnEntity> htmlColumsList = new ArrayList<>();
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             columnEntity.setColumnName(column.get("columnName"));
@@ -87,8 +88,12 @@ public class GenUtils {
             }
 
             columsList.add(columnEntity);
+            if (!Arrays.asList("deleted", "create_id", "create_by", "update_id", "update_by", "create_time", "create_date", "update_time", "update_date").contains(column.get("columnName"))) {
+                htmlColumsList.add(columnEntity);
+            }
         }
         tableEntity.setColumns(columsList);
+        tableEntity.setHtmlColumns(htmlColumsList);
 
         //没主键，则第一个字段为主键
         if (tableEntity.getPk() == null) {
@@ -110,6 +115,7 @@ public class GenUtils {
         map.put("classname", tableEntity.getClassname());
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
+        map.put("htmlColumns", tableEntity.getHtmlColumns());
         map.put("classNameLower", tableEntity.getClassNameLower());
         map.put("hasBigDecimal", hasBigDecimal);
         map.put("mainPath", mainPath);
@@ -158,7 +164,7 @@ public class GenUtils {
         StringBuilder sbuilder = new StringBuilder(fields[0]);
         for (int i = 1; i < fields.length; i++) {
             char[] cs = fields[i].toCharArray();
-             if(cs[0]>='a') {
+            if (cs[0] >= 'a') {
                 cs[0] -= 32;
             }
             sbuilder.append(String.valueOf(cs));

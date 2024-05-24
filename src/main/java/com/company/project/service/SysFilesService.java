@@ -5,6 +5,7 @@ import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysFilesEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface SysFilesService extends IService<SysFilesEntity> {
 
-    DataResult saveFile(MultipartFile file);
+    DataResult saveFile(MultipartFile file, HttpServletRequest request);
 
     void removeByIdsAndFiles(List<String> ids);
 }

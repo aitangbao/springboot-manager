@@ -2,12 +2,9 @@ package com.company.project.common.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.company.project.common.utils.Constant;
-import com.company.project.service.HttpSessionService;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -22,10 +19,6 @@ import java.util.HashSet;
  */
 @Component
 public class MetaObjectHandlerConfig implements MetaObjectHandler {
-
-    @Lazy
-    @Resource
-    HttpSessionService httpSessionService;
 
     @Override
     public void insertFill(MetaObject metaObject) {
@@ -46,11 +39,11 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         }
 //        if (setterNameSet.contains("createId")) {
 //            //创建时间默认当前时间
-//            setFieldValByName("createId", httpSessionService.getCurrentUserId(), metaObject);
+//            setFieldValByName("createId", StpUtil.getLoginIdAsString(), metaObject);
 //        }
 //        if (setterNameSet.contains("updateId")) {
 //            //创建时间默认当前时间
-//            setFieldValByName("updateId", httpSessionService.getCurrentUserId(), metaObject);
+//            setFieldValByName("updateId", StpUtil.getLoginIdAsString(), metaObject);
 //        }
         if (setterNameSet.contains("updateTime")) {
             //创建时间默认当前时间
@@ -77,9 +70,9 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
             //创建时间默认当前时间
             setFieldValByName("updateDate", currentDate, metaObject);
         }
-        if (setterNameSet.contains("updateId")) {
-            //创建时间默认当前时间
-            setFieldValByName("updateId", httpSessionService.getCurrentUserId(), metaObject);
-        }
+//        if (setterNameSet.contains("updateId")) {
+//            //创建时间默认当前时间
+//            setFieldValByName("updateId", StpUtil.getLoginIdAsString(), metaObject);
+//        }
     }
 }

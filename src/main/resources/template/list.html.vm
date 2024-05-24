@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
+  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
     <style id="layuimini-bg-color">
     </style>
 <body>
 <div class="panel panel-default operation" hidden>
   <div class="panel-heading title"></div>
 <div class="layui-card-body">
-<form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
-#foreach($column in $columns)
-  #if($column.columnName == $pk.columnName)
-    <input name="${column.attrname}" hidden/>
-  #else
+<form class="layui-form " action="" lay-filter="info">
+#foreach($column in $htmlColumns)
+#if($column.columnName == $pk.columnName)
+  <input name="${column.attrname}" hidden/>
+#else
     <div class="layui-form-item">
       <label class="layui-form-label">${column.comments}</label>
       <div class="layui-input-block">
-        <input type="${column.attrname}" name="${column.attrname}" placeholder="请输入${column.comments}" autocomplete="off" class="layui-input">
+        <input type="${column.attrname}" name="${column.attrname}" placeholder="请输入${column.comments}" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
   #end
@@ -36,31 +36,33 @@
 </div>
 
 <div class="table_div">
-  <div id="searchParam"  shiro:hasPermission="${classname}:list">
+  <div id="searchParam"  sa:hasPermission="${classname}:list">
     <form class="layui-form ">
       <div class="layui-form-item">
         <div class="layui-input-inline">
           <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
         </div>
 
-        <div class="layui-input-inline ">
-          <button class="layui-btn" onclick="search()"  id="search">查询</button>
-          <button class="layui-btn"   id="export">导出全部</button>
-        </div>
+      </div>
+
+      <div class="layui-input-inline ">
+        <button class="layui-btn" onclick="search()"  id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
       </div>
     </form>
   </div>
   <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
 </div>
 <script type="text/html" id="toolbar">
-  <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="${classname}:add">添加</button>
-    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="${classname}:delete">删除</button>
+  <div class="layui-btn-container oper">
+    <button class="layui-btn layui-btn-sm" lay-event="add"  sa:hasPermission="${classname}:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" sa:hasPermission="${classname}:delete">删除</button>
   </div>
 </script>
 <script type="text/html" id="tool">
-  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="${classname}:update">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="${classname}:delete">删除</a>
+  <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="${classname}:update">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="${classname}:delete">删除</a>
 </script>
 
 </body>
@@ -68,13 +70,9 @@
 <script th:inline="javascript" type="text/javascript">
   var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-  //获取token
-  var token = CoreUtil.getData("access_token");
-  //地址栏转义token中的#号
-  var tokenQuery = token.replace("#", "%23");
   var tableIns1;
   var table = layui.table;
   var form = layui.form;
@@ -88,7 +86,6 @@
     tableIns1 = table.render({
       elem: '#showTable'
       , contentType: 'application/json'
-      , headers: {"authorization": token}
       , page: true //开启分页
       , url: ctx + '${classname}/listByPage' //数据接口
       , method: 'POST'
@@ -103,7 +100,7 @@
       , cols: [
         [
           {type: 'checkbox', fixed: 'left'},
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
           {field: '${column.attrname}', title: '${column.comments}', sort: true},
 #end
           {width: 120, toolbar: "#tool", title: '操作'}
@@ -130,13 +127,14 @@
           }
           break;
         case 'add':
+          toUnDisabled();
           $(".table_div").hide();
           $(".operation").show();
           $(".title").html("新增");
           setTimeout(function () {
             form.val('info', {
               "test": "test"
-#foreach($column in $columns)
+#foreach($column in $htmlColumns)
               , "${column.attrname}": ""
 #end
             });
@@ -153,18 +151,14 @@
           ids.push(data.id);
           tipDialog(ids);
           break;
+        case 'look':
+          backshow(data);
+          toDisabled();
+          break;
         case 'edit':
-          $(".table_div").hide();
-          $(".operation").show();
+          backshow(data);
           $(".title").html("编辑");
-          setTimeout(function () {
-            form.val('info', {
-              "test": "test"
-#foreach($column in $columns)
-                , "${column.attrname}": data.${column.attrname}
-#end
-            });
-          }, 200);
+          toUnDisabled();
           break;
       }
     });
@@ -238,4 +232,35 @@
       }
     });
   };
+
+  //回显
+  function backshow(data) {
+    $(".table_div").hide();
+    $(".operation").show();
+    $(".title").html("查看");
+    setTimeout(function () {
+      form.val('info', {
+        "test": "test"
+#foreach($column in $htmlColumns)
+        , "${column.attrname}": data.${column.attrname}
+#end
+      });
+    }, 200);
+  }
+
+  //禁用输入
+  function toDisabled() {
+    $(".oper").hide();
+    $(".disabled").each(function (index, elem) {
+      $(elem).attr("disabled", "")
+    })
+  }
+
+  //放开输入
+  function toUnDisabled() {
+    $(".oper").show();
+    $(".disabled").each(function (index, elem) {
+      $(elem).removeAttr("disabled", "")
+    })
+  }
 </script>

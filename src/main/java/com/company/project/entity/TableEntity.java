@@ -18,6 +18,7 @@ public class TableEntity {
     private ColumnEntity pk;
     //表的列名(不包含主键)
     private List<ColumnEntity> columns;
+    private List<ColumnEntity> htmlColumns;
 
     //类名(第一个字母大写)，如：sys_user => SysUser
     private String className;
@@ -25,6 +26,14 @@ public class TableEntity {
     private String classname;
     //类名(都小写)，如：sys_user => sysuser
     private String classNameLower;
+
+    public List<ColumnEntity> getHtmlColumns() {
+        return htmlColumns;
+    }
+
+    public void setHtmlColumns(List<ColumnEntity> htmlColumns) {
+        this.htmlColumns = htmlColumns;
+    }
 
     public String getTableName() {
         return tableName;

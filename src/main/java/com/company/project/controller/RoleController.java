@@ -1,17 +1,19 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysRole;
 import com.company.project.entity.SysRoleDeptEntity;
+import com.company.project.service.RolePermissionService;
 import com.company.project.service.RoleService;
 import com.company.project.service.SysRoleDeptService;
+import com.company.project.vo.req.RolePermissionOperationReqVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -36,11 +38,13 @@ public class RoleController {
     private RoleService roleService;
     @Resource
     private SysRoleDeptService sysRoleDeptService;
-
+    @Resource
+    private RolePermissionService rolePermissionService;
+    
     @PostMapping("/role")
     @ApiOperation(value = "新增角色接口")
     @LogAnnotation(title = "角色管理", action = "新增角色")
-    @RequiresPermissions("sys:role:add")
+    @SaCheckPermission("sys:role:add")
     public DataResult addRole(@RequestBody @Valid SysRole vo) {
         roleService.addRole(vo);
         return DataResult.success();
@@ -49,7 +53,7 @@ public class RoleController {
     @DeleteMapping("/role/{id}")
     @ApiOperation(value = "删除角色接口")
     @LogAnnotation(title = "角色管理", action = "删除角色")
-    @RequiresPermissions("sys:role:deleted")
+    @SaCheckPermission("sys:role:deleted")
     public DataResult deleted(@PathVariable("id") String id) {
         roleService.deletedRole(id);
         return DataResult.success();
@@ -58,7 +62,7 @@ public class RoleController {
     @PutMapping("/role")
     @ApiOperation(value = "更新角色信息接口")
     @LogAnnotation(title = "角色管理", action = "更新角色信息")
-    @RequiresPermissions("sys:role:update")
+    @SaCheckPermission("sys:role:update")
     public DataResult updateDept(@RequestBody SysRole vo) {
         if (StringUtils.isEmpty(vo.getId())) {
             return DataResult.fail("id不能为空");
@@ -70,7 +74,7 @@ public class RoleController {
     @PostMapping("/role/bindDept")
     @ApiOperation(value = "绑定角色部门接口")
     @LogAnnotation(title = "角色管理", action = "绑定角色部门信息")
-    @RequiresPermissions("sys:role:bindDept")
+    @SaCheckPermission("sys:role:bindDept")
     public DataResult bindDept(@RequestBody SysRole vo) {
         if (StringUtils.isEmpty(vo.getId())) {
             return DataResult.fail("id不能为空");
@@ -102,7 +106,7 @@ public class RoleController {
     @GetMapping("/role/{id}")
     @ApiOperation(value = "查询角色详情接口")
     @LogAnnotation(title = "角色管理", action = "查询角色详情")
-    @RequiresPermissions("sys:role:detail")
+    @SaCheckPermission("sys:role:detail")
     public DataResult detailInfo(@PathVariable("id") String id) {
         return DataResult.success(roleService.detailInfo(id));
     }
@@ -110,10 +114,9 @@ public class RoleController {
     @PostMapping("/roles")
     @ApiOperation(value = "分页获取角色信息接口")
     @LogAnnotation(title = "角色管理", action = "分页获取角色信息")
-    @RequiresPermissions("sys:role:list")
+    @SaCheckPermission("sys:role:list")
     @SuppressWarnings("unchecked")
     public DataResult pageInfo(@RequestBody SysRole vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getName())) {
             queryWrapper.like(SysRole::getName, vo.getName());
@@ -128,7 +131,15 @@ public class RoleController {
             queryWrapper.eq(SysRole::getStatus, vo.getStatus());
         }
         queryWrapper.orderByDesc(SysRole::getCreateTime);
-        return DataResult.success(roleService.page(page, queryWrapper));
+        return DataResult.success(roleService.page(vo.getQueryPage(), queryWrapper));
     }
 
+    @PostMapping("/role/permission")
+    @ApiOperation(value = "修改或者新增角色菜单权限接口")
+    @LogAnnotation(title = "角色和菜单关联接口", action = "修改或者新增角色菜单权限")
+    @SaCheckPermission(value = {"sys:role:update", "sys:role:add"}, mode  = SaMode.OR)
+    public DataResult operationRolePermission(@RequestBody @Valid RolePermissionOperationReqVO vo) {
+        rolePermissionService.addRolePermission(vo);
+        return DataResult.success();
+    }
 }

@@ -44,8 +44,6 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     @Resource
     private PermissionService permissionService;
     @Resource
-    private HttpSessionService httpSessionService;
-    @Resource
     private DeptService deptService;
     @Resource
     private SysRoleDeptService sysRoleDeptService;
@@ -53,7 +51,6 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addRole(SysRole vo) {
-
         vo.setStatus(1);
         sysRoleMapper.insert(vo);
         if (!CollectionUtils.isEmpty(vo.getPermissions())) {
@@ -80,8 +77,6 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
             reqVO.setRoleId(sysRole.getId());
             reqVO.setPermissionIds(vo.getPermissions());
             rolePermissionService.addRolePermission(reqVO);
-            // 刷新权限
-            httpSessionService.refreshRolePermission(sysRole.getId());
         }
     }
 
@@ -92,7 +87,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
             log.error("传入 的 id:{}不合法", id);
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        List<PermissionRespNode> permissionRespNodes = permissionService.selectAllByTree();
+        List<PermissionRespNode> permissionRespNodes = permissionService.selectAllByTree(1);
         LambdaQueryWrapper<SysRolePermission> queryWrapper = Wrappers.<SysRolePermission>lambdaQuery().select(SysRolePermission::getPermissionId).eq(SysRolePermission::getRoleId, sysRole.getId());
         Set<Object> checkList =
                 new HashSet<>(rolePermissionService.listObjs(queryWrapper));
@@ -131,18 +126,12 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deletedRole(String id) {
-        //获取关联userId
-        List<String> userIds = userRoleService.getUserIdsByRoleId(id);
         //删除角色
         sysRoleMapper.deleteById(id);
         //删除角色权限关联
         rolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery().eq(SysRolePermission::getRoleId, id));
         //删除角色用户关联
         userRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getRoleId, id));
-        if (!CollectionUtils.isEmpty(userIds)) {
-            // 刷新权限
-            userIds.parallelStream().forEach(httpSessionService::refreshUerId);
-        }
     }
 
     @Override

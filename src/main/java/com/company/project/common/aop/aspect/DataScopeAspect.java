@@ -1,5 +1,6 @@
 package com.company.project.common.aop.aspect;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.company.project.common.exception.BusinessException;
@@ -34,8 +35,6 @@ import java.util.stream.Collectors;
 public class DataScopeAspect {
 
     @Resource
-    HttpSessionService sessionService;
-    @Resource
     RoleService roleService;
     @Resource
     SysRoleDeptService sysRoleDeptService;
@@ -56,14 +55,14 @@ public class DataScopeAspect {
 
     protected void handleDataScope(final JoinPoint joinPoint) {
         //获取当前登陆人
-        String id = sessionService.getCurrentUserId();
+        String id = StpUtil.getLoginIdAsString();
         //获取当前登陆人角色, 如果无角色, 那么不限制
         List<SysRole> sysRoles = roleService.getRoleInfoByUserId(id);
         if (CollectionUtils.isEmpty(sysRoles) || sysRoles.size() == 0) {
             return;
         }
         //角色未配置数据权限范围, 那么不限制
-        List<SysRole> list = sysRoles.parallelStream().filter(one -> null != one.getDataScope()).collect(Collectors.toList());
+        List<SysRole> list = sysRoles.stream().filter(one -> null != one.getDataScope()).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(list) || list.size() == 0) {
             return;
         }
@@ -98,12 +97,12 @@ public class DataScopeAspect {
         //用户ids，定义列表中哪些人创建的可查看
         LinkedList<Object> userIdList = new LinkedList<>();
         //根据数据权限范围分组， 不同的数据范围不同的逻辑处理
-        Map<Integer, List<SysRole>> dataScopeMap = sysRoles.parallelStream().collect(Collectors.groupingBy(SysRole::getDataScope));
+        Map<Integer, List<SysRole>> dataScopeMap = sysRoles.stream().collect(Collectors.groupingBy(SysRole::getDataScope));
         dataScopeMap.forEach((k, v) -> {
             if (Constant.DATA_SCOPE_CUSTOM.equals(k)) {
                 //自定义
                 //根据角色id，获取所有自定义关联的部门id
-                QueryWrapper<SysRoleDeptEntity> queryWrapper = Wrappers.<SysRoleDeptEntity>query().select("dept_id").in("role_id", v.parallelStream().map(SysRole::getId).collect(Collectors.toList()));
+                QueryWrapper<SysRoleDeptEntity> queryWrapper = Wrappers.<SysRoleDeptEntity>query().select("dept_id").in("role_id", v.stream().map(SysRole::getId).collect(Collectors.toList()));
                 deptList.addAll(sysRoleDeptService.listObjs(queryWrapper));
             } else if (Constant.DATA_SCOPE_DEPT_AND_CHILD.equals(k)) {
                 //本部门及以下
@@ -130,6 +129,6 @@ public class DataScopeAspect {
         if (CollectionUtils.isEmpty(userIdList)) {
             throw new BusinessException("无数据");
         }
-        return userIdList.parallelStream().map(Object::toString).collect(Collectors.toList());
+        return userIdList.stream().map(Object::toString).collect(Collectors.toList());
     }
 }

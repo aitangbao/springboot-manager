@@ -1,12 +1,12 @@
 package com.company.project.common.aop.aspect;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.HttpContextUtils;
 import com.company.project.common.utils.IPUtils;
 import com.company.project.entity.SysLog;
 import com.company.project.mapper.SysLogMapper;
-import com.company.project.service.HttpSessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,10 +34,6 @@ public class SysLogAspect {
     @Lazy
     @Resource
     private SysLogMapper sysLogMapper;
-
-    @Lazy
-    @Resource
-    private HttpSessionService httpSessionService;
 
     /**
      * 此处的切点是注解的方式
@@ -106,9 +102,7 @@ public class SysLogAspect {
         sysLog.setIp(IPUtils.getIpAddr(request));
         log.info("Ip{}，接口地址{}，请求方式{}，入参：{}", sysLog.getIp(), request.getRequestURL(), request.getMethod(), sysLog.getParams());
         //用户名
-        String userId = httpSessionService.getCurrentUserId();
-        String username = httpSessionService.getCurrentUsername();
-        sysLog.setUsername(username);
+        String userId = StpUtil.getLoginIdAsString();
         sysLog.setUserId(userId);
         sysLog.setTime((int) time);
         log.info(sysLog.toString());

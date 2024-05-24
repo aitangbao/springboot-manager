@@ -1,10 +1,10 @@
 package com.company.project.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
@@ -14,7 +14,10 @@ import com.company.project.entity.SysRole;
 import com.company.project.entity.SysUser;
 import com.company.project.mapper.SysDeptMapper;
 import com.company.project.mapper.SysUserMapper;
-import com.company.project.service.*;
+import com.company.project.service.PermissionService;
+import com.company.project.service.RoleService;
+import com.company.project.service.UserRoleService;
+import com.company.project.service.UserService;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 import com.company.project.vo.resp.LoginRespVO;
 import com.company.project.vo.resp.UserOwnRoleRespVO;
@@ -48,11 +51,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     private UserRoleService userRoleService;
     @Resource
     private SysDeptMapper sysDeptMapper;
-    @Resource
-    private HttpSessionService httpSessionService;
 
-    @Value("${spring.redis.allowMultipleLogin}")
-    private Boolean allowMultipleLogin;
     @Value("${spring.profiles.active}")
     private String env;
 
@@ -83,20 +82,14 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         LoginRespVO respVO = new LoginRespVO();
         BeanUtils.copyProperties(sysUser, respVO);
 
-        //是否删除之前token， 此处控制是否支持多登陆端；
-        // true:允许多处登陆; false:只能单处登陆，顶掉之前登陆
-        if (!allowMultipleLogin) {
-            httpSessionService.abortUserById(sysUser.getId());
-        }
         if (StringUtils.isNotBlank(sysUser.getDeptId())) {
             SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());
             if (sysDept != null) {
                 sysUser.setDeptNo(sysDept.getDeptNo());
             }
         }
-        String token = httpSessionService.createTokenAndUser(sysUser, roleService.getRoleNames(sysUser.getId()), permissionService.getPermissionsByUserId(sysUser.getId()));
-        respVO.setAccessToken(token);
-
+        //saToken
+        StpUtil.login(sysUser.getId());
         return respVO;
     }
 
@@ -122,7 +115,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
                 || (!StringUtils.isEmpty(vo.getPassword())
                 && !sysUser.getPassword().equals(PasswordUtils.encode(vo.getPassword(), sysUser.getSalt())))
                 || !sysUser.getStatus().equals(vo.getStatus())) {
-            httpSessionService.abortUserById(vo.getId());
         }
 
         if (!StringUtils.isEmpty(vo.getPassword())) {
@@ -131,16 +123,13 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } else {
             vo.setPassword(null);
         }
-        vo.setUpdateId(httpSessionService.getCurrentUserId());
         sysUserMapper.updateById(vo);
 
     }
 
     @Override
     public void updateUserInfoMy(SysUser vo) {
-
-
-        SysUser user = sysUserMapper.selectById(httpSessionService.getCurrentUserId());
+        SysUser user = sysUserMapper.selectById(StpUtil.getLoginIdAsString());
         if (null == user) {
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
@@ -150,14 +139,13 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } else {
             vo.setPassword(null);
         }
-        vo.setUpdateId(httpSessionService.getCurrentUserId());
+        vo.setUpdateId(StpUtil.getLoginIdAsString());
         sysUserMapper.updateById(vo);
 
     }
 
     @Override
     public IPage<SysUser> pageInfo(SysUser vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getUsername())) {
             queryWrapper.like(SysUser::getUsername, vo.getUsername());
@@ -181,7 +169,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             queryWrapper.in(SysUser::getDeptId, list);
         }
         queryWrapper.orderByDesc(SysUser::getCreateTime);
-        IPage<SysUser> iPage = sysUserMapper.selectPage(page, queryWrapper);
+        IPage<SysUser> iPage = sysUserMapper.selectPage(vo.getQueryPage(), queryWrapper);
         if (!CollectionUtils.isEmpty(iPage.getRecords())) {
             for (SysUser sysUser : iPage.getRecords()) {
                 SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());
@@ -233,9 +221,6 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
         sysUser.setPassword(PasswordUtils.encode(vo.getNewPwd(), sysUser.getSalt()));
         sysUserMapper.updateById(sysUser);
-        //退出用户
-        httpSessionService.abortAllUserByToken();
-
     }
 
     @Override

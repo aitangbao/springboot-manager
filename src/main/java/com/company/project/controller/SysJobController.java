@@ -1,9 +1,9 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.job.utils.ScheduleJob;
@@ -13,7 +13,6 @@ import com.company.project.service.SysJobService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.util.StringUtils;
@@ -44,7 +43,7 @@ public class SysJobController {
     @ApiOperation(value = "新增")
     @LogAnnotation(title = "新增")
     @PostMapping("/add")
-    @RequiresPermissions("sysJob:add")
+    @SaCheckPermission("sysJob:add")
     public DataResult add(@RequestBody SysJobEntity sysJob) {
         if (isValidExpression(sysJob.getCronExpression())) {
             return DataResult.fail("cron表达式有误");
@@ -60,7 +59,7 @@ public class SysJobController {
 
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete")
-    @RequiresPermissions("sysJob:delete")
+    @SaCheckPermission("sysJob:delete")
     @LogAnnotation(title = "删除")
     public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysJobService.delete(ids);
@@ -69,7 +68,7 @@ public class SysJobController {
 
     @ApiOperation(value = "更新")
     @PutMapping("/update")
-    @RequiresPermissions("sysJob:update")
+    @SaCheckPermission("sysJob:update")
     @LogAnnotation(title = "更新")
     public DataResult update(@RequestBody SysJobEntity sysJob) {
         if (isValidExpression(sysJob.getCronExpression())) {
@@ -86,15 +85,14 @@ public class SysJobController {
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
-    @RequiresPermissions("sysJob:list")
+    @SaCheckPermission("sysJob:list")
     public DataResult findListByPage(@RequestBody SysJobEntity sysJob) {
-        Page page = new Page(sysJob.getPage(), sysJob.getLimit());
         LambdaQueryWrapper<SysJobEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysJob.getBeanName())) {
             queryWrapper.like(SysJobEntity::getBeanName, sysJob.getBeanName());
         }
-        IPage<SysJobEntity> iPage = sysJobService.page(page, queryWrapper);
+        IPage<SysJobEntity> iPage = sysJobService.page(sysJob.getQueryPage(), queryWrapper);
         return DataResult.success(iPage);
     }
 
@@ -105,7 +103,7 @@ public class SysJobController {
     @ApiOperation(value = "立即执行任务")
     @LogAnnotation(title = "立即执行任务")
     @PostMapping("/run")
-    @RequiresPermissions("sysJob:run")
+    @SaCheckPermission("sysJob:run")
     public DataResult run(@RequestBody List<String> ids) {
         sysJobService.run(ids);
 
@@ -118,7 +116,7 @@ public class SysJobController {
     @ApiOperation(value = "暂停定时任务")
     @LogAnnotation(title = "暂停定时任务")
     @PostMapping("/pause")
-    @RequiresPermissions("sysJob:pause")
+    @SaCheckPermission("sysJob:pause")
     public DataResult pause(@RequestBody List<String> ids) {
         sysJobService.pause(ids);
 
@@ -131,7 +129,7 @@ public class SysJobController {
     @ApiOperation(value = "恢复定时任务")
     @LogAnnotation(title = "恢复定时任务")
     @PostMapping("/resume")
-    @RequiresPermissions("sysJob:resume")
+    @SaCheckPermission("sysJob:resume")
     public DataResult resume(@RequestBody List<String> ids) {
         sysJobService.resume(ids);
         return DataResult.success();
@@ -158,7 +156,7 @@ public class SysJobController {
     @ApiOperation(value = "获取运行时间")
     @LogAnnotation(title = "获取运行时间")
     @PostMapping("/getRecentTriggerTime")
-    @RequiresPermissions("sysJob:add")
+    @SaCheckPermission("sysJob:add")
     public DataResult getRecentTriggerTime(String cron) {
         List<String> list = new ArrayList<>();
         try {

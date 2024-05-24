@@ -1,15 +1,14 @@
 package com.company.project.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.company.project.common.aop.annotation.LogAnnotation;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysLog;
 import com.company.project.service.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +32,8 @@ public class SysLogController {
     @PostMapping("/logs")
     @ApiOperation(value = "分页查询系统操作日志接口")
     @LogAnnotation(title = "系统操作日志管理", action = "分页查询系统操作日志")
-    @RequiresPermissions("sys:log:list")
+    @SaCheckPermission("sys:log:list")
     public DataResult pageInfo(@RequestBody SysLog vo) {
-        Page page = new Page(vo.getPage(), vo.getLimit());
         LambdaQueryWrapper<SysLog> queryWrapper = Wrappers.lambdaQuery();
         if (!StringUtils.isEmpty(vo.getUsername())) {
             queryWrapper.like(SysLog::getUsername, vo.getUsername());
@@ -50,13 +48,13 @@ public class SysLogController {
             queryWrapper.lt(SysLog::getCreateTime, vo.getEndTime());
         }
         queryWrapper.orderByDesc(SysLog::getCreateTime);
-        return DataResult.success(logService.page(page, queryWrapper));
+        return DataResult.success(logService.page(vo.getQueryPage(), queryWrapper));
     }
 
     @DeleteMapping("/logs")
     @ApiOperation(value = "删除日志接口")
     @LogAnnotation(title = "系统操作日志管理", action = "删除系统操作日志")
-    @RequiresPermissions("sys:log:deleted")
+    @SaCheckPermission("sys:log:deleted")
     public DataResult deleted(@RequestBody List<String> logIds) {
         logService.removeByIds(logIds);
         return DataResult.success();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org"
 >
 
@@ -7,8 +7,8 @@
 
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
 
 </head>
 <body>
@@ -67,19 +67,19 @@
 <div id="deptTree" style="display: none"></div>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="addDept" shiro:hasPermission="sys:dept:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addDept" sa:hasPermission="sys:dept:add">添加</button>
     </div>
 
 </script>
 <script type="text/html" id="tool">
-    <a shiro:hasPermission="sys:dept:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a shiro:hasPermission="sys:dept:deleted" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a sa:hasPermission="sys:dept:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a sa:hasPermission="sys:dept:deleted" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script th:inline="none">
     var layer = layui.layer;
     var $ = jQuery = layui.jquery;
@@ -88,7 +88,7 @@
     var treetable;
     var selectNode = {};
     layui.config({
-        base: ctx + 'layui-ext/'
+        base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable'
     }).use(['treetable', 'table', 'tree'], function () {
@@ -160,21 +160,21 @@
                     $(".dept-table").hide();
                     $(".operation_dept").show();
                     $(".title").html("编辑部门");
-                    $(".operation_dept input[name=id]").val(data.id);
-                    $(".operation_dept input[name=pid]").val(data.pid);
-                    $(".operation_dept input[name=name]").val(data.name);
-                    $(".operation_dept input[name=pidName]").val(data.pidName);
-                    $(".operation_dept input[name=managerName]").val(data.managerName);
-                    $(".operation_dept input[name=phone]").val(data.phone);
+
+                    // 重置表单
+                    form.val('info', {
+                        "id": data.id,
+                        "pid": data.pid,
+                        "name": data.name,
+                        "pidName": data.pidName,
+                        "managerName": data.managerName,
+                        "phone": data.phone,
+                        "status": data.status == 1
+                    });
+
                     if (data.status == 1) {
-                        form.val('info', {
-                            "status": true //开关状态
-                        });
                         $(".operation_dept input[name=status]").val(1);
                     } else {
-                        form.val('info', {
-                            "status": false //开关状态
-                        });
                         $(".operation_dept input[name=status]").val(0);
                     }
                     form.render(); //更新全部
@@ -189,14 +189,16 @@
                     $(".dept-table").hide();
                     $(".operation_dept").show();
                     $(".title").html("新增部门");
-                    $(".operation_dept input[name=id]").val("");
-                    $(".operation_dept input[name=pid]").val("");
-                    $(".operation_dept input[name=name]").val("");
-                    $(".operation_dept input[name=pidName]").val("");
-                    $(".operation_dept input[name=managerName]").val("");
-                    $(".operation_dept input[name=phone]").val("");
+
+                    // 重置表单
                     form.val('info', {
-                        "status": true //开关状态
+                        "id": "",
+                        "pid": "",
+                        "name": "",
+                        "pidName": "",
+                        "managerName": "",
+                        "phone": "",
+                        "status": true
                     });
                     $(".operation_dept input[name=status]").val(1);
                     initTree("");

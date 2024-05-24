@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
 </head>
 <body>
 <div class="layui-container" style="width:600px;">
@@ -22,7 +22,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">真实姓名</label>
             <div class="layui-input-block">
-                <input type="realName" name="realName" placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
+                <input type="text" name="realName" placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -70,51 +70,53 @@
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var form = layui.form;
-    var element = layui.element;
-    $(function () {
-        CoreUtil.sendGet(ctx + "sys/user", null, function (res) {
-            if (res.data != null) {
-                $(".layui-container input[name=id]").val(res.data.id);
-                $(".layui-container input[name=username]").val(res.data.username);
-                $(".layui-container input[name=realName]").val(res.data.realName);
-                $(".layui-container input[name=email]").val(res.data.email);
-                $(".layui-container input[name=phone]").val(res.data.phone);
-                $(".layui-container input[name=sex][value=1]").attr("checked", res.data.sex == 1 ? true : false);
-                $(".layui-container input[name=sex][value=2]").attr("checked", res.data.sex == 2 ? true : false);
-                if (data.status == 1) {
-                    form.val('info', {
-                        "status": true //开关状态
-                    });
-                    $(".layui-container input[name=status]").val(1);
-                } else {
-                    form.val('info', {
-                        "status": false //开关状态
-                    });
-                    $(".layui-container input[name=status]").val(0);
-                }
-                form.render(); //更新全部
-            }
-        });
+    var form = layui.form,
+        layer = layui.layer,
+    $ = jQuery = layui.jquery;
+    layui.use(['form', 'layer', 'jquery'], function () {
 
-        //监听提交
-        form.on('submit(submit)', function (data) {
-            CoreUtil.sendPut(ctx + "sys/user/info", data.field, function (res) {
-                layer.msg(res.msg);
+
+        // 初始化表单数据
+        function initForm(data) {
+            form.val('info', {
+                "id": data.id,
+                "username": data.username,
+                "realName": data.realName,
+                "phone": data.phone,
+                "email": data.email,
+                "sex": data.sex.toString(), // 性别需要转换为字符串
+                "status": data.status === 1 // 开关状态
             });
-            return false;
-        });
 
-        //监听指定开关
-        form.on('switch(switch)', function () {
-            $(".layui-container input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
+            // 手动设置 checkbox 的值
+            if (data.status === 1) {
+                $("input[name=status]").prop('checked', true).val(1);
+            } else {
+                $("input[name=status]").prop('checked', false).val(0);
+            }
 
+            form.render(); // 更新全部
+        }
+
+        // 获取数据并初始化表单
+        $(function () {
+            CoreUtil.sendGet(ctx + "sys/user", null, function (res) {
+                if (res.data != null) {
+                    initForm(res.data);
+                }
+            });
+
+            // 监听提交
+            form.on('submit(submit)', function (data) {
+                CoreUtil.sendPut(ctx + "sys/user/info", data.field, function (res) {
+                    layer.msg(res.msg);
+                });
+                return false;
+            });
         });
-    })
+    });
 </script>
 </html>

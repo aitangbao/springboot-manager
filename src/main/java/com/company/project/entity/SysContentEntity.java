@@ -42,6 +42,21 @@ public class SysContentEntity extends BaseEntity implements Serializable {
     private String content;
 
     /**
+     * 单个图片url
+     */
+    private String oneImg;
+
+    /**
+     * 多个图片url
+     */
+    private String multipleImg;
+
+    /**
+     * 关键字
+     */
+    private String keywords;
+
+    /**
      * 类型（数据字典）
      */
     @TableField("type")

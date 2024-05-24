@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
 </head>
 <body>
 <div id="searchParam">
-    <div class="layui-form-item" shiro:hasPermission="sys:log:list">
+    <div class="layui-form-item" sa:hasPermission="sys:log:list">
         <div class="layui-input-inline">
             <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
         </div>
@@ -29,24 +29,20 @@
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-group">
-        <button shiro:hasPermission="sys:log:deleted" type="button" class="layui-btn layui-btn-sm" lay-event="getCheckData">
+        <button sa:hasPermission="sys:log:deleted" type="button" class="layui-btn layui-btn-sm" lay-event="getCheckData">
             批量删除
         </button>
     </div>
 </script>
 <script type="text/html" id="tool">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sys:log:deleted">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:log:deleted">删除</a>
 </script>
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    //获取token
-    var token = CoreUtil.getData("access_token");
-    //地址栏转义token中的#号
-    var tokenQuery = token.replace("#", "%23");
     var tableIns1;
     var table = layui.table;
     var laypage = layui.laypage
@@ -63,7 +59,6 @@
         tableIns1 = table.render({
             elem: '#log_table'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sys/logs' //数据接口
             , method: 'POST'

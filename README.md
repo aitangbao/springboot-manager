@@ -1,8 +1,8 @@
 # springboot-manager
 
 ## 介绍
-基于SpringBoot + Thymeleaf + Layui + Apache Shiro + Redis + Mybatis Plus 的后台管理系统  
-支持菜单权限与数据权限    
+基于SpringBoot + Mybatis Plus + SaToken + Thymeleaf + Layui的后台管理系统  
+接入Sa-Token，支持菜单权限与数据权限    
 数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
@@ -14,17 +14,16 @@
 - 采用RBAC的权限控制，支持数据权限（用法见下）
 - 统一响应结果封装及生成工具
 - 统一异常处理
-- Shiro + Redis 实现 Token 角色权限认证
+- 拥抱Sa-Token 实现角色权限认证，让鉴权变得简单、优雅！
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 集成MyBatis-Plus，实现单表业务零SQL
 - 支持多数据源，自由切换，只需方法或类上用 @DS 切换数据源
 - 集成国人风格的knife4j，自动生成接口文档
 - 提供代码生成器(MySQL、Oracle、sqlServer等主流数据库)，生成从Html到Mapper，爽歪歪  
 
-## 代码仓库
+## 代码仓库 最新请移步gitee， github定期同步
 Gitee地址：[https://gitee.com/zwens/springboot-manager](https://gitee.com/zwens/springboot-manager)   
 GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.com/aitangbao/springboot-manager)  
-如需更简洁版，请移步:[https://gitee.com/zwens/springboot-manager/tree/simple/](https://gitee.com/zwens/springboot-manager/tree/simple/) 
 
 
 ## 开发文档&项目演示
@@ -40,7 +39,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 │  │      └─company
 │  │          └─project
 │  │              ├─CompanyProjectApplication.java 项目启动类
-│  │              ├─common      公共资源，如注解、切面、定时、全局异常处理、shiro集成、通用工具类等
+│  │              ├─common      公共资源，如注解、切面、定时、全局异常处理、组件集成、通用工具类等
 │  │              ├─controller  Controler层
 │  │              ├─entity      实体类
 │  │              ├─mapper      DAO层
@@ -84,15 +83,12 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 ## 开发建议
 - Model内成员变量建议与表字段数量对应，如需扩展成员变量（比如连表查询）建议创建VO，否则需在扩展的成员变量上加@TableField(exist = false)
 - 建议业务失败直接使用throw new BusinessException("ErrorMessage")抛出，由统一异常处理器来封装业务失败的响应结果，会直接被封装为{"code":500002,"message":"ErrorMessage"}返回，尽情抛出；
-- token支持header跟query传参形式，如:
-    - ajax中设置header:```beforeSend: function(request) {request.setRequestHeader("authorization", "有效的token");}```
-    - query:```?authorization=有效的token ```
+- 数据库基础字段：id(bigint)、remark(varchar)、unable_flag(tinyint)、deleted(tinyint)、create_id(bigint)、update_id(bigint)、create_time(datetime)、update_time(datetime)
 
 ## 使用说明
 - 使用IDE导入本项目，IDE需要安装lombok插件
-- 下载redis 启动redis
-- 创建数据库, 导入***.sql
-- 配置application-dev.yml中的redis以及数据库连接
+- 创建数据库, 如mysql数据库导入mysql.sql
+- 配置application-dev.yml中的数据库连接
 - 运行项目
    	1. 直接运行CompanyProjectApplication.java
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
@@ -115,13 +111,10 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
-* 前端框架: [Layui](https://www.layui.com/)
-* 持久层框架：[MyBatis-Plus](https://mybatis.plus)
-* 分页：[Page](https://mybatis.plus/guide/page.html)
+* 持久层框架：[MyBatis-Plus](https://sa-token.cc/doc.html#/)
+* 权限认证：[Sa-Token](https://mybatis.plus)
+* 前端框架: [Layui](http://layui.xhcen.com/doc/doc.html)
 * 数据库连接池：[Alibaba Druid](https://github.com/alibaba/druid/)
-* 安全框架：[Apache Shiro](http://shiro.apache.org/)
-* 缓存框架：[Redis](https://redis.io/)
-* 接口文档：[Knife4j](https://doc.xiaominfo.com/)
 * 模板引擎：[Thymeleaf](https://www.thymeleaf.org/)
 * 阿里巴巴Java开发手册[最新版下载](https://github.com/alibaba/p3c)
 
@@ -133,14 +126,16 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	  
 ## **效果图**
 
-![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/1.png)
-![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/2.png)
+![登录](image/login.png)
+
+![输入图片说明](image/caidan.png)
+
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
 
-![image-20200506154143271](https://images.gitee.com/uploads/images/2020/0521/110630_6be55411_997722.png)
+![image-20200506154143271](image/dashang.png)
 
 ### 交流群
 > 如果大家有疑难杂症，技术交流， 可以加我拉你们进群, 务必备注: 开源
-![输入图片说明](https://raw.githubusercontent.com/aitangbao/images/master/3.jpg)
+![输入图片说明](image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220408103746.jpg)

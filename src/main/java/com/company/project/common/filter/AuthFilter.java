@@ -34,6 +34,10 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+        resp.setHeader("Access-Control-Allow-Origin","*");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, PATCH, DELETE, PUT");
+        resp.setHeader("Access-Control-Allow-Headers", "*");
         String url = req.getRequestURI();
         log.info("url:{}", url);
         if (Arrays.asList(whiteList).contains(url)) {

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
-    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
     <style>
         .custom-tree-item-clicked{color:#FC9003}
     </style>
@@ -31,12 +31,6 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <div class="layui-form-label ">手机号</div>
-                <div class="layui-input-block">
-                    <input type="phone" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <div class="layui-form-label ">所属部门</div>
                 <div class="layui-input-block">
                     <input type="deptName" name="deptName" placeholder="请选择所属部门" autocomplete="off" class="layui-input"
@@ -44,9 +38,39 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">真实姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="realName" placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-form-label ">手机号</div>
+                <div class="layui-input-block">
+                    <input type="phone" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁止"
+                           lay-filter="switch" checked="checked">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="1" title="男">
+                    <input type="radio" name="sex" value="2" title="女">
                 </div>
             </div>
 
@@ -70,7 +94,7 @@
         </div>
         <div class="layui-col-sm12 layui-col-md8 layui-col-lg10">
             <div class="user_table_div">
-                <div id="searchParam" shiro:hasPermission="sys:user:list">
+                <div id="searchParam" sa:hasPermission="sys:user:list">
                     <div class="layui-form-item">
                         <div class="layui-input-inline">
                             <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
@@ -85,7 +109,7 @@
                             <select id="status">
                                 <option value="">请选择账号状态</option>
                                 <option value="1">正常</option>
-                                <option value="2">禁用</option>
+                                <option value="0">禁用</option>
                             </select>
                         </div>
                         <div class="layui-input-inline ">
@@ -106,26 +130,22 @@
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="addNewUser" shiro:hasPermission="sys:user:add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="sys:user:deleted">删除
+        <button class="layui-btn layui-btn-sm" lay-event="addNewUser" sa:hasPermission="sys:user:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" sa:hasPermission="sys:user:deleted">删除
         </button>
     </div>
 </script>
 <script type="text/html" id="tool">
-    <a class="layui-btn  layui-btn-xs" lay-event="operationRole" shiro:hasPermission="sys:user:role:update">赋予角色</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sys:user:update">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sys:user:deleted">删除</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="operationRole" sa:hasPermission="sys:user:role:update">赋予角色</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sys:user:update">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:user:deleted">删除</a>
 </script>
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    //获取token
-    var token = CoreUtil.getData("access_token");
-    //地址栏转义token中的#号
-    var tokenQuery = token.replace("#", "%23");
     var tableIns1;
     var table = layui.table;
     var form = layui.form;
@@ -145,7 +165,6 @@
         tableIns1 = table.render({
             elem: '#user_table'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sys/users' //数据接口
             , method: 'POST'
@@ -170,10 +189,9 @@
                         field: 'sex', title: '性别', width: 100, templet: function (item) {
                             if (item.sex === 1) {
                                 return "男";
-                            }
-                            if (item.sex === 2) {
+                            } else if (item.sex === 2) {
                                 return "女";
-                            }
+                            } else return "";
                         }
                     },
                     {field: 'createTime', title: '创建时间', minWidth: 120},
@@ -244,18 +262,7 @@
                     $(".user_table_div").hide();
                     $("#leftTree").hide();
                     $(".operation_user").show();
-                    $(".operation_user input[name=id]").val("");
-                    $(".operation_user input[name=pid]").val("");
-                    $(".operation_user input[name=username]").val("");
-                    $(".operation_user input[name=password]").val("");
-                    $(".operation_user input[name=phone]").val("");
-                    $(".operation_user input[name=deptName]").val("");
-                    form.val('info', {
-                        "status": true //开关状态
-                    });
-                    $(".operation_user input[name=status]").val(1);
-                    form.render(); //更新全部
-
+                    resetForm(); // 重置表单内容
                     break;
             }
             ;
@@ -273,25 +280,7 @@
                     $("#leftTree").hide();
                     $(".operation_user").show();
                     $(".title").html("编辑用户");
-                    $(".operation_user input[name=id]").val(data.id);
-                    $(".operation_user input[name=deptId]").val(data.deptId);
-                    $(".operation_user input[name=username]").val(data.username);
-                    $(".operation_user input[name=password]").val("");
-                    $(".operation_user input[name=phone]").val(data.phone);
-                    $(".operation_user input[name=deptName]").val(data.deptName);
-                    if (data.status == 1) {
-                        form.val('info', {
-                            "status": true //开关状态
-                        });
-                        $(".operation_user input[name=status]").val(1);
-                    } else {
-                        form.val('info', {
-                            "status": false //开关状态
-                        });
-                        $(".operation_user input[name=status]").val(0);
-                    }
-                    form.render(); //更新全部
-
+                    fillForm(data); // 填充表单内容
                     break;
                 case 'operationRole':
                     CoreUtil.sendGet(ctx + "sys/user/roles/" + data.id, null, function (res) {
@@ -349,11 +338,10 @@
                 }
             });
         };
-        form.on('switch(switch)', function () {
-            $(".operation_user input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 2);
 
-        });
         form.on('submit(submit)', function (data) {
+            console.log(data)
+            console.log(data.field)
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/user", data.field, function (res) {
                     $(".user_table_div").show();
@@ -418,6 +406,56 @@
                     layer.close(index);
                 }
             });
+        });
+
+        // 定义一个函数来重置表单内容
+        function resetForm() {
+            form.val('info', {
+                'id': '',
+                'deptId': '',
+                'username': '',
+                'password': '',
+                'phone': '',
+                'deptName': '',
+                'realName': '',
+                'email': '',
+                'status': true, // 开关状态
+                'sex': null
+            });
+            $(".operation_user input[name=status]").val(1); // 输入框状态
+
+
+            form.render(); // 更新全部
+        }
+
+        // 定义一个函数来填充表单内容
+        function fillForm(data) {
+            form.val('info', {
+                'id': data.id,
+                'deptId': data.deptId,
+                'username': data.username,
+                'password': '', // 密码字段不填充，保持为空
+                'phone': data.phone,
+                'deptName': data.deptName,
+                'realName': data.realName,
+                'email': data.email,
+                'status': data.status === 1, // 开关状态
+                'sex': data.sex // 假设 data.sex 包含性别值
+            });
+            // 手动设置 checkbox 的值
+            if (data.status === 1) {
+                $(".operation_user input[name=status]").prop('checked', true).val(1);
+            } else {
+                $(".operation_user input[name=status]").prop('checked', false).val(0);
+            }
+
+            form.render(); // 更新全部
+        }
+
+        // 监听开关状态改变
+        form.on('switch(switch)', function (data) {
+            $(".operation_user input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
+
         });
 
         function initLeftTree(){

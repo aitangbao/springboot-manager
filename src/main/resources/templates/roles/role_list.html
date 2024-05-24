@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+<html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
-    <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
 </head>
 <body>
 <div class="panel panel-default operation_role" hidden>
@@ -38,7 +38,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">请选择权限</label>
             </div>
-            <div class="layui-form-item" >
+            <div class="layui-form-item">
                 <div class="layui-tree">
                     <div id="permissionTree"></div>
                 </div>
@@ -88,7 +88,7 @@
     </div>
 </div>
 <div class="role_table_div">
-    <div id="searchParam" shiro:hasPermission="sys:role:list">
+    <div id="searchParam" sa:hasPermission="sys:role:list">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <input type="text" id="roleName" class="layui-input" autocomplete="off" placeholder="请输入角色名称">
@@ -114,24 +114,20 @@
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="addNewRole" shiro:hasPermission="sys:role:add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addNewRole" sa:hasPermission="sys:role:add">添加</button>
     </div>
 </script>
 <script type="text/html" id="tool">
-    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="sys:role:update">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="dataScope" shiro:hasPermission="sys:role:bindDept">数据权限</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="sys:role:deleted">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" sa:hasPermission="sys:role:update">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="dataScope" sa:hasPermission="sys:role:bindDept">数据权限</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:role:deleted">删除</a>
 </script>
 <script th:inline="javascript" type="text/javascript">
     var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
-<script th:src="@{/layui/layui.all.js}"></script>
-<script th:src="@{/js/core.util.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
+<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    //获取token
-    var token = CoreUtil.getData("access_token");
-    //地址栏转义token中的#号
-    var tokenQuery = token.replace("#", "%23");
     var tableIns1;
     var table = layui.table;
     var form = layui.form;
@@ -142,7 +138,7 @@
     var startTime = null;
     var endTime = null;
     layui.config({
-        base: ctx + 'layui-ext/'
+        base: ctx + 'static/layui-ext/'
     }).extend({
         eleTree: 'eleTree/eleTree'
     }).use(['table', 'laypage', 'layer', 'laydate', 'tree', 'eleTree'], function () {
@@ -150,7 +146,6 @@
         tableIns1 = table.render({
             elem: '#role_table'
             , contentType: 'application/json'
-            , headers: {"authorization": token}
             , page: true //开启分页
             , url: ctx + 'sys/roles' //数据接口
             , method: 'POST'
@@ -202,7 +197,6 @@
             }
         });
         table.on('toolbar(role_table)', function (obj) {
-            var data = obj.data;
             switch (obj.event) {
                 case 'addNewRole':
                     //隐藏表格
@@ -210,12 +204,12 @@
                     //显示编辑窗口
                     $(".operation_role").show();
                     $(".title").html("新增角色");
-                    $(".operation_role input[name=id]").val("");
-                    $(".operation_role input[name=pid]").val("");
-                    $(".operation_role input[name=name]").val("");
-                    $(".operation_role input[name=description]").val("");
 
                     form.val('info', {
+                        "id": "",
+                        "pid": "",
+                        "name": "",
+                        "description": "",
                         "status": true //开关状态
                     });
                     $(".operation_role input[name=status]").val(1);
@@ -250,19 +244,17 @@
         });
         var getRoleDetail = function (id) {
             CoreUtil.sendGet(ctx + "sys/role/" + id, null, function (res) {
-                $(".operation_role input[name=id]").val(res.data.id);
-                $(".operation_role input[name=pid]").val(res.data.pid);
-                $(".operation_role input[name=name]").val(res.data.name);
-                $(".operation_role input[name=description]").val(res.data.description);
+
+                form.val('info', {
+                    "id": res.data.id,
+                    "pid": res.data.pid,
+                    "name": res.data.name,
+                    "description": res.data.description,
+                    "status": res.data.status == 1 //开关状态
+                });
                 if (res.data.status == 1) {
-                    form.val('info', {
-                        "status": true //开关状态
-                    });
                     $(".operation_role input[name=status]").val(1);
                 } else {
-                    form.val('info', {
-                        "status": false //开关状态
-                    });
                     $(".operation_role input[name=status]").val(0);
                 }
                 $(".operation_role_dataScope input[name=roleId]").val(res.data.id);

@@ -1,14 +1,16 @@
 package com.company.project.common.exception.handler;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.company.project.common.exception.BusinessException;
 import com.company.project.common.exception.code.BaseResponseCode;
 import com.company.project.common.utils.DataResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -44,15 +46,6 @@ public class RestExceptionHandler {
         return new DataResult(e.getMessageCode(), e.getDetailMessage());
     }
 
-    /**
-     * 没有权限 返回403视图
-     */
-    @ExceptionHandler(value = AuthorizationException.class)
-    public DataResult errorPermission(AuthorizationException e) {
-        log.error("Exception,exception:{}", e, e);
-        return new DataResult(BaseResponseCode.UNAUTHORIZED_ERROR);
-
-    }
 
     /**
      * 处理validation 框架异常
@@ -78,6 +71,17 @@ public class RestExceptionHandler {
             break;
         }
         return DataResult.getResult(BaseResponseCode.METHODARGUMENTNOTVALIDEXCEPTION.getCode(), builder.toString());
+    }
+
+    /**
+     * 未登录异常
+     */
+    @ExceptionHandler
+    public ModelAndView handle(NotLoginException exception) {
+        log.error("NotLoginException: ", exception);
+        // 使用ModelAndView重定向到登录页面
+        ModelAndView modelAndView = new ModelAndView("redirect:/index/login");
+        return modelAndView;
     }
 
 }

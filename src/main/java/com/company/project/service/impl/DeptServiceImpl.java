@@ -53,7 +53,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         }
         vo.setDeptNo(deptCode);
         vo.setRelationCode(relationCode);
-        vo.setStatus(1);
         sysDeptMapper.insert(vo);
     }
 
@@ -89,7 +88,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
             LambdaQueryWrapper<SysDept> wrapper = Wrappers.lambdaQuery();
             wrapper.likeLeft(SysDept::getDeptNo, sysDept.getDeptNo());
             List<SysDept> list = sysDeptMapper.selectList(wrapper);
-            list.parallelStream().forEach(entity -> {
+            list.stream().forEach(entity -> {
                 String relationCode = entity.getRelationCode().replace(oldRelationCode, newRelationCode);
                 entity.setRelationCode(relationCode);
                 sysDeptMapper.updateById(entity);
