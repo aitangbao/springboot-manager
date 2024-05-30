@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("")
 public class IndexController {
 
-    @GetMapping({"/index/login","login"})
+    @GetMapping({"/index/login","/login","/"})
     public String loginIndex() {
         if (StpUtil.isLogin()) {
             return "home";

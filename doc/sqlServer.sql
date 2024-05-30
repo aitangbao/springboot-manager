@@ -135,32 +135,6 @@ CREATE TABLE sys_dict_detail  (
   PRIMARY KEY (id)
 );
 
--- 定时任务
-CREATE TABLE sys_job  (
-  id varchar(50) ,
-  bean_name varchar(200),
-  params varchar(2000) ,
-  cron_expression varchar(100) ,
-  status  int,
-  remark varchar(255) ,
-  create_time datetime ,
-  PRIMARY KEY (id)
-);
-
--- 定时任务日志
-CREATE TABLE sys_job_log  (
-  id varchar(50) ,
-  job_id varchar(50) ,
-  bean_name varchar(200) ,
-  params varchar(1000) ,
-  status int,
-  error int,
-  times int ,
-  create_time datetime ,
-  PRIMARY KEY (id)
- );
-
-
 -- 文章管理
  CREATE TABLE sys_content  (
   id varchar(50),
@@ -195,11 +169,9 @@ INSERT INTO sys_permission VALUES ('11', '菜单权限管理', NULL, NULL, 'inde
 INSERT INTO sys_permission VALUES ('12', '列表', 'sys:dept:list', NULL, 'sys/depts', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('13', '删除', 'sys:role:deleted', NULL, 'sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('1311115974068449281', '数据权限', 'sys:role:bindDept', '', 'sys/role/bindDept', '_self', '53', 5, 3, 1, '2020-09-30 09:29:42', NULL, 1);
-INSERT INTO sys_permission VALUES ('14', '定时任务立即执行', 'sysJob:run', NULL, 'sysJob/run', '_self', '59', 5, 3, 1, '2020-04-22 15:47:54', NULL, 1);
 INSERT INTO sys_permission VALUES ('15', '代码生成', NULL, NULL, 'index/sysGenerator', '_self', '54', 1, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('16', '列表', 'sysGenerator:list', NULL, 'sysGenerator/listByPage', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('17', '详情', 'sys:permission:detail', NULL, 'sys/permission/*', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('18', '定时任务恢复', 'sysJob:resume', NULL, 'sysJob/resume', '_self', '59', 4, 3, 1, '2020-04-22 15:48:40', NULL, 1);
 INSERT INTO sys_permission VALUES ('19', '列表', 'sys:role:list', NULL, 'sys/roles', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('2', 'SQL 监控', '', '', 'druid/sql.html', '_self', '21', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
 INSERT INTO sys_permission VALUES ('20', '修改', 'sysGenerator:update', NULL, 'sysGenerator/update', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
@@ -239,16 +211,10 @@ INSERT INTO sys_permission VALUES ('51', '组织管理', NULL, 'layui-icon-user'
 INSERT INTO sys_permission VALUES ('52', '拥有角色', 'sys:user:role:detail', NULL, 'sys/user/roles/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('53', '角色管理', NULL, NULL, 'index/roles', '_self', '51', 99, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('54', '系统管理', NULL, 'layui-icon-set-fill', NULL, NULL, '0', 98, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('55', '定时任务暂停', 'sysJob:pause', NULL, 'sysJob/pause', '_self', '59', 1, 3, 1, '2020-04-22 15:48:18', NULL, 1);
 INSERT INTO sys_permission VALUES ('56', '更新', 'sys:user:update', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('57', '删除', 'sys:user:deleted', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('58', '删除', 'sys:log:deleted', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('59', '定时任务', NULL, NULL, 'index/sysJob', '_self', '54', 10, 2, 1, NULL, NULL, 1);
 INSERT INTO sys_permission VALUES ('6', '接口管理', '', '', 'doc.html', '_blank', '21', 100, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:02', 1);
-INSERT INTO sys_permission VALUES ('60', '列表', 'sysJob:list', NULL, 'sysJob/listByPage', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('61', '新增', 'sysJob:add', NULL, 'sysJob/add', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('62', '修改', 'sysJob:update', NULL, 'sysJob/update', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('63', '删除', 'sysJob:delete', NULL, 'sysJob/delete', NULL, '59', 0, 3, 1, NULL, NULL, 1);
 INSERT INTO sys_permission VALUES ('7', '列表', 'sys:log:list', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('8', '日志管理', NULL, NULL, 'index/logs', '_self', '54', 97, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO sys_permission VALUES ('9', '新增', 'sys:dept:add', NULL, 'sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
@@ -306,7 +272,6 @@ INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES 
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('56', '1', '56', '2020-05-26 17:04:21');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('57', '1', '57', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('58', '1', '58', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('59', '1', '59', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('6', '1', '6', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('60', '1', '60', '2020-04-22 15:48:47');
 INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('61', '1', '61', '2020-05-26 14:21:56');

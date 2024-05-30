@@ -4,7 +4,6 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.company.project.common.aop.annotation.DataScope;
 import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysContentEntity;
 import com.company.project.service.SysContentService;
@@ -61,7 +60,6 @@ public class SysContentController {
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @SaCheckPermission("sysContent:list")
-    @DataScope
     public DataResult findListByPage(@RequestBody SysContentEntity sysContent) {
         LambdaQueryWrapper<SysContentEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例

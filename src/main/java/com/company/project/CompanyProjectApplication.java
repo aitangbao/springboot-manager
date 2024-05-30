@@ -27,7 +27,7 @@ public class CompanyProjectApplication {
         Environment env = application.getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
-                        "Login: \thttp://{}:{}/manager/login\n\t" +
+                        "Login: \thttp://{}:{}/manager\n\t" +
                         "Doc: \thttp://{}:{}/manager/doc.html\n" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),

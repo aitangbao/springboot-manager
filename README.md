@@ -2,7 +2,7 @@
 
 ## 介绍
 基于SpringBoot + Mybatis Plus + SaToken + Thymeleaf + Layui的后台管理系统  
-接入Sa-Token，支持菜单权限与数据权限    
+接入Sa-Token，支持菜单权限
 数据库支持 MySQL、Oracle、sqlServer 等主流数据库  
 提供代码生成器，基本增删改查无需编写，可快速完成开发任务。  
 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口。  
@@ -11,9 +11,8 @@
 
 ## 特征
 - 后台接口RESTful 风格，支持前后端分离，可与app公用一套接口
-- 采用RBAC的权限控制，支持数据权限（用法见下）
-- 统一响应结果封装及生成工具
-- 统一异常处理
+- 采用RBAC的权限控制
+- 统一响应结果封装及生成工具 统一异常处理
 - 拥抱Sa-Token 实现角色权限认证，让鉴权变得简单、优雅！
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 集成MyBatis-Plus，实现单表业务零SQL
@@ -27,9 +26,10 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 
 
 ## 开发文档&项目演示
-- 演示地址：[springboot-manager](http://1.94.23.145:9000)
-- 账号密码：guest/123456
-- 带宽1m 不太给力 请见谅 :joy:
+- 开发文档：[开发文档wiki](https://gitee.com/zwens/springboot-manager/wikis)
+- 演示地址：[springboot-manager](http://1.94.23.145:9000/manager/login)
+-  **账号密码：guest/123456** 
+
 
 ## 代码结构
 ```
@@ -39,7 +39,7 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 │  │      └─company
 │  │          └─project
 │  │              ├─CompanyProjectApplication.java 项目启动类
-│  │              ├─common      公共资源，如注解、切面、定时、全局异常处理、组件集成、通用工具类等
+│  │              ├─common      公共资源，如注解、切面、全局异常处理、组件集成、通用工具类等
 │  │              ├─controller  Controler层
 │  │              ├─entity      实体类
 │  │              ├─mapper      DAO层
@@ -69,8 +69,6 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 │          ├─syscontent         内容管理
 │          ├─sysdict            字典管理
 │          ├─sysfiles           文件管理
-│          ├─sysjob             定时任务管理
-│          ├─sysjoblog          定时任务日志管理
 │          └─users              用户管理
 └─test
     └─java
@@ -92,27 +90,19 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 - 运行项目
    	1. 直接运行CompanyProjectApplication.java
 	2. 项目根目录下执行mvn -X clean package -Dmaven.test.skip=true编译打包，然后执行java -jar manager.jar
-- 登录地址 http://localhost:8080/index/login 用户名密码:admin/123456
+- 登录地址 http://localhost:8080/manager/index/login 用户名密码:admin/123456
 - 代码生成使用  
     1. 逻辑删除字段，请统一用deleted字段: 1未删 0已删; 主键请统一格式: `id` varchar(50) 类型; 列名请勿使用数据库关键字
     2. application.yml中配置： 使用代码生成模块时 指定要生成的表存在于哪种数据库。project.database=mysql  
     3. 点击[代码生成]菜单，生成一个或多个表的代码，下载到本地  
     4. 解压下载的代码，直接复制main文件夹到本地项目的src目录下  
     5. 数据库执行sql，生成菜单
-	6. 点击[角色管理]菜单，修改角色所绑定的菜单的权限，刷新页面查看
-	
-- 数据权限配置及使用 示例：文章管理列表
-    1. 需要数据权限所控制的表（如sys_content）， 需要有创建人字段
-    2. 配置角色的数据范围（本部门，其他部门等）， 以及绑定的部门
-    3. 在列表加个注解@DataScope(用来查询当前等路人的多个角色（并集）， 根据角色数据范围， 获取绑定的部门id， 查关联的用户id)
-    4. 在查某个模块的list或page的时候，手动queryWrapper.in(createId, 关联的用户id)
-	
-
+	6. admin 刷新页面即刻查看
 
 ## 技术文档
 * 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
-* 持久层框架：[MyBatis-Plus](https://sa-token.cc/doc.html#/)
-* 权限认证：[Sa-Token](https://mybatis.plus)
+* 持久层框架：[MyBatis-Plus](https://mybatis.plus)
+* 权限认证：[Sa-Token](https://sa-token.cc/doc.html#/)
 * 前端框架: [Layui](http://layui.xhcen.com/doc/doc.html)
 * 数据库连接池：[Alibaba Druid](https://github.com/alibaba/druid/)
 * 模板引擎：[Thymeleaf](https://www.thymeleaf.org/)
@@ -126,16 +116,16 @@ GitHub地址：[https://github.com/aitangbao/springboot-manager](https://github.
 	  
 ## **效果图**
 
-![登录](image/login.png)
+![](https://gitee.com/aitangbao/tuchuang/raw/master/springboot-manager/login.png)
 
-![输入图片说明](image/caidan.png)
+![](https://gitee.com/aitangbao/tuchuang/raw/master/springboot-manager/caidan.png)
 
 
 ### 捐赠
 > 项目的发展离不开您的支持， 如果您够宽裕，请作者喝杯咖啡吧！  
 
-![image-20200506154143271](image/dashang.png)
+![](https://gitee.com/aitangbao/tuchuang/raw/master/springboot-manager/dashang.png)
 
 ### 交流群
 > 如果大家有疑难杂症，技术交流， 可以加我拉你们进群, 务必备注: 开源
-![输入图片说明](image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220408103746.jpg)
+![](https://gitee.com/aitangbao/tuchuang/raw/master/springboot-manager/weixin.jpg)
