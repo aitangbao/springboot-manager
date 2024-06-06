@@ -196,7 +196,7 @@ public class UserController {
     @PutMapping("/user/roles/{userId}")
     @ApiOperation(value = "赋予角色-用户赋予角色接口")
     @LogAnnotation(title = "用户管理", action = "赋予角色-用户赋予角色接口")
-    @SaCheckPermission("sys:user:update:role")
+    @SaCheckPermission("sys:user:role:update")
     public DataResult setUserOwnRole(@PathVariable("userId") String userId, @RequestBody List<String> roleIds) {
 
         LambdaQueryWrapper<SysUserRole> queryWrapper = Wrappers.lambdaQuery();
