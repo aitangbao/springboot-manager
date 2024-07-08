@@ -5,7 +5,6 @@ import com.company.project.entity.SysPermission;
 import com.company.project.vo.resp.PermissionRespNode;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 菜单权限

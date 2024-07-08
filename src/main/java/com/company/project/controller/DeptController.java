@@ -3,9 +3,10 @@ package com.company.project.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.common.utils.DataResult;
+import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.SysDept;
 import com.company.project.service.DeptService;
+import com.company.project.vo.resp.DeptRespNodeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
@@ -33,53 +34,50 @@ public class DeptController {
     @ApiOperation(value = "新增组织接口")
     @LogAnnotation(title = "机构管理", action = "新增组织")
     @SaCheckPermission("sys:dept:add")
-    public DataResult addDept(@RequestBody @Valid SysDept vo) {
+    public void addDept(@RequestBody @Valid SysDept vo) {
         deptService.addDept(vo);
-        return DataResult.success();
     }
 
     @DeleteMapping("/dept/{id}")
     @ApiOperation(value = "删除组织接口")
     @LogAnnotation(title = "机构管理", action = "删除组织")
     @SaCheckPermission("sys:dept:deleted")
-    public DataResult deleted(@PathVariable("id") String id) {
+    public void deleted(@PathVariable("id") String id) {
         deptService.deleted(id);
-        return DataResult.success();
     }
 
     @PutMapping("/dept")
     @ApiOperation(value = "更新组织信息接口")
     @LogAnnotation(title = "机构管理", action = "更新组织信息")
     @SaCheckPermission("sys:dept:update")
-    public DataResult updateDept(@RequestBody SysDept vo) {
+    public void updateDept(@RequestBody SysDept vo) {
         if (StringUtils.isEmpty(vo.getId())) {
-            return DataResult.fail("id不能为空");
+            throw new BusinessException("id不能为空");
         }
         deptService.updateDept(vo);
-        return DataResult.success();
     }
 
     @GetMapping("/dept/{id}")
     @ApiOperation(value = "查询组织详情接口")
     @LogAnnotation(title = "机构管理", action = "查询组织详情")
     @SaCheckPermission("sys:dept:detail")
-    public DataResult detailInfo(@PathVariable("id") String id) {
-        return DataResult.success(deptService.getById(id));
+    public SysDept detailInfo(@PathVariable("id") String id) {
+        return deptService.getById(id);
     }
 
     @GetMapping("/dept/tree")
     @ApiOperation(value = "树型组织列表接口")
     @LogAnnotation(title = "机构管理", action = "树型组织列表")
     @SaCheckPermission(value = {"sys:user:list", "sys:user:update", "sys:user:add", "sys:dept:add", "sys:dept:update"}, mode = SaMode.OR)
-    public DataResult getTree(@RequestParam(required = false) String deptId) {
-        return DataResult.success(deptService.deptTreeList(deptId, false));
+    public List<DeptRespNodeVO> getTree(@RequestParam(required = false) String deptId) {
+        return deptService.deptTreeList(deptId, false);
     }
 
     @GetMapping("/depts")
     @ApiOperation(value = "获取机构列表接口")
     @LogAnnotation(title = "机构管理", action = "获取所有组织机构")
     @SaCheckPermission("sys:dept:list")
-    public DataResult getDeptAll() {
+    public List<SysDept> getDeptAll() {
         List<SysDept> deptList = deptService.list();
         deptList.stream().forEach(entity -> {
             SysDept parentDept = deptService.getById(entity.getPid());
@@ -87,7 +85,7 @@ public class DeptController {
                 entity.setPidName(parentDept.getName());
             }
         });
-        return DataResult.success(deptList);
+        return deptList;
     }
 
 }

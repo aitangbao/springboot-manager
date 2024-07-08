@@ -1,99 +1,98 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden
+}
+
 body {
-    background-image: url("images/bg.jpg");
-    height: 100%;
-    width: 100%
+    background: #1E9FFF;
 }
 
-#container {
-    height: 100%;
-    width: 100%
+body:after {
+    content: '';
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
 }
 
-input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0 1000px #fff;
-    background-color: transparent
+.layui-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden
 }
 
 .admin-login-background {
-    width: 300px;
+    width: 360px;
     height: 300px;
     position: absolute;
     left: 50%;
     top: 40%;
-    margin-left: -150px;
-    margin-top: -100px
+    margin-left: -180px;
+    margin-top: -100px;
 }
 
-.admin-header {
+.logo-title {
     text-align: center;
-    margin-bottom: 20px;
-    color: #ffffff;
+    letter-spacing: 2px;
+    padding: 14px 0;
+}
+
+.logo-title h1 {
+    color: #1E9FFF;
+    font-size: 25px;
     font-weight: bold;
-    font-size: 40px
 }
 
-.admin-input {
-    border-top-style: none;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
-    height: 50px;
-    width: 300px;
-    padding-bottom: 0px
+.login-form {
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 14px 20px;
+    box-shadow: 0 0 8px #eeeeee;
 }
 
-.admin-input::-webkit-input-placeholder {
-    color: #a78369
+.login-form .layui-form-item {
+    position: relative;
 }
 
-.layui-icon-username {
-    color: #a78369 !important
-}
-
-.layui-icon-username:hover {
-    color: #9dadce !important
-}
-
-.layui-icon-password {
-    color: #a78369 !important
-}
-
-.layui-icon-password:hover {
-    color: #9dadce !important
-}
-
-.admin-input-username {
-    border-top-style: solid;
-    border-radius: 10px 10px 0 0
-}
-
-.admin-input-verify {
-    border-radius: 0 0 10px 10px
-}
-
-.admin-button {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 18px;
-    width: 300px;
-    height: 50px;
-    border-radius: 5px;
-    background-color: #a78369;
-    border: 1px solid #d8b29f
-}
-
-.admin-icon {
-    margin-left: 260px;
-    margin-top: 10px;
-    font-size: 30px
-}
-
-i {
-    position: absolute
-}
-
-.admin-captcha {
+.login-form .layui-form-item label {
     position: absolute;
-    margin-left: 205px;
-    margin-top: -45px
+    left: 1px;
+    top: 1px;
+    width: 38px;
+    line-height: 36px;
+    text-align: center;
+    color: #d2d2d2;
+}
+
+.login-form .layui-form-item input {
+    padding-left: 36px;
+}
+
+.captcha {
+    width: 60%;
+    display: inline-block;
+}
+
+.captcha-img {
+    display: inline-block;
+    width: 34%;
+    float: right;
+}
+
+.captcha-img img {
+    height: 34px;
+    border: 1px solid #e6e6e6;
+    height: 36px;
+    width: 100%;
 }

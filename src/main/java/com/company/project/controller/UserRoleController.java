@@ -1,7 +1,6 @@
 package com.company.project.controller;
 
 import com.company.project.common.aop.annotation.LogAnnotation;
-import com.company.project.common.utils.DataResult;
 import com.company.project.service.UserRoleService;
 import com.company.project.vo.req.UserRoleOperationReqVO;
 import io.swagger.annotations.Api;
@@ -31,8 +30,7 @@ public class UserRoleController {
     @PostMapping("/user/role")
     @ApiOperation(value = "修改或者新增用户角色接口")
     @LogAnnotation(title = "用户和角色关联接口", action = "修改或者新增用户角色")
-    public DataResult operationUserRole(@RequestBody @Valid UserRoleOperationReqVO vo) {
+    public void operationUserRole(@RequestBody @Valid UserRoleOperationReqVO vo) {
         userRoleService.addUserRoleInfo(vo);
-        return DataResult.success();
     }
 }

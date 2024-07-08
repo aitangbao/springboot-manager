@@ -93,20 +93,19 @@ public class SysLogAspect {
             }
 
             sysLog.setParams(params);
+            //获取request
+            HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+            //设置IP地址
+            sysLog.setIp(IPUtils.getIpAddr(request));
+            log.info("Ip{}，接口地址{}，请求方式{}，入参：{}", sysLog.getIp(), request.getRequestURL(), request.getMethod(), sysLog.getParams());
+            //用户名
+            String userId = StpUtil.getLoginIdAsString();
+            sysLog.setUserId(userId);
+            sysLog.setTime((int) time);
+            log.info(sysLog.toString());
+            sysLogMapper.insert(sysLog);
         } catch (Exception e) {
             log.error("sysLog,exception:{}", e, e);
         }
-        //获取request
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        //设置IP地址
-        sysLog.setIp(IPUtils.getIpAddr(request));
-        log.info("Ip{}，接口地址{}，请求方式{}，入参：{}", sysLog.getIp(), request.getRequestURL(), request.getMethod(), sysLog.getParams());
-        //用户名
-        String userId = StpUtil.getLoginIdAsString();
-        sysLog.setUserId(userId);
-        sysLog.setTime((int) time);
-        log.info(sysLog.toString());
-        sysLogMapper.insert(sysLog);
-
     }
 }

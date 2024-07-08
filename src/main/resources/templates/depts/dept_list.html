@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
-      xmlns:th="http://www.thymeleaf.org"
->
-
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
-
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 
@@ -49,7 +45,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-filter="switch" title="启用|禁用" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -75,23 +71,20 @@
     <a sa:hasPermission="sys:dept:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a sa:hasPermission="sys:dept:deleted" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script th:inline="none">
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var form = layui.form;
-    var element = layui.element;
-    var treetable;
-    var selectNode = {};
+
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable'
-    }).use(['treetable', 'table', 'tree'], function () {
+    }).use(['treetable', 'tree'], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var treetable;
+        var selectNode = {};
+
+
         var reloadTreeTable = function () {
             CoreUtil.sendGet(ctx + "sys/depts", null, function (res) {
                 renderTable(res.data);
@@ -99,7 +92,6 @@
         };
         reloadTreeTable();
         treetable = layui.treetable;
-        var table = layui.table;
         var tree = layui.tree;
         var renderTable = function (data) {
             treetable.render({
@@ -131,16 +123,7 @@
                         {field: 'relationCode', title: '层级关系编码'},
                         {field: 'managerName', title: '部门经理'},
                         {field: 'phone', title: '部门经理联系电话'},
-                        {
-                            field: 'status', title: '状态', templet: function (item) {
-                                if (item.status === 1) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" checked disabled>';
-                                }
-                                if (item.status === 0) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" disabled>';
-                                }
-                            }
-                        },
+                        {field: 'status', title: '状态', templet:'#checkbox_status'},
                         {field: 'createTime', title: '创建时间', minWidth: 120},
                         {title: '操作', width: 250, toolbar: '#tool'}
                     ]
@@ -171,12 +154,6 @@
                         "phone": data.phone,
                         "status": data.status == 1
                     });
-
-                    if (data.status == 1) {
-                        $(".operation_dept input[name=status]").val(1);
-                    } else {
-                        $(".operation_dept input[name=status]").val(0);
-                    }
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
@@ -200,7 +177,6 @@
                         "phone": "",
                         "status": true
                     });
-                    $(".operation_dept input[name=status]").val(1);
                     initTree("");
                     break;
             }
@@ -241,7 +217,7 @@
                 area: ['400px', '450px'],
                 shade: 0,
                 shadeClose: false,
-                content: jQuery("#deptTree"),
+                content: $("#deptTree"),
                 btn: ['确定', '取消'],
                 yes: function (index) {
                     if (selectNode.data != null) {
@@ -254,11 +230,10 @@
                 }
             });
         });
-        form.on('switch(switch)', function () {
-            $(".operation_dept input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
-
-        });
         form.on('submit(submit)', function (data) {
+            //checkbox值 没有选中默认0
+            data.field.status = CoreUtil.isEmptyGet(data.field.status, 0) ;
+
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/dept", data.field, function (res) {
                     reloadTreeTable();

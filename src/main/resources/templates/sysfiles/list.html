@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+  <!--公共模块-->
+  <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="table_div">
@@ -35,23 +35,14 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-  var tableIns1;
-  var table = layui.table;
-  var form = layui.form;
-  var layer = layui.layer;
-  var $ = jQuery = layui.jquery;
-  var laydate = layui.laydate;
-  var upload = layui.upload;
-  layui.use(['table', 'layer', 'laydate', 'upload'], function () {
 
+  layui.use( function () {
+    var table = layui.table;
+    var layer = layui.layer;
+    var upload = layui.upload;
     //加载table
-    tableIns1 = table.render({
+    var tableIns1 = table.render({
       elem: '#showTable'
       , contentType: 'application/json'
       , page: true //开启分页
@@ -81,7 +72,7 @@
       elem: '#upload' //绑定元素
       ,url: ctx + 'sysFiles/upload' //上传接口
       ,done: function(res){
-        search();
+        tableIns1.reload();
         //上传完毕回调
       }
       ,error: function(){
@@ -144,7 +135,7 @@
           layer.close(index); //如果设定了yes回调，需进行手工关闭
           CoreUtil.sendDelete(ctx + "sysFiles/delete",ids,function (res) {
             layer.msg(res.msg, {time:1000},function () {
-              search();
+              tableIns1.reload();
             });
           });
         }
@@ -158,17 +149,4 @@
       return false;
     });
   });
-
-  //执行查询
-  function search() {
-    //这里以搜索为例
-    tableIns1.reload({
-      where: { //设定异步数据接口的额外参数，任意设
-        key: $("#key").val()
-      }
-      , page: {
-        curr: 1 //重新从第 1 页开始
-      }
-    });
-  };
 </script>

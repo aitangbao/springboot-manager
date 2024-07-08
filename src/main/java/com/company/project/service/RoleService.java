@@ -50,12 +50,4 @@ public interface RoleService extends IService<SysRole> {
      * @return List
      */
     List<SysRole> getRoleInfoByUserId(String userId);
-
-    /**
-     * 根据userId获取绑定的角色名
-     *
-     * @param userId userId
-     * @return List
-     */
-    List<String> getRoleNames(String userId);
 }

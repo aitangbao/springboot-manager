@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 
@@ -37,10 +37,10 @@
 </div>
 
 
-<div class="panel panel-default operation" id="dictAddDetail" hidden >
+<div class="panel panel-default operation" id="dictAddDetail" hidden>
     <div class="panel-heading title"></div>
     <div class="layui-card-body">
-        <form class="layui-form " action="" lay-filter="info" >
+        <form class="layui-form " action="" lay-filter="infoChild">
             <input id="detailId" name="id" hidden/>
             <input name="dictId" hidden/>
             <div class="layui-form-item">
@@ -78,17 +78,23 @@
         <div class="layui-col-sm12 layui-col-md6 layui-col-lg6">
             <div class="table_div">
                 <div id="searchParam" sa:hasPermission="sysDict:list">
-                    <div class="layui-form-item">
-                        <div class="layui-input-inline">
-                            <input type="text" id="name" class="layui-input" autocomplete="off" placeholder="请输入字典名称或描述 ">
-                            <input type="text" id="dictId" style="display: none" class="layui-input" autocomplete="off" placeholder="请输入字典名称或描述 ">
-                        </div>
 
-                        <div class="layui-input-inline ">
-                            <button class="layui-btn" onclick="search()" id="search">查询</button>
-                        </div>
-                    </div>
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" class="layui-input" autocomplete="off"
+                                       placeholder="请输入字典名称或描述 ">
+                                <input type="text" id="dictId" style="display: none" class="layui-input"
+                                       autocomplete="off" placeholder="请输入字典名称或描述 ">
+                            </div>
 
+                            <div class="layui-input-inline ">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                        lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <table class="layui-table" id="showTable" lay-filter="showTable"></table>
             </div>
@@ -124,26 +130,18 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    var tableIns1;
-    var tableIns2;
-    var selectDictId = null;
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var laydate = layui.laydate;
-
-    layui.use(['table', 'layer', 'laydate'], function () {
 
 
-        //加载table
-        tableIns1 = table.render({
+    layui.use(function () {
+        var selectDictId = null;
+
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+
+        //父：加载table
+        var tableIns1 = table.render({
             elem: '#showTable'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -160,16 +158,100 @@
             , cols: [
                 [
                     {type: 'checkbox', fixed: 'left'},
-                    {field: 'name', title: '字典名称', sort: true,event: 'setDetail'},
-                    {field: 'remark', title: '描述', sort: true,event: 'setDetail'},
+                    {field: 'name', title: '字典名称', sort: true, event: 'setDetail'},
+                    {field: 'remark', title: '描述', sort: true, event: 'setDetail'},
                     {width: 120, toolbar: "#tool", title: '操作'}
                 ]
             ]
             , toolbar: '#toolbar'
         });
 
-        //加载table
-        tableIns2 = table.render({
+
+
+
+        //父：表头工具
+        table.on('toolbar(showTable)', function (obj) {
+            switch (obj.event) {
+                case 'batchDeleted':
+                    var containCurrentIdFlag;
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    var data = checkStatus.data;
+                    if (data.length == 0) {
+                        layer.msg("请选择要批量删除的列");
+                    } else {
+                        var ids = [];
+                        $(data).each(function (index, item) {
+                            ids.push(item.id);
+                            containCurrentIdFlag = (item.id === selectDictId);
+                        });
+                        tipDialog(ids, containCurrentIdFlag);
+                    }
+                    break;
+                case 'add':
+                    form.val('info', {
+                        "id": "",
+                        "name": "",
+                        "remark": ""
+                    })
+                    //捕获页
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-demo', //样式类名
+                        title: "添加字典",
+                        shadeClose: true, //开启遮罩关闭
+                        area: ['450px', '300px'], //宽高
+                        shade: 0.6, //遮罩透明度
+                        maxmin: true, //允许全屏最小化
+                        anim: 1, //0-6的动画形式，-1不开启
+                        content: $('#dictAdd'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        cancel: function () {
+                        }
+                    });
+                    break;
+            }
+            ;
+        });
+        //父：列操作
+        table.on('tool(showTable)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'del':
+                    var ids = [];
+                    ids.push(data.id);
+                    var containCurrentIdFlag = (data.id === selectDictId);
+                    tipDialog(ids, containCurrentIdFlag);
+                    break;
+                case 'edit':
+                    form.val('info', {
+                        "id": data.id,
+                        "name": data.name,
+                        "remark": data.remark
+                    })
+                    //捕获页
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-demo', //样式类名
+                        title: "添加字典",
+                        shadeClose: true, //开启遮罩关闭
+                        area: ['450px', '300px'], //宽高
+                        shade: 0.6, //遮罩透明度
+                        maxmin: true, //允许全屏最小化
+                        anim: 1, //0-6的动画形式，-1不开启
+                        content: $('#dictAdd'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        cancel: function () {
+                        }
+                    });
+                    break;
+                case 'setDetail':
+                    var data = obj.data;
+                    selectDictId = data.id;
+                    searchDetail();
+                    break;
+            }
+        });
+
+        //子：加载table
+        var tableIns2 = table.render({
             elem: '#showTableDetail'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -196,86 +278,7 @@
             , toolbar: '#toolbarDetail'
         });
 
-
-        //表头工具
-        table.on('toolbar(showTable)', function (obj) {
-            switch (obj.event) {
-                case 'batchDeleted':
-                    var containCurrentIdFlag;
-                    var checkStatus = table.checkStatus(obj.config.id);
-                    var data = checkStatus.data;
-                    if (data.length == 0) {
-                        layer.msg("请选择要批量删除的列");
-                    } else {
-                        var ids = [];
-                        $(data).each(function (index, item) {
-                            ids.push(item.id);
-                            containCurrentIdFlag = (item.id === selectDictId);
-                        });
-                        tipDialog(ids, containCurrentIdFlag);
-                    }
-                    break;
-                case 'add':
-                    $("#id").val("");
-                    $(".operation input[name=name]").val("");
-                    $(".operation input[name=remark]").val("");
-                    //捕获页
-                    layer.open({
-                        type: 1,
-                        skin: 'layui-layer-demo', //样式类名
-                        title: "添加字典",
-                        shadeClose: true, //开启遮罩关闭
-                        area: ['450px', '300px'], //宽高
-                        shade: 0.6, //遮罩透明度
-                        maxmin: true, //允许全屏最小化
-                        anim: 1, //0-6的动画形式，-1不开启
-                        content: $('#dictAdd'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                        cancel: function () {
-                        }
-                    });
-                    break;
-            }
-            ;
-        });
-        //列操作
-        table.on('tool(showTable)', function (obj) {
-            var data = obj.data;
-            switch (obj.event) {
-                case 'del':
-                    var ids = [];
-                    ids.push(data.id);
-                    var containCurrentIdFlag = (data.id === selectDictId);
-                    tipDialog(ids,containCurrentIdFlag);
-                    break;
-                case 'edit':
-                    $("#id").val(data.id);
-                    $(".operation input[name=name]").val(data.name);
-                    $(".operation input[name=remark]").val(data.remark);
-                    //捕获页
-                    layer.open({
-                        type: 1,
-                        skin: 'layui-layer-demo', //样式类名
-                        title: "添加字典",
-                        shadeClose: true, //开启遮罩关闭
-                        area: ['450px', '300px'], //宽高
-                        shade: 0.6, //遮罩透明度
-                        maxmin: true, //允许全屏最小化
-                        anim: 1, //0-6的动画形式，-1不开启
-                        content: $('#dictAdd'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                        cancel: function () {
-                        }
-                    });
-                    break;
-                case 'setDetail':
-                    var data = obj.data;
-                    selectDictId = data.id;
-                    searchDetail();
-                    break;
-            }
-        });
-
-
-        //详情表头工具
+        //子：详情表头工具
         table.on('toolbar(showTableDetail)', function (obj) {
             switch (obj.event) {
                 case 'batchDeleted':
@@ -296,11 +299,13 @@
                         layer.msg("请先选中左侧行后，再执行添加操作", {time: 3000});
                         return;
                     }
-                    $("#detailId").val("");
-                    $(".operation input[name=dictId]").val(selectDictId);
-                    $(".operation input[name=value]").val("");
-                    $(".operation input[name=label]").val("");
-                    $(".operation input[name=sort]").val("");
+                    form.val('infoChild', {
+                        "id": "",
+                        "dictId": "",
+                        "value": "",
+                        "label": "",
+                        "sort": ""
+                    })
                     //捕获页
                     layer.open({
                         type: 1,
@@ -320,7 +325,7 @@
             ;
         });
 
-        //详情列操作
+        //子：详情列操作
         table.on('tool(showTableDetail)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
@@ -330,11 +335,13 @@
                     tipDialogDetail(ids);
                     break;
                 case 'edit':
-                    $("#detailId").val(data.id);
-                    $(".operation input[name=dictId]").val(data.dictId);
-                    $(".operation input[name=value]").val(data.value);
-                    $(".operation input[name=label]").val(data.label);
-                    $(".operation input[name=sort]").val(data.sort);
+                    form.val('infoChild', {
+                        "id": data.id,
+                        "dictId": data.dictId,
+                        "value": data.value,
+                        "label": data.label,
+                        "sort": data.sort
+                    })
                     //捕获页
                     layer.open({
                         type: 1,
@@ -354,15 +361,15 @@
         });
 
 
-        //删除
-        var tipDialog = function (ids,containCurrentIdFlag) {
+        //父：删除
+        var tipDialog = function (ids, containCurrentIdFlag) {
             layer.open({
                 content: "确定要删除么?",
                 yes: function (index, layero) {
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendDelete(ctx + "sysDict/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            search()
+                            tableIns1.reload()
                             if (containCurrentIdFlag) {
                                 selectDictId = null;
                             }
@@ -373,7 +380,7 @@
             });
         };
 
-        //详情删除
+        //子；详情删除
         var tipDialogDetail = function (ids) {
             layer.open({
                 content: "确定要删除么?",
@@ -395,13 +402,13 @@
                 CoreUtil.sendPost(ctx + "sysDict/add", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    search()
+                    tableIns1.reload()
                 });
             } else {
                 CoreUtil.sendPut(ctx + "sysDict/update", data.field, function (res) {
                     $(".table_div").show();
                     layer.closeAll();
-                    search()
+                    tableIns1.reload()
                 });
             }
 
@@ -427,32 +434,31 @@
 
             return false;
         });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            tableIns1.reload({
+                page: {
+                    curr: 1
+                }
+                , where: data.field
+            });
+            return false;
+        });
+
+        //明细查询
+        var searchDetail = function () {
+            //这里以搜索为例
+            tableIns2.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    dictId: selectDictId
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        }
     });
 
-    //执行查询
-    function search() {
-        //这里以搜索为例
-        tableIns1.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                name: $("#name").val()
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
-        });
-    };
-
-    //执行查询
-    function searchDetail() {
-        //这里以搜索为例
-        tableIns2.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                dictId: selectDictId
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
-        });
-    };
-    
 </script>

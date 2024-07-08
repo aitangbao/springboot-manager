@@ -2,7 +2,6 @@ package com.company.project.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysGenerator;
 import com.company.project.service.ISysGeneratorService;
 import io.swagger.annotations.Api;
@@ -50,8 +49,7 @@ public class SysGeneratorController {
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @SaCheckPermission("sysGenerator:list")
-    public DataResult findListByPage(@RequestBody SysGenerator vo) {
-        IPage<SysGenerator> iPage = sysGeneratorService.selectAllTables(vo.getQueryPage(), vo);
-        return DataResult.success(iPage);
+    public IPage<SysGenerator> findListByPage(@RequestBody SysGenerator vo) {
+        return sysGeneratorService.selectAllTables(vo.getQueryPage(), vo);
     }
 }

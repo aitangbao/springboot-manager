@@ -4,10 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
-    <style id="layuimini-bg-color">
-    </style>
+  <!--公共模块-->
+  <div th:replace="~{layout}"></div>
 <body>
 <div class="panel panel-default operation" hidden>
   <div class="panel-heading title"></div>
@@ -40,14 +38,11 @@
     <form class="layui-form ">
       <div class="layui-form-item">
         <div class="layui-input-inline">
-          <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
+          <input type="text" name="key" class="layui-input"  autocomplete="off" placeholder="请输入">
         </div>
-
-      </div>
-
-      <div class="layui-input-inline ">
-        <button class="layui-btn" onclick="search()"  id="search">查询</button>
-        <button class="layui-btn"   id="export">导出全部</button>
+        <div class="layui-input-inline ">
+          <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+        </div>
       </div>
     </form>
   </div>
@@ -67,23 +62,13 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-  var tableIns1;
-  var table = layui.table;
-  var form = layui.form;
-  var layer = layui.layer;
-  var $ = jQuery = layui.jquery;
-  var laydate = layui.laydate;
-
-  layui.use(['table', 'layer', 'laydate'], function () {
-
+  layui.use(function () {
+    var table = layui.table;
+    var form = layui.form;
+    var layer = layui.layer;
     //加载table
-    tableIns1 = table.render({
+    var tableIns1 = table.render({
       elem: '#showTable'
       , contentType: 'application/json'
       , page: true //开启分页
@@ -163,21 +148,6 @@
       }
     });
 
-    //导出
-    $('#export').on('click', function () {
-      //原先分页limit
-      var exportParams = {
-        limit: 10000,
-        key: $("#key").val()
-      };
-      CoreUtil.sendPost(ctx + "${classname}/listByPage", exportParams, function (res) {
-        //初始化渲染数据
-        if (res.data != null && res.data.records != null) {
-          table.exportFile(tableIns1.config.id, res.data.records, 'xls');
-        }
-      });
-    });
-
     //删除
     var tipDialog=function (ids) {
       layer.open({
@@ -186,7 +156,7 @@
           layer.close(index); //如果设定了yes回调，需进行手工关闭
           CoreUtil.sendDelete(ctx + "${classname}/delete",ids,function (res) {
             layer.msg(res.msg, {time:1000},function () {
-              search();
+              tableIns1.reload();
             });
           });
         }
@@ -206,61 +176,60 @@
         CoreUtil.sendPost(ctx + "${classname}/add",data.field,function (res) {
           $(".table_div").show();
           $(".operation").hide();
-          search();
+          tableIns1.reload();
         });
       }else {
         CoreUtil.sendPut(ctx + "${classname}/update",data.field,function (res) {
           $(".table_div").show();
           $(".operation").hide();
-          search();
+          tableIns1.reload();
         });
       }
 
       return false;
     });
-  });
 
-  //执行查询
-  function search() {
-    //这里以搜索为例
-    tableIns1.reload({
-      where: { //设定异步数据接口的额外参数，任意设
-        key: $("#key").val()
-      }
-      , page: {
-        curr: 1 //重新从第 1 页开始
-      }
-    });
-  };
-
-  //回显
-  function backshow(data) {
-    $(".table_div").hide();
-    $(".operation").show();
-    $(".title").html("查看");
-    setTimeout(function () {
-      form.val('info', {
-        "test": "test"
-#foreach($column in $htmlColumns)
-        , "${column.attrname}": data.${column.attrname}
-#end
+    // 监听搜索操作
+    form.on('submit(data-search-btn)', function (data) {
+      //执行搜索重载
+      tableIns1.reload({
+        page: {
+          curr: 1
+        }
+        , where: data.field
       });
-    }, 200);
-  }
+      return false;
+    });
 
-  //禁用输入
-  function toDisabled() {
-    $(".oper").hide();
-    $(".disabled").each(function (index, elem) {
-      $(elem).attr("disabled", "")
-    })
-  }
+    //回显
+    var backshow = function (data) {
+      $(".table_div").hide();
+      $(".operation").show();
+      $(".title").html("查看");
+      setTimeout(function () {
+        form.val('info', {
+          "test": "test"
+          #foreach($column in $htmlColumns)
+            , "${column.attrname}": data.${column.attrname}
+          #end
+        });
+      }, 200);
+    }
 
-  //放开输入
-  function toUnDisabled() {
-    $(".oper").show();
-    $(".disabled").each(function (index, elem) {
-      $(elem).removeAttr("disabled", "")
-    })
-  }
+    //禁用输入
+    var toDisabled = function () {
+      $(".oper").hide();
+      $(".disabled").each(function (index, elem) {
+        $(elem).attr("disabled", "")
+      })
+    }
+
+    //放开输入
+    var toUnDisabled = function () {
+      $(".oper").show();
+      $(".disabled").each(function (index, elem) {
+        $(elem).removeAttr("disabled", "")
+      })
+    }
+  });
 </script>

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("")
 public class IndexController {
 
-    @GetMapping({"/index/login","/login","/"})
+    @GetMapping({"/index/login", "/login", "/"})
     public String loginIndex() {
         if (StpUtil.isLogin()) {
             return "home";
@@ -42,7 +42,6 @@ public class IndexController {
 
     @GetMapping("/index/users/info")
     public String userDetail(Model model) {
-        model.addAttribute("flagType", "edit");
         return "users/user_edit";
     }
 

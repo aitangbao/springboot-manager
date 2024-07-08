@@ -6,123 +6,150 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>layui表单生成器</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" href="/static/css/build.css?v=1">
-    <style>
-        .layout-page .card-header {
-            border-radius: 0;
-            border-top: 4px solid #d2d2d2;
-            border-bottom: 1px solid #e2e2e2;
-        }
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 
-        /* 页面通用样式 */
-        .layout-page {
-            background-color: #eeeeee;
-            padding: 18px;
-        }
-        .element-panel{padding-top: 10px;}.element-panel .layui-form-item, .element-panel .layui-form-item .layui-form-label, .build-panel .build-item, .build-panel .build-item .layui-form-label {cursor: move;}.drag-box{position: absolute;top: 100px;left: 100px;background-color: #FFFFFF;box-shadow: 0 0 2px 1px rgba(0,0,0,.12);opacity: 0.6;}.drag-box .layui-form-item{margin-bottom: 10px;}.build-card{overflow: hidden;}.build-panel{min-height: 500px;overflow: hidden;padding: 0;margin: 15px;}.build-panel.active{background-color: #fdffcd;}.build-panel #shell-item{background-color: #eeeeee;border: 1px dashed #c3c3c3;}.build-panel .build-item{position: relative;}.build-panel .build-item:hover{padding-top: 10px;border: 1px dashed #ffc664;}.build-panel .build-item:hover .control{display: block;}.build-panel .build-item .control{position: absolute;top: 0;right: 6px;font-size: 12px;color: #009688;display: none;z-index: 999999;}.build-panel .build-item .control a{color: #009688;}.build-item-edit .build-edit-box{position: relative;width: 500px;height: 317px;display: block;}.build-item-edit .build-edit{display: block;width: 460px;height: 287px;border: 10px solid #F8F8F8;border-top-width: 0;padding: 10px;line-height: 20px;overflow: auto;background-color: #3F3F3F;color: #eee;font-size: 12px;font-family: Courier New, serif;}.build-item-edit .build-edit-btn{position: absolute;z-index: 99999;right: 34px;bottom: 26px;width: 58px;height: 30px;border: none;color: #ffffff;border-radius: 2px;background-color: #009688;cursor: pointer;}.build-item-edit .build-edit-btn:hover{background-color: #007c6e;}.build-generate{float: right;margin-top: 6px;margin-right: 2px;color: #009688;border-color: #009688;}.build-generate:hover{background-color: #009688;color: #FFFFFF;}
-    </style>
+    <link rel="stylesheet" th:href="@{/static/css/build.css}">
+    <script type="text/javascript" th:src="@{/static/js/build.js}"></script>
 </head>
 <body class="layout-page">
-    <div class="layui-row layui-col-space20">
-        <div class="layui-col-md5">
-            <div class="layui-card">
-                <div class="layui-card-header card-header">
-                    <span><i class="fa fa-bars"></i> 将表单元素拖拽到构建面板中即可生成表单块</span>
-                </div>
-                <div class="layui-card-body">
-                    <div class="layui-form element-panel">
-<div class="layui-form-item">
-    <label class="layui-form-label">输入框</label>
-    <div class="layui-input-inline">
-        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-    </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">密码框</label>
-    <div class="layui-input-inline">
-        <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">选择框</label>
-    <div class="layui-input-inline">
-        <select name="interest" lay-filter="aihao">
-            <option value=""></option>
-            <option value="0">写作</option>
-            <option value="1">阅读</option>
-            <option value="2">游戏</option>
-            <option value="3">音乐</option>
-            <option value="4">旅行</option>
-        </select>
-    </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">上传图片</label>
-    <div class="layui-input-inline">
-        <button type="button" class="layui-btn upload-image" name="image[]"
-                th:attr="up-url=@{/upload/image}" up-field="path">
-            <i class="layui-icon">&#xe67c;</i>上传图片
-        </button>
-    </div>
-    <div class="upload-show"></div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">时间选择</label>
-    <div class="layui-input-inline">
-        <input type="text" class="layui-input" id="laydate" placeholder="yyyy-MM-dd">
-    </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">复选框</label>
-    <div class="layui-input-block">
-        <input type="checkbox" name="like[write]" title="写作">
-        <input type="checkbox" name="like[read]" title="阅读" checked="">
-        <input type="checkbox" name="like[game]" title="游戏">
-    </div>
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label">开关</label>
-    <div class="layui-input-block">
-        <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
-    </div>
-</div>
+<div class="layui-row layui-col-space20">
+    <div class="layui-col-md5">
+        <div class="layui-card">
+            <div class="layui-card-header card-header">
+                <span><i class="fa fa-bars"></i> 将表单元素拖拽到构建面板中即可生成表单块</span>
+            </div>
+            <div class="layui-card-body">
+                <div class="layui-form element-panel">
+                    <form class="layui-form"  action=""  lay-filter="info">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">输入框</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                       placeholder="请输入标题"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">密码框</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">选择框</label>
+                            <div class="layui-input-inline">
+                                <select name="interest" lay-filter="aihao">
+                                    <option value=""></option>
+                                    <option value="0">写作</option>
+                                    <option value="1">阅读</option>
+                                    <option value="2">游戏</option>
+                                    <option value="3">音乐</option>
+                                    <option value="4">旅行</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上传图片</label>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn" id="uploadImage">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                            </div>
+                            <div class="upload-show"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时间选择</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="laydate" placeholder="yyyy-MM-dd">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">复选框</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="like[write]" title="写作">
+                                <input type="checkbox" name="like[read]" title="阅读" checked="">
+                                <input type="checkbox" name="like[game]" title="游戏">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开关</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="close" lay-skin="switch" title="ON|OFF">
+                            </div>
+                        </div>
 
-<div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-block">
-        <input type="radio" name="sex" value="男" title="男" checked="">
-        <input type="radio" name="sex" value="女" title="女">
-    </div>
-</div>
-<div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">文本域</label>
-    <div class="layui-input-block">
-        <textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
-    </div>
-</div>
-<div class="layui-form-item">
-    <div class="layui-input-block">
-        <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
-        <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
-    </div>
-</div>
-                    </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">单选框</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="sex" value="男" title="男" checked="">
+                                <input type="radio" name="sex" value="女" title="女">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">文本域</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn ajax-submit" lay-submit lay-filter="submit-btn"><i class="fa fa-check-circle"></i> 保存</button>
+                                <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i>
+                                    关闭
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="layui-col-md7">
-            <div class="layui-card build-card">
-                <div class="layui-card-header card-header">
-                    <span><i class="fa fa-bars"></i> 构建面板</span>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm build-generate">生成HTML</button>
-                </div>
-                <div class="layui-card-body layui-form build-panel"></div>
+    <div class="layui-col-md7">
+        <div class="layui-card build-card">
+            <div class="layui-card-header card-header">
+                <span><i class="fa fa-bars"></i> 构建面板</span>
+                <button class="layui-btn layui-btn-primary layui-btn-sm build-generate">生成HTML</button>
             </div>
+            <div class="layui-card-body layui-form build-panel"></div>
         </div>
     </div>
-<script th:src="@{/static/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/build.js}"></script>
+</div>
 </body>
 </html>
+<script>
+    //Demo
+    layui.use(function () {
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+
+        //初始化laydate实例
+        laydate.render({
+            elem: '#laydate'
+        });
+
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadImage' //绑定元素
+            ,url:  ctx + 'sysFiles/upload' // 上传接口，实际使用时改成您自己的上传接口即可。
+            ,done: function(res){
+                layer.msg("上传成功，返回url："+ res.data);
+            }
+            ,error: function(){
+                //请求异常回调
+                layer.msg("上传失败");
+            }
+        });
+
+        //提交
+        form.on('submit(submit-btn)', function (data) {
+            layer.alert(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>

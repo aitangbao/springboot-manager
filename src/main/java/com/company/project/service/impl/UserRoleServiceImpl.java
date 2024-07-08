@@ -50,9 +50,4 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
         //批量插入
         this.saveBatch(list);
     }
-
-    @Override
-    public List getUserIdsByRoleId(String roleId) {
-        return sysUserRoleMapper.selectObjs(Wrappers.<SysUserRole>lambdaQuery().select(SysUserRole::getUserId).eq(SysUserRole::getRoleId, roleId));
-    }
 }

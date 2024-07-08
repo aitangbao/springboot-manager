@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
     <style>
         .layui-upload-img {
             width: 92px;
             height: 92px;
         }
     </style>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="panel panel-default operation" hidden>
@@ -46,31 +46,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">内容</label>
                 <div class="layui-input-block">
-                    <textarea id="content" name=content style="display: none;"></textarea>
-                </div>
-            </div>
-            <div class="layui-upload">
-                <button type="button" class="layui-btn disabled" id="multiImgButton"><i class="layui-icon">&#xe67c;</i>
-                    多图展示
-                </button>
-                <div class="layui-upload-list" style="width:1000px;height: 120px;border: 1px solid"
-                     id="multi-div"></div>
-            </div>
-            <div class="layui-form-item" style="margin-top:15px">
-                <div class="layui-inline">
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn disabled" id="oneImgButton"><i class="layui-icon">&#xe67c;</i>单图展示
-                        </button>
-                        <div class="layui-upload-list" style="width:100px">
-                            <img onclick="CoreUtil.showImg(this.src)" class="layui-upload-img" id="one-img">
-                            <center>
-                                <button onclick="emptyImgSrc('one-img');return false;"
-                                        class="layui-btn disabled layui-btn-danger layui-btn-xs">删除
-                                </button>
-                            </center>
-                        </div>
-
-                    </div>
+                    <textarea id="content" name="content"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -85,16 +61,17 @@
 
 <div class="table_div">
     <div id="searchParam" sa:hasPermission="sysContent:list">
-        <div class="layui-form-item">
-            <div class="layui-input-inline">
-                <input type="text" id="title" class="layui-input" autocomplete="off" placeholder="请输入标题">
-            </div>
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="title" class="layui-input" autocomplete="off" placeholder="请输入标题">
+                </div>
 
-            <div class="layui-input-inline ">
-                <button class="layui-btn" onclick="search()">查询</button>
+                <div class="layui-input-inline ">
+                    <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                </div>
             </div>
-        </div>
-
+        </form>
     </div>
     <table class="layui-table" id="showTable" lay-filter="showTable"></table>
 </div>
@@ -113,34 +90,33 @@
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     //文章类型字典数据
     var datas = "[[${@sysDictService.getType('content_type')}]]".replace(/&quot;/g, "\"");
-    var tableIns1;
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var laydate = layui.laydate;
-    var layedit = layui.layedit;
-    var upload = layui.upload;
-    layui.use(['table', 'layer', 'laydate', 'layedit','upload'], function () {
-        //图片
-        layedit.set({
-            uploadImage: {
-                url: ctx + 'sysFiles/upload' //接口url
-                , type: 'post' //默认post
+
+    layui.config({
+        base: ctx + 'static/layui-ext/'
+    }).extend({
+        tinymce: 'tinymce/tinymce',
+    }).use(['tinymce'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+
+        //建立富文本编辑器
+        var tinymce = layui.tinymce
+        var edit = tinymce.render({
+            elem: "#content"
+            , height: 500
+            , width: '80%'
+            , images_upload_url: ctx + 'sysFiles/upload'
+            , form: {
+                name: 'file'//配置上传文件的字段名称
             }
         });
-        //建立富文本编辑器
-        var editIndex = layedit.build('content');
+
         //加载table
-        tableIns1 = table.render({
+        var tableIns1 = table.render({
             elem: '#showTable'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -193,15 +169,11 @@
                     $(".operation").show();
                     $(".title").html("新增");
                     form.val('info', {
-                        "id":"",
+                        "id": "",
                         "title": "",
                         "type": "0"
                     })
-                    layedit.setContent(editIndex, "");
-                    //渲染select 默认选中第一个
-                    //图片
-                    emptyImgSrc("one-img");
-                    $('#multi-div').empty();
+                    edit.setContent('')
                     break;
             }
             ;
@@ -224,19 +196,9 @@
                         "title": data.title,
                         "type": data.type
                     })
-                    layedit.setContent(editIndex, data.content);
+                    edit.setContent(data.content)
                     //复选框回显
                     form.val('info', CoreUtil.setCheckboxValues("keywords", data.keywords));
-                    //单图回显
-                    $('#one-img').attr('src', data.oneImg);
-                    //多图回显
-                    $('#multi-div').empty();
-                    if (!CoreUtil.isEmpty(data.multipleImg)) {
-                        var arr = data.multipleImg.split(",");
-                        for (var i = 0; i < arr.length; i++) {
-                            $('#multi-div').append(buildMutiImgHtml(i, arr[i]))
-                        }
-                    }
                     break;
                 case 'preview':
                     layer.open({
@@ -265,7 +227,7 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendDelete(ctx + "sysContent/delete", ids, function (res) {
                         layer.msg(res.msg, {time: 1000}, function () {
-                            search();
+                            tableIns1.reload();
                         });
                     })
                 }
@@ -283,91 +245,37 @@
         form.on('submit(submit)', function (data) {
             //获取复选框的值
             data.field.keywords = CoreUtil.getCheckboxValues("keywords", data.field);
-            //单图
-            data.field.oneImg = $("#one-img").attr("src");
-            //多图
-            var urlAll = "";
-            $(".multi-img").each(function (index, element) {
-                if (index === 0) {
-                    urlAll = $(this).attr("src");
-                } else {
-                    urlAll = urlAll + "," + $(this).attr("src");
-                }
-            });
-            data.field.multipleImg = urlAll;
+
+            data.field.content = edit.getContent();
             //图文
-            data.field.content = layedit.getContent(editIndex);
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sysContent/add", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
-                    search();
+                    tableIns1.reload();
                 })
             } else {
                 CoreUtil.sendPut(ctx + "sysContent/update", data.field, function (res) {
                     $(".table_div").show();
                     $(".operation").hide();
-                    search();
+                    tableIns1.reload();
                 })
             }
 
             return false;
         });
 
-
-        //多图上传
-        upload.render({
-            elem: '#multiImgButton'
-            , url: ctx + 'sysFiles/upload' //此处配置你自己的上传接口即可
-            , multiple: true
-            , acceptMime: 'image/*'
-            , done: function (res) {
-                $('#multi-div').append(buildMutiImgHtml(res.data.id, res.data.src))
-            }
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            tableIns1.reload({
+                page: {
+                    curr: 1
+                }
+                , where: data.field
+            });
+            return false;
         });
 
-        //单图上传
-        upload.render({
-            elem: '#oneImgButton'
-            , url: ctx + 'sysFiles/upload' //此处配置你自己的上传接口即可
-            , multiple: false
-            , acceptMime: 'image/*'
-            , done: function (res) {
-                $('#one-img').attr('src', res.data.src); //图片链接（base64）
-            }
-        });
     });
-
-
-    //构建多图片上传html
-    function buildMutiImgHtml(id, src) {
-        return '<div id="' + id + '" style="float:left">' +
-            '<img onclick="CoreUtil.showImg(this.src)" src="' + src + '" class="layui-upload-img multi-img">' +
-            '<br><center><button class="layui-btn disabled layui-btn-danger layui-btn-xs" ' +
-            'onclick="removeImg(\'' + id + '\')">删除</button></center></div>'
-    }
-
-    //多图片上传， 删除图片
-    function removeImg(id) {
-        $("#" + id).remove();
-    }
-
-    //单图片，清空
-    function emptyImgSrc(id) {
-        $('#' + id).removeAttr("src"); //图片链接（base64）
-    }
-
-
-    //执行查询
-    function search() {
-        //这里以搜索为例
-        tableIns1.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                title: $("#title").val()
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
-        });
-    };
 </script>

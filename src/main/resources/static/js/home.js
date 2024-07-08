@@ -277,7 +277,7 @@ var config = function (name) {
     var config = {
         urlHashLocation: true,   // URL地址hash定位
         urlSuffixDefault: false, // URL后缀
-        BgColorDefault: 4,       // 默认皮肤（0开始）
+        BgColorDefault: 3,       // 默认皮肤（0开始）
         checkUrlDefault: false,   // 是否判断URL有效
     };
 

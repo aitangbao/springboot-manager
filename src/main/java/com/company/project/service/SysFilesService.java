@@ -1,7 +1,6 @@
 package com.company.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysFilesEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +16,20 @@ import java.util.List;
  */
 public interface SysFilesService extends IService<SysFilesEntity> {
 
-    DataResult saveFile(MultipartFile file, HttpServletRequest request);
+    /**
+     * 保存图片返回url
+     *
+     * @param file
+     * @param request
+     * @return
+     */
+    String saveFile(MultipartFile file, HttpServletRequest request);
 
+    /**
+     * 删除图片
+     *
+     * @param ids
+     */
     void removeByIdsAndFiles(List<String> ids);
 }
 

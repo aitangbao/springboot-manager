@@ -2,21 +2,20 @@ package com.company.project.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.company.project.common.exception.BusinessException;
-import com.company.project.common.utils.DataResult;
 import com.company.project.common.utils.DateUtils;
 import com.company.project.entity.SysFilesEntity;
 import com.company.project.mapper.SysFilesMapper;
 import com.company.project.service.SysFilesService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * 文件上传 服务类
@@ -33,7 +32,7 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
     private String filePath;
 
     @Override
-    public DataResult saveFile(MultipartFile file, HttpServletRequest request) {
+    public String saveFile(MultipartFile file, HttpServletRequest request) {
         //存储文件夹
         String createTime = DateUtils.format(new Date(), DateUtils.DATEPATTERN);
         String newPath = filePath + File.separator + createTime + File.separator;
@@ -61,9 +60,7 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
             sysFilesEntity.setFilePath(newFilePathName);
             sysFilesEntity.setUrl(url);
             this.save(sysFilesEntity);
-            Map<String, String> resultMap = new HashMap<>();
-            resultMap.put("src", url);
-            return DataResult.success(resultMap);
+            return url;
         } catch (Exception e) {
             throw new BusinessException("上传文件失败");
         }
@@ -98,6 +95,7 @@ public class SysFilesServiceImpl extends ServiceImpl<SysFilesMapper, SysFilesEnt
 
     /**
      * 获取跟路径
+     *
      * @param request
      * @return
      */

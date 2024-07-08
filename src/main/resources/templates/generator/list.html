@@ -2,123 +2,113 @@
 <html lang="en" xmlns:sa="http://www.thymeleaf.org/extras/sa-token"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-  <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="table_div">
-  <div id="searchParam"  sa:hasPermission="sysGenerator:list">
-    <div class="layui-form-item">
-      <div class="layui-input-inline">
-        <input type="text" id="tableName" class="layui-input"  autocomplete="off" placeholder="请输入表名">
-      </div>
+    <div id="searchParam" sa:hasPermission="sysGenerator:list">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="tableName" class="layui-input" autocomplete="off" placeholder="请输入表名">
+                </div>
 
-      <div class="layui-input-inline ">
-        <button class="layui-btn" onclick="search()">查询</button>
-      </div>
+                <div class="layui-input-inline ">
+                  <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                </div>
+            </div>
+        </form>
     </div>
-
-  </div>
-  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+    <table class="layui-table" id="showTable" lay-filter="showTable"></table>
 </div>
 <script type="text/html" id="toolbar">
-  <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="batchGen"  sa:hasPermission="sysGenerator:add">批量生成</button>
-  </div>
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="batchGen" sa:hasPermission="sysGenerator:add">批量生成</button>
+    </div>
 </script>
 <script type="text/html" id="tool">
-  <a class="layui-btn layui-btn-xs" lay-event="gen" sa:hasPermission="sysGenerator:add">生成</a>
+    <a class="layui-btn layui-btn-xs" lay-event="gen" sa:hasPermission="sysGenerator:add">生成</a>
 </script>
 
 </body>
 </html>
-<script th:inline="javascript" type="text/javascript">
-  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
-<script th:src="@{/static/js/jquery.js}"></script>
-<script th:src="@{/static/js/jquery.fileDownload.js}"></script>
+
 <script>
-  var tableIns1;
-  var table = layui.table;
-  var form = layui.form;
-  var layer = layui.layer;
-  var laydate = layui.laydate;
+    layui.use(function () {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
 
-  layui.use(['table', 'layer', 'laydate'], function () {
+        //加载table
+        var tableIns1 = table.render({
+            elem: '#showTable'
+            , contentType: 'application/json'
+            , page: true //开启分页
+            , url: ctx + 'sysGenerator/listByPage' //数据接口
+            , method: 'POST'
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                    "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+                }
+            }
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'tableName', title: '表名', sort: true},
+                    {field: 'tableComment', title: '表备注', sort: true},
+                    {field: 'createTime', title: '表创建时间', sort: true},
+                    {toolbar: "#tool", title: '操作'}
+                ]
+            ]
+            , toolbar: '#toolbar'
+        });
 
-    //加载table
-    tableIns1 = table.render({
-      elem: '#showTable'
-      , contentType: 'application/json'
-      , page: true //开启分页
-      , url: ctx + 'sysGenerator/listByPage' //数据接口
-      , method: 'POST'
-      , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-        return {
-          "code": res.code, //解析接口状态
-          "msg": res.msg, //解析提示文本
-          "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
-          "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
-        }
-      }
-      , cols: [
-        [
-          {type: 'checkbox', fixed: 'left'},
-          {field: 'tableName', title: '表名', sort: true},
-          {field: 'tableComment', title: '表备注',  sort: true},
-          {field: 'createTime', title: '表创建时间',  sort: true},
-          { toolbar: "#tool", title: '操作'}
-        ]
-      ]
-      , toolbar: '#toolbar'
-    });
+        //表头工具栏事件
+        table.on('toolbar(showTable)', function (obj) {
+            switch (obj.event) {
+                case 'batchGen':
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    var data = checkStatus.data;
+                    if (data.length == 0) {
+                        layer.msg("请选择要批量生成的表");
+                    } else {
+                        var tables = [];
+                        $(data).each(function (index, item) {
+                            tables.push(item.tableName);
+                        });
+                        location.href = ctx + "sysGenerator/gen?tables=" + tables;
+                    }
+                    break;
+            }
+            ;
+        });
+        //操作工具栏事件
+        table.on('tool(showTable)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'gen':
+                    location.href = ctx + "sysGenerator/gen?tables=" + data.tableName;
+                    break;
+            }
+        });
 
-      //表头工具栏事件
-      table.on('toolbar(showTable)', function (obj) {
-          switch (obj.event) {
-              case 'batchGen':
-                  var checkStatus = table.checkStatus(obj.config.id);
-                  var data = checkStatus.data;
-                  if (data.length == 0) {
-                      layer.msg("请选择要批量生成的表");
-                  } else {
-                      var tables = [];
-                      $(data).each(function (index, item) {
-                          tables.push(item.tableName);
-                      });
-                      $.fileDownload(ctx + "sysGenerator/gen?tables=" + tables,{httpMethod: 'get'})
-                  }
-                  break;
+      // 监听搜索操作
+      form.on('submit(data-search-btn)', function (data) {
+        //执行搜索重载
+        tableIns1.reload({
+          page: {
+            curr: 1
           }
-          ;
-      });
-      //操作工具栏事件
-      table.on('tool(showTable)', function (obj) {
-          var data = obj.data;
-          switch (obj.event) {
-              case 'gen':
-                $.fileDownload(ctx + "sysGenerator/gen?tables=" + data.tableName,{httpMethod: 'get'})
-                break;
-          }
+          , where: data.field
+        });
+        return false;
       });
 
-  });
-
-  //执行查询
-  function search() {
-    //这里以搜索为例
-    tableIns1.reload({
-      where: { //设定异步数据接口的额外参数，任意设
-        tableName: $("#tableName").val()
-      }
-      , page: {
-        curr: 1 //重新从第 1 页开始
-      }
     });
-  };
-
 </script>

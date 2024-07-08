@@ -293,4 +293,3 @@ INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842370', 'java', '1', 1, '1255790029680242691', '2020-07-14 09:15:01');
 INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842371', 'mysql', '2', 2, '1255790029680242691', '2020-07-14 09:15:01');
-INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');

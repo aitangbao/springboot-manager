@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Thymeleaf中使用saToken需要此配置
+ *
  * @author wenbin
  */
 @Configuration

@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"/>
-    <link rel="stylesheet" th:href="@{/static/css/custom.form.css}">
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="panel panel-default operation_menu" hidden>
@@ -68,14 +68,15 @@
             <div class="layui-form-item">
                 <div class="layui-form-label">排序码</div>
                 <div class="layui-input-block">
-                    <input type="text" name="orderNum" lay-verify="number" onkeyup="value=zhzs(this.value)"
-                           placeholder="请输入排序码" autocomplete="off" class="layui-input">
+                    <input type="text" name="orderNum" lay-verify="number" placeholder="请输入排序码" autocomplete="off"
+                           class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switch" lay-text="启用|禁用" checked>
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-filter="switch" title="启用|禁用"
+                           checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -101,25 +102,22 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
        sa:hasPermission="sys:permission:deleted">删除</a>
 </script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script th:inline="none">
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var form = layui.form;
-    var element = layui.element;
-    var treetable;
-    var selectNode = null;
-    var iconPicker;
+
     layui.config({
         base: ctx + 'static/layui-ext/'
     }).extend({
         treetable: 'treetable-lay/treetable',
         iconPicker: 'icon/iconPicker'
-    }).use(['treetable', 'table', 'tree',"iconPicker"], function () {
+    }).use(['treetable', 'tree', "iconPicker"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var treetable;
+        var selectNode = null;
+        var iconPicker;
+
+
         var reloadTreeTable = function () {
             CoreUtil.sendGet(ctx + "sys/permissions", null, function (res) {
                 renderTable(res.data);
@@ -128,7 +126,6 @@
         reloadTreeTable();
         treetable = layui.treetable;
         iconPicker = layui.iconPicker;
-        var table = layui.table;
         var tree = layui.tree;
         var renderTable = function (data) {
             treetable.render({
@@ -148,12 +145,14 @@
                         {type: 'numbers'},
                         {field: 'name', width: 150, title: '菜单名称'},
                         {field: 'url', width: 150, title: 'url'},
-                        {field: 'icon', width: 80, title: '图标',templet:function (item) {
-                            return '<i class="icon-color layui-icon '+item.icon+'"></i>';
-                            }},
+                        {
+                            field: 'icon', width: 80, title: '图标', templet: function (item) {
+                                return '<i class="icon-color layui-icon ' + item.icon + '"></i>';
+                            }
+                        },
                         {field: 'target', width: 80, title: 'target'},
                         {
-                            field: 'type',width: 70, title: '类型', templet: function (item) {
+                            field: 'type', width: 70, title: '类型', templet: function (item) {
                                 if (item.type === 1) {
                                     return '  <a class="layui-btn layui-btn-xs" >目录</a>';
                                 }
@@ -166,56 +165,43 @@
                             }
                         },
                         {field: 'pidName', title: '父级名称'},
-                        {field: 'orderNum', title: '排序',width: 70},
-                        {field: 'perms', title: '资源标识',width: 150},
+                        {field: 'orderNum', title: '排序', width: 70},
+                        {field: 'perms', title: '资源标识', width: 150},
                         {field: 'createTime', title: '创建时间', Width: 150},
-                        {
-                            field: 'status', title: '状态',width: 100, templet: function (item) {
-                                if (item.status === 1) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" checked disabled>';
-                                }
-                                if (item.status === 0) {
-                                    return '  <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" disabled>';
-                                }
-                            }
-                        },
+                        {field: 'status', title: '状态', width: 100, templet: '#checkbox_status'},
                         {title: '操作', width: 180, toolbar: '#tool'}
                     ]
                 ]
             });
 
         };
+
+        //表头工具栏
         table.on('toolbar(menuTable)', function (obj) {
-            var data = obj.data;
             switch (obj.event) {
                 case 'addMenu':
                     selectNode = null;
                     $(".menu-table").hide();
                     $(".operation_menu").show();
                     $(".title").html("新增菜单权限");
-                    initRadio(1);
                     $(".menu-perms").hide();
                     $(".menu_target").hide();
                     $(".menu_url").hide();
                     $(".menu_icon").show();
                     form.val('info', {
                         "id": ""
-                        ,"pid": ""
-                        ,"name": ""
-                        ,"pidName": ""
-                        ,"url": ""
-                        ,"perms": ""
-                        ,"orderNum": ""
-                        ,"target": "_self"
-                        ,'status': true // 开关状态
+                        , "type": "1"
+                        , "pid": ""
+                        , "name": ""
+                        , "pidName": ""
+                        , "url": ""
+                        , "perms": ""
+                        , "orderNum": ""
+                        , "target": "_self"
+                        , 'status': true // 开关状态
+                        , 'icon': "" // 开关状态
                     });
-                    $("input[name='icon']").attr("value","")
                     iconPicker.checkIcon('iconPicker', '');
-                    if ($("#reset_icon").length === 0){
-                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
-                    }
-                    $(".operation_menu input[name=status]").val(1);
-
                     initTree("");
                     break;
             }
@@ -239,6 +225,7 @@
             }
         });
 
+        //行工具栏
         table.on('tool(menuTable)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
@@ -250,37 +237,31 @@
                     $(".menu-table").hide();
                     $(".operation_menu").show();
                     $(".title").html("编辑菜单权限");
-                    initRadio(data.type);
                     form.val('info', {
                         "target": data.target
-                        ,"id": data.id
-                        ,"pid": data.pid
-                        ,"name": data.name
-                        ,"pidName": data.pidName
-                        ,"url": data.url
-                        ,"perms": data.perms
-                        ,"orderNum": data.orderNum
-                        ,'status': data.status === 1 // 开关状态
+                        , "id": data.id
+                        , "pid": data.pid
+                        , "name": data.name
+                        , "pidName": data.pidName
+                        , "url": data.url
+                        , "perms": data.perms
+                        , "type": data.type.toString()
+                        , "orderNum": data.orderNum
+                        , 'status': data.status === 1 // 开关状态
+                        , 'icon': data.icon// 开关状态
                     });
                     if (!CoreUtil.isEmpty(data.icon)) {
                         iconPicker.checkIcon('iconPicker', data.icon);
                     } else {
                         iconPicker.checkIcon('iconPicker', "");
                     }
-                    if ($("#reset_icon").length === 0){
-                        $(".layui-select-title").append("<a id='reset_icon' onclick='resetIcon()' class=\"layui-btn  layui-btn-danger layui-btn-sm\">重置</a>")
-                    }
-                    $("input[name='icon']").attr("value",data.icon)
-                    if (data.status == 1) {
-                        $(".operation_menu input[name=status]").val(1);
-                    } else {
-                        $(".operation_menu input[name=status]").val(0);
-                    }
                     form.render(); //更新全部
                     initTree(data.id);
                     break;
             }
         });
+
+        //删除测单
         var deletedMenu = function (menuId, menuName) {
             layer.open({
                 content: '确定要删除' + menuName + "?",
@@ -293,6 +274,8 @@
                 }
             });
         };
+
+        //加载树形
         var initTree = function (id) {
             var param = {permissionId: id}
             CoreUtil.sendGet(ctx + "sys/permission/tree", param, function (res) {
@@ -310,21 +293,7 @@
                 }
             });
         };
-        form.on('switch(switch)', function () {
-            $(".operation_menu input[name=status]").attr('type', 'hidden').val(this.checked ? 1 : 0);
 
-        });
-
-        var initRadio = function (value) {
-            var radio = document.getElementsByName("type");
-            var radioLength = radio.length;
-            for (var i = 0; i < radioLength; i++) {
-                if (value == radio[i].value) {
-                    $(radio[i]).next().click();
-                }
-
-            }
-        };
         $("#btn_cancel").click(function () {
             $(".menu-table").show();
             $(".operation_menu").hide();
@@ -340,7 +309,7 @@
                 area: ['400px', '450px'],
                 shade: 0,
                 shadeClose: false,
-                content: jQuery("#menuTree"),
+                content: $("#menuTree"),
                 btn: ['确定', '取消'],
                 yes: function (index) {
                     if (selectNode.data != null) {
@@ -354,7 +323,8 @@
         });
 
         form.on('submit(submit)', function (data) {
-            console.log(data)
+            //checkbox值 没有选中默认0
+            data.field.status = CoreUtil.isEmptyGet(data.field.status, 0);
             if (data.field.id === undefined || data.field.id === null || data.field.id === "") {
                 CoreUtil.sendPost(ctx + "sys/permission", data.field, function (res) {
                     reloadTreeTable();
@@ -370,42 +340,26 @@
             }
             return false;
         });
+
         form.on('radio(radio-type)', function (data) {
             if (data.value == '1') {
                 $(".menu-perms").hide();
                 $(".menu_target").hide();
                 $(".menu_url").hide();
                 $(".menu_icon").show();
-            } else if(data.value == '2'){
+            } else if (data.value == '2') {
                 $(".menu-perms").hide();
                 $(".menu_target").show();
                 $(".menu_url").show();
                 $(".menu_icon").show();
-            } else{
+            } else {
                 $(".menu-perms").show();
                 $(".menu_target").hide();
                 $(".menu_url").show();
                 $(".menu_icon").hide();
             }
         });
-
-
     });
-
-    function zhzs(value) {
-
-        value = value.replace(/[^\d]/g, '');
-        if ('' != value) {
-            value = parseInt(value);
-        }
-        return value;
-    }
-
-    function resetIcon(){
-        iconPicker.checkIcon('iconPicker', '');
-        $("input[name='icon']").attr("value","")
-    }
-
 </script>
 </body>
 </html>

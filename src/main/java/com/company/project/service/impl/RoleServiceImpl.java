@@ -23,7 +23,6 @@ import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 角色
@@ -142,14 +141,5 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
             return null;
         }
         return sysRoleMapper.selectBatchIds(roleIds);
-    }
-
-    @Override
-    public List<String> getRoleNames(String userId) {
-        List<SysRole> sysRoles = getRoleInfoByUserId(userId);
-        if (CollectionUtils.isEmpty(sysRoles)) {
-            return null;
-        }
-        return sysRoles.stream().map(SysRole::getName).collect(Collectors.toList());
     }
 }

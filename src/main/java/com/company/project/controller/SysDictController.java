@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.company.project.common.utils.DataResult;
+import com.company.project.common.exception.BusinessException;
 import com.company.project.entity.SysDictDetailEntity;
 import com.company.project.entity.SysDictEntity;
 import com.company.project.service.SysDictDetailService;
@@ -39,49 +39,46 @@ public class SysDictController {
     @ApiOperation(value = "新增")
     @PostMapping("/add")
     @SaCheckPermission("sysDict:add")
-    public DataResult add(@RequestBody SysDictEntity sysDict) {
+    public void add(@RequestBody SysDictEntity sysDict) {
         if (StringUtils.isEmpty(sysDict.getName())) {
-            return DataResult.fail("字典名称不能为空");
+            throw new BusinessException("字典名称不能为空");
         }
         SysDictEntity q = sysDictService.getOne(Wrappers.<SysDictEntity>lambdaQuery().eq(SysDictEntity::getName, sysDict.getName()));
         if (q != null) {
-            return DataResult.fail("字典名称已存在");
+            throw new BusinessException("字典名称已存在");
         }
         sysDictService.save(sysDict);
-        return DataResult.success();
     }
 
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete")
     @SaCheckPermission("sysDict:delete")
-    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
+    public void delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysDictService.removeByIds(ids);
         //删除detail
         sysDictDetailService.remove(Wrappers.<SysDictDetailEntity>lambdaQuery().in(SysDictDetailEntity::getDictId, ids));
-        return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
     @PutMapping("/update")
     @SaCheckPermission("sysDict:update")
-    public DataResult update(@RequestBody SysDictEntity sysDict) {
+    public void update(@RequestBody SysDictEntity sysDict) {
         if (StringUtils.isEmpty(sysDict.getName())) {
-            return DataResult.fail("字典名称不能为空");
+            throw new BusinessException("字典名称不能为空");
         }
 
         SysDictEntity q = sysDictService.getOne(Wrappers.<SysDictEntity>lambdaQuery().eq(SysDictEntity::getName, sysDict.getName()));
         if (q != null && !q.getId().equals(sysDict.getId())) {
-            return DataResult.fail("字典名称已存在");
+            throw new BusinessException("字典名称已存在");
         }
 
         sysDictService.updateById(sysDict);
-        return DataResult.success();
     }
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @SaCheckPermission("sysDict:list")
-    public DataResult findListByPage(@RequestBody SysDictEntity sysDict) {
+    public IPage<SysDictEntity> findListByPage(@RequestBody SysDictEntity sysDict) {
         LambdaQueryWrapper<SysDictEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysDict.getName())) {
@@ -90,8 +87,7 @@ public class SysDictController {
             queryWrapper.like(SysDictEntity::getRemark, sysDict.getName());
         }
         queryWrapper.orderByAsc(SysDictEntity::getName);
-        IPage<SysDictEntity> iPage = sysDictService.page(sysDict.getQueryPage(), queryWrapper);
-        return DataResult.success(iPage);
+        return sysDictService.page(sysDict.getQueryPage(), queryWrapper);
     }
 
 }

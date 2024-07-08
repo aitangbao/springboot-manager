@@ -4,32 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div id="searchParam">
-    <div class="layui-form-item" sa:hasPermission="sys:log:list">
-        <div class="layui-input-inline">
-            <input type="text" id="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item" sa:hasPermission="sys:log:list">
+            <div class="layui-input-inline">
+                <input type="text" name="username" class="layui-input" autocomplete="off" placeholder="请输入账号">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" name="operation" class="layui-input" autocomplete="off" placeholder="用户操作动作">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" readonly class="layui-input" name="createTimeBegin" id="createTimeBegin" placeholder="开始时间">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" readonly class="layui-input" name="createTimeEnd" id="createTimeEnd" placeholder="结束时间">
+            </div>
+            <div class="layui-input-inline ">
+                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+            </div>
         </div>
-        <div class="layui-input-inline">
-            <input type="text" id="operation" class="layui-input" autocomplete="off" placeholder="用户操作动作">
-        </div>
-        <div class="layui-input-inline">
-            <input type="text" readonly class="layui-input" id="createTime" placeholder="创建时间">
-        </div>
-        <div class="layui-input-inline ">
-            <button class="layui-btn" onclick="search()" id="search">查询</button>
-        </div>
-    </div>
-
+    </form>
 </div>
 <table class="layui-hide" id="log_table" lay-filter="log_table"></table>
 <div id="laypage"></div>
 </body>
 <script type="text/html" id="toolbar">
     <div class="layui-btn-group">
-        <button sa:hasPermission="sys:log:deleted" type="button" class="layui-btn layui-btn-sm" lay-event="getCheckData">
+        <button sa:hasPermission="sys:log:deleted" type="button" class="layui-btn layui-btn-sm"
+                lay-event="getCheckData">
             批量删除
         </button>
     </div>
@@ -37,26 +43,16 @@
 <script type="text/html" id="tool">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sa:hasPermission="sys:log:deleted">删除</a>
 </script>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
-    var tableIns1;
-    var table = layui.table;
-    var laypage = layui.laypage
-    var form = layui.form;
-    var layer = layui.layer;
-    var $ = jQuery = layui.jquery;
-    var laydate = layui.laydate;
-    var flag;
-    var startTime = null;
-    var endTime = null;
-    layui.use(['table', 'laypage', 'layer', 'laydate'], function () {
+    //查询条件
+    layui.use(function () {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
 
         //加载table
-        tableIns1 = table.render({
+        var tableIns1 = table.render({
             elem: '#log_table'
             , contentType: 'application/json'
             , page: true //开启分页
@@ -87,20 +83,13 @@
 
         //日期范围
         laydate.render({
-            elem: '#createTime'
+            elem: '#createTimeBegin'
             , type: 'datetime'
-            , range: '~'
-            , done: function (value, date, endDate) {
-                if (value != null && value != undefined && value != "") {
-                    startTime = value.split("~")[0];
-                    endTime = value.split("~")[1];
-                } else {
-                    //清空时间的时候要清空以前选择的日期
-                    startTime = null;
-                    endTime = null;
-                }
-
-            }
+        });
+        //日期范围
+        laydate.render({
+            elem: '#createTimeEnd'
+            , type: 'datetime'
         });
 
         //表头工具栏事件
@@ -142,28 +131,26 @@
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     CoreUtil.sendDelete(ctx + "/logs", logIds, function (res) {
                         layer.msg(res.msg);
-                        search();
+                        tableIns1.reload();
                     });
                 }
             });
         }
+
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            tableIns1.reload({
+                page: {
+                    curr: 1
+                }
+                , where: data.field
+            });
+            return false;
+        });
     });
 
-    //执行查询
-    function search() {
-        //这里以搜索为例
-        tableIns1.reload({
-            where: { //设定异步数据接口的额外参数，任意设
-                username: $("#username").val(),
-                operation: $("#operation").val(),
-                userId: $("#userId").val(),
-                startTime: startTime,
-                endTime: endTime,
-            }
-            , page: {
-                curr: 1 //重新从第 1 页开始
-            }
-        });
-    };
+
 </script>
 </html>

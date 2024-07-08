@@ -4,7 +4,6 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.company.project.common.utils.DataResult;
 import com.company.project.entity.SysContentEntity;
 import com.company.project.service.SysContentService;
 import io.swagger.annotations.Api;
@@ -36,31 +35,28 @@ public class SysContentController {
     @ApiOperation(value = "新增")
     @PostMapping("/add")
     @SaCheckPermission("sysContent:add")
-    public DataResult add(@RequestBody SysContentEntity sysContent) {
+    public void add(@RequestBody SysContentEntity sysContent) {
         sysContentService.save(sysContent);
-        return DataResult.success();
     }
 
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete")
     @SaCheckPermission("sysContent:delete")
-    public DataResult delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
+    public void delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         sysContentService.removeByIds(ids);
-        return DataResult.success();
     }
 
     @ApiOperation(value = "更新")
     @PutMapping("/update")
     @SaCheckPermission("sysContent:update")
-    public DataResult update(@RequestBody SysContentEntity sysContent) {
+    public void update(@RequestBody SysContentEntity sysContent) {
         sysContentService.updateById(sysContent);
-        return DataResult.success();
     }
 
     @ApiOperation(value = "查询分页数据")
     @PostMapping("/listByPage")
     @SaCheckPermission("sysContent:list")
-    public DataResult findListByPage(@RequestBody SysContentEntity sysContent) {
+    public IPage<SysContentEntity> findListByPage(@RequestBody SysContentEntity sysContent) {
         LambdaQueryWrapper<SysContentEntity> queryWrapper = Wrappers.lambdaQuery();
         //查询条件示例
         if (!StringUtils.isEmpty(sysContent.getTitle())) {
@@ -71,8 +67,6 @@ public class SysContentController {
             queryWrapper.in(SysContentEntity::getCreateId, sysContent.getCreateIds());
         }
         //数据权限示例， 需手动添加此条件 end
-
-        IPage<SysContentEntity> iPage = sysContentService.page(sysContent.getQueryPage(), queryWrapper);
-        return DataResult.success(iPage);
+        return sysContentService.page(sysContent.getQueryPage(), queryWrapper);
     }
 }

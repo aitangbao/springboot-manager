@@ -29,12 +29,4 @@ public interface UserRoleService extends IService<SysUserRole> {
      * @param vo vo
      */
     void addUserRoleInfo(UserRoleOperationReqVO vo);
-
-    /**
-     * 根据角色id获取绑定的人
-     *
-     * @param roleId roleId
-     * @return List
-     */
-    List<String> getUserIdsByRoleId(String roleId);
 }

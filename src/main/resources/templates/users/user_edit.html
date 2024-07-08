@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <!--公共模块-->
+    <div th:replace="~{layout}"></div>
 </head>
 <body>
 <div class="layui-container" style="width:600px;">
@@ -12,11 +13,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-block">
-                <input th:if="${flagType} eq 'edit'" type="text" name="username" lay-verify="title" disabled="disabled"
+                <input  type="text" name="username" lay-verify="title" disabled="disabled"
                        style="background:#eeeeee!important" autocomplete="off" placeholder="请输入账号"
                        class="layui-input layui-disabled ">
-                <input th:if="${flagType} eq 'add'" type="text" name="username" lay-verify="title" autocomplete="off"
-                       placeholder="请输入账号" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -44,9 +43,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
-                <input th:if="${flagType} eq 'add'" type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁止"
-                       lay-filter="switch" checked="checked">
-                <input th:if="${flagType} eq 'edit'" type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁止"
+                <input type="checkbox" name="status" value="1" lay-skin="switch" title="启用|禁止"
                        lay-filter="switch" checked="checked" disabled="disabled">
             </div>
         </div>
@@ -67,18 +64,10 @@
     </form>
 </div>
 </body>
-<script th:inline="javascript" type="text/javascript">
-    var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
-</script>
-<script th:src="@{/static/layui/layui.all.js}"></script>
-<script th:src="@{/static/js/core.util.js}"></script>
 <script>
     var form = layui.form,
-        layer = layui.layer,
-    $ = jQuery = layui.jquery;
-    layui.use(['form', 'layer', 'jquery'], function () {
-
-
+        layer = layui.layer;
+    layui.use(function () {
         // 初始化表单数据
         function initForm(data) {
             form.val('info', {
@@ -90,14 +79,6 @@
                 "sex": data.sex.toString(), // 性别需要转换为字符串
                 "status": data.status === 1 // 开关状态
             });
-
-            // 手动设置 checkbox 的值
-            if (data.status === 1) {
-                $("input[name=status]").prop('checked', true).val(1);
-            } else {
-                $("input[name=status]").prop('checked', false).val(0);
-            }
-
             form.render(); // 更新全部
         }
 
@@ -111,6 +92,9 @@
 
             // 监听提交
             form.on('submit(submit)', function (data) {
+                //checkbox值 没有选中默认0
+                data.field.status = CoreUtil.isEmptyGet(data.field.status, 0) ;
+
                 CoreUtil.sendPut(ctx + "sys/user/info", data.field, function (res) {
                     layer.msg(res.msg);
                 });

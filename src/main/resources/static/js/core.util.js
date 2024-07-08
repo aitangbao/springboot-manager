@@ -85,6 +85,15 @@ var CoreUtil = (function () {
         }
     }
 
+    //判断字符是否为空的方法 空的话返回默认值
+    coreUtil.isEmptyGet = function(obj, defaultVal){
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return defaultVal;
+        }else{
+            return obj;
+        }
+    }
+
     //字典数据回显
     coreUtil.selectDictLabel = function (datas, value) {
         datas = JSON.parse(datas);

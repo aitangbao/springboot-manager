@@ -10,7 +10,6 @@ import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -21,12 +20,10 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,9 +51,8 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations(
                 "classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/files/**")
-                .addResourceLocations("file:" + filePath  + File.separator);
+                .addResourceLocations("file:" + filePath + File.separator);
     }
-
 
 
     //添加拦截器
@@ -151,7 +147,6 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
     }
 
 
-
     /**
      * 配置servlet处理
      */
@@ -160,7 +155,6 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
             DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-
 
 
 }

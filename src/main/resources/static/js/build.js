@@ -1,14 +1,9 @@
-layui.use(['element', 'laydate', 'form'], function () {
+layui.use(function () {
     var $ = layui.jquery;
     var form = layui.form;
-    var laydate = layui.laydate;
 
     var build = $(".build-panel");
 
-    //初始化laydate实例
-    laydate.render({
-        elem: '#laydate'
-    });
 
     // 禁止选择网页文本
     $(document).on('selectstart', '.layui-card', function(){
